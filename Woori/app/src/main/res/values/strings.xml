@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Woori</string>
+    <string name="app_name">Woori Family</string>
+    <string name="query_hint">보고 싶은 가족의 이름은?</string>
 </resources>

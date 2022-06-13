@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_search"
+        android:title="search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
+        android:id="@+id/menu_main"
+        android:title="main"/>
+    <item
+        android:id="@+id/menu_memory"
+        android:title="사진"/>
+    <item
+        android:id="@+id/menu_letter"
+        android:title="편지"/>
+    <item
+        android:id="@+id/menu_anniversary"
+        android:title="기념일"/>
+    <item
+        android:id="@+id/menu_contact"
+        android:title="연락처"/>
+
+
+
+</menu>
