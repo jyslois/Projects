@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/main">
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/anniversarybutton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -18,7 +19,7 @@
         android:text="Anniversary" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/memorybutton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -34,7 +35,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/contactbutton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
@@ -45,7 +46,7 @@
             android:text="Contact" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/letterbutton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
