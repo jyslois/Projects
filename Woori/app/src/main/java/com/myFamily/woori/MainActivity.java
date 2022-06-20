@@ -1,6 +1,8 @@
 package com.myFamily.woori;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
@@ -18,6 +20,7 @@ import com.myFamily.woori.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     SearchView searchView;
     ActivityMainBinding binding;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.memorybutton.setOnClickListener(this);
         binding.contactbutton.setOnClickListener(this);
         binding.letterbutton.setOnClickListener(this);
+
+        // ActionBar DrawerToggle - DrawerLayout을 열고 닫기 위한 아이콘을 툴바 왼쪽에 제공
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.drawer_open, R.string.drawer_close);
+        toggle.syncState();
+
+        // 이벤트 처리
+        binding.navigationView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction ft = manager.beginTransaction();
+            if (id == R.id.menu_anniversary) {
+                AnniversaryFragment anniversaryFragment = new AnniversaryFragment();
+                ft.replace(R.id.main, anniversaryFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                binding.drawerLayout.closeDrawers();
+            } else if (id == R.id.menu_memory) {
+                MemoryFragment memoryFragment = new MemoryFragment();
+                ft.replace(R.id.main, memoryFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                binding.drawerLayout.closeDrawers();
+            } else if (id == R.id.menu_contact) {
+                ContactFragment contactFragment = new ContactFragment();
+                ft.replace(R.id.main, contactFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                binding.drawerLayout.closeDrawers();
+            } else if (id == R.id.menu_letter){
+                LetterFragment letterFragment = new LetterFragment();
+                ft.replace(R.id.main, letterFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                binding.drawerLayout.closeDrawers();
+            } else if (id == R.id.menu_main) {
+                // 메인 화면으로 돌아가기
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+            return false;
+        });
+    }
+
+    private void showToast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
@@ -69,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FragmentManager manager = getSupportFragmentManager();
         // androidx.fragment.app.FragmentTransaction
         FragmentTransaction ft = manager.beginTransaction();
+
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 
         if (item.getItemId() == R.id.menu_anniversary) {
             AnniversaryFragment anniversaryFragment = new AnniversaryFragment();

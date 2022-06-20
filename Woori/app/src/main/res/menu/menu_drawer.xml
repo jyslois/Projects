@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_main"
+        android:title="main"
+        android:icon="@android:drawable/btn_star_big_on" />
+    <item
+        android:id="@+id/menu_memory"
+        android:title="사진"
+        android:icon="@android:drawable/ic_menu_gallery"/>
+    <item
+        android:id="@+id/menu_letter"
+        android:title="편지"
+        android:icon="@android:drawable/ic_dialog_email"/>
+    <item
+        android:id="@+id/menu_anniversary"
+        android:title="기념일"
+        android:icon="@android:drawable/ic_menu_my_calendar"/>
+    <item
+        android:id="@+id/menu_contact"
+        android:title="연락처"
+        android:icon="@android:drawable/ic_menu_call"/>
+
+
+
+</menu>

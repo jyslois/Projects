@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/menu_main"
-        android:title="main"/>
+        android:title="home"/>
     <item
         android:id="@+id/menu_memory"
         android:title="사진"/>
