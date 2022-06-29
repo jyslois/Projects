@@ -1,6 +1,7 @@
 package com.myFamily.woori;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,16 +14,20 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.myFamily.woori.databinding.ActivityMainBinding;
 import com.myFamily.woori.databinding.ActivityMainFragmentBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +45,22 @@ public class MainActivity extends AppCompatActivity {
 
         // viewpager2
         binding.viewpager.setAdapter(new WooriAdapter(this));
+
+
+        // tablayout과 viewpaer2 연결하게(tablayoutmediator)
+        final List<String> tabList = Arrays.asList("Main", "기념", "추억", "연락", "편지");
+
+        new TabLayoutMediator(binding.tabLayout, binding.viewpager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                TextView textView = new TextView(MainActivity.this);
+                textView.setText(tabList.get(position));
+                // 탭 안의 텍스트 중앙 정렬
+                textView.setGravity(Gravity.CENTER);
+                tab.setCustomView(textView);
+            }
+        }).attach();
+
     }
 
 

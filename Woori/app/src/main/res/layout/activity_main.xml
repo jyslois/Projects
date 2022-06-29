@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/box"
     android:orientation="vertical">
 
@@ -10,7 +11,8 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tabLayout">
+        android:id="@+id/tabLayout"
+        app:tabMode="scrollable">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -20,7 +22,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="기념일"
+            android:text="기념"
             />
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -30,7 +32,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="연락처"
+            android:text="연락"
            />
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
