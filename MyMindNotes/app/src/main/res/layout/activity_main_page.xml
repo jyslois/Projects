@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         app:contentInsetStart="0dp"
         android:background="#84AED1"
@@ -37,13 +37,46 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <TextView
-        android:layout_weight="1"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="오늘 하루도 고생했어요."
-        android:textSize="20dp"
+        android:layout_height="match_parent"
         android:gravity="center"
-        />
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="오늘 하루도 고생했어요,"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/mainText" />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mainText"
+            android:text="___________ 님."
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/NickName"/>
+
+        <Button
+            android:layout_gravity="center"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/NickName"
+            android:layout_marginTop="20dp"
+            android:padding="15dp"
+            android:text="나의 마음에 대해 알아 볼까요?"
+            android:textColor="#F3F5F6"
+            android:background="#1E4565"
+            android:textSize="20dp"
+            android:id="@+id/RecordMindButton" />
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>
