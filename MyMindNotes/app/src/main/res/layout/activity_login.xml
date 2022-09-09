@@ -21,7 +21,7 @@
     android:hint="이메일"
     android:textSize="16dp"
     android:layout_gravity="center"
-    android:background="@drawable/login_border"
+    android:background="@drawable/rounded_border"
     android:id="@+id/email"/>
 
 <EditText
@@ -33,7 +33,7 @@
     android:hint="비밀번호"
     android:textSize="16dp"
     android:layout_gravity="center"
-    android:background="@drawable/login_border"
+    android:background="@drawable/rounded_border"
     android:id="@+id/passward"/>
 
 <com.google.android.material.button.MaterialButton

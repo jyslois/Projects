@@ -33,5 +33,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 회원가입 클릭 시 화면 전환
+        Button joinButton = binding.joinButton;
+
+        joinButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), Join.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
