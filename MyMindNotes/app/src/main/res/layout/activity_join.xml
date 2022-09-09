@@ -100,7 +100,7 @@
             android:id="@+id/passwardRetype"/>
 
         <com.google.android.material.button.MaterialButton
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
             app:cornerRadius="100dp"

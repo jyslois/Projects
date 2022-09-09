@@ -10,7 +10,7 @@
 
 <ImageView
     android:layout_width="wrap_content"
-    android:layout_height="90dp"
+    android:layout_height="80dp"
     android:src="@drawable/title2" />
 
 <EditText
@@ -36,8 +36,19 @@
     android:background="@drawable/rounded_border"
     android:id="@+id/passward"/>
 
+<CheckBox
+    android:textColor="#8F969C"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="8dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="left"
+    android:text="로그인 상태 유지"
+    android:textSize="13dp"/>
+
+
 <com.google.android.material.button.MaterialButton
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="10dp"
     android:layout_width="330dp"
     android:layout_height="wrap_content"
     app:cornerRadius="100dp"
