@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EmotionInstructions">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <!-- 타이틀 -->
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/emotiontitle"
+                android:gravity="center"
+                android:id="@+id/emotion_title"/>
+
+            <!-- 정렬 버튼 -->
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="▼ 모든 감정"
+                android:textSize="15dp"
+                android:textColor="#373434"
+                android:background="@android:color/transparent"
+                android:layout_below="@id/emotion_title"
+                android:id="@+id/sortingButton"/>
+
+            <!-- 기쁨 -->
+            <ImageView
+                android:layout_below="@id/sortingButton"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/orange_happiness"
+                android:id="@+id/happiness_orange"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="기쁨"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/happiness_orange"
+                android:layout_alignBottom="@id/happiness_orange"
+                android:id="@+id/happiness_title"/>
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="120dp"
+                android:layout_below="@id/happiness_orange"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/happiness"
+                android:id="@+id/happiness_instruction"/>
+
+            <!-- 기대 -->
+            <ImageView
+                android:layout_below="@id/happiness_instruction"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/green_anticipation"
+                android:id="@+id/anticipation_green"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="기대"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/anticipation_green"
+                android:layout_alignBottom="@id/anticipation_green"
+                android:id="@+id/anticipation_title"/>
+
+            <ImageView
+                android:id="@+id/anticipation"
+                android:layout_width="400dp"
+                android:layout_height="120dp"
+                android:layout_below="@id/anticipation_green"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/anticipation" />
+
+            <!-- 신뢰 -->
+            <ImageView
+                android:layout_below="@id/anticipation"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/darkblue_trust"
+                android:id="@+id/trust_blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="신뢰"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/trust_blue"
+                android:layout_alignBottom="@id/trust_blue"
+                android:id="@+id/trust_title"/>
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="180dp"
+                android:layout_below="@id/trust_blue"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/trust"
+                android:id="@+id/trust"/>
+
+            <!-- 놀라움 -->
+            <ImageView
+                android:layout_below="@id/trust"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/yellow_surprise"
+                android:id="@+id/surprise_yellow"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="놀라움"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/surprise_yellow"
+                android:layout_alignBottom="@id/surprise_yellow"
+                android:id="@+id/surprise_title"/>
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="180dp"
+                android:layout_below="@id/surprise_yellow"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/surprise"
+                android:id="@+id/surprise"/>
+
+            <!-- 슬픔 -->
+            <ImageView
+                android:layout_below="@id/surprise"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/grey_sadness"
+                android:id="@+id/sadness_grey"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="슬픔"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/sadness_grey"
+                android:layout_alignBottom="@id/sadness_grey"
+                android:id="@+id/sadness_title"/>
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="180dp"
+                android:layout_below="@id/sadness_grey"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/sadness"
+                android:id="@+id/sadness"/>
+
+            <!-- 혐오 -->
+            <ImageView
+                android:layout_below="@id/sadness"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/brown_disgust"
+                android:id="@+id/disgust_brown"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="혐오"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/disgust_brown"
+                android:layout_alignBottom="@id/disgust_brown"
+                android:id="@+id/disgust_title"/>
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="140dp"
+                android:layout_below="@id/disgust_brown"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/disgust"
+                android:id="@+id/disgust"/>
+
+
+            <!-- 공포 -->
+            <ImageView
+                android:layout_below="@id/disgust"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/black_fear"
+                android:id="@+id/fear_black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="공포"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/fear_black"
+                android:layout_alignBottom="@id/fear_black"
+                android:id="@+id/fear_title"/>
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="140dp"
+                android:layout_below="@id/fear_black"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/fear"
+                android:id="@+id/fear"/>
+
+            <!-- 분노 -->
+            <ImageView
+                android:layout_below="@id/fear"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/red_anger"
+                android:id="@+id/anger_red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="분노"
+                android:textStyle="bold"
+                android:textColor="#474141"
+                android:textSize="30dp"
+                android:layout_toRightOf="@id/anger_red"
+                android:layout_alignBottom="@id/anger_red"
+                android:id="@+id/anger_title"/>
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="180dp"
+                android:layout_below="@id/anger_red"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/anger"
+                android:id="@+id/anger"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>
+
