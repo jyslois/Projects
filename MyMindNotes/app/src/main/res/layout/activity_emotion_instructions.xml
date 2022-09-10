@@ -16,15 +16,17 @@
 
             <!-- 타이틀 -->
             <ImageView
-                android:layout_marginTop="20dp"
+                android:id="@+id/emotion_title"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:src="@drawable/emotiontitle"
+                android:layout_height="90dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:id="@+id/emotion_title"/>
+                android:src="@drawable/emotiontitle" />
+
 
             <!-- 정렬 버튼 -->
             <Button
+                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="▼ 모든 감정"
