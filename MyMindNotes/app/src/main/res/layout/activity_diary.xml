@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:cornerRadius="100dp"
-            android:text="따끈 감정"
+            android:text="따끈 마음"
             android:textSize="11dp"
             android:layout_margin="5dp"
             android:backgroundTint="#1E4565"
@@ -86,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:cornerRadius="100dp"
-            android:text="묵은 감정"
+            android:text="묵은 마음"
             android:textSize="11dp"
             android:layout_margin="5dp"
             android:backgroundTint="#1E4565"
@@ -134,7 +134,7 @@
                     android:id="@+id/emotion_Word"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="일기 내용내용내용내 용내용내용내ㅇㅇㅇㅇㅇㅇㅇㅇ용내용내용내용내용내용내용내용내용내용내용내용내용내용"
                     android:maxLines="2"

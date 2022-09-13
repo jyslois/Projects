@@ -34,6 +34,11 @@ public class MainPage extends AppCompatActivity {
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar); // 이 액티비티에서 툴바 사용
         getSupportActionBar().setDisplayShowTitleEnabled(false); // 타이틀 안 보이게 하기
+
+        binding.RecordMindButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), RecordMindChoice.class);
+            startActivity(intent);
+        });
     }
 
     // xml로 작성한 액션바의 메뉴 설정

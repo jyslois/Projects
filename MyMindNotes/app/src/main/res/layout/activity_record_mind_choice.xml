@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RecordMindChoice"
+    android:gravity="center">
+
+
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오늘은 어떤 마음에 대해 알아 볼까요?"
+        android:textSize="20dp"
+        android:id="@+id/recordText"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_marginTop="20dp"
+        android:layout_width="330dp"
+        android:layout_height="80dp"
+        app:cornerRadius="20dp"
+        android:text="@string/newMind"
+        android:layout_gravity="center"
+        android:id="@+id/newMindButton"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_marginTop="10dp"
+        android:layout_width="330dp"
+        android:layout_height="80dp"
+        app:cornerRadius="20dp"
+        android:text="@string/oldMind"
+        android:layout_gravity="center"
+        android:id="@+id/oldMindButton"/>
+
+
+</LinearLayout>

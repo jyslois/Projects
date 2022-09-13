@@ -25,23 +25,17 @@ public class MainActivity extends AppCompatActivity {
         // 로그인 클릭 시 화면 전환
         Button loginButton = binding.loginButton;
 
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-            }
+        loginButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
         });
 
         // 회원가입 클릭 시 화면 전환
         Button joinButton = binding.joinButton;
 
-        joinButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(), Join.class);
-                startActivity(intent);
-            }
+        joinButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Join.class);
+            startActivity(intent);
         });
 
     }

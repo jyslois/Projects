@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyMindNotes</string>
+
+    <string name="newMind"><font size="18">따끈따끈한 마음</font>\n<font size="12">(사건 시점 : 현재)</font></string>
+    <string name="oldMind"><font size="18">캐캐묵은 마음</font>\n<font size="12">(사건 시점 : 과거 > 현재)</font></string>
+
 </resources>
