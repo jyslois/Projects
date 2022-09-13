@@ -29,4 +29,8 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="Theme.Diary" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor" tools:targetApi="l">#8F8C8C</item>
+    </style>
+
 </resources>

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/EmotionInstructions"
+        android:id="@+id/EmotionInstructionsIcon"
         app:showAsAction="always"
         android:title="감정 설명서"
         android:iconTint="#F3F5F6"
@@ -13,7 +13,7 @@
         />
 
     <item
-        android:id="@+id/Diary"
+        android:id="@+id/DiaryIcon"
         app:showAsAction="always"
         android:title="나의 마음 일지"
         android:iconTint="#F3F5F6"

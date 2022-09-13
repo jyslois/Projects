@@ -55,16 +55,16 @@ public class MainPage extends AppCompatActivity {
         menu.getItem(1).setIcon(f); //choose the item number you want to set
 
         // 액션바 [감정 설명서] 아이콘 하얀색 틴트
-        Drawable drawable = menu.findItem(R.id.EmotionInstructions).getIcon();
+        Drawable drawable = menu.findItem(R.id.EmotionInstructionsIcon).getIcon();
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(drawable, ContextCompat.getColor(this,R.color.white));
-        menu.findItem(R.id.EmotionInstructions).setIcon(drawable);
+        menu.findItem(R.id.EmotionInstructionsIcon).setIcon(drawable);
 
         // 액션바 [나의 마음 일지] 아이콘 하얀색 틴트
-        Drawable drawable2 = menu.findItem(R.id.Diary).getIcon();
+        Drawable drawable2 = menu.findItem(R.id.DiaryIcon).getIcon();
         drawable2 = DrawableCompat.wrap(drawable2);
         DrawableCompat.setTint(drawable2, ContextCompat.getColor(this,R.color.white));
-        menu.findItem(R.id.Diary).setIcon(drawable2);
+        menu.findItem(R.id.DiaryIcon).setIcon(drawable2);
 
         return true;
     }
@@ -100,11 +100,12 @@ public class MainPage extends AppCompatActivity {
     // 엑션바 메뉴를 클릭했을 때 이벤트
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.EmotionInstructions) {
+        if (item.getItemId() == R.id.EmotionInstructionsIcon) {
             Intent intent = new Intent(getApplicationContext(), EmotionInstructions.class);
             startActivity(intent);
-        } else if (item.getItemId() == R.id.Diary) {
-
+        } else if (item.getItemId() == R.id.DiaryIcon) {
+            Intent intent = new Intent(getApplicationContext(), Diary.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
