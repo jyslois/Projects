@@ -531,7 +531,7 @@
             android:layout_marginLeft="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="세세한 감정에 대해 직접 기록해 봐요."
+            android:text="세세한 감정에 대해 기록해 봐요."
             android:textSize="14dp"
             android:id="@+id/Record_Emotion_Instruction_2"/>
 
