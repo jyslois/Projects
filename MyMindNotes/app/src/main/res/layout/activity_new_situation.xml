@@ -66,13 +66,14 @@
                 android:id="@+id/Record_Situation_Title"/>
 
             <ImageView
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="190dp"
-                android:padding="10dp"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:layout_marginLeft="190dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/Record_Situation_Title"
+                android:padding="10dp"
                 android:src="@drawable/tips"
-                android:layout_toRightOf="@id/Record_Situation_Title"/>
+                android:id="@+id/Record_SituationTips"/>
 
         </RelativeLayout>
 
