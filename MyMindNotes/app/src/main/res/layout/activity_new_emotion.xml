@@ -75,7 +75,8 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/tips"
-                android:layout_toRightOf="@id/Record_Emotion_Title"/>
+                android:layout_toRightOf="@id/Record_Emotion_Title"
+                android:id="@+id/Record_Tips"/>
 
         </RelativeLayout>
 
@@ -84,7 +85,7 @@
             android:layout_marginLeft="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="코어 감정을 선택해 주세요."
+            android:text="오늘의 코어 감정을 선택해 주세요."
             android:textSize="14dp"
             android:id="@+id/Record_CoreEmotion_Instruction"/>
 

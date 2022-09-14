@@ -4,4 +4,6 @@
     <string name="newMind"><font size="18">따끈따끈한 마음</font>\n<font size="12">(사건 시점 : 현재)</font></string>
     <string name="oldMind"><font size="18">캐캐묵은 마음</font>\n<font size="12">(사건 시점 : 과거 ▶ 현재)</font></string>
 
+    <string name="emotionTips">코어 감정이란 가장 강렬하게 느끼는 메인 감정으로, 반드시 하나를 선택해야 합니다. \n보조 감정의 경우 선택이 필수는 아니지만, 복수 선택도 가능합니다. \n감정은 세세하게 느낄 수록 좋습니다. \n나의 다양한 감정들을 직접 기록해 보세요.</string>
+
 </resources>
