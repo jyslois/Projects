@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainPage">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetStart="0dp"
+        android:background="#84AED1"
+        android:gravity="center">
+
+        <TextView
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나의 마음 일지"
+            android:textColor="#F3F5F6"
+            android:textSize="18dp"
+            android:layout_gravity="left" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/progress_4"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            app:tint="#F3F5F6"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/titleicon"
+                android:id="@+id/RecordIcon"
+                app:tint="#2C2B2B" />
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회고"
+                android:textStyle="bold"
+                android:textColor="#2C2B2B"
+                android:textSize="28dp"
+                android:layout_toRightOf="@id/RecordIcon"
+                android:id="@+id/Record_Reflection_Title"/>
+
+            <ImageView
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="190dp"
+                android:padding="10dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/tips"
+                android:layout_toRightOf="@id/Record_Reflection_Title"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="나는 왜 그런 마음이 들었을까요?"
+            android:textSize="16dp"
+            android:id="@+id/Record_Reflection_Instruction"/>
+
+    </LinearLayout>
+
+</LinearLayout>

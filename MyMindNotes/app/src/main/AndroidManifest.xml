@@ -14,9 +14,25 @@
         android:theme="@style/Theme.MyMindNotes"
         tools:targetApi="31">
         <activity
+            android:name=".Record_Result"
+            android:exported="false" />
+        <activity
+            android:name=".New_Reflection"
+            android:exported="false" />
+        <activity
+            android:name=".New_Thought"
+            android:exported="false" />
+        <activity
+            android:name=".New_Situation"
+            android:exported="false" />
+        <activity
+            android:name=".New_Emotion"
+            android:exported="false"
+            android:theme="@style/Theme.Intro" />
+        <activity
             android:name=".RecordMindChoice"
             android:exported="false"
-            android:theme="@style/Theme.Intro"/>
+            android:theme="@style/Theme.Intro" />
         <activity
             android:name=".Diary"
             android:exported="false"

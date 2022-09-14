@@ -2,6 +2,7 @@ package com.android.mymindnotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.mymindnotes.databinding.ActivityRecordMindChoiceBinding;
@@ -16,7 +17,8 @@ public class RecordMindChoice extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.newMindButton.setOnClickListener(view -> {
-
+            Intent intent = new Intent(getApplicationContext(), New_Emotion.class);
+            startActivity(intent);
         });
 
         binding.oldMindButton.setOnClickListener(view -> {
