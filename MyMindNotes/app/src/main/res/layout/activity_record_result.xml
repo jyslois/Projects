@@ -297,7 +297,19 @@
 
             </LinearLayout>
 
+
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/Result_Emossion_UserInput"
+            android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Result_Thought_Title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border"
+            android:textSize="14dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -313,15 +325,15 @@
                 app:tint="#2C2B2B" />
 
             <TextView
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="5dp"
+                android:id="@+id/Result_Reflection_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@id/Result_Reflection_Icon"
                 android:text="회고"
                 android:textColor="#2C2B2B"
-                android:textSize="23dp"
-                android:layout_toRightOf="@id/Result_Reflection_Icon"
-                android:id="@+id/Result_Reflection_Title"/>
+                android:textSize="23dp" />
 
             <TextView
                 android:id="@+id/Result_Reflection_UserInput"
