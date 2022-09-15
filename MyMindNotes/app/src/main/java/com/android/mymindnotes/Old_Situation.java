@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.android.mymindnotes.databinding.ActivityNewSituationBinding;
 import com.android.mymindnotes.databinding.ActivityOldSituationBinding;
 
 public class Old_Situation extends AppCompatActivity {

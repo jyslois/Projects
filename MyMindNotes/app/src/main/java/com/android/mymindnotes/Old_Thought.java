@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.android.mymindnotes.databinding.ActivityNewThoughtBinding;
 import com.android.mymindnotes.databinding.ActivityOldThoughtBinding;
 
 public class Old_Thought extends AppCompatActivity {

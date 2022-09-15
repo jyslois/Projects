@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.android.mymindnotes.databinding.ActivityNewReflectionBinding;
 import com.android.mymindnotes.databinding.ActivityOldReflectionBinding;
 
 public class Old_Reflection extends AppCompatActivity {

@@ -176,7 +176,7 @@
                     android:id="@+id/Result_CoreEmotionText"/>
 
                 <ImageView
-                    android:id="@+id/Result_CoreEmossionIcon"
+                    android:id="@+id/Result_CoreEmotionIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_below="@id/Result_CoreEmotionText"
@@ -191,9 +191,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="기쁨"
-                    android:layout_below="@id/Result_CoreEmossionIcon"
+                    android:layout_below="@id/Result_CoreEmotionIcon"
                     android:layout_marginLeft="33dp"
-                    android:id="@+id/Reulst_CoreEmossionText"/>
+                    android:id="@+id/Reulst_CoreEmotionText"/>
             </RelativeLayout>
 
 
@@ -237,14 +237,14 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:src="@drawable/darkblue_trust"
-                                android:id="@+id/Result_SecondaryEmossionIcon_Trust"/>
+                                android:id="@+id/Result_SecondaryEmotionIcon_Trust"/>
 
                             <TextView
                                 android:layout_marginBottom="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="신뢰"
-                                android:layout_below="@id/Result_SecondaryEmossionIcon_Trust"
+                                android:layout_below="@id/Result_SecondaryEmotionIcon_Trust"
                                 android:layout_marginLeft="34dp"
                                 android:id="@+id/CoreEmotionText_Trust"/>
 
@@ -262,14 +262,14 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:src="@drawable/green_anticipation"
-                                android:id="@+id/Result_SecondaryEmossionIcon_Anticipation"/>
+                                android:id="@+id/Result_SecondaryEmotionIcon_Anticipation"/>
 
                             <TextView
                                 android:layout_marginBottom="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="기대"
-                                android:layout_below="@id/Result_SecondaryEmossionIcon_Anticipation"
+                                android:layout_below="@id/Result_SecondaryEmotionIcon_Anticipation"
                                 android:layout_marginLeft="34dp"
                                 android:id="@+id/CoreEmotionText_Anticipation"/>
 
@@ -287,14 +287,14 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:src="@drawable/yellow_surprise"
-                                android:id="@+id/Result_SecondaryEmossionIcon_Surprise"/>
+                                android:id="@+id/Result_SecondaryEmotionIcon_Surprise"/>
 
                             <TextView
                                 android:layout_marginBottom="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="놀람"
-                                android:layout_below="@id/Result_SecondaryEmossionIcon_Surprise"
+                                android:layout_below="@id/Result_SecondaryEmotionIcon_Surprise"
                                 android:layout_marginLeft="34dp"
                                 android:id="@+id/CoreEmotionText_Surprise"/>
 
@@ -309,7 +309,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/Result_Emossion_UserInput"
+            android:id="@+id/Result_Emotion_UserInput"
             android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
             android:layout_width="320dp"
             android:layout_height="wrap_content"

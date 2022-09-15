@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.android.mymindnotes.databinding.ActivityNewEmotionBinding;
 import com.android.mymindnotes.databinding.ActivityOldEmotionBinding;
 
 public class Old_Emotion extends AppCompatActivity {
