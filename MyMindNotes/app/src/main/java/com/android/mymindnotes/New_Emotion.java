@@ -39,7 +39,7 @@ public class New_Emotion extends AppCompatActivity {
         builder.setMessage(R.string.emotionTips);
         builder.setPositiveButton("확인", null);
 
-        binding.RecordTips.setOnClickListener(view -> {
+        binding.RecordEmotionTips.setOnClickListener(view -> {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         });

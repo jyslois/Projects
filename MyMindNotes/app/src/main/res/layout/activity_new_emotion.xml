@@ -69,14 +69,14 @@
                 android:id="@+id/Record_Emotion_Title"/>
 
             <ImageView
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="190dp"
-                android:padding="10dp"
+                android:id="@+id/Record_EmotionTips"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/tips"
+                android:layout_marginLeft="190dp"
+                android:layout_marginTop="2dp"
                 android:layout_toRightOf="@id/Record_Emotion_Title"
-                android:id="@+id/Record_Tips"/>
+                android:padding="10dp"
+                android:src="@drawable/tips" />
 
         </RelativeLayout>
 
@@ -544,7 +544,8 @@
             android:textSize="14dp"
             android:lines="5"
             android:background="@drawable/border"
-            android:id="@+id/Record_Emotion_UserInput"/>
+            android:id="@+id/Record_Emotion_UserInput"
+            android:hint="@string/emotionHints"/>
 
         <Button
             android:layout_marginTop="30dp"
@@ -554,7 +555,6 @@
             android:text="▶ 다음"
             android:id="@+id/Record_NextButton"
             android:layout_marginBottom="30dp"/>
-
 
     </LinearLayout>
     </ScrollView>
