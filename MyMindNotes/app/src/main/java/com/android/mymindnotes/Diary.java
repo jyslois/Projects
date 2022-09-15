@@ -33,6 +33,12 @@ public class Diary extends AppCompatActivity {
         setSupportActionBar(toolbar); // 이 액티비티에서 툴바 사용
         getSupportActionBar().setDisplayShowTitleEnabled(false); // 타이틀 안 보이게 하기
 
+        // 일기 내용 클릭 시 상세 페이지 보기
+        binding.recordClickButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Record_Result.class);
+            startActivity(intent);
+        });
+
     }
 
     // xml로 작성한 액션바의 메뉴 설정
@@ -105,4 +111,5 @@ public class Diary extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
