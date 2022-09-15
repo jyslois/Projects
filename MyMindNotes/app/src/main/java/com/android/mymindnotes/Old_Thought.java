@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.mymindnotes.databinding.ActivityNewThoughtBinding;
+import com.android.mymindnotes.databinding.ActivityOldThoughtBinding;
 
-public class New_Thought extends AppCompatActivity {
-    ActivityNewThoughtBinding binding;
+public class Old_Thought extends AppCompatActivity {
+    ActivityOldThoughtBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityNewThoughtBinding.inflate(getLayoutInflater());
+        binding = ActivityOldThoughtBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Tips
@@ -22,8 +23,9 @@ public class New_Thought extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.tips);
         builder.setTitle("생각 작성 Tips");
-        builder.setMessage(R.string.thoughtTips);
+        builder.setMessage(R.string.oldThoughtTips);
         builder.setPositiveButton("확인", null);
+
         // Tips 이미지 클릭 시 다이얼로그 띄우기
         binding.RecordThoughtTips.setOnClickListener(view -> {
             AlertDialog alertDialog = builder.create();
@@ -37,7 +39,7 @@ public class New_Thought extends AppCompatActivity {
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), New_Reflection.class);
+            Intent intent = new Intent(getApplicationContext(), Old_Emotion.class);
             startActivity(intent);
         });
     }

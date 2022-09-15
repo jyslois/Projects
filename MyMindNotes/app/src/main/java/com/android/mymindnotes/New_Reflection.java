@@ -40,6 +40,5 @@ public class New_Reflection extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), Record_Result.class);
             startActivity(intent);
         });
-
     }
 }

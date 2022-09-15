@@ -50,6 +50,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="따끈따끈/캐캐묵은"
+                android:id="@+id/Result_Type"
+                android:gravity="right"
+                android:layout_margin="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="0000. 00. 00"
                 android:id="@+id/Result_Date"
                 android:gravity="right"
@@ -57,7 +65,7 @@
                 android:layout_margin="20dp"/>
 
             <ImageView
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginLeft="15dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -66,7 +74,7 @@
                 app:tint="#2C2B2B" />
 
             <TextView
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

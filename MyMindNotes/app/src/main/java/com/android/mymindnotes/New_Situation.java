@@ -40,6 +40,5 @@ public class New_Situation extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), New_Thought.class);
             startActivity(intent);
         });
-
     }
 }

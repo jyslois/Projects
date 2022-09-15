@@ -22,7 +22,8 @@ public class RecordMindChoice extends AppCompatActivity {
         });
 
         binding.oldMindButton.setOnClickListener(view -> {
-
+            Intent intent = new Intent(getApplicationContext(), Old_Situation.class);
+            startActivity(intent);
         });
     }
 

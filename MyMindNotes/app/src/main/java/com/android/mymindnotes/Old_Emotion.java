@@ -2,25 +2,20 @@ package com.android.mymindnotes;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityNewEmotionBinding;
+import com.android.mymindnotes.databinding.ActivityOldEmotionBinding;
 
-public class New_Emotion extends AppCompatActivity {
-    ActivityNewEmotionBinding binding;
+public class Old_Emotion extends AppCompatActivity {
+    ActivityOldEmotionBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityNewEmotionBinding.inflate(getLayoutInflater());
+        binding = ActivityOldEmotionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // 어떤 감정인지 모르겠어요, 도와주세요 버튼 클릭 -> 감정 설명서 페이지로 이동
@@ -31,7 +26,7 @@ public class New_Emotion extends AppCompatActivity {
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), New_Situation.class);
+            Intent intent = new Intent(getApplicationContext(), Old_Reflection.class);
             startActivity(intent);
         });
 
