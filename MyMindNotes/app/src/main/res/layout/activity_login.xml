@@ -36,15 +36,31 @@
     android:background="@drawable/rounded_border"
     android:id="@+id/passward"/>
 
-<CheckBox
-    android:textColor="#8F969C"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="left"
-    android:text="로그인 상태 유지"
-    android:textSize="13dp"/>
+    android:orientation="vertical">
+    <CheckBox
+        android:textColor="#8F969C"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인 정보 저장"
+        android:textSize="13dp"
+        android:id="@+id/autoSaveButton"/>
+
+    <CheckBox
+        android:id="@+id/autoLoginButton"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="자동 로그인"
+        android:textColor="#8F969C"
+        android:textSize="13dp" />
+</LinearLayout>
+
 
 
 <com.google.android.material.button.MaterialButton
