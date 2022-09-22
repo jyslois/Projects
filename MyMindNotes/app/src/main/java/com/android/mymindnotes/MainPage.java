@@ -3,7 +3,9 @@ package com.android.mymindnotes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,12 +25,17 @@ import com.android.mymindnotes.databinding.ActivityMainPageBinding;
 
 public class MainPage extends AppCompatActivity {
     ActivityMainPageBinding binding;
+    SharedPreferences nickName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // 닉네임 설정
+        nickName = getSharedPreferences("nickName",Activity.MODE_PRIVATE);
+        binding.UserNickName.setText(nickName.getString("nickName", "-") + " 님.");
 
         // 커스텀한 toolbar 적용시키기
         Toolbar toolbar = binding.toolbar;
@@ -39,6 +46,8 @@ public class MainPage extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), RecordMindChoice.class);
             startActivity(intent);
         });
+
+
     }
 
     // xml로 작성한 액션바의 메뉴 설정
@@ -114,4 +123,6 @@ public class MainPage extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
