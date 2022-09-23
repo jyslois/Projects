@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/orange_happiness"
+        >
+    </item>
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/green_anticipation"
+        />
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/darkblue_trust"
+        />
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/yellow_surprise"
+        />
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/grey_sadness"
+        />
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/brown_disgust"
+        />
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/black_fear"
+        />
+
+    <item
+        android:state_checked="false" android:drawable="@drawable/red_anger"
+        />
+</selector>

@@ -147,15 +147,15 @@
                 app:tint="#2C2B2B" />
 
             <TextView
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="5dp"
+                android:id="@+id/Result_Emotion_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@id/Result_Emotion_Icon"
                 android:text="감정"
                 android:textColor="#2C2B2B"
-                android:textSize="23dp"
-                android:layout_toRightOf="@id/Result_Emotion_Icon"
-                android:id="@+id/Result_Emotion_Title"/>
+                android:textSize="23dp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -167,143 +167,13 @@
                 android:id="@+id/Result_CoreEmotion">
 
                 <TextView
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
+                    android:id="@+id/resultEmotionText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="코어 감정"
-                    android:textColor="@color/black"
-                    android:id="@+id/Result_CoreEmotionText"/>
-
-                <ImageView
-                    android:id="@+id/Result_CoreEmotionIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_below="@id/Result_CoreEmotionText"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/orange_happiness" />
-
-                <TextView
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="기쁨"
-                    android:layout_below="@id/Result_CoreEmotionIcon"
-                    android:layout_marginLeft="33dp"
-                    android:id="@+id/Reulst_CoreEmotionText"/>
+                    android:layout_margin="10dp"
+                    android:text="감정" />
             </RelativeLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/Result_CoreEmotion"
-                android:layout_alignTop="@id/Result_CoreEmotion"
-                android:background="@drawable/border"
-                android:layout_marginLeft="20dp"
-                android:id="@+id/Result_SecondaryEmotion"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="이차 감정"
-                    android:textColor="@color/black"
-                    android:id="@+id/Result_SecondaryEmotionText"/>
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="22dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/darkblue_trust"
-                                android:id="@+id/Result_SecondaryEmotionIcon_Trust"/>
-
-                            <TextView
-                                android:layout_marginBottom="10dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="신뢰"
-                                android:layout_below="@id/Result_SecondaryEmotionIcon_Trust"
-                                android:layout_marginLeft="34dp"
-                                android:id="@+id/CoreEmotionText_Trust"/>
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="22dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/green_anticipation"
-                                android:id="@+id/Result_SecondaryEmotionIcon_Anticipation"/>
-
-                            <TextView
-                                android:layout_marginBottom="10dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="기대"
-                                android:layout_below="@id/Result_SecondaryEmotionIcon_Anticipation"
-                                android:layout_marginLeft="34dp"
-                                android:id="@+id/CoreEmotionText_Anticipation"/>
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="22dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@drawable/yellow_surprise"
-                                android:id="@+id/Result_SecondaryEmotionIcon_Surprise"/>
-
-                            <TextView
-                                android:layout_marginBottom="10dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="놀람"
-                                android:layout_below="@id/Result_SecondaryEmotionIcon_Surprise"
-                                android:layout_marginLeft="34dp"
-                                android:id="@+id/CoreEmotionText_Surprise"/>
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-                </HorizontalScrollView>
-
-            </LinearLayout>
 
 
         </RelativeLayout>

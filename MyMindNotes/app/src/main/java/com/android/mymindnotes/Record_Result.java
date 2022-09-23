@@ -2,13 +2,16 @@ package com.android.mymindnotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.android.mymindnotes.databinding.ActivityRecordResultBinding;
 
 public class Record_Result extends AppCompatActivity {
     ActivityRecordResultBinding binding;
+    SharedPreferences emotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,5 +34,9 @@ public class Record_Result extends AppCompatActivity {
         binding.ResultEditButton.setOnClickListener(view -> {
 
         });
+
+        // 감정 뿌리기
+        emotion = getSharedPreferences("emotion", Activity.MODE_PRIVATE);
+        binding.resultEmotionText.setText(emotion.getString("emotion", "감정"));
     }
 }

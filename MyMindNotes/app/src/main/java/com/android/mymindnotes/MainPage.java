@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -35,7 +36,8 @@ public class MainPage extends AppCompatActivity {
 
         // 닉네임 설정
         nickName = getSharedPreferences("nickName",Activity.MODE_PRIVATE);
-        binding.UserNickName.setText(nickName.getString("nickName", "-") + " 님.");
+        binding.UserNickName.setText(nickName.getString("nickName", "") + " 님.");
+
 
         // 커스텀한 toolbar 적용시키기
         Toolbar toolbar = binding.toolbar;
@@ -47,8 +49,25 @@ public class MainPage extends AppCompatActivity {
             startActivity(intent);
         });
 
-
     }
+
+
+    // 뒤로가기 버튼 두 번 누르면 앱 종료
+    long initTime = 0L;
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - initTime > 3000) {
+            // 메세지 띄우기
+            Toast toast = Toast.makeText(this, "종료 하려면 한 번 더 누르세요", Toast.LENGTH_SHORT);
+            toast.show();
+            // 현재 시간을 initTime에 지정
+            initTime = System.currentTimeMillis();
+        } else {
+            // 3초 이내에 BackButton이 두 번 눌린 경우 앱 종료
+            finishAffinity();
+        }
+    }
+
 
     // xml로 작성한 액션바의 메뉴 설정
     @Override
