@@ -4,12 +4,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.android.mymindnotes.databinding.ActivityOldReflectionBinding;
 
 public class Old_Reflection extends AppCompatActivity {
     ActivityOldReflectionBinding binding;
+    SharedPreferences reflection;
+    SharedPreferences.Editor reflectionEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +33,39 @@ public class Old_Reflection extends AppCompatActivity {
             alertDialog.show();
         });
 
+        reflection = getSharedPreferences("reflection", MODE_PRIVATE);
+        reflectionEdit = reflection.edit();
+
         // 이전 버튼 클릭시 이전 화면으로
         binding.RecordPreviousButton.setOnClickListener(view -> {
+            // 회고 저장
+            reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
+            reflectionEdit.commit();
             finish();
         });
 
         // 저장 버튼 클릭
         binding.RecordSaveButton.setOnClickListener(view -> {
+            // 회고 저장
+            reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
+            reflectionEdit.commit();
             Intent intent = new Intent(getApplicationContext(), Record_Result.class);
             startActivity(intent);
         });
+
+        // 만약 회고가 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
+        String refle = reflection.getString("reflection", "");
+        if (!refle.equals("")) {
+            binding.RecordReflectionUserInput.setText(refle);
+        }
+    }
+
+    // backprssed 시 회고 저장 후 뒤로가기
+    @Override
+    public void onBackPressed() {
+        // 생각 저장
+        reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
+        reflectionEdit.commit();
+        finish();
     }
 }

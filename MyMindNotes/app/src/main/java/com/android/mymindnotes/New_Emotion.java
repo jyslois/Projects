@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +21,15 @@ public class New_Emotion extends AppCompatActivity {
     int chosenEmotionId = 0;
     SharedPreferences emotion;
     SharedPreferences.Editor emotionEdit;
+    SharedPreferences emotionText;
+    SharedPreferences.Editor emotionTextEdit;
+    AlertDialog alertDialog;
+    SharedPreferences situation;
+    SharedPreferences.Editor situationEdit;
+    SharedPreferences thought;
+    SharedPreferences.Editor thoughtEdit;
+    SharedPreferences reflection;
+    SharedPreferences.Editor reflectionEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +37,24 @@ public class New_Emotion extends AppCompatActivity {
         binding = ActivityNewEmotionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        emotion = getSharedPreferences("emotion", Activity.MODE_PRIVATE);
-        emotionEdit = emotion.edit();
-
-
         // 어떤 감정인지 모르겠어요, 도와주세요 버튼 클릭 -> 감정 설명서 페이지로 이동
         binding.RecordEmotionHelpButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), EmotionInstructions.class);
             startActivity(intent);
         });
 
-        // 다음 버튼 클릭
+        emotion = getSharedPreferences("emotion", Activity.MODE_PRIVATE);
+        emotionEdit = emotion.edit();
+        emotionText = getSharedPreferences("emotionText", Activity.MODE_PRIVATE);
+        emotionTextEdit = emotionText.edit();
+        situation = getSharedPreferences("situation", Activity.MODE_PRIVATE);
+        situationEdit = situation.edit();
+        thought = getSharedPreferences("thought", MODE_PRIVATE);
+        thoughtEdit = thought.edit();
+        reflection = getSharedPreferences("reflection", MODE_PRIVATE);
+        reflectionEdit = reflection.edit();
+
+        // 다음 버튼 클릭, emotion 저장
         binding.RecordNextButton.setOnClickListener(view -> {
             // emotion 저장
             if (chosenEmotionId == 0) {
@@ -78,6 +95,9 @@ public class New_Emotion extends AppCompatActivity {
                         break;
 
                 }
+                // 감정Text 저장
+                emotionTextEdit.putString("emotionText", binding.RecordEmotionUserInput.getText().toString());
+                emotionTextEdit.commit();
                 Intent intent = new Intent(getApplicationContext(), New_Situation.class);
                 startActivity(intent);
             }
@@ -109,54 +129,48 @@ public class New_Emotion extends AppCompatActivity {
                     isChecking = false;
                     emotionGroup2.clearCheck();
                     chosenEmotionId = checkedId;
-
-                    switch (checkedId) {
-                        case R.id.happinessButton:
-                            Toast.makeText(getApplicationContext(), "기쁨 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.anticipationButton:
-                            Toast.makeText(getApplicationContext(), "기대 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.trustButton:
-                            Toast.makeText(getApplicationContext(), "신뢰 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.surpriseButton:
-                            Toast.makeText(getApplicationContext(), "놀람 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
                 }
                 isChecking = true;
             }
         });
 
-        emotionGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId != -1 & isChecking) {
-                    isChecking = false;
-                    emotionGroup1.clearCheck();
-                    chosenEmotionId = checkedId;
-
-                    switch(checkedId) {
-                        case R.id.sadnessButton:
-                            Toast.makeText(getApplicationContext(), "슬픔 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.disgustButton:
-                            Toast.makeText(getApplicationContext(), "혐오 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.fearButton:
-                            Toast.makeText(getApplicationContext(), "공포 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.angerButton:
-                            Toast.makeText(getApplicationContext(), "분노 선택", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-                isChecking = true;
+        emotionGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId != -1 & isChecking) {
+                isChecking = false;
+                emotionGroup1.clearCheck();
+                chosenEmotionId = checkedId;
             }
+            isChecking = true;
         });
+
 
     }
 
+
+    // 뒤로 가기 버튼 누를 시, 알람창 띄우기
+    DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            // 기록 삭제
+            emotionEdit.clear();
+            emotionEdit.commit();
+            situationEdit.clear();
+            situationEdit.commit();
+            thoughtEdit.clear();
+            thoughtEdit.commit();
+            reflectionEdit.clear();
+            reflectionEdit.commit();
+            finish();
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("입력한 기록이 사라져요. 정말 종료하시겠어요?");
+        builder.setPositiveButton("종료", dialogListener);
+        builder.setNegativeButton("계속 작성", null);
+        alertDialog = builder.create();
+        alertDialog.show();
+        }
 
 }

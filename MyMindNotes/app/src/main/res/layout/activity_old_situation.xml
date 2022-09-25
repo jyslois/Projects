@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:gravity="top|left"
             android:textSize="14dp"
-            android:lines="24"
+            android:lines="10"
             android:background="@drawable/border"
             android:hint="@string/OldSituationHints"
             android:id="@+id/Record_Situation_UserInput"/>

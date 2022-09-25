@@ -85,15 +85,16 @@
                 android:id="@+id/Result_Situation_Title"/>
 
             <TextView
-                android:layout_below="@id/Result_Situation_Title"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
+                android:padding="10dp"
+                android:id="@+id/Result_Situation_UserInput"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
-                android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
-                android:textSize="14dp"
+                android:layout_below="@id/Result_Situation_Title"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/border"
-                android:id="@+id/Result_Situation_UserInput"/>
+                android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
+                android:textSize="14dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -121,14 +122,15 @@
                 android:id="@+id/Result_Thought_Title"/>
 
             <TextView
+                android:padding="10dp"
                 android:id="@+id/Result_Thought_UserInput"
-                android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/Result_Thought_Title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/border"
+                android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
                 android:textSize="14dp" />
         </RelativeLayout>
 
@@ -138,12 +140,12 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="15dp"
+                android:id="@+id/Result_Emotion_Icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
                 android:src="@drawable/titleicon"
-                android:id="@+id/Result_Emotion_Icon"
                 app:tint="#2C2B2B" />
 
             <TextView
@@ -158,6 +160,7 @@
                 android:textSize="23dp" />
 
             <RelativeLayout
+                android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/Result_Emotion_Icon"
@@ -170,7 +173,6 @@
                     android:id="@+id/resultEmotionText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:text="감정" />
             </RelativeLayout>
 
@@ -179,6 +181,7 @@
         </RelativeLayout>
 
         <TextView
+            android:padding="10dp"
             android:id="@+id/Result_Emotion_UserInput"
             android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
             android:layout_width="320dp"
@@ -203,6 +206,7 @@
                 app:tint="#2C2B2B" />
 
             <TextView
+
                 android:id="@+id/Result_Reflection_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -214,14 +218,15 @@
                 android:textSize="23dp" />
 
             <TextView
+                android:padding="10dp"
                 android:id="@+id/Result_Reflection_UserInput"
-                android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/Result_Reflection_Title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/border"
+                android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
                 android:textSize="14dp" />
         </RelativeLayout>
 

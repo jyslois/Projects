@@ -4,12 +4,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityNewThoughtBinding;
 
 public class New_Thought extends AppCompatActivity {
     ActivityNewThoughtBinding binding;
+    SharedPreferences thought;
+    SharedPreferences.Editor thoughtEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +34,43 @@ public class New_Thought extends AppCompatActivity {
             alertDialog.show();
         });
 
+        thought = getSharedPreferences("thought", MODE_PRIVATE);
+        thoughtEdit = thought.edit();
+
         // 이전 버튼 클릭시 이전 화면으로
         binding.RecordPreviousButton.setOnClickListener(view -> {
+            // 생각 저장
+            thoughtEdit.putString("thought", binding.RecordThoughtUserInput.getText().toString());
+            thoughtEdit.commit();
             finish();
         });
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), New_Reflection.class);
-            startActivity(intent);
+            if (binding.RecordThoughtUserInput.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "생각을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            } else {
+                // 생각 저장
+                thoughtEdit.putString("thought", binding.RecordThoughtUserInput.getText().toString());
+                thoughtEdit.commit();
+                Intent intent = new Intent(getApplicationContext(), New_Reflection.class);
+                startActivity(intent);
+            }
         });
+
+        // 만약 생각이 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
+        String thou = thought.getString("thought", "");
+        if (!thou.equals("")) {
+            binding.RecordThoughtUserInput.setText(thou);
+        }
+    }
+
+    // backprssed 시 생각 저장 후 뒤로가기
+    @Override
+    public void onBackPressed() {
+        // 생각 저장
+        thoughtEdit.putString("thought", binding.RecordThoughtUserInput.getText().toString());
+        thoughtEdit.commit();
+        finish();
     }
 }
