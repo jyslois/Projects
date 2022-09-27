@@ -48,28 +48,16 @@ public class Diary extends AppCompatActivity {
         inflater.inflate(R.menu.menu_main, menu);
 
         // 액션바 [감정 설명서] 아이콘 사이즈 조절
-        Bitmap emotionIcon = BitmapFactory.decodeResource(getResources(), R.drawable.emotioninstructionicon); //Converting drawable into bitmap
+        Bitmap emotionIcon = BitmapFactory.decodeResource(getResources(), R.drawable.emotionicon); //Converting drawable into bitmap
         Bitmap new_emotionIcon = resizeBitmapImageFn(emotionIcon, 70); //resizing the bitmap
         Drawable d = new BitmapDrawable(getResources(),new_emotionIcon); //Converting bitmap into drawable
         menu.getItem(0).setIcon(d); //choose the item number you want to set
 
         // 액션바 [나의 마음 일지] 아이콘 사이즈 조절
-        Bitmap DiaryIcon = BitmapFactory.decodeResource(getResources(), R.drawable.diaryicon); //Converting drawable into bitmap
+        Bitmap DiaryIcon = BitmapFactory.decodeResource(getResources(), R.drawable.diary_icon); //Converting drawable into bitmap
         Bitmap new_DiaryIcon = resizeBitmapImageFn(DiaryIcon, 65); //resizing the bitmap
         Drawable f = new BitmapDrawable(getResources(),new_DiaryIcon); //Converting bitmap into drawable
         menu.getItem(1).setIcon(f); //choose the item number you want to set
-
-        // 액션바 [감정 설명서] 아이콘 하얀색 틴트
-        Drawable drawable = menu.findItem(R.id.EmotionInstructionsIcon).getIcon();
-        drawable = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTint(drawable, ContextCompat.getColor(this,R.color.white));
-        menu.findItem(R.id.EmotionInstructionsIcon).setIcon(drawable);
-
-        // 액션바 [나의 마음 일지] 아이콘 하얀색 틴트
-        Drawable drawable2 = menu.findItem(R.id.DiaryIcon).getIcon();
-        drawable2 = DrawableCompat.wrap(drawable2);
-        DrawableCompat.setTint(drawable2, ContextCompat.getColor(this,R.color.white));
-        menu.findItem(R.id.DiaryIcon).setIcon(drawable2);
 
         return true;
     }
@@ -105,7 +93,7 @@ public class Diary extends AppCompatActivity {
     // 엑션바 메뉴를 클릭했을 때 이벤트
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.EmotionInstructionsIcon) {
+        if (item.getItemId() == R.id.emotionicon) {
             Intent intent = new Intent(getApplicationContext(), EmotionInstructions.class);
             startActivity(intent);
         }

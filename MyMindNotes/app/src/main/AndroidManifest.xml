@@ -16,43 +16,43 @@
         <activity
             android:name=".Old_Reflection"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar"/>
+            android:theme="@style/Theme.Main"/>
         <activity
             android:name=".Old_Emotion"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar"/>
+            android:theme="@style/Theme.Main"/>
         <activity
             android:name=".Old_Thought"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar"/>
+            android:theme="@style/Theme.Main"/>
         <activity
             android:name=".Old_Situation"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar"/>
+            android:theme="@style/Theme.Main"/>
         <activity
             android:name=".Record_Result"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".New_Reflection"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".New_Thought"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".New_Situation"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".New_Emotion"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".RecordMindChoice"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".Diary"
             android:exported="false"
@@ -60,27 +60,26 @@
         <activity
             android:name=".EmotionInstructions"
             android:exported="false"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".MainPage"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".Login"
             android:exported="true"
-            android:label=""
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.NoActionBar"/>
+            android:theme="@style/Theme.Main"/>
         <activity
             android:name=".Join"
             android:exported="false"
             android:label=""
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.NoActionBar"/>
+            android:theme="@style/Theme.Main"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.NoActionBar">
+            android:theme="@style/Theme.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

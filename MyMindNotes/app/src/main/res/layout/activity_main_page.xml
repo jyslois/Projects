@@ -1,82 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainPage">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:contentInsetStart="0dp"
-        android:background="#84AED1"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/titleicon"
-            app:tint="#F3F5F6"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="나의 마음 일지"
-            android:textColor="#F3F5F6"
-           android:textSize="18dp"
-            android:layout_gravity="left" />
-
-
-    </androidx.appcompat.widget.Toolbar>
-
-
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_gravity="center">
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_marginRight="10dp"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetStart="0dp"
+            android:background="#00737272"
+            android:gravity="center">
+
+        </androidx.appcompat.widget.Toolbar>
+
 
         <TextView
-            android:layout_width="300dp"
+            android:id="@+id/mainpagetext"
+            android:layout_marginTop="400dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오늘 하루도 고생했어요,"
-            android:textSize="20dp"
-            android:gravity="center"
+            android:textSize="15dp"
+            android:text="오늘 하루도 고생했어요."
+            android:textStyle="bold"
             android:layout_marginBottom="20dp"
-            android:id="@+id/mainText" />
+            android:textColor="#CDAF97"
+            android:layout_gravity="center"/>
 
-        <TextView
-            android:layout_width="300dp"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mainText"
-            android:text="___________ 님."
-            android:textSize="20dp"
-            android:gravity="center"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/UserNickName"/>
-
-        <Button
             android:layout_gravity="center"
-            android:layout_width="300dp"
+            android:src="@drawable/arrow"
+            app:tint="#C3BE9F98" />
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/UserNickName"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow"
+            app:tint="#B0BE9F98" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow"
+            app:tint="#59BE9F98" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            app:backgroundTint="#BE9F98"
             android:layout_marginTop="20dp"
-            android:padding="15dp"
-            android:text="나의 마음에 대해 알아 볼까요?"
-            android:textColor="#F3F5F6"
-            android:background="#1E4565"
-            android:textSize="20dp"
-            android:id="@+id/RecordMindButton" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:rippleColor="#9CBE9F98"
+            app:icon="@drawable/add"
+            app:iconTint="#FAF7F6"
+            android:id="@+id/addRecordButton" />
+
+    </LinearLayout>
 
 
-    </RelativeLayout>
-
-
-</LinearLayout>
+</FrameLayout>

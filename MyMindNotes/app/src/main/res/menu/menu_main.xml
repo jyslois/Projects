@@ -4,21 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/EmotionInstructionsIcon"
-        app:showAsAction="always"
+        android:id="@+id/emotionicon"
+        app:showAsAction="never"
         android:title="감정 설명서"
-        android:iconTint="#F3F5F6"
-        android:icon="@drawable/emotioninstructionicon"
-        android:contentDescription="감정 설명서"
+        android:icon="@drawable/emotionicon"
+        android:iconTint="#BE9F98"
         />
 
     <item
-        android:id="@+id/DiaryIcon"
-        app:showAsAction="always"
+        app:showAsAction="never"
+        android:id="@+id/diaryicon"
         android:title="나의 마음 일지"
-        android:iconTint="#F3F5F6"
-        android:icon="@drawable/diaryicon"
-        android:contentDescription="나의 마음 일지"
+        android:icon="@drawable/diary_icon"
         />
 
 </menu>
