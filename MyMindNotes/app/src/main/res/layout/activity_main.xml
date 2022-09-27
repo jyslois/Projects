@@ -20,17 +20,17 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/title"
-            android:gravity="center"
-            android:layout_weight="4"/>
+            android:src="@drawable/maintitle"
+            android:layout_marginTop="50dp"
+            android:gravity="bottom"/>
 
         <LinearLayout
+            android:layout_marginTop="160dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_weight="1">
+            android:gravity="center">
 
             <Button
                 android:id="@+id/loginButton"

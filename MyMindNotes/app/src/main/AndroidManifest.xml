@@ -69,12 +69,14 @@
             android:name=".Login"
             android:exported="true"
             android:label=""
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.NoActionBar"/>
         <activity
             android:name=".Join"
             android:exported="false"
             android:label=""
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

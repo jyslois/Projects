@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
+import com.bumptech.glide.Glide;
 
 public class Join extends AppCompatActivity {
     ActivityJoinBinding binding;
@@ -22,6 +23,9 @@ public class Join extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityJoinBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
 
         nickName = getSharedPreferences("nickName", Activity.MODE_PRIVATE);
         nickNameEdit = nickName.edit();

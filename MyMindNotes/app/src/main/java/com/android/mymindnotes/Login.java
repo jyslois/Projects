@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityLoginBinding;
+import com.bumptech.glide.Glide;
 
 public class Login extends AppCompatActivity {
     ActivityLoginBinding binding;
@@ -30,6 +31,9 @@ public class Login extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
 
         // 로그인 정보 저장 & 자동 로그인 구현 관련
         loginButton = binding.loginButton;

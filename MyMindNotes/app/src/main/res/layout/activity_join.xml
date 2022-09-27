@@ -1,138 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login"
-    android:gravity="center">
+    tools:context=".Login">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:src="@drawable/jointitle"
-        android:layout_marginBottom="5dp"
-        android:id="@+id/joinTitle"/>
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/joinTitle"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="아이디"
-            android:gravity="center"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/emailText"/>
+            android:layout_height="60dp"
+            android:src="@drawable/jointitle"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/joinTitle"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:text="*"
-            android:textSize="15dp"
-            android:textColor="#FA1707"
-            android:layout_toRightOf="@id/emailText"
-            android:layout_alignTop="@id/emailText"
-            android:id="@+id/emailStar"/>
+            android:layout_below="@id/joinTitle"
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/emailInput"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/emailText"
-            android:layout_alignLeft="@id/emailText"
-            android:background="@drawable/rounded_border"
-            android:hint="이메일 입력"
-            android:inputType="textEmailAddress"
-            android:padding="15dp"
-            android:textSize="16dp" />
+            <TextView
+                android:textColor="#CDAF97"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이디"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/emailText"/>
+
+            <TextView
+                android:id="@+id/emailStar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/emailText"
+                android:layout_marginLeft="1dp"
+                android:layout_toRightOf="@id/emailText"
+                android:text="*"
+                android:textColor="#FA1707"
+                android:textSize="15dp" />
+
+            <EditText
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/emailInput"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailText"
+                android:layout_alignLeft="@id/emailText"
+                android:background="@drawable/rounded_border"
+                android:hint="이메일 입력"
+                android:inputType="textEmailAddress"
+                android:padding="15dp"
+                android:textSize="16dp" />
 
 
-        <TextView
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="비밀번호"
-            android:gravity="center"
-            android:layout_below="@id/emailInput"
-            android:layout_alignLeft="@id/emailInput"
-            android:id="@+id/passwardText"/>
+            <TextView
+                android:textColor="#CDAF97"
+                android:id="@+id/passwardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailInput"
+                android:layout_alignLeft="@id/emailInput"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="비밀번호" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:text="*"
-            android:textSize="15dp"
-            android:textColor="#FA1707"
-            android:layout_toRightOf="@id/passwardText"
-            android:layout_alignTop="@id/passwardText"
-            android:id="@+id/passwardStar"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="*"
+                android:textSize="15dp"
+                android:textColor="#FA1707"
+                android:layout_toRightOf="@id/passwardText"
+                android:layout_alignTop="@id/passwardText"
+                android:id="@+id/passwardStar"/>
 
-        <EditText
-            android:id="@+id/passwordInput"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/passwardText"
-            android:layout_alignLeft="@id/passwardText"
-            android:layout_marginBottom="7dp"
-            android:background="@drawable/rounded_border"
-            android:hint="비밀번호 입력(최소 6자리)"
-            android:inputType="textPassword"
-            android:padding="15dp"
-            android:textSize="16dp" />
+            <EditText
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/passwordInput"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passwardText"
+                android:layout_alignLeft="@id/passwardText"
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/rounded_border"
+                android:hint="비밀번호 입력(최소 6자리)"
+                android:inputType="textPassword"
+                android:padding="15dp"
+                android:textSize="16dp" />
 
-        <EditText
-            android:id="@+id/passwordRetypeInput"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/passwordInput"
-            android:layout_alignLeft="@id/passwordInput"
-            android:background="@drawable/rounded_border"
-            android:hint="비밀번호 확인"
-            android:inputType="textPassword"
-            android:padding="15dp"
-            android:textSize="16dp" />
+            <EditText
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/passwordRetypeInput"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passwordInput"
+                android:layout_alignLeft="@id/passwordInput"
+                android:background="@drawable/rounded_border"
+                android:hint="비밀번호 확인"
+                android:inputType="textPassword"
+                android:padding="15dp"
+                android:textSize="16dp" />
 
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_below="@id/passwordRetypeInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="닉네임"
-            android:gravity="center"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/nickNameText"/>
+            <TextView
+                android:textColor="#CDAF97"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/passwordRetypeInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임(선택)"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/nickNameText"/>
 
-        <EditText
-            android:id="@+id/nickNameInput"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nickNameText"
-            android:layout_alignLeft="@id/nickNameText"
-            android:background="@drawable/rounded_border"
-            android:hint="닉네임 입력(선택 사항)"
-            android:inputType="textEmailAddress"
-            android:padding="15dp"
-            android:textSize="16dp" />
+            <EditText
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/nickNameInput"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nickNameText"
+                android:layout_alignLeft="@id/nickNameText"
+                android:background="@drawable/rounded_border"
+                android:hint="닉네임 입력(선택 사항)"
+                android:inputType="textEmailAddress"
+                android:padding="15dp"
+                android:textSize="16dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_marginTop="20dp"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            app:cornerRadius="100dp"
-            android:text="회원가입"
-            android:layout_below="@id/nickNameInput"
-            android:layout_alignLeft="@id/nickNameInput"
-            android:id="@+id/joinButton"/>
+            <com.google.android.material.button.MaterialButton
+                android:layout_marginTop="20dp"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cornerRadius="100dp"
+                android:text="회원가입"
+                android:layout_below="@id/nickNameInput"
+                android:layout_alignLeft="@id/nickNameInput"
+                android:id="@+id/joinButton"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
-
-
-</RelativeLayout>
+</FrameLayout>
