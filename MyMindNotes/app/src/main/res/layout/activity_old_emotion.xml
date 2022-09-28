@@ -1,269 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainPage">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <ImageView
+        android:id="@+id/traumaemotionbackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:contentInsetStart="0dp"
-        android:background="#84AED1"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
 
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="나의 마음 일지"
-            android:textColor="#F3F5F6"
-            android:textSize="18dp"
-            android:layout_gravity="left" />
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/progress_3"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            app:tint="#F3F5F6"/>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/titleicon"
-                    android:id="@+id/RecordIcon"
-                    app:tint="#2C2B2B" />
-
-                <TextView
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="감정"
-                    android:textStyle="bold"
-                    android:textColor="#2C2B2B"
-                    android:textSize="28dp"
-                    android:layout_toRightOf="@id/RecordIcon"
-                    android:id="@+id/Record_Emotion_Title"/>
-
-                <ImageView
-                    android:id="@+id/Record_EmotionTips"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="170dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@id/Record_Emotion_Title"
-                    android:padding="10dp"
-                    android:src="@drawable/tips" />
-
-            </RelativeLayout>
+            android:layout_height="60dp"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetStart="0dp"
+            android:background="#BAE3BEB6"
+            android:gravity="center">
 
             <TextView
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="어떤 감정을 느끼셨나요?"
-                android:textSize="14dp"
-                android:id="@+id/Record_CoreEmotion_Instruction"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
-                android:id="@+id/emotions"
-                android:background="@drawable/border">
-
-                <RadioGroup
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/emotions1"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginLeft="20dp">
-
-                    <RadioButton
-                        android:id="@+id/happinessButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="기쁨"
-                        android:buttonTint="#FFC000"
-                        android:layout_gravity="center"
-                        />
-
-                    <RadioButton
-                        android:id="@+id/anticipationButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="기대"
-                        android:buttonTint="#00B050"
-                        android:layout_gravity="center"
-                        />
-
-                    <RadioButton
-                        android:id="@+id/trustButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="신뢰"
-                        android:buttonTint="#0628A1"
-                        android:layout_gravity="center"
-                        />
-
-
-                    <RadioButton
-                        android:id="@+id/surpriseButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="놀람"
-                        android:buttonTint="#FFFF00"
-                        android:layout_gravity="center"
-                        />
-                </RadioGroup>
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/emotions1"
-                    android:id="@+id/emotions2"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp">
-
-                    <RadioButton
-                        android:id="@+id/sadnessButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="슬픔"
-                        android:buttonTint="#767171"
-                        android:layout_gravity="center"
-                        />
-
-                    <RadioButton
-                        android:id="@+id/disgustButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="혐오"
-                        android:buttonTint="#C55A11"
-                        android:layout_gravity="center"
-                        />
-
-                    <RadioButton
-                        android:id="@+id/fearButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="공포"
-                        android:buttonTint="#000000"
-                        android:layout_gravity="center"
-                        />
-
-
-                    <RadioButton
-                        android:id="@+id/angerButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="분노"
-                        android:buttonTint="#FF0000"
-                        android:layout_gravity="center"
-                        />
-                </RadioGroup>
-
-            </RelativeLayout>
-
-
-            <Button
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:text="어떤 감정인지 모르겠어요. 도와주세요!"
-                android:id="@+id/Record_EmotionHelpButton"/>
-
-
-            <TextView
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="내가 느낀 감정에 대해서 자세하게 기록해 보아요."
-                android:textSize="14dp"
-                android:id="@+id/Record_Emotion_Instruction_2"/>
-
-            <EditText
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:gravity="top|left"
-                android:textSize="14dp"
-                android:lines="6"
-                android:background="@drawable/border"
-                android:id="@+id/Record_Emotion_UserInput"
-                android:hint="@string/emotionHints"/>
-
-            <LinearLayout
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="1">
+                android:layout_gravity="left"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="15dp"
+                android:textColor="#2C0D0D"
+                android:text="「트라우마 : 감정」"/>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/progress_3"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                app:tint="#2C0D0D"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/Record_Emotion_Instruction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="50dp"
+                        android:text="어떤 감정을 느끼셨나요?"
+                        android:textColor="#CDAF97"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/Record_EmotionTips"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="38dp"
+                        android:layout_toRightOf="@id/Record_Emotion_Instruction"
+                        android:padding="10dp"
+                        android:src="@drawable/tips"
+                        app:tint="#CDAF97" />
+
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/emotions"
+                    android:background="@drawable/border"
+                    android:backgroundTint="#BE9F98">
+
+                    <RadioGroup
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/emotions1"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginLeft="20dp">
+
+                        <RadioButton
+                            android:id="@+id/happinessButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="기쁨"
+                            android:buttonTint="#FFC000"
+                            android:layout_gravity="center"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/anticipationButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="기대"
+                            android:buttonTint="#00B050"
+                            android:layout_gravity="center"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/trustButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="신뢰"
+                            android:buttonTint="#0628A1"
+                            android:layout_gravity="center"
+                            />
+
+
+                        <RadioButton
+                            android:id="@+id/surpriseButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="놀람"
+                            android:buttonTint="#FFFF00"
+                            android:layout_gravity="center"
+                            />
+                    </RadioGroup>
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/emotions1"
+                        android:id="@+id/emotions2"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp">
+
+                        <RadioButton
+                            android:id="@+id/sadnessButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="슬픔"
+                            android:buttonTint="#767171"
+                            android:layout_gravity="center"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/disgustButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="혐오"
+                            android:buttonTint="#C55A11"
+                            android:layout_gravity="center"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/fearButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="공포"
+                            android:buttonTint="#000000"
+                            android:layout_gravity="center"
+                            />
+
+
+                        <RadioButton
+                            android:id="@+id/angerButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="분노"
+                            android:buttonTint="#FF0000"
+                            android:layout_gravity="center"
+                            />
+                    </RadioGroup>
+
+                </RelativeLayout>
+
 
                 <Button
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
                     android:layout_gravity="center"
-                    android:layout_width="100dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
-                    android:text="◀ 이전"
-                    android:layout_marginBottom="30dp"
-                    android:id="@+id/Record_PreviousButton"/>
+                    android:text="어떤 감정인지 모르겠어요. 도와주세요!"
+                    android:id="@+id/Record_EmotionHelpButton"/>
 
-                <Button
-                    android:layout_weight="1"
+
+                <TextView
                     android:layout_marginTop="30dp"
-                    android:layout_gravity="center"
-                    android:layout_width="200dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="▶ 다음"
-                    android:layout_marginBottom="30dp"
-                    android:id="@+id/Record_NextButton"/>
+                    android:text="내가 느낀 감정에 대해서 자세하게 기록해 보아요."
+                    android:textColor="#CDAF97"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:id="@+id/Record_Emotion_Instruction_2"/>
+
+                <EditText
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|left"
+                    android:textSize="15dp"
+                    android:lines="6"
+                    android:background="@drawable/border"
+                    android:id="@+id/Record_Emotion_UserInput"
+                    android:hint="@string/emotionHints"
+                    android:backgroundTint="#E9BE9F98"/>
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_gravity="center"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="◀ 이전"
+                        android:layout_marginBottom="30dp"
+                        android:backgroundTint="#E1BEB6"
+                        android:id="@+id/Record_PreviousButton"/>
+
+                    <Button
+                        android:layout_weight="1"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="▶ 다음"
+                        android:layout_marginBottom="30dp"
+                        android:backgroundTint="#E1BEB6"
+                        android:id="@+id/Record_NextButton"/>
+                </LinearLayout>
+
             </LinearLayout>
+        </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>
+

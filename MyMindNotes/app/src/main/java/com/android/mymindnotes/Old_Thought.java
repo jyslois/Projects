@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldThoughtBinding;
+import com.bumptech.glide.Glide;
 
 public class Old_Thought extends AppCompatActivity {
     ActivityOldThoughtBinding binding;
@@ -21,6 +22,9 @@ public class Old_Thought extends AppCompatActivity {
         binding = ActivityOldThoughtBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.recordbackground).into(binding.traumabackground);
+
         thought = getSharedPreferences("thought", MODE_PRIVATE);
         thoughtEdit = thought.edit();
 
@@ -29,7 +33,7 @@ public class Old_Thought extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.tips);
         builder.setTitle("생각 작성 Tips");
-        builder.setMessage(R.string.oldThoughtTips);
+        builder.setMessage(R.string.traumaThoughtTips);
         builder.setPositiveButton("확인", null);
 
         // Tips 이미지 클릭 시 다이얼로그 띄우기

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityNewThoughtBinding;
+import com.bumptech.glide.Glide;
 
 public class New_Thought extends AppCompatActivity {
     ActivityNewThoughtBinding binding;
@@ -20,6 +21,9 @@ public class New_Thought extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityNewThoughtBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.recordbackground).into(binding.newthoughtbackground);
 
         // Tips
         // Tips 다이얼로그 설정

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityNewSituationBinding;
+import com.bumptech.glide.Glide;
 
 public class New_Situation extends AppCompatActivity {
     ActivityNewSituationBinding binding;
@@ -21,6 +22,9 @@ public class New_Situation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityNewSituationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.recordbackground).into(binding.newsituationbackground);
 
         situation = getSharedPreferences("situation", Activity.MODE_PRIVATE);
         situationEdit = situation.edit();

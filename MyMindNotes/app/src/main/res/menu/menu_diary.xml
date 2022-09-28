@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sortdate"
+        app:showAsAction="never"
+        android:title="날짜 정렬"
+        android:icon="@drawable/emotionicon"
+        android:iconTint="#BE9F98"
+        />
+
+    <item
+        app:showAsAction="never"
+        android:id="@+id/sortemotion"
+        android:title="감정 정렬"
+        android:icon="@drawable/diary_icon"
+        />
+
+    <item
+        app:showAsAction="never"
+        android:id="@+id/sorttodayemotion"
+        android:title="마음 일기 모음"
+        android:icon="@drawable/diary_icon"
+        />
+
+    <item
+        app:showAsAction="never"
+        android:id="@+id/sorttrauma"
+        android:title="트라우마 일기 모음"
+        android:icon="@drawable/diary_icon"
+        />
+
+
+</menu>

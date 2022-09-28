@@ -12,17 +12,17 @@
     </string>
 
     <string name="situationHints">Tips. 육하원칙을 생각하며 작성해 주세요.</string>
-    <string name="OldSituationHints">Tips. 과거에 일어난 사건에 대해 육하원칙을 생각하며 작성해 주세요.</string>
+    <string name="truamaSituationHints">Tips. 과거에 일어난 사건에 대해 육하원칙을 생각하며 작성해 주세요.</string>
     <string name="situationTips">감정과 생각을 최대한 배제한 채, FACT 위주의 육하원칙에 따라 작성해 주세요.</string>
 
     <string name="thoughtHints">Tips. 상황이 발생했을 때, 내 머릿속에 스쳤던 생각을 기록해 봐요.</string>
     <string name="thoughtTips">\"마음 속으로 하는 생각\"과 \"감정\"은 다릅니다.\n상황이 발생했을 때, 나는 어떤 생각을 했나요?\n상황이 벌어진 직후에 들었던 생각과 현재 생각이 다르다면, 어떻게 다른가요? 혹시 예전에 비슷한 상황에서, 같은 패턴의 생각을 한 적이 있나요?</string>
-    <string name="oldThoughtTips">\"마음 속으로 하는 생각\"과 \"감정\"은 다릅니다.\n상황이 발생했을 때, 나는 어떤 생각을 했나요?\n만약 그 당시의 생각과 현재 생각이 다르다면, 어떻게 다른가요?
+    <string name="traumaThoughtTips">\"마음 속으로 하는 생각\"과 \"감정\"은 다릅니다.\n상황이 발생했을 때, 나는 어떤 생각을 했나요?\n만약 그 당시의 생각과 현재 생각이 다르다면, 어떻게 다른가요?
         \n혹시 이후에 다른 비슷한 상황에서, 같은 패턴의 생각을 한 적이 있나요?</string>
 
     <string name="reflectionHints">Tips. 왜 그런 생각과 감정이 들었는지 스스로를 이해해 봐요.\n(회고는 필수는 아니며, 필요하다고 생각될 때만 작성해 주세요.)</string>
-    <string name="oldReflectionHints">Tips. 과거의 상황이 현재까지 미치고 있는 영향에 대해 생각해 봐요.</string>
-    <string name="reflectionTips">오늘의 코어 감정이 부정적이라고 해도 걱정하지 마세요.
+    <string name="traumaReflectionHints">Tips. 과거의 상황이 현재까지 미치고 있는 영향에 대해 생각해 봐요.</string>
+    <string name="reflectionTips">오늘의 감정이 부정적이라고 해도 걱정하지 마세요.
         \n사람의 모든 감정은 잘못된 것이 없으며, 모든 마음은 그 자체로 인정받고, 존중받아야 마땅합니다.
         \n하지만 지속적인 감정이 나 자신이나 타인을 불편하게 한다면, 나 자신이 평안하게 살아가기 위해서라도 한번 생각해 볼 필요는 있어요.
         \n모든 "감정"은 "생각"으로부터 비롯된다고 합니다.\n나의 생각 패턴, 사고 방식에 대해서 생각해 봅시다. 나는 왜 그렇게 생각했을까요?
@@ -31,9 +31,8 @@
         \n달리 생각할 수 있었던 문제일까요? 달리 받아들일 수도 있는 문제였나요.
         \n타인의 입장에서 상황을 본다면 달리 보일 수 있는 문제였을까요.
         \n지금 내게 가장 필요한 것은 무엇인가요.\n</string>
-    <string name="oldReflectionTips">과거의 일이 현재 나의 성격, 우선순위, 사고방식, 인간관계 등등, \"나\"와 \"내 삶\"에 어떤 영향을 끼치고 있나요?
+    <string name="traumaReflectionTips">과거의 일이 현재 나의 성격, 우선순위, 사고방식, 인간관계 등등, \"나\"와 \"내 삶\"에 어떤 영향을 끼치고 있나요?
         \n만약 그 영향이 부정적이라면, 어떻게 긍정적인 애너지로 바꿀 수 있을까요.
         \n지금 내게 필요한 것은 무엇일까요.</string>
-
 
 </resources>

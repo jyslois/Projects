@@ -56,7 +56,7 @@
         <activity
             android:name=".Diary"
             android:exported="false"
-            android:theme="@style/Theme.Diary" />
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".EmotionInstructions"
             android:exported="false"

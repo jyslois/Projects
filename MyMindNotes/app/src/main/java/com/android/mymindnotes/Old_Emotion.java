@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldEmotionBinding;
+import com.bumptech.glide.Glide;
 
 public class Old_Emotion extends AppCompatActivity {
     ActivityOldEmotionBinding binding;
@@ -28,6 +29,9 @@ public class Old_Emotion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityOldEmotionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.recordbackground).into(binding.traumaemotionbackground);
 
         // 어떤 감정인지 모르겠어요, 도와주세요 버튼 클릭 -> 감정 설명서 페이지로 이동
         binding.RecordEmotionHelpButton.setOnClickListener(view -> {

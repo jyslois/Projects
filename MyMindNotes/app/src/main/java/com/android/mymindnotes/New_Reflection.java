@@ -9,17 +9,23 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityNewReflectionBinding;
+import com.bumptech.glide.Glide;
 
 public class New_Reflection extends AppCompatActivity {
     ActivityNewReflectionBinding binding;
     SharedPreferences reflection;
     SharedPreferences.Editor reflectionEdit;
+    SharedPreferences type;
+    SharedPreferences.Editor typeEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNewReflectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.recordbackground).into(binding.newreflectionbackground);
 
         // Tips
         // Tips 다이얼로그 설정
@@ -36,6 +42,8 @@ public class New_Reflection extends AppCompatActivity {
 
         reflection = getSharedPreferences("reflection", MODE_PRIVATE);
         reflectionEdit = reflection.edit();
+        type = getSharedPreferences("type", MODE_PRIVATE);
+        typeEdit = type.edit();
 
         // 이전 버튼 클릭시 이전 화면으로
         binding.RecordPreviousButton.setOnClickListener(view -> {
@@ -50,6 +58,9 @@ public class New_Reflection extends AppCompatActivity {
             // 회고 저장
             reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
             reflectionEdit.commit();
+            // 타입 저장
+            typeEdit.putString("type", "오늘의 마음 일기");
+            typeEdit.commit();
             Intent intent = new Intent(getApplicationContext(), Record_Result.class);
             startActivity(intent);
         });

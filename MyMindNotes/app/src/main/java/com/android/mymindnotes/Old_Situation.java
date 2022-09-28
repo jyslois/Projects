@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldSituationBinding;
+import com.bumptech.glide.Glide;
 
 public class Old_Situation extends AppCompatActivity {
     ActivityOldSituationBinding binding;
@@ -31,6 +32,9 @@ public class Old_Situation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityOldSituationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.recordbackground).into(binding.traumasituationbackground);
 
         // Tips
         // Tips 다이얼로그 설정
