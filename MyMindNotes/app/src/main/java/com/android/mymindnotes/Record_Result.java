@@ -38,7 +38,7 @@ public class Record_Result extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.resultbackground).into(binding.background);
+        Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
 
 
         emotion = getSharedPreferences("emotion", Activity.MODE_PRIVATE);
