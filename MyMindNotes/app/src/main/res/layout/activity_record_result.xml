@@ -140,6 +140,7 @@
                     android:id="@+id/resultEmotionText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:textSize="15dp"
                     android:text="감정" />
             </RelativeLayout>
