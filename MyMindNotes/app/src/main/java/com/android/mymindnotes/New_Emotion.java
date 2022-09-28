@@ -31,6 +31,11 @@ public class New_Emotion extends AppCompatActivity {
     SharedPreferences.Editor thoughtEdit;
     SharedPreferences reflection;
     SharedPreferences.Editor reflectionEdit;
+    SharedPreferences type;
+    SharedPreferences.Editor typeEdit;
+    SharedPreferences date;
+    SharedPreferences.Editor dateEdit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,11 @@ public class New_Emotion extends AppCompatActivity {
         thoughtEdit = thought.edit();
         reflection = getSharedPreferences("reflection", MODE_PRIVATE);
         reflectionEdit = reflection.edit();
+        type = getSharedPreferences("type", MODE_PRIVATE);
+        typeEdit = type.edit();
+        date = getSharedPreferences("date", MODE_PRIVATE);
+        dateEdit = date.edit();
+
 
         // 다음 버튼 클릭, emotion 저장
         binding.RecordNextButton.setOnClickListener(view -> {
@@ -163,6 +173,10 @@ public class New_Emotion extends AppCompatActivity {
             thoughtEdit.commit();
             reflectionEdit.clear();
             reflectionEdit.commit();
+            typeEdit.clear();
+            typeEdit.commit();
+            dateEdit.clear();
+            dateEdit.commit();
             finish();
         }
     };

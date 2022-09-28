@@ -10,12 +10,17 @@ import android.os.Bundle;
 import com.android.mymindnotes.databinding.ActivityOldReflectionBinding;
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Old_Reflection extends AppCompatActivity {
     ActivityOldReflectionBinding binding;
     SharedPreferences reflection;
     SharedPreferences.Editor reflectionEdit;
     SharedPreferences type;
     SharedPreferences.Editor typeEdit;
+    SharedPreferences date;
+    SharedPreferences.Editor dateEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class Old_Reflection extends AppCompatActivity {
         reflectionEdit = reflection.edit();
         type = getSharedPreferences("type", MODE_PRIVATE);
         typeEdit = type.edit();
+        date = getSharedPreferences("date", MODE_PRIVATE);
+        dateEdit = date.edit();
 
         // 이전 버튼 클릭시 이전 화면으로
         binding.RecordPreviousButton.setOnClickListener(view -> {
@@ -60,6 +67,14 @@ public class Old_Reflection extends AppCompatActivity {
             // 타입 저장
             typeEdit.putString("type", "트라우마 일기");
             typeEdit.commit();
+            // 오늘 날짜 저장
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
+            String getTime = mFormat.format(date);
+            dateEdit.putString("date", getTime);
+            dateEdit.commit();
+
             Intent intent = new Intent(getApplicationContext(), Record_Result.class);
             startActivity(intent);
         });

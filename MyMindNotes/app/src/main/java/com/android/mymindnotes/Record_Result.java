@@ -28,6 +28,8 @@ public class Record_Result extends AppCompatActivity {
     SharedPreferences.Editor reflectionEdit;
     SharedPreferences type;
     SharedPreferences.Editor typeEdit;
+    SharedPreferences date;
+    SharedPreferences.Editor dateEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class Record_Result extends AppCompatActivity {
         reflectionEdit = reflection.edit();
         type = getSharedPreferences("type", MODE_PRIVATE);
         typeEdit = type.edit();
+        date = getSharedPreferences("date", MODE_PRIVATE);
+        dateEdit = date.edit();
 
 
         // 이전 버튼 클릭 시 전 페이지로
@@ -72,6 +76,8 @@ public class Record_Result extends AppCompatActivity {
             reflectionEdit.commit();
             typeEdit.clear();
             typeEdit.commit();
+            dateEdit.clear();
+            dateEdit.commit();
             Intent intent = new Intent(getApplicationContext(), MainPage.class);
             startActivity(intent);
         });
@@ -82,14 +88,10 @@ public class Record_Result extends AppCompatActivity {
         });
 
         // 타입 뿌리기
-        binding.type.setText(type.getString("type", ""));
+        binding.type.setText(type.getString("type", "타입"));
 
-        // 오늘 날짜
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
-        String getTime = mFormat.format(date);
-        binding.date.setText(getTime);
+        // 오늘 날짜 뿌리기
+        binding.date.setText(date.getString("date", "0000-00-00 O요일"));
 
         // 감정 뿌리기
         binding.resultEmotionText.setText(emotion.getString("emotion", ""));
