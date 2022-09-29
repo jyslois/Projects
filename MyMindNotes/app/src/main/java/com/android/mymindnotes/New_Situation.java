@@ -52,7 +52,7 @@ public class New_Situation extends AppCompatActivity {
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener(view -> {
             if (binding.RecordSituationUserInput.getText().toString().equals("")) {
-                Toast.makeText(getApplicationContext(), "상황을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "상황을 입력해 주세요", Toast.LENGTH_SHORT).show();
             } else {
                 // 상황 저장
                 situationEdit.putString("situation", binding.RecordSituationUserInput.getText().toString());

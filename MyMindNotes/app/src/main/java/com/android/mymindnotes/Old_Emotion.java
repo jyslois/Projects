@@ -48,7 +48,7 @@ public class Old_Emotion extends AppCompatActivity {
         binding.RecordNextButton.setOnClickListener(view -> {
             // emotion 저장
             if (chosenEmotionId == 0) {
-                Toast.makeText(getApplicationContext(), "감정을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "감정을 선택해 주세요", Toast.LENGTH_SHORT).show();
             } else {
                 switch (chosenEmotionId) {
                     case R.id.happinessButton:
