@@ -17,18 +17,67 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <androidx.appcompat.widget.Toolbar
-            android:layout_marginRight="10dp"
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:contentInsetStart="0dp"
-            android:background="#00737272"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="10dp">
 
-        </androidx.appcompat.widget.Toolbar>
+            <com.google.android.material.button.MaterialButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cornerRadius="100dp"
+                android:text="날짜별"
+                android:textSize="11dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F3A8938E"
+                android:textColor="#F3F5F6"
+                android:textStyle="bold"
+                android:id="@+id/sort_date_button"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cornerRadius="100dp"
+                android:text="감정별"
+                android:textSize="11dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F3A8938E"
+                android:textColor="#F3F5F6"
+                android:textStyle="bold"
+                android:id="@+id/sort_emotion_button"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cornerRadius="100dp"
+                android:text="감정일기"
+                android:textSize="11dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F3A8938E"
+                android:textColor="#F3F5F6"
+                android:textStyle="bold"
+                android:id="@+id/sort_newEmotion_button"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cornerRadius="100dp"
+                android:text="트라우마"
+                android:textSize="11dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#F3A8938E"
+                android:textColor="#F3F5F6"
+                android:textStyle="bold"
+                android:id="@+id/sort_oldEmotion_button"/>
+        </LinearLayout>
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -44,8 +93,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:background="#BCE4A89A"
+                    android:layout_marginTop="10dp"
+                    android:background="#BCE8B1A4"
                     android:gravity="center_vertical"
                     android:padding="10dp">
 

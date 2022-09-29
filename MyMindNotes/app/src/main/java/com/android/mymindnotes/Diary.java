@@ -38,10 +38,6 @@ public class Diary extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 커스텀한 toolbar 적용시키기
-        Toolbar toolbar = binding.toolbar;
-        setSupportActionBar(toolbar); // 이 액티비티에서 툴바 사용
-        getSupportActionBar().setDisplayShowTitleEnabled(false); // 타이틀 안 보이게 하기
     }
 
     // xml로 작성한 액션바의 메뉴 설정
