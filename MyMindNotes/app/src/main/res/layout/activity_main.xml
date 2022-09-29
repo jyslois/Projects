@@ -19,10 +19,10 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/maintitle"
+            android:layout_height="293dp"
             android:layout_marginTop="50dp"
-            android:gravity="bottom"/>
+            android:gravity="bottom"
+            android:src="@drawable/maintitle" />
 
         <LinearLayout
             android:layout_marginTop="160dp"
