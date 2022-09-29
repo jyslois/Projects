@@ -127,6 +127,10 @@ public class Login extends AppCompatActivity {
             } else if(!emailInput.contains("@")) {
                 Toast toast = Toast.makeText(getApplicationContext(), "올바른 이메일 형식으로 입력해 주세요", Toast.LENGTH_SHORT);
                 toast.show();
+            // 비밀번호가 6자리 이하라면
+            } else if (binding.password.getText().toString().length() < 6){
+                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다", Toast.LENGTH_SHORT);
+                toast.show();
             // 올바르게 적었다면
             } else {
                 // 만약 자동 로그인 버튼이 체크되어 있다면

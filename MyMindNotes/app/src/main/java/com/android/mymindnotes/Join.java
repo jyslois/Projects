@@ -48,6 +48,14 @@ public class Join extends AppCompatActivity {
             } else if(!emailInput.contains("@")) {
                 Toast toast = Toast.makeText(getApplicationContext(), "올바른 이메일 형식으로 입력해 주세요", Toast.LENGTH_SHORT);
                 toast.show();
+            // 만약 비밀번호가 6자리 미만이라면
+            } else if(binding.passwordInput.getText().toString().length() < 6) {
+                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호는 최소 6자리여야 합니다", Toast.LENGTH_SHORT);
+                toast.show();
+            // 비밀번호와 비밀번호 확인란이 일치하지 않으면
+            } else if (!binding.passwordInput.getText().toString().equals(binding.passwordRetypeInput.getText().toString())) {
+                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT);
+                toast.show();
             } else {
                 // 닉네임 저장
                 // 만약 닉네임이 입력란이 빈칸이라면, 이메일 앞부분(아이디)을 닉네임으로 저장
