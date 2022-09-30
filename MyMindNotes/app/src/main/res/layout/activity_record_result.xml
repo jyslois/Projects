@@ -55,12 +55,12 @@
                 android:layout_margin="20dp"/>
 
             <TextView
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:id="@+id/Result_Situation_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
-                android:text="| 상황 |"
+                android:text="〔 상황 〕"
                 android:textStyle="bold"
                 android:textColor="#E4C5AB"
                 android:textSize="18dp" />
@@ -84,12 +84,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:id="@+id/Result_Thought_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="| 생각 |"
+                android:text="〔 생각 〕"
                 android:textStyle="bold"
                 android:textColor="#E4C5AB"
                 android:textSize="18dp" />
@@ -115,12 +115,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:id="@+id/Result_Emotion_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="| 감정 |"
+                android:text="〔 감정 〕"
                 android:textStyle="bold"
                 android:textColor="#E4C5AB"
                 android:textSize="18dp" />
@@ -167,12 +167,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:id="@+id/Result_Reflection_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="| 회고 |"
+                android:text="〔 회고 〕"
                 android:textStyle="bold"
                 android:textColor="#E4C5AB"
                 android:textSize="18dp" />

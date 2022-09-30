@@ -41,7 +41,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">#8F8C8C</item>
         <!-- Customize your theme here. -->
+    </style>
 
+    <style name="ThemeOverlay.ToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:backgroundTint">#DABE9F98</item>
+        <item name="android:textColor">@color/white</item>
+        <!-- Required for pre-Lollipop. -->
+        <item name="overlapAnchor">false</item>
+        <!-- Required for Lollipop. -->
+        <item name="android:overlapAnchor">false</item>
     </style>
 
 </resources>

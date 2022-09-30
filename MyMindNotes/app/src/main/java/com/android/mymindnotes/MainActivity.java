@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import com.android.mymindnotes.databinding.ActivityMainBinding;
@@ -20,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
+        Glide.with(this).load(R.drawable.mainbackground2).into(binding.background);
 
         // 로그인 클릭 시 화면 전환
         Button loginButton = binding.loginButton;

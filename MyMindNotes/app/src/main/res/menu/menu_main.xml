@@ -5,16 +5,15 @@
 
     <item
         android:id="@+id/emotionicon"
-        app:showAsAction="never"
-        android:title="감정 설명서"
+        android:title="          감정 설명서"
         android:icon="@drawable/emotionicon"
         android:iconTint="#BE9F98"
-        />
+        app:showAsAction="never" />
 
     <item
         app:showAsAction="never"
         android:id="@+id/diaryicon"
-        android:title="나의 마음 일지"
+        android:title="        나의 마음 일지"
         android:icon="@drawable/diary_icon"
         />
 
