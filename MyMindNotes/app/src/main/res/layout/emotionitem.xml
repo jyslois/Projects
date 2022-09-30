@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/emotionitem_roundedcorner"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기쁨"
+            android:textColor="#F4F4E9"
+            android:textSize="25dp"
+            android:id="@+id/emotion"/>
+
+        <ImageView
+            android:layout_marginLeft="-12dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/orange_happiness"
+            android:id="@+id/emotionIcon"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:padding="5dp"
+        android:textColor="#F3E8E8"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emotion"
+        android:text="@string/happiness"
+        android:id="@+id/emotionInstruction"/>
+
+
+</LinearLayout>
