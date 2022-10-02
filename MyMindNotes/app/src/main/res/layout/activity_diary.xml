@@ -81,69 +81,21 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="6">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:id="@+id/diaryView">
+            </androidx.recyclerview.widget.RecyclerView>
 
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:background="#BCE8B1A4"
-                    android:gravity="center_vertical"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:id="@+id/coreEmotion"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/orange_happiness" />
-
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/coreEmotion"
-                        android:text="2022.09.13 화요일" />
-
-                    <TextView
-                        android:id="@+id/emotion_Word"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/date"
-                        android:layout_toRightOf="@id/coreEmotion"
-                        android:text="기쁨"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/record"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/emotion_Word"
-                        android:layout_toRightOf="@id/coreEmotion"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:text="일기 내용내용내용내 용내용내용내ㅇㅇㅇㅇㅇㅇㅇㅇ용내용내용내용내용내용내용내용내용내용내용내용내용내용" />
-
-                    <Button
-                        android:id="@+id/recordClickButton"
-                        android:layout_width="401dp"
-                        android:layout_height="90dp"
-                        android:background="@android:color/transparent"></Button>
-
-
-                </RelativeLayout>
-
-            </LinearLayout>
         </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
 
     </LinearLayout>

@@ -11,8 +11,8 @@
         \n선택한 감정 외에 다른 감정은 없었는지 생각해 보고, 직접 기록해 보세요.
     </string>
 
-    <string name="situationHints">Tips. 육하원칙을 생각하며 작성해 주세요.</string>
-    <string name="truamaSituationHints">Tips. 과거에 일어난 사건에 대해 육하원칙을 생각하며 작성해 주세요.</string>
+    <string name="situationHints">Tips. 감정과 생각을 최대한 배재하고, 상황에 대해서만 작성해 주세요.</string>
+    <string name="truamaSituationHints">Tips. 감정과 생각을 최대한 배재하고, 과거에 벌어진 사건에 대해서만 작성해 주세요.</string>
     <string name="situationTips">감정과 생각을 최대한 배제한 채, FACT 위주의 육하원칙에 따라 작성해 주세요.</string>
 
     <string name="thoughtHints">Tips. 상황이 발생했을 때, 내 머릿속에 스쳤던 생각을 기록해 봐요.</string>
@@ -20,7 +20,8 @@
     <string name="traumaThoughtTips">\"마음 속으로 하는 생각\"과 \"감정\"은 다릅니다.\n상황이 발생했을 때, 나는 어떤 생각을 했나요?\n만약 그 당시의 생각과 현재 생각이 다르다면, 어떻게 다른가요?
         \n혹시 이후에 다른 비슷한 상황에서, 같은 패턴의 생각을 한 적이 있나요?</string>
 
-    <string name="reflectionHints">Tips. 왜 그런 생각과 감정이 들었는지 스스로를 이해해 봐요.\n(회고는 필수는 아니며, 필요하다고 생각될 때만 작성해 주세요.)</string>
+    <string name="reflectionHints">Tips. 왜 그런 생각과 감정이 들었는지 스스로를 이해해 봐요.
+        \n(회고는 필수는 아니며, 필요하다고 생각될 때만 작성해 주세요.)</string>
     <string name="traumaReflectionHints">Tips. 과거의 상황이 현재까지 미치고 있는 영향에 대해 생각해 봐요.</string>
     <string name="reflectionTips">오늘의 감정이 부정적이라고 해도 걱정하지 마세요.
         \n사람의 모든 감정은 잘못된 것이 없으며, 모든 마음은 그 자체로 인정받고, 존중받아야 마땅합니다.
@@ -44,7 +45,7 @@
     </font></string>
 
     <string name="trust"><font size="15">신뢰란 타인의 미래 행동이 자신에게 호의적이거나, 또는 최소한 악의적이지는 않을 가능성에 대한 기대와 믿음을 말합니다. 즉, 신뢰는 상대가 어떻게 행동할 것이라는 믿음 하에 상대방의 협조를 기대하는 것입니다. 신뢰의 감정이 생겨나는 이유는 <b>“도와주는 사람과 이어지기 위해서”</b>입니다.
-\n\nn어떤 사람에게 신뢰가 생겼나요? 그 이유는 무엇인가요. 내가 그 사람에게 신뢰를 얻고, 좋은 관계를 유지하려면 어떻게 해야 할까요?
+\n\n어떤 사람에게 신뢰가 생겼나요? 그 이유는 무엇인가요. 내가 그 사람에게 신뢰를 얻고, 좋은 관계를 유지하려면 어떻게 해야 할까요?
     </font></string>
 
     <string name="surprise"><font size="15">놀라움은 기대하지 않던 일을 겪게 될 때 느끼는 감정입니다. 놀라움이 과대하면 충격에 빠지게 되는데, 놀라움은 기대와 현실 간의 차이를 나타내며, 세상 사건에 관한 우리의 추정과 기대 사이의 틈이자, 그러한 사건들이 실제로 발생되는 방식입니다. 놀람의 감정이 생겨나는 이유는 <b>“새로운 것에 집중하게 위해서”</b>입니다.

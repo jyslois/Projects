@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldReflectionBinding;
 import com.bumptech.glide.Glide;
@@ -59,24 +60,29 @@ public class Old_Reflection extends AppCompatActivity {
             finish();
         });
 
+
         // 저장 버튼 클릭
         binding.RecordSaveButton.setOnClickListener(view -> {
-            // 회고 저장
-            reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
-            reflectionEdit.commit();
-            // 타입 저장
-            typeEdit.putString("type", "트라우마 일기");
-            typeEdit.commit();
-            // 오늘 날짜 저장
-            long now = System.currentTimeMillis();
-            Date date = new Date(now);
-            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
-            String getTime = mFormat.format(date);
-            dateEdit.putString("date", getTime);
-            dateEdit.commit();
+            if (binding.RecordReflectionUserInput.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "회고를 작성해 주세요", Toast.LENGTH_SHORT).show();
+            } else {
+                // 회고 저장
+                reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
+                reflectionEdit.commit();
+                // 타입 저장
+                typeEdit.putString("type", "트라우마 일기");
+                typeEdit.commit();
+                // 오늘 날짜 저장
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
+                String getTime = mFormat.format(date);
+                dateEdit.putString("date", getTime);
+                dateEdit.commit();
 
-            Intent intent = new Intent(getApplicationContext(), Record_Result.class);
-            startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), Record_Result.class);
+                startActivity(intent);
+            }
         });
 
         // 만약 회고가 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기

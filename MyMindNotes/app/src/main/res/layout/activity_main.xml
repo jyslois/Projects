@@ -20,7 +20,8 @@
         <ImageView
             android:padding="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="293dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="50dp"
             android:gravity="bottom"
             android:src="@drawable/maintitle" />
@@ -28,7 +29,8 @@
         <LinearLayout
             android:layout_marginTop="190dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:layout_gravity="center"
             android:gravity="center">

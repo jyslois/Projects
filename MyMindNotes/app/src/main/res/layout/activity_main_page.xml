@@ -30,48 +30,60 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="2"/>
 
-        <TextView
-            android:id="@+id/mainpagetext"
-            android:layout_marginTop="370dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="오늘 하루도 고생했어요."
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"
-            android:textColor="#CDAF97"
-            android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/arrow"
-            app:tint="#C3BE9F98" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/arrow"
-            app:tint="#B0BE9F98" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/arrow"
-            app:tint="#59BE9F98" />
+            <TextView
+                android:id="@+id/mainpagetext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:text="오늘 하루도 고생했어요."
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:textColor="#CDAF97"
+                android:layout_gravity="center"/>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            app:backgroundTint="#BE9F98"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:rippleColor="#9CBE9F98"
-            app:icon="@drawable/add"
-            app:iconTint="#FAF7F6"
-            android:id="@+id/addRecordButton" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/arrow"
+                app:tint="#C3BE9F98" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/arrow"
+                app:tint="#B0BE9F98" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/arrow"
+                app:tint="#59BE9F98" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                app:backgroundTint="#BE9F98"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:rippleColor="#9CBE9F98"
+                app:icon="@drawable/add"
+                app:iconTint="#FAF7F6"
+                android:id="@+id/addRecordButton" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

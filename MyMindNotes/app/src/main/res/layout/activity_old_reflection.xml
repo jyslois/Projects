@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
-                    android:text="그 일이 나에게 어떤 영향을 미치고 있을까요?"
+                    android:text="그 일은 지금의 내게 어떤 영향을 미치고 있나요?"
                     android:textColor="#CDAF97"
                     android:textSize="15dp"
                     android:textStyle="bold" />
