@@ -31,13 +31,13 @@
             android:gravity="center">
 
             <TextView
-                android:textColor="#CDAF97"
+                android:id="@+id/emailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="아이디"
-                android:gravity="center"
                 android:layout_marginBottom="5dp"
-                android:id="@+id/emailText"/>
+                android:gravity="center"
+                android:text="이메일"
+                android:textColor="#CDAF97" />
 
             <TextView
                 android:id="@+id/emailStar"
