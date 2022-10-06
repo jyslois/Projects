@@ -197,11 +197,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
+                    <Button
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#A68B86"
+                        android:text="◀ 이전"
+                        android:id="@+id/Result_PreviousButton"/>
 
                     <Button
                         android:layout_weight="1"
                         android:layout_marginTop="30dp"
-                        android:layout_width="320dp"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#A68B86"
                         android:text="수정"

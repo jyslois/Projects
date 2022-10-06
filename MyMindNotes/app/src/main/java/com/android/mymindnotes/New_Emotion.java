@@ -35,6 +35,8 @@ public class New_Emotion extends AppCompatActivity {
     SharedPreferences.Editor typeEdit;
     SharedPreferences date;
     SharedPreferences.Editor dateEdit;
+    SharedPreferences emotionColor;
+    SharedPreferences.Editor emotionColorEdit;
 
 
     @Override
@@ -66,6 +68,8 @@ public class New_Emotion extends AppCompatActivity {
         typeEdit = type.edit();
         date = getSharedPreferences("date", MODE_PRIVATE);
         dateEdit = date.edit();
+        emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
+        emotionColorEdit = emotionColor.edit();
 
 
         // 다음 버튼 클릭, emotion 저장
@@ -76,34 +80,50 @@ public class New_Emotion extends AppCompatActivity {
             } else {
                 switch (chosenEmotionId) {
                     case R.id.happinessButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.orange_happiness);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "기쁨");
                         emotionEdit.commit();
                         break;
                     case R.id.anticipationButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.green_anticipation);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "기대");
                         emotionEdit.commit();
                         break;
                     case R.id.trustButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.darkblue_trust);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "신뢰");
                         emotionEdit.commit();
                         break;
                     case R.id.surpriseButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.yellow_surprise);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "놀람");
                         emotionEdit.commit();
                         break;
                     case R.id.sadnessButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.grey_sadness);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "슬픔");
                         emotionEdit.commit();
                         break;
                     case R.id.disgustButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.brown_disgust);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "혐오");
                         emotionEdit.commit();
                         break;
                     case R.id.fearButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.black_fear);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "공포");
                         emotionEdit.commit();
                         break;
                     case R.id.angerButton:
+                        emotionColorEdit.putInt("emotionColor", R.drawable.red_anger);
+                        emotionColorEdit.commit();
                         emotionEdit.putString("emotion", "분노");
                         emotionEdit.commit();
                         break;
@@ -136,16 +156,13 @@ public class New_Emotion extends AppCompatActivity {
         emotionGroup2 = binding.emotions2;
 
         // 감정 선택 시 radiogroup 별로 선택 해제되기 && 선택시 이벤트
-        emotionGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId != -1 & isChecking) {
-                    isChecking = false;
-                    emotionGroup2.clearCheck();
-                    chosenEmotionId = checkedId;
-                }
-                isChecking = true;
+        emotionGroup1.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId != -1 & isChecking) {
+                isChecking = false;
+                emotionGroup2.clearCheck();
+                chosenEmotionId = checkedId;
             }
+            isChecking = true;
         });
 
         emotionGroup2.setOnCheckedChangeListener((group, checkedId) -> {

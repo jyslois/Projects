@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +19,28 @@ import android.view.ViewGroup;
 import com.android.mymindnotes.databinding.ActivityDiaryBinding;
 import com.android.mymindnotes.databinding.DiaryitemBinding;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Diary extends AppCompatActivity {
     ActivityDiaryBinding binding;
+
+    SharedPreferences reflection;
+    SharedPreferences type;
+    SharedPreferences dates;
+    SharedPreferences emotion;
+    SharedPreferences emotionText;
+    SharedPreferences situation;
+    SharedPreferences thought;
+    SharedPreferences emotionColor;
+
+    SharedPreferences arrayList;
+    SharedPreferences.Editor arrayListEdit;
+
+    ArrayList<Record> recordList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,22 +48,38 @@ public class Diary extends AppCompatActivity {
         binding = ActivityDiaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        emotion = getSharedPreferences("emotion", MODE_PRIVATE);
+        emotionText = getSharedPreferences("emotionText", MODE_PRIVATE);
+        emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
+        situation = getSharedPreferences("situation", MODE_PRIVATE);
+        thought = getSharedPreferences("thought", MODE_PRIVATE);
+        reflection = getSharedPreferences("reflection", MODE_PRIVATE);
+        type = getSharedPreferences("type", MODE_PRIVATE);
+        dates = getSharedPreferences("date", MODE_PRIVATE);
+
+        arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
+        arrayListEdit = arrayList.edit();
+
+        // 만약 SharedPreferences에 저장된 arrayList가 있다면,
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            // SharedPreferences에 저장된 arrayList를 recordList로 가져오기
+            Gson gson = new Gson();
+            String json = arrayList.getString("arrayList", "");
+            Type type = new TypeToken<ArrayList<Record>>() {
+            }.getType();
+            recordList = gson.fromJson(json, type);
+        } else {
+            // 없다면 새 recordList 만들기 (이 경우, 빈 리스트가 화면에 뿌려져서 화면엔 아무것도 나오지 않는다)
+            recordList = new ArrayList<>();
+        }
+
+
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
 
-//        // 일기 내용 클릭 시 상세 페이지 보기
-//        binding.recordClickButton.setOnClickListener(view -> {
-//            Intent intent = new Intent(getApplicationContext(), Record_Result.class);
-//            startActivity(intent);
-//        });
-
-        List<String> emotionWordList = new ArrayList<>(Arrays.asList("기쁨", "슬픔", "기쁨", "슬픔", "기쁨", "슬픔"));
-        List<Integer> emotionCircleList = new ArrayList<>(Arrays.asList(R.drawable.orange_happiness, R.drawable.grey_sadness, R.drawable.orange_happiness, R.drawable.grey_sadness, R.drawable.orange_happiness, R.drawable.grey_sadness));
-        List<String> dateList = new ArrayList<>(Arrays.asList("0000.00.00 월요일", "0000.00.00 화요일", "0000.00.00 월요일", "0000.00.00 화요일", "0000.00.00 월요일", "0000.00.00 화요일"));
-        List<String> situationList = new ArrayList<>(Arrays.asList("상황 묘사", "상황 묘사2", "상황 묘사", "상황 묘사2", "상황 묘사", "상황 묘사2"));
-
         binding.diaryView.setLayoutManager(new LinearLayoutManager(this));
-        binding.diaryView.setAdapter(new DiaryAdaptor(emotionWordList, emotionCircleList, dateList, situationList));
+        // recordList에 어뎁터 연결
+        binding.diaryView.setAdapter(new DiaryAdaptor(recordList));
         binding.diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
 
     }
@@ -63,16 +95,10 @@ public class Diary extends AppCompatActivity {
 
     class DiaryAdaptor extends RecyclerView.Adapter<ViewHolder> {
         // 항목 구성 데이터
-        private List<String> emotionWordList;
-        private List<Integer> emotionCircleList;
-        private List<String> dateList;
-        private List<String> situationList;
+        private ArrayList<Record> recordList;
 
-        public DiaryAdaptor(List<String> emotionWordList, List<Integer> emotionCircleList, List<String> dateList, List<String> situationList) {
-            this.emotionWordList = emotionWordList;
-            this.emotionCircleList = emotionCircleList;
-            this.dateList = dateList;
-            this.situationList = situationList;
+        public DiaryAdaptor(ArrayList<Record> recordList) {
+            this.recordList = recordList;
         }
 
         @Override
@@ -86,26 +112,30 @@ public class Diary extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
             // 감정 아이콘 세팅
-            Integer emotionCircle = emotionCircleList.get(position);
+            int emotionCircle = recordList.get(position).emotionCircle;
             viewHolder.binding.emotionCircle.setImageResource(emotionCircle);
 
             // 날짜 세팅
-            String date = dateList.get(position);
+            String date = recordList.get(position).date;
             viewHolder.binding.date.setText(date);
 
             // 감정 이름 세팅
-            String emotion = emotionWordList.get(position);
+            String emotion = recordList.get(position).emotionWord;
             viewHolder.binding.emotionWord.setText(emotion);
 
             // 상황 세팅
-            String situation = situationList.get(position);
+            String situation = recordList.get(position).situation;
             viewHolder.binding.situation.setText(situation);
+
+            // 타입 세팅
+            String type = recordList.get(position).type;
+            viewHolder.binding.type.setText(type);
 
         }
 
         @Override
         public int getItemCount() {
-            return emotionCircleList.size();
+            return recordList.size();
         }
     }
 

@@ -8,14 +8,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import com.android.mymindnotes.databinding.ActivityDiaryResultBinding;
 import com.android.mymindnotes.databinding.ActivityRecordResultBinding;
 import com.bumptech.glide.Glide;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class Record_Result extends AppCompatActivity {
-    ActivityRecordResultBinding binding;
+public class Diary_Result extends AppCompatActivity {
+    ActivityDiaryResultBinding binding;
     SharedPreferences emotion;
     SharedPreferences.Editor emotionEdit;
     SharedPreferences emotionText;
@@ -33,11 +31,10 @@ public class Record_Result extends AppCompatActivity {
     SharedPreferences emotionColor;
     SharedPreferences.Editor emotionColorEdit;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRecordResultBinding.inflate(getLayoutInflater());
+        binding = ActivityDiaryResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
@@ -62,24 +59,13 @@ public class Record_Result extends AppCompatActivity {
         emotionColorEdit = emotionColor.edit();
 
 
+        // 이전 버튼 클릭 시 전 페이지로
+        binding.ResultPreviousButton.setOnClickListener(view -> {
+            finish();
+        });
+
         // 종료 버튼 클릭 시 mainpage로 (모든 기록 삭제)
         binding.ResultEndButton.setOnClickListener(view -> {
-            emotionEdit.clear();
-            emotionEdit.commit();
-            emotionTextEdit.clear();
-            emotionTextEdit.commit();
-            situationEdit.clear();
-            situationEdit.commit();
-            thoughtEdit.clear();
-            thoughtEdit.commit();
-            reflectionEdit.clear();
-            reflectionEdit.commit();
-            typeEdit.clear();
-            typeEdit.commit();
-            dateEdit.clear();
-            dateEdit.commit();
-            emotionColorEdit.clear();
-            emotionColorEdit.commit();
             Intent intent = new Intent(getApplicationContext(), MainPage.class);
             startActivity(intent);
         });
