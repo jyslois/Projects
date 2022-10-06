@@ -117,10 +117,49 @@ public class Record_Result extends AppCompatActivity {
         }
     }
 
-    // 뒤로 가기 버튼 누를 시, 메인 페이지로 돌아가기
+    // 뒤로 가기 버튼 누를 시, 메인 페이지로 돌아가기 (모든 기록 삭제)
     @Override
     public void onBackPressed() {
+        emotionEdit.clear();
+        emotionEdit.commit();
+        emotionTextEdit.clear();
+        emotionTextEdit.commit();
+        situationEdit.clear();
+        situationEdit.commit();
+        thoughtEdit.clear();
+        thoughtEdit.commit();
+        reflectionEdit.clear();
+        reflectionEdit.commit();
+        typeEdit.clear();
+        typeEdit.commit();
+        dateEdit.clear();
+        dateEdit.commit();
+        emotionColorEdit.clear();
+        emotionColorEdit.commit();
         Intent intent = new Intent(getApplicationContext(), MainPage.class);
         startActivity(intent);
+    }
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        emotionEdit.clear();
+        emotionEdit.commit();
+        emotionTextEdit.clear();
+        emotionTextEdit.commit();
+        situationEdit.clear();
+        situationEdit.commit();
+        thoughtEdit.clear();
+        thoughtEdit.commit();
+        reflectionEdit.clear();
+        reflectionEdit.commit();
+        typeEdit.clear();
+        typeEdit.commit();
+        dateEdit.clear();
+        dateEdit.commit();
+        emotionColorEdit.clear();
+        emotionColorEdit.commit();
     }
 }
