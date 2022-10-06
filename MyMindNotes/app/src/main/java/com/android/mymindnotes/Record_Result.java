@@ -1,5 +1,6 @@
 package com.android.mymindnotes;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -114,6 +115,12 @@ public class Record_Result extends AppCompatActivity {
             binding.ResultReflectionUserInput.setVisibility(View.GONE);
             binding.ResultReflectionTitle.setVisibility(View.GONE);
         }
+    }
 
+    // 뒤로 가기 버튼 누를 시, 메인 페이지로 돌아가기
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainPage.class);
+        startActivity(intent);
     }
 }

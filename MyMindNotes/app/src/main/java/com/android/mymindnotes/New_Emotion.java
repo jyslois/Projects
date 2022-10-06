@@ -178,7 +178,6 @@ public class New_Emotion extends AppCompatActivity {
     }
 
 
-    // 뒤로 가기 버튼 누를 시, 알람창 띄우기
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // 기록 삭제
@@ -198,6 +197,7 @@ public class New_Emotion extends AppCompatActivity {
         }
     };
 
+    // 뒤로 가기 버튼 누를 시, 알람창 띄우기
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
