@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Build;
@@ -41,6 +42,24 @@ public class Diary extends AppCompatActivity {
     SharedPreferences.Editor arrayListEdit;
 
     ArrayList<Record> recordList;
+    static RecyclerView diaryView;
+    DiaryAdaptor adaptor;
+
+
+    // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Gson gson = new Gson();
+        String json = arrayList.getString("arrayList", "");
+        Type type = new TypeToken<ArrayList<Record>>() {
+        }.getType();
+        recordList = gson.fromJson(json, type);
+
+        adaptor.updateItemList(recordList);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +75,6 @@ public class Diary extends AppCompatActivity {
         reflection = getSharedPreferences("reflection", MODE_PRIVATE);
         type = getSharedPreferences("type", MODE_PRIVATE);
         dates = getSharedPreferences("date", MODE_PRIVATE);
-
         arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
         arrayListEdit = arrayList.edit();
 
@@ -77,10 +95,12 @@ public class Diary extends AppCompatActivity {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
 
-        binding.diaryView.setLayoutManager(new LinearLayoutManager(this));
+        diaryView = binding.diaryView;
+        diaryView.setLayoutManager(new LinearLayoutManager(this));
         // recordList에 어뎁터 연결
-        binding.diaryView.setAdapter(new DiaryAdaptor(recordList));
-        binding.diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
+        adaptor = new DiaryAdaptor(recordList);
+        diaryView.setAdapter(adaptor);
+        diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
 
     }
 
@@ -90,6 +110,27 @@ public class Diary extends AppCompatActivity {
         ViewHolder(DiaryitemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            //아이템 클릭 시
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //존재하는 포지션인지 확인
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
+                        intent.putExtra("type", recordList.get(pos).type);
+                        intent.putExtra("date", recordList.get(pos).date);
+                        intent.putExtra("situation", recordList.get(pos).situation);
+                        intent.putExtra("thought", recordList.get(pos).thought);
+                        intent.putExtra("emotion", recordList.get(pos).emotionWord);
+                        intent.putExtra("emotionText", recordList.get(pos).emotionText);
+                        intent.putExtra("reflection", recordList.get(pos).reflection);
+                        intent.putExtra("index", pos);
+                        startActivity(intent);
+                    }
+                }
+            });
         }
     }
 
@@ -135,8 +176,18 @@ public class Diary extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
+            if (recordList == null) {
+                return 0;
+            }
             return recordList.size();
         }
+
+        // 데이터셋을 업데이트하기 위한 메서드 (onResume)에서 사용
+        public void updateItemList(ArrayList<Record> recordList) {
+            this.recordList = recordList;
+            notifyDataSetChanged();
+        }
+
     }
 
     class DiaryRecyclerViewDecoration extends RecyclerView.ItemDecoration {
@@ -158,5 +209,12 @@ public class Diary extends AppCompatActivity {
 
         return true;
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        Intent intent = new Intent(getApplicationContext(), MainPage.class);
+//        startActivity(intent);
+//    }
 
 }

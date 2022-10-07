@@ -19,7 +19,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="14">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -203,8 +204,8 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#A68B86"
-                        android:text="◀ 이전"
-                        android:id="@+id/Result_PreviousButton"/>
+                        android:text="삭제"
+                        android:id="@+id/deleteButton"/>
 
                     <Button
                         android:layout_weight="1"
@@ -213,7 +214,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="#A68B86"
                         android:text="수정"
-                        android:id="@+id/Result_EditButton"/>
+                        android:id="@+id/editButton"/>
                 </LinearLayout>
 
                 <Button
@@ -221,12 +222,18 @@
                     android:layout_gravity="center"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
-                    android:text="메인으로 돌아가기"
+                    android:text="목록으로 돌아가기"
                     android:backgroundTint="#E1BEB6"
-                    android:id="@+id/Result_EndButton"
+                    android:id="@+id/backtoListButton"
                     android:layout_marginBottom="30dp"/>
 
             </LinearLayout>
         </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
     </LinearLayout>
 </FrameLayout>

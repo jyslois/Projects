@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center"
@@ -13,16 +14,15 @@
         android:padding="10dp">
 
         <ImageView
+            android:layout_marginTop="12dp"
             android:id="@+id/emotionCircle"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="25dp"
             android:layout_marginRight="20dp"
             android:src="@drawable/orange_happiness" />
 
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,6 @@
             android:text="ㅇㅇ 일기" />
 
         <TextView
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/date"
@@ -39,7 +38,6 @@
             android:id="@+id/division"/>
 
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +60,7 @@
             android:layout_below="@id/emotionWord"
             android:layout_toRightOf="@id/emotionCircle"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="상황" />
 
 

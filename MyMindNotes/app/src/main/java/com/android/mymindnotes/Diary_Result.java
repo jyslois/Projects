@@ -11,25 +11,17 @@ import android.view.View;
 import com.android.mymindnotes.databinding.ActivityDiaryResultBinding;
 import com.android.mymindnotes.databinding.ActivityRecordResultBinding;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class Diary_Result extends AppCompatActivity {
     ActivityDiaryResultBinding binding;
-    SharedPreferences emotion;
-    SharedPreferences.Editor emotionEdit;
-    SharedPreferences emotionText;
-    SharedPreferences.Editor emotionTextEdit;
-    SharedPreferences situation;
-    SharedPreferences.Editor situationEdit;
-    SharedPreferences thought;
-    SharedPreferences.Editor thoughtEdit;
-    SharedPreferences reflection;
-    SharedPreferences.Editor reflectionEdit;
-    SharedPreferences type;
-    SharedPreferences.Editor typeEdit;
-    SharedPreferences date;
-    SharedPreferences.Editor dateEdit;
-    SharedPreferences emotionColor;
-    SharedPreferences.Editor emotionColorEdit;
+    SharedPreferences arrayList;
+    SharedPreferences.Editor arrayListEdit;
+    ArrayList<Record> recordList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,60 +29,66 @@ public class Diary_Result extends AppCompatActivity {
         binding = ActivityDiaryResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
+        arrayListEdit = arrayList.edit();
+
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
 
+        // 데이터 세팅을 위해 가져오기
+        Intent intent = getIntent();
 
-        emotion = getSharedPreferences("emotion", Activity.MODE_PRIVATE);
-        emotionEdit = emotion.edit();
-        emotionText = getSharedPreferences("emotionText", Activity.MODE_PRIVATE);
-        emotionTextEdit = emotionText.edit();
-        situation = getSharedPreferences("situation", MODE_PRIVATE);
-        situationEdit = situation.edit();
-        thought = getSharedPreferences("thought", MODE_PRIVATE);
-        thoughtEdit = thought.edit();
-        reflection = getSharedPreferences("reflection", MODE_PRIVATE);
-        reflectionEdit = reflection.edit();
-        type = getSharedPreferences("type", MODE_PRIVATE);
-        typeEdit = type.edit();
-        date = getSharedPreferences("date", MODE_PRIVATE);
-        dateEdit = date.edit();
-        emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
-        emotionColorEdit = emotionColor.edit();
-
-
-        // 이전 버튼 클릭 시 전 페이지로
-        binding.ResultPreviousButton.setOnClickListener(view -> {
+        // 목록으로 돌아가기 버튼 클릭 시 전 페이지로
+        binding.backtoListButton.setOnClickListener(view -> {
             finish();
         });
 
-        // 종료 버튼 클릭 시 mainpage로 (모든 기록 삭제)
-        binding.ResultEndButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), MainPage.class);
-            startActivity(intent);
-        });
 
         // 수정 버튼 클릭 시 (미구현)
-        binding.ResultEditButton.setOnClickListener(view -> {
+        binding.editButton.setOnClickListener(view -> {
 
         });
 
+        // 삭제 버튼 클릭 시 (미구현
+        binding.deleteButton.setOnClickListener(view -> {
+
+            Gson gson = new Gson();
+            String json = arrayList.getString("arrayList", "");
+            Type type = new TypeToken<ArrayList<Record>>() {
+            }.getType();
+            recordList = gson.fromJson(json, type);
+
+            int index = intent.getIntExtra("index", 0);
+            recordList.remove(index);
+
+            // 업데이트 된 recordList를 SharedPreferences에 저장
+            json = gson.toJson(recordList);
+            arrayListEdit.putString("arrayList", json);
+            arrayListEdit.commit();
+
+            finish();
+
+//            Intent tointent = new Intent(getApplicationContext(), Diary.class);
+//            startActivity(tointent);
+        });
+
+
+        // 데이터 세팅
         // 타입 뿌리기
-        binding.type.setText(type.getString("type", "타입"));
-
+        binding.type.setText(intent.getStringExtra("type"));
         // 오늘 날짜 뿌리기
-        binding.date.setText(date.getString("date", "0000-00-00 O요일"));
+        binding.date.setText(intent.getStringExtra("date"));
 
-        // 감정 뿌리기
-        binding.resultEmotionText.setText(emotion.getString("emotion", ""));
-        // 감정 텍스트 뿌리기
-        binding.ResultEmotionUserInput.setText(emotionText.getString("emotionText", ""));
         // 상황 텍스트 뿌리기
-        binding.ResultSituationUserInput.setText(situation.getString("situation", ""));
+        binding.ResultSituationUserInput.setText(intent.getStringExtra("situation"));
         // 생각 텍스트 뿌리기
-        binding.ResultThoughtUserInput.setText(thought.getString("thought", ""));
+        binding.ResultThoughtUserInput.setText(intent.getStringExtra("thought"));
+        // 감정 뿌리기
+        binding.resultEmotionText.setText(intent.getStringExtra("emotion"));
+        // 감정 텍스트 뿌리기
+        binding.ResultEmotionUserInput.setText(intent.getStringExtra("emotionText"));
         // 회고 텍스트 뿌리기
-        binding.ResultReflectionUserInput.setText(reflection.getString("reflection", ""));
+        binding.ResultReflectionUserInput.setText(intent.getStringExtra("reflection"));
 
         // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기.
         if (binding.ResultEmotionUserInput.getText().toString().equals("")) {

@@ -246,9 +246,9 @@
                         android:layout_gravity="center"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="◀ 이전"
+                        android:text="이전"
                         android:layout_marginBottom="30dp"
-                        android:backgroundTint="#E1BEB6"
+                        android:backgroundTint="#A68B86"
                         android:id="@+id/Record_PreviousButton"/>
 
                     <Button
