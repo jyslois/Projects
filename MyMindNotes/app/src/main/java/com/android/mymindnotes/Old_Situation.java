@@ -30,6 +30,8 @@ public class Old_Situation extends AppCompatActivity {
     SharedPreferences.Editor typeEdit;
     SharedPreferences date;
     SharedPreferences.Editor dateEdit;
+    SharedPreferences emotionColor;
+    SharedPreferences.Editor emotionColorEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,9 @@ public class Old_Situation extends AppCompatActivity {
         typeEdit = type.edit();
         date = getSharedPreferences("date", MODE_PRIVATE);
         dateEdit = date.edit();
+        emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
+        emotionColorEdit = emotionColor.edit();
+
 
     }
 
@@ -88,6 +93,8 @@ public class Old_Situation extends AppCompatActivity {
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // 저장한 것 삭제
+            emotionColorEdit.clear();
+            emotionColorEdit.commit();
             emotionEdit.clear();
             emotionEdit.commit();
             emotionTextEdit.clear();

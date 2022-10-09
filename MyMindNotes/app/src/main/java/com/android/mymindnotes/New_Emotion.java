@@ -181,8 +181,12 @@ public class New_Emotion extends AppCompatActivity {
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // 기록 삭제
+            emotionColorEdit.clear();
+            emotionColorEdit.commit();
             emotionEdit.clear();
             emotionEdit.commit();
+            emotionTextEdit.clear();
+            emotionTextEdit.commit();
             situationEdit.clear();
             situationEdit.commit();
             thoughtEdit.clear();
