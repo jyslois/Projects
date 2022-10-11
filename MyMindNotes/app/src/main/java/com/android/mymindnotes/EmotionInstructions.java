@@ -29,12 +29,18 @@ public class EmotionInstructions extends AppCompatActivity {
         binding = ActivityEmotionInstructionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        List<String> emotionList = new ArrayList<>(Arrays.asList("기쁨", "기대", "신뢰", "놀람", "슬픔", "혐오", "공포", "분노"));
-        List<Integer> emotionIconList = new ArrayList<>(Arrays.asList(R.drawable.orange_happiness, R.drawable.green_anticipation, R.drawable.darkblue_trust, R.drawable.yellow_surprise, R.drawable.grey_sadness, R.drawable.brown_disgust, R.drawable.black_fear, R.drawable.red_anger));
-        List<Integer> InstructionList = new ArrayList<>(Arrays.asList(R.string.happiness, R.string.anticipation, R.string.trust, R.string.surprise, R.string.sadness, R.string.disgust, R.string.fear, R.string.anger));
+        ArrayList<Emotion> emotionList = new ArrayList<>();
+        emotionList.add(new Emotion("기쁨", R.drawable.orange_happiness, R.string.happiness));
+        emotionList.add(new Emotion("기대", R.drawable.green_anticipation, R.string.anticipation));
+        emotionList.add(new Emotion("신뢰", R.drawable.darkblue_trust, R.string.trust));
+        emotionList.add(new Emotion("놀람", R.drawable.yellow_surprise, R.string.surprise));
+        emotionList.add(new Emotion("슬픔", R.drawable.grey_sadness, R.string.sadness));
+        emotionList.add(new Emotion("혐오", R.drawable.brown_disgust, R.string.disgust));
+        emotionList.add(new Emotion("공포", R.drawable.black_fear, R.string.fear));
+        emotionList.add(new Emotion("분노", R.drawable.red_anger, R.string.anger));
 
         binding.emotionInstructionView.setLayoutManager(new LinearLayoutManager(this));
-        binding.emotionInstructionView.setAdapter(new EmotionInstructionAdaptor(emotionList, emotionIconList, InstructionList));
+        binding.emotionInstructionView.setAdapter(new EmotionInstructionAdaptor(emotionList));
         binding.emotionInstructionView.addItemDecoration(new EmotionRecyclerViewDecoration());
     }
 
@@ -51,14 +57,10 @@ class ViewHolder extends RecyclerView.ViewHolder {
 
 class EmotionInstructionAdaptor extends RecyclerView.Adapter<ViewHolder> {
     // 항목 구성 데이터
-    private List<String> emotionList;
-    private List<Integer> emotionIconList;
-    private List<Integer> InstructionList;
+    private ArrayList<Emotion> emotionList;
 
-    public EmotionInstructionAdaptor(List<String> emotionList, List<Integer> emotionIconList, List<Integer> InstructionList) {
-        this.emotionList = emotionList;
-        this.emotionIconList = emotionIconList;
-        this.InstructionList = InstructionList;
+    public EmotionInstructionAdaptor(ArrayList<Emotion> emotion) {
+        this.emotionList = emotion;
     }
 
     @Override
@@ -72,16 +74,13 @@ class EmotionInstructionAdaptor extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         // 감정 이름 세팅
-        String emotion = emotionList.get(position);
-        viewHolder.binding.emotion.setText("〔 " + emotion + " 〕");
+        viewHolder.binding.emotion.setText("〔 " + emotionList.get(position).emotion + " 〕");
 
         // 감정 아이콘 세팅
-        Integer emotionIcon = emotionIconList.get(position);
-        viewHolder.binding.emotionIcon.setImageResource(emotionIcon);
+        viewHolder.binding.emotionIcon.setImageResource(emotionList.get(position).emotionIcon);
 
         // 감정 설명 세팅
-        Integer instruction = InstructionList.get(position);
-        viewHolder.binding.emotionInstruction.setText(instruction);
+        viewHolder.binding.emotionInstruction.setText(emotionList.get(position).instruction);
         viewHolder.binding.emotionInstruction.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
     }
 
