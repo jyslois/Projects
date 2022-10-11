@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainPage">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="14">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="right"
+                        android:text="타입"
+                        android:textColor="#CDAF97"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0000. 00. 00"
+                        android:textColor="#CDAF97"
+                        android:textStyle="bold"
+                        android:id="@+id/date"
+                        android:gravity="right"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="20dp"/>
+
+                    <TextView
+                        android:id="@+id/Result_Situation_Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="70dp"
+                        android:text="〔 상황 〕"
+                        android:textColor="#E4C5AB"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edit_situation"
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/Result_Situation_Title"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="13dp"
+                        android:background="@drawable/border"
+                        android:backgroundTint="#C3FAD1C8"
+                        android:hint="어떤 일이 있었나요?"
+                        android:padding="10dp"
+                        android:text="상황 기록"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/Result_Thought_Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="〔 생각 〕"
+                        android:textStyle="bold"
+                        android:textColor="#E4C5AB"
+                        android:textSize="18dp" />
+
+
+                    <EditText
+                        android:id="@+id/edit_thought"
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/Result_Thought_Title"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border"
+                        android:backgroundTint="#C3FAD1C8"
+                        android:padding="10dp"
+                        android:hint="어떤 생각이 들었나요?"
+                        android:text="생각 기록"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/Result_Emotion_Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="〔 감정 〕"
+                        android:textStyle="bold"
+                        android:textColor="#E4C5AB"
+                        android:textSize="18dp" />
+
+                    <ImageView
+                        android:id="@+id/emotioInstructionButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="-13dp"
+                        android:layout_marginTop="22dp"
+                        android:layout_toRightOf="@id/Result_Emotion_Title"
+                        android:padding="10dp"
+                        android:src="@drawable/tips"
+                        app:tint="#E4C5AB" />
+
+                    <EditText
+                        android:backgroundTint="#C3FAD1C8"
+                        android:padding="10dp"
+                        android:id="@+id/edit_emotion"
+                        android:text="감정"
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/Result_Emotion_Title"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border"
+                        android:hint="어떤 감정을 느꼈나요?"
+                        android:textSize="15dp" />
+
+                    <EditText
+                        android:backgroundTint="#C3FAD1C8"
+                        android:padding="10dp"
+                        android:id="@+id/edit_emotionText"
+                        android:text="감정 기록"
+                        android:hint="내가 느낀 감정에 대해 세세하게 기록해 보세요."
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/edit_emotion"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border"
+                        android:textSize="15dp" />
+
+
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/Result_Reflection_Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="〔 회고 〕"
+                        android:textStyle="bold"
+                        android:textColor="#E4C5AB"
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/edit_reflection"
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/Result_Reflection_Title"
+                        android:hint="나는 왜 그런 마음이 들었을까요?"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border"
+                        android:backgroundTint="#C3FAD1C8"
+                        android:padding="10dp"
+                        android:text="회고 기록"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+
+
+                <Button
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="center"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:text="수정"
+                    android:backgroundTint="#6A5B57"
+                    android:id="@+id/editButton"
+                    android:textColor="#E1D4D4"
+                    android:layout_marginBottom="30dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</FrameLayout>

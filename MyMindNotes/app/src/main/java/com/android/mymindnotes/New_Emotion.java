@@ -179,7 +179,7 @@ public class New_Emotion extends AppCompatActivity {
 
 
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
-        if (which == DialogInterface.BUTTON_POSITIVE) {
+        if (which == DialogInterface.BUTTON_NEGATIVE) {
             // 기록 삭제
             emotionColorEdit.clear();
             emotionColorEdit.commit();
@@ -206,8 +206,8 @@ public class New_Emotion extends AppCompatActivity {
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("입력한 기록이 사라져요. 정말 종료하시겠어요?");
-        builder.setPositiveButton("종료", dialogListener);
-        builder.setNegativeButton("계속 작성", null);
+        builder.setNegativeButton("종료", dialogListener);
+        builder.setPositiveButton("계속 작성", null);
         alertDialog = builder.create();
         alertDialog.show();
         }

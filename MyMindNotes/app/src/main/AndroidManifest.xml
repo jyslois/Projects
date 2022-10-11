@@ -14,9 +14,13 @@
         android:theme="@style/Theme.MyMindNotes"
         tools:targetApi="31">
         <activity
-            android:name=".Diary_Result"
+            android:name=".Diary_Result_Edit"
             android:exported="false"
             android:theme="@style/Theme.Main"/>
+        <activity
+            android:name=".Diary_Result"
+            android:exported="false"
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".Old_Reflection"
             android:exported="false"
