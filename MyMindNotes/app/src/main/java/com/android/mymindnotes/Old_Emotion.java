@@ -204,4 +204,63 @@ public class Old_Emotion extends AppCompatActivity {
         emotionTextEdit.commit();
         finish();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // emotion 저장
+            switch (chosenEmotionId) {
+                case R.id.happinessButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.orange_happiness);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "기쁨");
+                    emotionEdit.commit();
+                    break;
+                case R.id.anticipationButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.green_anticipation);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "기대");
+                    emotionEdit.commit();
+                    break;
+                case R.id.trustButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.darkblue_trust);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "신뢰");
+                    emotionEdit.commit();
+                    break;
+                case R.id.surpriseButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.yellow_surprise);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "놀람");
+                    emotionEdit.commit();
+                    break;
+                case R.id.sadnessButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.grey_sadness);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "슬픔");
+                    emotionEdit.commit();
+                    break;
+                case R.id.disgustButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.brown_disgust);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "혐오");
+                    emotionEdit.commit();
+                    break;
+                case R.id.fearButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.black_fear);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "공포");
+                    emotionEdit.commit();
+                    break;
+                case R.id.angerButton:
+                    emotionColorEdit.putInt("emotionColor", R.drawable.red_anger);
+                    emotionColorEdit.commit();
+                    emotionEdit.putString("emotion", "분노");
+                    emotionEdit.commit();
+                    break;
+            }
+            // 감정Text 저장
+            emotionTextEdit.putString("emotionText", binding.RecordEmotionUserInput.getText().toString());
+            emotionTextEdit.commit();
+    }
 }

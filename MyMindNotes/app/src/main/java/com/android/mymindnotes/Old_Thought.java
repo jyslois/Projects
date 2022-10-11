@@ -78,4 +78,12 @@ public class Old_Thought extends AppCompatActivity {
         thoughtEdit.commit();
         finish();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 생각 저장
+        thoughtEdit.putString("thought", binding.RecordThoughtUserInput.getText().toString());
+        thoughtEdit.commit();
+    }
 }

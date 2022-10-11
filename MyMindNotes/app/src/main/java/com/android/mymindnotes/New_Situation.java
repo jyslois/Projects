@@ -73,8 +73,17 @@ public class New_Situation extends AppCompatActivity {
     // 백 클릭시 상황 저장 후 이전 화면으로
     @Override
     public void onBackPressed() {
+        // 상황 저장
         situationEdit.putString("situation", binding.RecordSituationUserInput.getText().toString());
         situationEdit.commit();
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 상황 저장
+        situationEdit.putString("situation", binding.RecordSituationUserInput.getText().toString());
+        situationEdit.commit();
     }
 }
