@@ -41,6 +41,9 @@ public class Diary_Result extends AppCompatActivity {
         recordList = gson.fromJson(json, type);
 
         // 데이터 세팅
+        Intent intent = getIntent();
+        index = intent.getIntExtra("index", 0);
+
         situation = recordList.get(index).situation;
         thought = recordList.get(index).thought;
         emotion = recordList.get(index).emotionWord;

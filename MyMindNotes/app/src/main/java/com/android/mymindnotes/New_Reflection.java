@@ -116,7 +116,7 @@ public class New_Reflection extends AppCompatActivity {
             }
 
             // recordList에 데이터 저장(인스턴트 추가)
-            recordList.add(new Record(emotionColor.getInt("emotionColor", R.color.white), dates.getString("date", "0000-00-00 0요일"),
+            recordList.add(new Record(emotionColor.getInt("emotionColor", R.drawable.purple_etc), dates.getString("date", "0000-00-00 0요일"),
                     type.getString("type", "ㅇㅇ의 일기"), emotion.getString("emotion", "감정"), situation.getString("situation", "상황"),
                     thought.getString("thought", "생각"), emotionText.getString("emotionText", ""), reflection.getString("reflection", "")));
 
