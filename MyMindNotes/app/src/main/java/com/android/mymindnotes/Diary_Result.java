@@ -61,13 +61,18 @@ public class Diary_Result extends AppCompatActivity {
         // 회고 텍스트 뿌리기
         binding.ResultReflectionUserInput.setText(reflection);
 
-        // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기.
+        // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기. 비어 있지 않다면, 보이게 하기.
         if (binding.ResultEmotionUserInput.getText().toString().equals("")) {
             binding.ResultEmotionUserInput.setVisibility(View.GONE);
+        } else {
+            binding.ResultEmotionUserInput.setVisibility(View.VISIBLE);
         }
         if (binding.ResultReflectionUserInput.getText().toString().equals("")) {
             binding.ResultReflectionUserInput.setVisibility(View.GONE);
             binding.ResultReflectionTitle.setVisibility(View.GONE);
+        } else {
+            binding.ResultReflectionUserInput.setVisibility(View.VISIBLE);
+            binding.ResultReflectionTitle.setVisibility(View.VISIBLE);
         }
     }
 

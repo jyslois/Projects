@@ -1,6 +1,5 @@
 package com.android.mymindnotes;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -11,9 +10,11 @@ import android.view.View;
 
 import com.android.mymindnotes.databinding.ActivityRecordResultBinding;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class Record_Result extends AppCompatActivity {
     ActivityRecordResultBinding binding;
@@ -34,6 +35,48 @@ public class Record_Result extends AppCompatActivity {
     SharedPreferences emotionColor;
     SharedPreferences.Editor emotionColorEdit;
 
+    SharedPreferences arrayList;
+    SharedPreferences.Editor arrayListEdit;
+    ArrayList<Record> recordList;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Gson gson = new Gson();
+        String json = arrayList.getString("arrayList", "");
+        Type type = new TypeToken<ArrayList<Record>>() {
+        }.getType();
+        recordList = gson.fromJson(json, type);
+
+        int index = recordList.size() - 1;
+
+        // 상황 텍스트 뿌리기
+        binding.ResultSituationUserInput.setText(recordList.get(index).situation);
+        // 생각 텍스트 뿌리기
+        binding.ResultThoughtUserInput.setText(recordList.get(index).thought);
+        // 감정 뿌리기
+        binding.resultEmotionText.setText(recordList.get(index).emotionWord);
+        // 감정 텍스트 뿌리기
+        binding.ResultEmotionUserInput.setText(recordList.get(index).emotionText);
+        // 회고 텍스트 뿌리기
+        binding.ResultReflectionUserInput.setText(recordList.get(index).reflection);
+
+        // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기. 비어 있지 않다면, 보이게 하기.
+        if (binding.ResultEmotionUserInput.getText().toString().equals("")) {
+            binding.ResultEmotionUserInput.setVisibility(View.GONE);
+        } else {
+            binding.ResultEmotionUserInput.setVisibility(View.VISIBLE);
+        }
+        if (binding.ResultReflectionUserInput.getText().toString().equals("")) {
+            binding.ResultReflectionUserInput.setVisibility(View.GONE);
+            binding.ResultReflectionTitle.setVisibility(View.GONE);
+        } else {
+            binding.ResultReflectionUserInput.setVisibility(View.VISIBLE);
+            binding.ResultReflectionTitle.setVisibility(View.VISIBLE);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +104,8 @@ public class Record_Result extends AppCompatActivity {
         dateEdit = date.edit();
         emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
         emotionColorEdit = emotionColor.edit();
+        arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
+        arrayListEdit = arrayList.edit();
 
 
         // 종료 버튼 클릭 시 mainpage로 (모든 기록 삭제)
@@ -85,27 +130,51 @@ public class Record_Result extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 수정 버튼 클릭 시 (미구현)
+        // 수정 버튼 클릭 시
         binding.ResultEditButton.setOnClickListener(view -> {
+            Gson gson = new Gson();
+            String json = arrayList.getString("arrayList", "");
+            Type type = new TypeToken<ArrayList<Record>>() {
+            }.getType();
+            recordList = gson.fromJson(json, type);
 
+            int index = recordList.size() - 1;
+            Intent intento = new Intent(getApplicationContext(), Diary_Result_Edit.class);
+            intento.putExtra("date", recordList.get(index).date);
+            intento.putExtra("type", recordList.get(index).type);
+            intento.putExtra("situation", recordList.get(index).situation);
+            intento.putExtra("thought", recordList.get(index).thought);
+            intento.putExtra("emotion", recordList.get(index).emotionWord);
+            intento.putExtra("emotionText", recordList.get(index).emotionText);
+            intento.putExtra("reflection", recordList.get(index).reflection);
+            intento.putExtra("index", index);
+            startActivity(intento);
         });
 
+        Gson gson = new Gson();
+        String json = arrayList.getString("arrayList", "");
+        Type type = new TypeToken<ArrayList<Record>>() {
+        }.getType();
+        recordList = gson.fromJson(json, type);
+
+        int index = recordList.size() - 1;
+
         // 타입 뿌리기
-        binding.type.setText(type.getString("type", "타입"));
+        binding.type.setText(recordList.get(index).type);
 
         // 오늘 날짜 뿌리기
-        binding.date.setText(date.getString("date", "0000-00-00 O요일"));
+        binding.date.setText(recordList.get(index).date);
 
-        // 감정 뿌리기
-        binding.resultEmotionText.setText(emotion.getString("emotion", ""));
-        // 감정 텍스트 뿌리기
-        binding.ResultEmotionUserInput.setText(emotionText.getString("emotionText", ""));
         // 상황 텍스트 뿌리기
-        binding.ResultSituationUserInput.setText(situation.getString("situation", ""));
+        binding.ResultSituationUserInput.setText(recordList.get(index).situation);
         // 생각 텍스트 뿌리기
-        binding.ResultThoughtUserInput.setText(thought.getString("thought", ""));
+        binding.ResultThoughtUserInput.setText(recordList.get(index).thought);
+        // 감정 뿌리기
+        binding.resultEmotionText.setText(recordList.get(index).emotionWord);
+        // 감정 텍스트 뿌리기
+        binding.ResultEmotionUserInput.setText(recordList.get(index).emotionText);
         // 회고 텍스트 뿌리기
-        binding.ResultReflectionUserInput.setText(reflection.getString("reflection", ""));
+        binding.ResultReflectionUserInput.setText(recordList.get(index).reflection);
 
         // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기.
         if (binding.ResultEmotionUserInput.getText().toString().equals("")) {

@@ -145,4 +145,11 @@ public class New_Reflection extends AppCompatActivity {
         reflectionEdit.commit();
         finish();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
+        reflectionEdit.commit();
+    }
 }

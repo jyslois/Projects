@@ -174,6 +174,41 @@ public class New_Emotion extends AppCompatActivity {
             isChecking = true;
         });
 
+        // 만약 감정이 저장된 상태라면, 화면으로 다시 돌아왔을 때 체크 표시가 돼 있게 뿌리기
+        String emo = emotion.getString("emotion", "");
+
+        switch (emo) {
+            case "기쁨":
+                binding.happinessButton.setChecked(true);
+                break;
+            case "기대":
+                binding.anticipationButton.setChecked(true);
+                break;
+            case "신뢰":
+                binding.trustButton.setChecked(true);
+                break;
+            case "놀람":
+                binding.surpriseButton.setChecked(true);
+                break;
+            case "슬픔":
+                binding.sadnessButton.setChecked(true);
+                break;
+            case "혐오":
+                binding.disgustButton.setChecked(true);
+                break;
+            case "공포":
+                binding.fearButton.setChecked(true);
+                break;
+            case "분노":
+                binding.angerButton.setChecked(true);
+                break;
+        }
+
+        // 만약 감정 text가 저장된 상태라면, 화면으로 다시 돌아왔을 때 그대로 뿌리기
+        String emoText = emotionText.getString("emotionText", "");
+        if (!emoText.equals("")) {
+            binding.RecordEmotionUserInput.setText(emoText);
+        }
 
     }
 
@@ -210,6 +245,7 @@ public class New_Emotion extends AppCompatActivity {
         builder.setPositiveButton("계속 작성", null);
         alertDialog = builder.create();
         alertDialog.show();
-        }
+    }
+
 
 }

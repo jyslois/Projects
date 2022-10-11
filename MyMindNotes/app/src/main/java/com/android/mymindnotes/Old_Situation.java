@@ -86,6 +86,11 @@ public class Old_Situation extends AppCompatActivity {
         emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
         emotionColorEdit = emotionColor.edit();
 
+        // 만약 상황이 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
+        String sit = situation.getString("situation", "");
+        if (!sit.equals("")) {
+            binding.RecordSituationUserInput.setText(sit);
+        }
 
     }
 
