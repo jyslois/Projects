@@ -30,7 +30,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:cornerRadius="100dp"
-                android:text="날짜별"
+                android:text="오래된순"
                 android:textSize="11dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="#F3A8938E"

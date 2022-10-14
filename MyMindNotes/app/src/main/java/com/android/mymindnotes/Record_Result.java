@@ -14,7 +14,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Record_Result extends AppCompatActivity {
     ActivityRecordResultBinding binding;
@@ -30,8 +32,6 @@ public class Record_Result extends AppCompatActivity {
     SharedPreferences.Editor reflectionEdit;
     SharedPreferences type;
     SharedPreferences.Editor typeEdit;
-    SharedPreferences date;
-    SharedPreferences.Editor dateEdit;
     SharedPreferences emotionColor;
     SharedPreferences.Editor emotionColorEdit;
 
@@ -100,8 +100,6 @@ public class Record_Result extends AppCompatActivity {
         reflectionEdit = reflection.edit();
         type = getSharedPreferences("type", MODE_PRIVATE);
         typeEdit = type.edit();
-        date = getSharedPreferences("date", MODE_PRIVATE);
-        dateEdit = date.edit();
         emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
         emotionColorEdit = emotionColor.edit();
         arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
@@ -122,8 +120,6 @@ public class Record_Result extends AppCompatActivity {
             reflectionEdit.commit();
             typeEdit.clear();
             typeEdit.commit();
-            dateEdit.clear();
-            dateEdit.commit();
             emotionColorEdit.clear();
             emotionColorEdit.commit();
             Intent intent = new Intent(getApplicationContext(), MainPage.class);
@@ -163,7 +159,11 @@ public class Record_Result extends AppCompatActivity {
         binding.type.setText(recordList.get(index).type);
 
         // 오늘 날짜 뿌리기
-        binding.date.setText(recordList.get(index).date);
+        // 날짜 세팅
+        Date date = recordList.get(index).date;
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
+        String getTime = mFormat.format(date);
+        binding.date.setText(getTime);
 
         // 상황 텍스트 뿌리기
         binding.ResultSituationUserInput.setText(recordList.get(index).situation);
@@ -201,8 +201,6 @@ public class Record_Result extends AppCompatActivity {
         reflectionEdit.commit();
         typeEdit.clear();
         typeEdit.commit();
-        dateEdit.clear();
-        dateEdit.commit();
         emotionColorEdit.clear();
         emotionColorEdit.commit();
         Intent intent = new Intent(getApplicationContext(), MainPage.class);
@@ -226,8 +224,6 @@ public class Record_Result extends AppCompatActivity {
         reflectionEdit.commit();
         typeEdit.clear();
         typeEdit.commit();
-        dateEdit.clear();
-        dateEdit.commit();
         emotionColorEdit.clear();
         emotionColorEdit.commit();
     }

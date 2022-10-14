@@ -24,8 +24,7 @@ public class Old_Reflection extends AppCompatActivity {
     SharedPreferences.Editor reflectionEdit;
     SharedPreferences type;
     SharedPreferences.Editor typeEdit;
-    SharedPreferences dates;
-    SharedPreferences.Editor datesEdit;
+    Date date;
 
     SharedPreferences emotion;
     SharedPreferences emotionText;
@@ -64,8 +63,6 @@ public class Old_Reflection extends AppCompatActivity {
         reflectionEdit = reflection.edit();
         type = getSharedPreferences("type", MODE_PRIVATE);
         typeEdit = type.edit();
-        dates = getSharedPreferences("date", MODE_PRIVATE);
-        datesEdit = dates.edit();
 
         emotion = getSharedPreferences("emotion", MODE_PRIVATE);
         emotionText = getSharedPreferences("emotionText", MODE_PRIVATE);
@@ -98,11 +95,7 @@ public class Old_Reflection extends AppCompatActivity {
                 typeEdit.commit();
                 // 오늘 날짜 저장
                 long now = System.currentTimeMillis();
-                Date date = new Date(now);
-                SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
-                String getTime = mFormat.format(date);
-                datesEdit.putString("date", getTime);
-                datesEdit.commit();
+                date = new Date(now);
 
                 // 최종 기록 저장
                 // 만약 SharedPreferences에 저장된 arrayList가 있다면,
@@ -119,7 +112,7 @@ public class Old_Reflection extends AppCompatActivity {
                 }
 
                 // recordList에 데이터 저장(인스턴트 추가)
-                recordList.add(new Record(emotionColor.getInt("emotionColor", R.color.white), dates.getString("date", "0000-00-00 0요일"),
+                recordList.add(new Record(emotionColor.getInt("emotionColor", R.color.white), date,
                         type.getString("type", "ㅇㅇ의 일기"), emotion.getString("emotion", "감정"), situation.getString("situation", "상황"),
                         thought.getString("thought", "생각"), emotionText.getString("emotionText", ""), reflection.getString("reflection", "회고")));
 

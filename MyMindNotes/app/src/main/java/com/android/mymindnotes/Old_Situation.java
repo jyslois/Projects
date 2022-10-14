@@ -28,8 +28,6 @@ public class Old_Situation extends AppCompatActivity {
     SharedPreferences.Editor reflectionEdit;
     SharedPreferences type;
     SharedPreferences.Editor typeEdit;
-    SharedPreferences date;
-    SharedPreferences.Editor dateEdit;
     SharedPreferences emotionColor;
     SharedPreferences.Editor emotionColorEdit;
 
@@ -81,8 +79,6 @@ public class Old_Situation extends AppCompatActivity {
         reflectionEdit = reflection.edit();
         type = getSharedPreferences("type", MODE_PRIVATE);
         typeEdit = type.edit();
-        date = getSharedPreferences("date", MODE_PRIVATE);
-        dateEdit = date.edit();
         emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
         emotionColorEdit = emotionColor.edit();
 
@@ -112,8 +108,6 @@ public class Old_Situation extends AppCompatActivity {
             reflectionEdit.commit();
             typeEdit.clear();
             typeEdit.commit();
-            dateEdit.clear();
-            dateEdit.commit();
             finish();
         }
     };

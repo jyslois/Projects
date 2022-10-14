@@ -24,19 +24,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 public class Diary extends AppCompatActivity {
     ActivityDiaryBinding binding;
-
-    SharedPreferences reflection;
-    SharedPreferences type;
-    SharedPreferences dates;
-    SharedPreferences emotion;
-    SharedPreferences emotionText;
-    SharedPreferences situation;
-    SharedPreferences thought;
-    SharedPreferences emotionColor;
 
     SharedPreferences arrayList;
     SharedPreferences.Editor arrayListEdit;
@@ -45,12 +39,15 @@ public class Diary extends AppCompatActivity {
     static RecyclerView diaryView;
     DiaryAdaptor adaptor;
 
+    String getTime;
+
 
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
     @Override
     public void onResume() {
         super.onResume();
 
+        // 수정된 내용 적용
         Gson gson = new Gson();
         String json = arrayList.getString("arrayList", "");
         Type type = new TypeToken<ArrayList<Record>>() {
@@ -58,6 +55,15 @@ public class Diary extends AppCompatActivity {
         recordList = gson.fromJson(json, type);
 
         adaptor.updateItemList(recordList);
+
+        // 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
+        if (binding.sortDateButton.getText().toString().equals("최신순")) {
+            Collections.sort(recordList, Record.DateLatestComparator);
+            adaptor.notifyDataSetChanged();
+        } else {
+            Collections.sort(recordList, Record.DateOldComparator);
+            adaptor.notifyDataSetChanged();
+        }
     }
 
 
@@ -67,14 +73,7 @@ public class Diary extends AppCompatActivity {
         binding = ActivityDiaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        emotion = getSharedPreferences("emotion", MODE_PRIVATE);
-        emotionText = getSharedPreferences("emotionText", MODE_PRIVATE);
-        emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
-        situation = getSharedPreferences("situation", MODE_PRIVATE);
-        thought = getSharedPreferences("thought", MODE_PRIVATE);
-        reflection = getSharedPreferences("reflection", MODE_PRIVATE);
-        type = getSharedPreferences("type", MODE_PRIVATE);
-        dates = getSharedPreferences("date", MODE_PRIVATE);
+
         arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
         arrayListEdit = arrayList.edit();
 
@@ -97,10 +96,27 @@ public class Diary extends AppCompatActivity {
 
         diaryView = binding.diaryView;
         diaryView.setLayoutManager(new LinearLayoutManager(this));
+
         // recordList에 어뎁터 연결
         adaptor = new DiaryAdaptor(recordList);
         diaryView.setAdapter(adaptor);
         diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
+
+
+        // 날짜별 최신순/오래된순 정렬
+        binding.sortDateButton.setOnClickListener(view -> {
+            if (binding.sortDateButton.getText().toString().equals("오래된순")) {
+                Collections.sort(recordList, Record.DateLatestComparator);
+                binding.sortDateButton.setText("최신순");
+                adaptor.notifyDataSetChanged();
+            } else {
+                Collections.sort(recordList, Record.DateOldComparator);
+                binding.sortDateButton.setText("오래된순");
+                adaptor.notifyDataSetChanged();
+            }
+        });
+
+
 
     }
 
@@ -120,7 +136,7 @@ public class Diary extends AppCompatActivity {
                     if(pos != RecyclerView.NO_POSITION){
                         Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
                         intent.putExtra("type", recordList.get(pos).type);
-                        intent.putExtra("date", recordList.get(pos).date);
+                        intent.putExtra("date", getTime);
                         intent.putExtra("situation", recordList.get(pos).situation);
                         intent.putExtra("thought", recordList.get(pos).thought);
                         intent.putExtra("emotion", recordList.get(pos).emotionWord);
@@ -157,8 +173,10 @@ public class Diary extends AppCompatActivity {
             viewHolder.binding.emotionCircle.setImageResource(emotionCircle);
 
             // 날짜 세팅
-            String date = recordList.get(position).date;
-            viewHolder.binding.date.setText(date);
+            Date date = recordList.get(position).date;
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
+            getTime = mFormat.format(date);
+            viewHolder.binding.date.setText(getTime);
 
             // 감정 이름 세팅
             String emotion = recordList.get(position).emotionWord;
