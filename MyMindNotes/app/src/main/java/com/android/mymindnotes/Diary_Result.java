@@ -90,6 +90,7 @@ public class Diary_Result extends AppCompatActivity {
 
         // 데이터 세팅을 위해 가져오기
         Intent intent = getIntent();
+        index = intent.getIntExtra("index", 0);
 
         // 목록으로 돌아가기 버튼 클릭 시 전 페이지로
         binding.backtoListButton.setOnClickListener(view -> {
@@ -120,7 +121,6 @@ public class Diary_Result extends AppCompatActivity {
             }.getType();
             recordList = gson.fromJson(json, type);
 
-            index = intent.getIntExtra("index", 0);
             recordList.remove(index);
 
             // 업데이트 된 recordList를 SharedPreferences에 저장

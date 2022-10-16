@@ -48,6 +48,7 @@ public class Record {
                 return 0;
             }
             return o2.getDate().compareTo(o1.getDate());
+//            return o1.getDate().compareTo(o2.getDate()) * -1;
         }
     };
 
