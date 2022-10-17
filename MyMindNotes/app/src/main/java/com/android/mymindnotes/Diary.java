@@ -57,13 +57,16 @@ public class Diary extends AppCompatActivity {
         adaptor.updateItemList(recordList);
 
         // 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
-        if (binding.sortDateButton.getText().toString().equals("최신순")) {
-            Collections.sort(recordList, Record.DateLatestComparator);
-            adaptor.notifyDataSetChanged();
-        } else {
-            Collections.sort(recordList, Record.DateOldComparator);
-            adaptor.notifyDataSetChanged();
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            if (binding.sortDateButton.getText().toString().equals("최신순")) {
+                Collections.sort(recordList, Record.DateLatestComparator);
+                adaptor.notifyDataSetChanged();
+            } else {
+                Collections.sort(recordList, Record.DateOldComparator);
+                adaptor.notifyDataSetChanged();
+            }
         }
+
     }
 
 
@@ -104,18 +107,19 @@ public class Diary extends AppCompatActivity {
 
 
         // 날짜별 최신순/오래된순 정렬
-        binding.sortDateButton.setOnClickListener(view -> {
-            if (binding.sortDateButton.getText().toString().equals("오래된순")) {
-                Collections.sort(recordList, Record.DateLatestComparator);
-                binding.sortDateButton.setText("최신순");
-                adaptor.notifyDataSetChanged();
-            } else {
-                Collections.sort(recordList, Record.DateOldComparator);
-                binding.sortDateButton.setText("오래된순");
-                adaptor.notifyDataSetChanged();
-            }
-        });
-
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            binding.sortDateButton.setOnClickListener(view -> {
+                if (binding.sortDateButton.getText().toString().equals("오래된순")) {
+                    Collections.sort(recordList, Record.DateLatestComparator);
+                    binding.sortDateButton.setText("최신순");
+                    adaptor.notifyDataSetChanged();
+                } else {
+                    Collections.sort(recordList, Record.DateOldComparator);
+                    binding.sortDateButton.setText("오래된순");
+                    adaptor.notifyDataSetChanged();
+                }
+            });
+        }
 
 
     }
