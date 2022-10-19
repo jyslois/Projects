@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
@@ -36,6 +38,7 @@ public class Diary extends AppCompatActivity {
     SharedPreferences.Editor arrayListEdit;
 
     ArrayList<Record> recordList;
+    ArrayList<Record> tempList;
     static RecyclerView diaryView;
     DiaryAdaptor adaptor;
 
@@ -54,17 +57,15 @@ public class Diary extends AppCompatActivity {
         }.getType();
         recordList = gson.fromJson(json, type);
 
-        adaptor.updateItemList(recordList);
 
         // 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
         if (!arrayList.getString("arrayList", "").equals("")) {
             if (binding.sortDateButton.getText().toString().equals("최신순")) {
                 Collections.sort(recordList, Record.DateLatestComparator);
-                adaptor.notifyDataSetChanged();
             } else {
                 Collections.sort(recordList, Record.DateOldComparator);
-                adaptor.notifyDataSetChanged();
             }
+            adaptor.updateItemList(recordList);
         }
 
     }
@@ -112,12 +113,18 @@ public class Diary extends AppCompatActivity {
                 if (binding.sortDateButton.getText().toString().equals("오래된순")) {
                     Collections.sort(recordList, Record.DateLatestComparator);
                     binding.sortDateButton.setText("최신순");
-                    adaptor.notifyDataSetChanged();
                 } else {
                     Collections.sort(recordList, Record.DateOldComparator);
                     binding.sortDateButton.setText("오래된순");
-                    adaptor.notifyDataSetChanged();
                 }
+//                tempList = new ArrayList<>();
+//                tempList.addAll(recordList);
+//                recordList.clear();
+//                recordList = new ArrayList<>();
+//                recordList.addAll(tempList);
+//                adaptor.notifyDataSetChanged();
+                adaptor.updateItemList(recordList);
+
             });
         }
 
@@ -127,16 +134,18 @@ public class Diary extends AppCompatActivity {
     class ViewHolder extends RecyclerView.ViewHolder {
         DiaryitemBinding binding;
 
+
         ViewHolder(DiaryitemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            int pos = getAdapterPosition();
 
             //아이템 클릭 시
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //존재하는 포지션인지 확인
-                    int pos = getAdapterPosition();
+                    final int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION){
                         Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
                         intent.putExtra("type", recordList.get(pos).type);
@@ -152,14 +161,22 @@ public class Diary extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     class DiaryAdaptor extends RecyclerView.Adapter<ViewHolder> {
         // 항목 구성 데이터
+
         private ArrayList<Record> recordList;
 
-        public DiaryAdaptor(ArrayList<Record> recordList) {
-            this.recordList = recordList;
+        public DiaryAdaptor(ArrayList<Record> arrayList) {
+            this.recordList = arrayList;
+        }
+
+        // 데이터셋을 업데이트하기 위한 메서드 (onResume)에서 사용
+        public void updateItemList(ArrayList<Record> arrayList) {
+            this.recordList = arrayList;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -193,7 +210,6 @@ public class Diary extends AppCompatActivity {
             // 타입 세팅
             String type = recordList.get(position).type;
             viewHolder.binding.type.setText(type);
-
         }
 
         @Override
@@ -204,11 +220,6 @@ public class Diary extends AppCompatActivity {
             return recordList.size();
         }
 
-        // 데이터셋을 업데이트하기 위한 메서드 (onResume)에서 사용
-        public void updateItemList(ArrayList<Record> recordList) {
-            this.recordList = recordList;
-            notifyDataSetChanged();
-        }
 
     }
 
@@ -231,12 +242,5 @@ public class Diary extends AppCompatActivity {
 
         return true;
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Intent intent = new Intent(getApplicationContext(), MainPage.class);
-//        startActivity(intent);
-//    }
 
 }
