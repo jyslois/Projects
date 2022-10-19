@@ -60,11 +60,10 @@ public class Diary extends AppCompatActivity {
         if (!arrayList.getString("arrayList", "").equals("")) {
             if (binding.sortDateButton.getText().toString().equals("최신순")) {
                 Collections.sort(recordList, Record.DateLatestComparator);
-                adaptor.notifyDataSetChanged();
             } else {
                 Collections.sort(recordList, Record.DateOldComparator);
-                adaptor.notifyDataSetChanged();
             }
+            adaptor.notifyDataSetChanged();
         }
 
     }
@@ -106,18 +105,19 @@ public class Diary extends AppCompatActivity {
         diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
 
 
+        // 클리어 한 다음에 다시 세팅
         // 날짜별 최신순/오래된순 정렬
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortDateButton.setOnClickListener(view -> {
                 if (binding.sortDateButton.getText().toString().equals("오래된순")) {
                     Collections.sort(recordList, Record.DateLatestComparator);
                     binding.sortDateButton.setText("최신순");
-                    adaptor.notifyDataSetChanged();
                 } else {
                     Collections.sort(recordList, Record.DateOldComparator);
                     binding.sortDateButton.setText("오래된순");
-                    adaptor.notifyDataSetChanged();
                 }
+                adaptor.updateItemList(recordList);
+                adaptor.notifyDataSetChanged();
             });
         }
 
