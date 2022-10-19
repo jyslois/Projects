@@ -65,11 +65,9 @@ public class Diary extends AppCompatActivity {
             } else {
                 Collections.sort(recordList, Record.DateOldComparator);
             }
-<<<<<<< .merge_file_a02148
             adaptor.notifyDataSetChanged();
-=======
             adaptor.updateItemList(recordList);
->>>>>>> .merge_file_a05508
+
         }
 
     }
@@ -122,10 +120,9 @@ public class Diary extends AppCompatActivity {
                     Collections.sort(recordList, Record.DateOldComparator);
                     binding.sortDateButton.setText("오래된순");
                 }
-<<<<<<< .merge_file_a02148
+
                 adaptor.updateItemList(recordList);
                 adaptor.notifyDataSetChanged();
-=======
 //                tempList = new ArrayList<>();
 //                tempList.addAll(recordList);
 //                recordList.clear();
@@ -133,8 +130,6 @@ public class Diary extends AppCompatActivity {
 //                recordList.addAll(tempList);
 //                adaptor.notifyDataSetChanged();
                 adaptor.updateItemList(recordList);
-
->>>>>>> .merge_file_a05508
             });
         }
 
