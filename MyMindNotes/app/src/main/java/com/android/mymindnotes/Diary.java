@@ -44,6 +44,8 @@ public class Diary extends AppCompatActivity {
 
     String getTime;
 
+    int itemPosition;
+
 
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
     @Override
@@ -65,7 +67,6 @@ public class Diary extends AppCompatActivity {
             } else {
                 Collections.sort(recordList, Record.DateOldComparator);
             }
-            adaptor.notifyDataSetChanged();
             adaptor.updateItemList(recordList);
 
         }
@@ -120,9 +121,6 @@ public class Diary extends AppCompatActivity {
                     Collections.sort(recordList, Record.DateOldComparator);
                     binding.sortDateButton.setText("오래된순");
                 }
-
-                adaptor.updateItemList(recordList);
-                adaptor.notifyDataSetChanged();
 //                tempList = new ArrayList<>();
 //                tempList.addAll(recordList);
 //                recordList.clear();
@@ -139,11 +137,9 @@ public class Diary extends AppCompatActivity {
     class ViewHolder extends RecyclerView.ViewHolder {
         DiaryitemBinding binding;
 
-
         ViewHolder(DiaryitemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            int pos = getAdapterPosition();
 
             //아이템 클릭 시
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
@@ -169,83 +165,85 @@ public class Diary extends AppCompatActivity {
 
     }
 
-    class DiaryAdaptor extends RecyclerView.Adapter<ViewHolder> {
-        // 항목 구성 데이터
+        class DiaryAdaptor extends RecyclerView.Adapter<ViewHolder> {
+            // 항목 구성 데이터
 
-        private ArrayList<Record> recordList;
+            private ArrayList<Record> recordList;
 
-        public DiaryAdaptor(ArrayList<Record> arrayList) {
-            this.recordList = arrayList;
-        }
-
-        // 데이터셋을 업데이트하기 위한 메서드 (onResume)에서 사용
-        public void updateItemList(ArrayList<Record> arrayList) {
-            this.recordList = arrayList;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGorup, int i) {
-            DiaryitemBinding binding = DiaryitemBinding.inflate(LayoutInflater.from(viewGorup.getContext()), viewGorup, false);
-            return new ViewHolder(binding);
-        }
-
-        // 항목 구성하기 위해서 자동 콜된다: 항목이 x개면 x번 호출된다
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
-            // 감정 아이콘 세팅
-            int emotionCircle = recordList.get(position).emotionCircle;
-            viewHolder.binding.emotionCircle.setImageResource(emotionCircle);
-
-            // 날짜 세팅
-            Date date = recordList.get(position).date;
-            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
-            getTime = mFormat.format(date);
-            viewHolder.binding.date.setText(getTime);
-
-            // 감정 이름 세팅
-            String emotion = recordList.get(position).emotionWord;
-            viewHolder.binding.emotionWord.setText(emotion);
-
-            // 상황 세팅
-            String situation = recordList.get(position).situation;
-            viewHolder.binding.situation.setText(situation);
-
-            // 타입 세팅
-            String type = recordList.get(position).type;
-            viewHolder.binding.type.setText(type);
-        }
-
-        @Override
-        public int getItemCount() {
-            if (recordList == null) {
-                return 0;
+            public DiaryAdaptor(ArrayList<Record> arrayList) {
+                this.recordList = arrayList;
             }
-            return recordList.size();
+
+            // 데이터셋을 업데이트하기 위한 메서드 (onResume)에서 사용
+            public void updateItemList(ArrayList<Record> arrayList) {
+                this.recordList = arrayList;
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public ViewHolder onCreateViewHolder(ViewGroup viewGorup, int i) {
+                DiaryitemBinding binding = DiaryitemBinding.inflate(LayoutInflater.from(viewGorup.getContext()), viewGorup, false);
+
+                return new ViewHolder(binding);
+            }
+
+
+            // 항목 구성하기 위해서 자동 콜된다: 항목이 x개면 x번 호출된다
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onBindViewHolder(ViewHolder viewHolder, int position) {
+                // 감정 아이콘 세팅
+                int emotionCircle = recordList.get(position).emotionCircle;
+                viewHolder.binding.emotionCircle.setImageResource(emotionCircle);
+
+                // 날짜 세팅
+                Date date = recordList.get(position).date;
+                SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
+                getTime = mFormat.format(date);
+                viewHolder.binding.date.setText(getTime);
+
+                // 감정 이름 세팅
+                String emotion = recordList.get(position).emotionWord;
+                viewHolder.binding.emotionWord.setText(emotion);
+
+                // 상황 세팅
+                String situation = recordList.get(position).situation;
+                viewHolder.binding.situation.setText(situation);
+
+                // 타입 세팅
+                String type = recordList.get(position).type;
+                viewHolder.binding.type.setText(type);
+
+            }
+
+            @Override
+            public int getItemCount() {
+                if (recordList == null) {
+                    return 0;
+                }
+                return recordList.size();
+            }
+
         }
 
 
-    }
+        class DiaryRecyclerViewDecoration extends RecyclerView.ItemDecoration {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
 
-    class DiaryRecyclerViewDecoration extends RecyclerView.ItemDecoration {
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
+                outRect.set(00, 0, 0, 30);
 
-            outRect.set(00, 0, 0, 30);
-
+            }
         }
-    }
 
 
-    // xml로 작성한 액션바의 메뉴 설정
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_diary, menu);
+        // xml로 작성한 액션바의 메뉴 설정
+        public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_diary, menu);
 
-        return true;
-    }
+            return true;
+        }
 
 }
