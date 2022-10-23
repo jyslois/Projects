@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class Diary extends AppCompatActivity {
@@ -40,6 +42,11 @@ public class Diary extends AppCompatActivity {
 
     String getTime;
 
+    ArrayList<Record> emotionRecordList;
+    Boolean isEmotionRecordListChecked = false;
+    ArrayList<Record> traumaRecordList;
+    Boolean isTraumaRecordListChecked = false;
+
 
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
     @Override
@@ -52,21 +59,45 @@ public class Diary extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<Record>>() {
         }.getType();
         recordList = gson.fromJson(json, type);
-        
-        adaptor.updateItemList(recordList);
 
-        // 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
+
+        // 최신순/오래된순에서 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
         if (!arrayList.getString("arrayList", "").equals("")) {
-            if (binding.sortDateButton.getText().toString().equals("최신순")) {
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                linearLayoutManager.setReverseLayout(true);
-                linearLayoutManager.setStackFromEnd(true);
-                diaryView.setLayoutManager(linearLayoutManager);
-            } else {
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                linearLayoutManager.setReverseLayout(false);
-                linearLayoutManager.setStackFromEnd(false);
-                diaryView.setLayoutManager(linearLayoutManager);
+                if (binding.sortDateButton.getText().toString().equals("최신순")) {
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    linearLayoutManager.setReverseLayout(true);
+                    linearLayoutManager.setStackFromEnd(true);
+                    diaryView.setLayoutManager(linearLayoutManager);
+                } else {
+                    Collections.sort(recordList, Record.DateOldComparator);
+                }
+            adaptor.updateItemList(recordList);
+            }
+
+
+        // 만약 감정일기 모음에서 클릭이나 수정 후 돌아온 거라면
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            if (isEmotionRecordListChecked) {
+                emotionRecordList = new ArrayList<>();
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
+                        emotionRecordList.add(recordList.get(i));
+                    }
+                }
+                adaptor.updateItemList(emotionRecordList);
+                }
+        }
+
+        // 만약 트라우마일기 모음에서 클릭이나 수정 후 돌아온 거라면
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            if (isTraumaRecordListChecked) {
+                traumaRecordList = new ArrayList<>();
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("트라우마 일기")) {
+                        traumaRecordList.add(recordList.get(i));
+                    }
+                }
+                adaptor.updateItemList(traumaRecordList);
             }
         }
 
@@ -112,6 +143,9 @@ public class Diary extends AppCompatActivity {
         // 날짜별 최신순/오래된순 정렬
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortDateButton.setOnClickListener(view -> {
+                isEmotionRecordListChecked = false;
+                isTraumaRecordListChecked = false;
+                adaptor.updateItemList(recordList);
                 if (binding.sortDateButton.getText().toString().equals("오래된순")) {
                     binding.sortDateButton.setText("최신순");
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -124,8 +158,42 @@ public class Diary extends AppCompatActivity {
                     linearLayoutManager.setReverseLayout(false);
                     linearLayoutManager.setStackFromEnd(false);
                     diaryView.setLayoutManager(linearLayoutManager);
-
                 }
+                adaptor.updateItemList(recordList);
+            });
+        }
+
+        // 감정일기 모음
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            binding.sortEmotionDiaryButton.setOnClickListener(view -> {
+                isEmotionRecordListChecked = true;
+                isTraumaRecordListChecked = false;
+                emotionRecordList = new ArrayList<>();
+
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
+                        emotionRecordList.add(recordList.get(i));
+                    }
+                }
+
+                adaptor.updateItemList(emotionRecordList);
+            });
+        }
+
+
+        // 트라우마 일기 모음
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            binding.sortTraumaButton.setOnClickListener(view -> {
+                isEmotionRecordListChecked = false;
+                isTraumaRecordListChecked = true;
+                traumaRecordList = new ArrayList<>();
+
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("트라우마 일기")) {
+                        traumaRecordList.add(recordList.get(i));
+                    }
+                }
+                adaptor.updateItemList(traumaRecordList);
             });
         }
 
@@ -138,27 +206,6 @@ public class Diary extends AppCompatActivity {
         ViewHolder(DiaryitemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-            //아이템 클릭 시
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //존재하는 포지션인지 확인
-                    final int pos = getAdapterPosition();
-                    if(pos != RecyclerView.NO_POSITION){
-                        Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
-                        intent.putExtra("type", recordList.get(pos).type);
-                        intent.putExtra("date", getTime);
-                        intent.putExtra("situation", recordList.get(pos).situation);
-                        intent.putExtra("thought", recordList.get(pos).thought);
-                        intent.putExtra("emotion", recordList.get(pos).emotionWord);
-                        intent.putExtra("emotionText", recordList.get(pos).emotionText);
-                        intent.putExtra("reflection", recordList.get(pos).reflection);
-                        intent.putExtra("index", pos);
-                        startActivity(intent);
-                    }
-                }
-            });
         }
 
     }
@@ -212,6 +259,19 @@ public class Diary extends AppCompatActivity {
             String type = recordList.get(position).type;
             viewHolder.binding.type.setText(type);
 
+            viewHolder.binding.getRoot().setOnClickListener(view -> {
+                Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
+                intent.putExtra("type", recordList.get(position).type);
+                intent.putExtra("date", getTime);
+                intent.putExtra("situation", recordList.get(position).situation);
+                intent.putExtra("thought", recordList.get(position).thought);
+                intent.putExtra("emotion", recordList.get(position).emotionWord);
+                intent.putExtra("emotionText", recordList.get(position).emotionText);
+                intent.putExtra("reflection", recordList.get(position).reflection);
+                intent.putExtra("index", position);
+                startActivity(intent);
+            });
+
         }
 
         @Override
@@ -221,6 +281,12 @@ public class Diary extends AppCompatActivity {
             }
             return recordList.size();
         }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
 
     }
 

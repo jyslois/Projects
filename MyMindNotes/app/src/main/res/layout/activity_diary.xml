@@ -62,7 +62,7 @@
                 android:backgroundTint="#F3A8938E"
                 android:textColor="#F3F5F6"
                 android:textStyle="bold"
-                android:id="@+id/sort_newEmotion_button"/>
+                android:id="@+id/sort_emotionDiary_button"/>
 
             <com.google.android.material.button.MaterialButton
                 android:layout_weight="1"
@@ -75,7 +75,7 @@
                 android:backgroundTint="#F3A8938E"
                 android:textColor="#F3F5F6"
                 android:textStyle="bold"
-                android:id="@+id/sort_oldEmotion_button"/>
+                android:id="@+id/sort_trauma_button"/>
         </LinearLayout>
 
 

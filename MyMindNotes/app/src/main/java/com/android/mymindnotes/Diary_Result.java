@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.android.mymindnotes.databinding.ActivityDiaryResultBinding;
@@ -42,13 +43,11 @@ public class Diary_Result extends AppCompatActivity {
 
         // 데이터 세팅
         Intent intent = getIntent();
-        index = intent.getIntExtra("index", 0);
-
-        situation = recordList.get(index).situation;
-        thought = recordList.get(index).thought;
-        emotion = recordList.get(index).emotionWord;
-        emotionText = recordList.get(index).emotionText;
-        reflection = recordList.get(index).reflection;
+        situation = intent.getStringExtra("situation");
+        thought = intent.getStringExtra("thought");
+        emotion = intent.getStringExtra("emotion");
+        emotionText = intent.getStringExtra("emotionText");
+        reflection = intent.getStringExtra("reflection");
 
         // 상황 텍스트 뿌리기
         binding.ResultSituationUserInput.setText(situation);
@@ -88,10 +87,6 @@ public class Diary_Result extends AppCompatActivity {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
 
-        // 데이터 세팅을 위해 가져오기
-        Intent intent = getIntent();
-        index = intent.getIntExtra("index", 0);
-
         // 목록으로 돌아가기 버튼 클릭 시 전 페이지로
         binding.backtoListButton.setOnClickListener(view -> {
             finish();
@@ -108,6 +103,9 @@ public class Diary_Result extends AppCompatActivity {
             intento.putExtra("emotion", emotion);
             intento.putExtra("emotionText", emotionText);
             intento.putExtra("reflection", reflection);
+            // 데이터 세팅을 위해 가져오기
+            Intent intent = getIntent();
+            index = intent.getIntExtra("index", 0);
             intento.putExtra("index", index);
             startActivity(intento);
         });
@@ -129,12 +127,11 @@ public class Diary_Result extends AppCompatActivity {
             arrayListEdit.commit();
 
             finish();
-
-//            Intent tointent = new Intent(getApplicationContext(), Diary.class);
-//            startActivity(tointent);
         });
 
-
+        // 데이터 세팅을 위해 가져오기
+        Intent intent = getIntent();
+        index = intent.getIntExtra("index", 0);
         // 데이터 세팅
         type = intent.getStringExtra("type");
         date = intent.getStringExtra("date");
