@@ -64,42 +64,47 @@ public class Diary extends AppCompatActivity {
         // 최신순/오래된순에서 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
         if (!arrayList.getString("arrayList", "").equals("")) {
                 if (binding.sortDateButton.getText().toString().equals("최신순")) {
+//                    Collections.sort(recordList, Record.DateLatestComparator);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     linearLayoutManager.setReverseLayout(true);
                     linearLayoutManager.setStackFromEnd(true);
                     diaryView.setLayoutManager(linearLayoutManager);
                 } else {
-                    Collections.sort(recordList, Record.DateOldComparator);
+//                    Collections.sort(recordList, Record.DateOldComparator);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    linearLayoutManager.setReverseLayout(false);
+                    linearLayoutManager.setStackFromEnd(false);
+                    diaryView.setLayoutManager(linearLayoutManager);
                 }
             adaptor.updateItemList(recordList);
             }
 
 
-        // 만약 감정일기 모음에서 클릭이나 수정 후 돌아온 거라면
-        if (!arrayList.getString("arrayList", "").equals("")) {
-            if (isEmotionRecordListChecked) {
-                emotionRecordList = new ArrayList<>();
-                for (int i = 0; i < recordList.size(); i++) {
-                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
-                        emotionRecordList.add(recordList.get(i));
-                    }
-                }
-                adaptor.updateItemList(emotionRecordList);
-                }
-        }
-
-        // 만약 트라우마일기 모음에서 클릭이나 수정 후 돌아온 거라면
-        if (!arrayList.getString("arrayList", "").equals("")) {
-            if (isTraumaRecordListChecked) {
-                traumaRecordList = new ArrayList<>();
-                for (int i = 0; i < recordList.size(); i++) {
-                    if (recordList.get(i).type.equals("트라우마 일기")) {
-                        traumaRecordList.add(recordList.get(i));
-                    }
-                }
-                adaptor.updateItemList(traumaRecordList);
-            }
-        }
+//        // 만약 감정일기 모음에서 클릭이나 수정 후 돌아온 거라면
+//        if (!arrayList.getString("arrayList", "").equals("")) {
+//            if (isEmotionRecordListChecked) {
+//                emotionRecordList = new ArrayList<>();
+//                for (int i = 0; i < recordList.size(); i++) {
+//                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
+//                        emotionRecordList.add(recordList.get(i));
+//                    }
+//                }
+//                adaptor.updateItemList(emotionRecordList);
+//                }
+//        }
+//
+//        // 만약 트라우마일기 모음에서 클릭이나 수정 후 돌아온 거라면
+//        if (!arrayList.getString("arrayList", "").equals("")) {
+//            if (isTraumaRecordListChecked) {
+//                traumaRecordList = new ArrayList<>();
+//                for (int i = 0; i < recordList.size(); i++) {
+//                    if (recordList.get(i).type.equals("트라우마 일기")) {
+//                        traumaRecordList.add(recordList.get(i));
+//                    }
+//                }
+//                adaptor.updateItemList(traumaRecordList);
+//            }
+//        }
 
     }
 
@@ -152,50 +157,52 @@ public class Diary extends AppCompatActivity {
                     linearLayoutManager.setReverseLayout(true);
                     linearLayoutManager.setStackFromEnd(true);
                     diaryView.setLayoutManager(linearLayoutManager);
+//                    Collections.sort(recordList, Record.DateLatestComparator);
                 } else {
                     binding.sortDateButton.setText("오래된순");
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     linearLayoutManager.setReverseLayout(false);
                     linearLayoutManager.setStackFromEnd(false);
                     diaryView.setLayoutManager(linearLayoutManager);
+//                    Collections.sort(recordList, Record.DateOldComparator);
                 }
                 adaptor.updateItemList(recordList);
             });
         }
 
-        // 감정일기 모음
-        if (!arrayList.getString("arrayList", "").equals("")) {
-            binding.sortEmotionDiaryButton.setOnClickListener(view -> {
-                isEmotionRecordListChecked = true;
-                isTraumaRecordListChecked = false;
-                emotionRecordList = new ArrayList<>();
-
-                for (int i = 0; i < recordList.size(); i++) {
-                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
-                        emotionRecordList.add(recordList.get(i));
-                    }
-                }
-
-                adaptor.updateItemList(emotionRecordList);
-            });
-        }
-
-
-        // 트라우마 일기 모음
-        if (!arrayList.getString("arrayList", "").equals("")) {
-            binding.sortTraumaButton.setOnClickListener(view -> {
-                isEmotionRecordListChecked = false;
-                isTraumaRecordListChecked = true;
-                traumaRecordList = new ArrayList<>();
-
-                for (int i = 0; i < recordList.size(); i++) {
-                    if (recordList.get(i).type.equals("트라우마 일기")) {
-                        traumaRecordList.add(recordList.get(i));
-                    }
-                }
-                adaptor.updateItemList(traumaRecordList);
-            });
-        }
+//        // 감정일기 모음
+//        if (!arrayList.getString("arrayList", "").equals("")) {
+//            binding.sortEmotionDiaryButton.setOnClickListener(view -> {
+//                isEmotionRecordListChecked = true;
+//                isTraumaRecordListChecked = false;
+//                emotionRecordList = new ArrayList<>();
+//
+//                for (int i = 0; i < recordList.size(); i++) {
+//                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
+//                        emotionRecordList.add(recordList.get(i));
+//                    }
+//                }
+//
+//                adaptor.updateItemList(emotionRecordList);
+//            });
+//        }
+//
+//
+//        // 트라우마 일기 모음
+//        if (!arrayList.getString("arrayList", "").equals("")) {
+//            binding.sortTraumaButton.setOnClickListener(view -> {
+//                isTraumaRecordListChecked = true;
+//                isEmotionRecordListChecked = false;
+//                traumaRecordList = new ArrayList<>();
+//
+//                for (int i = 0; i < recordList.size(); i++) {
+//                    if (recordList.get(i).type.equals("트라우마 일기")) {
+//                        traumaRecordList.add(recordList.get(i));
+//                    }
+//                }
+//                adaptor.updateItemList(traumaRecordList);
+//            });
+//        }
 
 
     }
@@ -228,6 +235,7 @@ public class Diary extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGorup, int i) {
             DiaryitemBinding binding = DiaryitemBinding.inflate(LayoutInflater.from(viewGorup.getContext()), viewGorup, false);
+
 
             return new ViewHolder(binding);
         }
@@ -268,6 +276,7 @@ public class Diary extends AppCompatActivity {
                 intent.putExtra("emotion", recordList.get(position).emotionWord);
                 intent.putExtra("emotionText", recordList.get(position).emotionText);
                 intent.putExtra("reflection", recordList.get(position).reflection);
+                Log.d("index", String.valueOf(position));
                 intent.putExtra("index", position);
                 startActivity(intent);
             });

@@ -43,11 +43,18 @@ public class Diary_Result extends AppCompatActivity {
 
         // 데이터 세팅
         Intent intent = getIntent();
-        situation = intent.getStringExtra("situation");
-        thought = intent.getStringExtra("thought");
-        emotion = intent.getStringExtra("emotion");
-        emotionText = intent.getStringExtra("emotionText");
-        reflection = intent.getStringExtra("reflection");
+        index = intent.getIntExtra("index", index);
+        situation = recordList.get(index).situation;
+        thought = recordList.get(index).thought;
+        emotion = recordList.get(index).emotionWord;
+        emotionText = recordList.get(index).emotionText;
+        reflection = recordList.get(index).reflection;
+//        situation = intent.getStringExtra("situation");
+//        thought = intent.getStringExtra("thought");
+//        emotion = intent.getStringExtra("emotion");
+//        emotionText = intent.getStringExtra("emotionText");
+//        reflection = intent.getStringExtra("reflection");
+
 
         // 상황 텍스트 뿌리기
         binding.ResultSituationUserInput.setText(situation);
@@ -105,7 +112,7 @@ public class Diary_Result extends AppCompatActivity {
             intento.putExtra("reflection", reflection);
             // 데이터 세팅을 위해 가져오기
             Intent intent = getIntent();
-            index = intent.getIntExtra("index", 0);
+            index = intent.getIntExtra("index", index);
             intento.putExtra("index", index);
             startActivity(intento);
         });
@@ -131,7 +138,7 @@ public class Diary_Result extends AppCompatActivity {
 
         // 데이터 세팅을 위해 가져오기
         Intent intent = getIntent();
-        index = intent.getIntExtra("index", 0);
+        index = intent.getIntExtra("index", index);
         // 데이터 세팅
         type = intent.getStringExtra("type");
         date = intent.getStringExtra("date");

@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.android.mymindnotes.databinding.ActivityDiaryResultEditBinding;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -55,7 +57,8 @@ public class Diary_Result_Edit extends AppCompatActivity {
         emotion = intent.getStringExtra("emotion");
         emotionText = intent.getStringExtra("emotionText");
         reflection = intent.getStringExtra("reflection");
-        index = intent.getIntExtra("index", 0);
+        index = intent.getIntExtra("index", index);
+        Log.d("index", String.valueOf(index));
         date = intent.getStringExtra("date");
 
         // 화면에 뿌리기
