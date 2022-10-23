@@ -38,13 +38,10 @@ public class Diary extends AppCompatActivity {
     SharedPreferences.Editor arrayListEdit;
 
     ArrayList<Record> recordList;
-    ArrayList<Record> tempList;
     static RecyclerView diaryView;
     DiaryAdaptor adaptor;
 
     String getTime;
-
-    int itemPosition;
 
 
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
@@ -73,7 +70,6 @@ public class Diary extends AppCompatActivity {
                 linearLayoutManager.setStackFromEnd(false);
                 diaryView.setLayoutManager(linearLayoutManager);
             }
-            adaptor.updateItemList(recordList);
 
         }
 
@@ -116,7 +112,6 @@ public class Diary extends AppCompatActivity {
         diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
 
 
-        // 클리어 한 다음에 다시 세팅
         // 날짜별 최신순/오래된순 정렬
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortDateButton.setOnClickListener(view -> {
@@ -134,7 +129,6 @@ public class Diary extends AppCompatActivity {
                     diaryView.setLayoutManager(linearLayoutManager);
 
                 }
-                adaptor.updateItemList(recordList);
             });
         }
 
