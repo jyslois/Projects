@@ -63,9 +63,15 @@ public class Diary extends AppCompatActivity {
         // 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
         if (!arrayList.getString("arrayList", "").equals("")) {
             if (binding.sortDateButton.getText().toString().equals("최신순")) {
-                Collections.sort(recordList, Record.DateLatestComparator);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                linearLayoutManager.setReverseLayout(true);
+                linearLayoutManager.setStackFromEnd(true);
+                diaryView.setLayoutManager(linearLayoutManager);
             } else {
-                Collections.sort(recordList, Record.DateOldComparator);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                linearLayoutManager.setReverseLayout(false);
+                linearLayoutManager.setStackFromEnd(false);
+                diaryView.setLayoutManager(linearLayoutManager);
             }
             adaptor.updateItemList(recordList);
 
@@ -115,18 +121,19 @@ public class Diary extends AppCompatActivity {
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortDateButton.setOnClickListener(view -> {
                 if (binding.sortDateButton.getText().toString().equals("오래된순")) {
-                    Collections.sort(recordList, Record.DateLatestComparator);
                     binding.sortDateButton.setText("최신순");
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    linearLayoutManager.setReverseLayout(true);
+                    linearLayoutManager.setStackFromEnd(true);
+                    diaryView.setLayoutManager(linearLayoutManager);
                 } else {
-                    Collections.sort(recordList, Record.DateOldComparator);
                     binding.sortDateButton.setText("오래된순");
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    linearLayoutManager.setReverseLayout(false);
+                    linearLayoutManager.setStackFromEnd(false);
+                    diaryView.setLayoutManager(linearLayoutManager);
+
                 }
-//                tempList = new ArrayList<>();
-//                tempList.addAll(recordList);
-//                recordList.clear();
-//                recordList = new ArrayList<>();
-//                recordList.addAll(tempList);
-//                adaptor.notifyDataSetChanged();
                 adaptor.updateItemList(recordList);
             });
         }
