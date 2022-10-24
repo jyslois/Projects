@@ -36,7 +36,6 @@ public class Diary extends AppCompatActivity {
     SharedPreferences.Editor arrayListEdit;
 
     ArrayList<Record> recordList;
-    ArrayList<Record> originalList;
     static RecyclerView diaryView;
     DiaryAdaptor adaptor;
 
@@ -289,12 +288,6 @@ public class Diary extends AppCompatActivity {
                 // 이미 새로운 리스트를 만들 때, 오리지날 리스트의 몇 번째 인덱스의 것인지를 저장해 두었다.
                 // 새로운 리스트의 요소의 인덱스 = 저장된 인덱스의 순서
                 // 그러므로 indexList.get(position)을 하면 해당 오리지날 리스트의 인덱스가 나온다.
-                Gson gson = new Gson();
-                String json = arrayList.getString("arrayList", "");
-                Type typed = new TypeToken<ArrayList<Record>>() {
-                }.getType();
-                originalList = gson.fromJson(json, typed);
-
                 if (indexListEmotion.size() != 0) {
                     intent.putExtra("index", indexListEmotion.get(position));
                 } else if (indexListTrauma.size() != 0) {
