@@ -27,7 +27,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 public class Diary extends AppCompatActivity {
@@ -68,13 +67,11 @@ public class Diary extends AppCompatActivity {
         // 최신순/오래된순에서 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
         if (!arrayList.getString("arrayList", "").equals("")) {
                 if (binding.sortDateButton.getText().toString().equals("최신순")) {
-//                    Collections.sort(recordList, Record.DateLatestComparator);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     linearLayoutManager.setReverseLayout(true);
                     linearLayoutManager.setStackFromEnd(true);
                     diaryView.setLayoutManager(linearLayoutManager);
                 } else {
-//                    Collections.sort(recordList, Record.DateOldComparator);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     linearLayoutManager.setReverseLayout(false);
                     linearLayoutManager.setStackFromEnd(false);

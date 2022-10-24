@@ -49,11 +49,6 @@ public class Diary_Result extends AppCompatActivity {
         emotion = recordList.get(index).emotionWord;
         emotionText = recordList.get(index).emotionText;
         reflection = recordList.get(index).reflection;
-//        situation = intent.getStringExtra("situation");
-//        thought = intent.getStringExtra("thought");
-//        emotion = intent.getStringExtra("emotion");
-//        emotionText = intent.getStringExtra("emotionText");
-//        reflection = intent.getStringExtra("reflection");
 
 
         // 상황 텍스트 뿌리기
