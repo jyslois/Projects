@@ -80,7 +80,7 @@ public class Diary extends AppCompatActivity {
             }
 
 
-        // 만약 감정일기 모음에서 클릭이나 수정 후 돌아온 거라면
+        // 만약 마음일기 모음에서 클릭이나 수정 후 돌아온 거라면
         if (!arrayList.getString("arrayList", "").equals("")) {
             if (isEmotionRecordListChecked) {
                 emotionRecordList = new ArrayList<>();
@@ -173,7 +173,7 @@ public class Diary extends AppCompatActivity {
             });
         }
 
-        // 감정일기 모음
+        // 마음일기 모음
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortEmotionDiaryButton.setOnClickListener(view -> {
                 isEmotionRecordListChecked = true;
