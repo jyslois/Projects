@@ -56,7 +56,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:cornerRadius="100dp"
-                android:text="감정일기"
+                android:text="마음일기"
                 android:textSize="11dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="#F3A8938E"
