@@ -37,6 +37,7 @@ public class Diary extends AppCompatActivity {
     SharedPreferences.Editor arrayListEdit;
 
     ArrayList<Record> recordList;
+    ArrayList<Record> originalList;
     static RecyclerView diaryView;
     DiaryAdaptor adaptor;
 
@@ -46,6 +47,9 @@ public class Diary extends AppCompatActivity {
     Boolean isEmotionRecordListChecked = false;
     ArrayList<Record> traumaRecordList;
     Boolean isTraumaRecordListChecked = false;
+
+    ArrayList<Integer> indexListEmotion;
+    ArrayList<Integer> indexListTrauma;
 
 
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
@@ -80,31 +84,31 @@ public class Diary extends AppCompatActivity {
             }
 
 
-//        // 만약 감정일기 모음에서 클릭이나 수정 후 돌아온 거라면
-//        if (!arrayList.getString("arrayList", "").equals("")) {
-//            if (isEmotionRecordListChecked) {
-//                emotionRecordList = new ArrayList<>();
-//                for (int i = 0; i < recordList.size(); i++) {
-//                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
-//                        emotionRecordList.add(recordList.get(i));
-//                    }
-//                }
-//                adaptor.updateItemList(emotionRecordList);
-//                }
-//        }
-//
-//        // 만약 트라우마일기 모음에서 클릭이나 수정 후 돌아온 거라면
-//        if (!arrayList.getString("arrayList", "").equals("")) {
-//            if (isTraumaRecordListChecked) {
-//                traumaRecordList = new ArrayList<>();
-//                for (int i = 0; i < recordList.size(); i++) {
-//                    if (recordList.get(i).type.equals("트라우마 일기")) {
-//                        traumaRecordList.add(recordList.get(i));
-//                    }
-//                }
-//                adaptor.updateItemList(traumaRecordList);
-//            }
-//        }
+        // 만약 감정일기 모음에서 클릭이나 수정 후 돌아온 거라면
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            if (isEmotionRecordListChecked) {
+                emotionRecordList = new ArrayList<>();
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
+                        emotionRecordList.add(recordList.get(i));
+                    }
+                }
+                adaptor.updateItemList(emotionRecordList);
+                }
+        }
+
+        // 만약 트라우마일기 모음에서 클릭이나 수정 후 돌아온 거라면
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            if (isTraumaRecordListChecked) {
+                traumaRecordList = new ArrayList<>();
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("트라우마 일기")) {
+                        traumaRecordList.add(recordList.get(i));
+                    }
+                }
+                adaptor.updateItemList(traumaRecordList);
+            }
+        }
 
     }
 
@@ -118,6 +122,9 @@ public class Diary extends AppCompatActivity {
 
         arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
         arrayListEdit = arrayList.edit();
+
+        indexListEmotion = new ArrayList<>();
+        indexListTrauma = new ArrayList<>();
 
         // 만약 SharedPreferences에 저장된 arrayList가 있다면,
         if (!arrayList.getString("arrayList", "").equals("")) {
@@ -150,6 +157,8 @@ public class Diary extends AppCompatActivity {
             binding.sortDateButton.setOnClickListener(view -> {
                 isEmotionRecordListChecked = false;
                 isTraumaRecordListChecked = false;
+                indexListEmotion.clear();
+                indexListTrauma.clear();
                 adaptor.updateItemList(recordList);
                 if (binding.sortDateButton.getText().toString().equals("오래된순")) {
                     binding.sortDateButton.setText("최신순");
@@ -157,52 +166,54 @@ public class Diary extends AppCompatActivity {
                     linearLayoutManager.setReverseLayout(true);
                     linearLayoutManager.setStackFromEnd(true);
                     diaryView.setLayoutManager(linearLayoutManager);
-//                    Collections.sort(recordList, Record.DateLatestComparator);
                 } else {
                     binding.sortDateButton.setText("오래된순");
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                     linearLayoutManager.setReverseLayout(false);
                     linearLayoutManager.setStackFromEnd(false);
                     diaryView.setLayoutManager(linearLayoutManager);
-//                    Collections.sort(recordList, Record.DateOldComparator);
                 }
                 adaptor.updateItemList(recordList);
             });
         }
 
-//        // 감정일기 모음
-//        if (!arrayList.getString("arrayList", "").equals("")) {
-//            binding.sortEmotionDiaryButton.setOnClickListener(view -> {
-//                isEmotionRecordListChecked = true;
-//                isTraumaRecordListChecked = false;
-//                emotionRecordList = new ArrayList<>();
-//
-//                for (int i = 0; i < recordList.size(); i++) {
-//                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
-//                        emotionRecordList.add(recordList.get(i));
-//                    }
-//                }
-//
-//                adaptor.updateItemList(emotionRecordList);
-//            });
-//        }
-//
-//
-//        // 트라우마 일기 모음
-//        if (!arrayList.getString("arrayList", "").equals("")) {
-//            binding.sortTraumaButton.setOnClickListener(view -> {
-//                isTraumaRecordListChecked = true;
-//                isEmotionRecordListChecked = false;
-//                traumaRecordList = new ArrayList<>();
-//
-//                for (int i = 0; i < recordList.size(); i++) {
-//                    if (recordList.get(i).type.equals("트라우마 일기")) {
-//                        traumaRecordList.add(recordList.get(i));
-//                    }
-//                }
-//                adaptor.updateItemList(traumaRecordList);
-//            });
-//        }
+        // 감정일기 모음
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            binding.sortEmotionDiaryButton.setOnClickListener(view -> {
+                isEmotionRecordListChecked = true;
+                isTraumaRecordListChecked = false;
+                emotionRecordList = new ArrayList<>();
+                indexListTrauma.clear();
+
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("오늘의 마음 일기")) {
+                        emotionRecordList.add(recordList.get(i));
+                        indexListEmotion.add(i);
+                    }
+                }
+
+                adaptor.updateItemList(emotionRecordList);
+            });
+        }
+
+
+        // 트라우마 일기 모음
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            binding.sortTraumaButton.setOnClickListener(view -> {
+                isTraumaRecordListChecked = true;
+                isEmotionRecordListChecked = false;
+                traumaRecordList = new ArrayList<>();
+                indexListEmotion.clear();
+
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).type.equals("트라우마 일기")) {
+                        traumaRecordList.add(recordList.get(i));
+                        indexListTrauma.add(i);
+                    }
+                }
+                adaptor.updateItemList(traumaRecordList);
+            });
+        }
 
 
     }
@@ -276,8 +287,25 @@ public class Diary extends AppCompatActivity {
                 intent.putExtra("emotion", recordList.get(position).emotionWord);
                 intent.putExtra("emotionText", recordList.get(position).emotionText);
                 intent.putExtra("reflection", recordList.get(position).reflection);
-                Log.d("index", String.valueOf(position));
-                intent.putExtra("index", position);
+
+                // 오리지날 리스트의 몇 번째 인덱스에 새로운 리스트의 요소가 있나
+                // 이미 새로운 리스트를 만들 때, 오리지날 리스트의 몇 번째 인덱스의 것인지를 저장해 두었다.
+                // 새로운 리스트의 요소의 인덱스 = 저장된 인덱스의 순서
+                // 그러므로 indexList.get(position)을 하면 해당 오리지날 리스트의 인덱스가 나온다.
+                Gson gson = new Gson();
+                String json = arrayList.getString("arrayList", "");
+                Type typed = new TypeToken<ArrayList<Record>>() {
+                }.getType();
+                originalList = gson.fromJson(json, typed);
+
+                if (indexListEmotion.size() != 0) {
+                    intent.putExtra("index", indexListEmotion.get(position));
+                } else if (indexListTrauma.size() != 0) {
+                    intent.putExtra("index", indexListTrauma.get(position));
+                } else {
+                    intent.putExtra("index", position);
+                }
+
                 startActivity(intent);
             });
 
