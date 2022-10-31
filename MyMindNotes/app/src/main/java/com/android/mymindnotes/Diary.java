@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.android.mymindnotes.databinding.ActivityDiaryBinding;
 import com.android.mymindnotes.databinding.DiaryitemBinding;
@@ -45,9 +48,18 @@ public class Diary extends AppCompatActivity {
     Boolean isEmotionRecordListChecked = false;
     ArrayList<Record> traumaRecordList;
     Boolean isTraumaRecordListChecked = false;
+    ArrayList<Record> singleEmotionList;
+    Boolean isSingleEmotionListChecked = false;
 
     ArrayList<Integer> indexListEmotion;
     ArrayList<Integer> indexListTrauma;
+    ArrayList<Integer> indexListSingleEmotion;
+
+    Spinner spinner;
+    String[] emotionArray;
+    String singleEmotion;
+
+    Date date;
 
 
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
@@ -77,7 +89,7 @@ public class Diary extends AppCompatActivity {
                     diaryView.setLayoutManager(linearLayoutManager);
                 }
             adaptor.updateItemList(recordList);
-            }
+        }
 
 
         // 만약 마음일기 모음에서 클릭이나 수정 후 돌아온 거라면
@@ -106,6 +118,19 @@ public class Diary extends AppCompatActivity {
             }
         }
 
+        // 감정별 정렬에서 클릭이나 수정 후 돌아온 거라면
+        if (!arrayList.getString("arrayList", "").equals("")) {
+            if (isSingleEmotionListChecked) {
+                singleEmotionList = new ArrayList<>();
+                for (int i = 0; i < recordList.size(); i++) {
+                    if (recordList.get(i).emotionWord.equals(singleEmotion)) {
+                        singleEmotionList.add(recordList.get(i));
+                    }
+                }
+                adaptor.updateItemList(singleEmotionList);
+            }
+        }
+
     }
 
 
@@ -115,12 +140,14 @@ public class Diary extends AppCompatActivity {
         binding = ActivityDiaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
         arrayListEdit = arrayList.edit();
 
         indexListEmotion = new ArrayList<>();
         indexListTrauma = new ArrayList<>();
+        indexListSingleEmotion = new ArrayList<>();
+
+        emotionArray = getResources().getStringArray(R.array.emotions_array);
 
         // 만약 SharedPreferences에 저장된 arrayList가 있다면,
         if (!arrayList.getString("arrayList", "").equals("")) {
@@ -151,8 +178,11 @@ public class Diary extends AppCompatActivity {
         // 날짜별 최신순/오래된순 정렬
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortDateButton.setOnClickListener(view -> {
+                binding.sortEmotionButton.setText("감정별");
                 isEmotionRecordListChecked = false;
                 isTraumaRecordListChecked = false;
+                isSingleEmotionListChecked = false;
+                indexListSingleEmotion.clear();
                 indexListEmotion.clear();
                 indexListTrauma.clear();
                 adaptor.updateItemList(recordList);
@@ -176,10 +206,13 @@ public class Diary extends AppCompatActivity {
         // 마음일기 모음
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortEmotionDiaryButton.setOnClickListener(view -> {
+                binding.sortEmotionButton.setText("감정별");
                 isEmotionRecordListChecked = true;
                 isTraumaRecordListChecked = false;
-                emotionRecordList = new ArrayList<>();
+                isSingleEmotionListChecked = false;
+                indexListSingleEmotion.clear();
                 indexListTrauma.clear();
+                emotionRecordList = new ArrayList<>();
 
                 for (int i = 0; i < recordList.size(); i++) {
                     if (recordList.get(i).type.equals("오늘의 마음 일기")) {
@@ -196,10 +229,13 @@ public class Diary extends AppCompatActivity {
         // 트라우마 일기 모음
         if (!arrayList.getString("arrayList", "").equals("")) {
             binding.sortTraumaButton.setOnClickListener(view -> {
+                binding.sortEmotionButton.setText("감정별");
                 isTraumaRecordListChecked = true;
                 isEmotionRecordListChecked = false;
-                traumaRecordList = new ArrayList<>();
+                isSingleEmotionListChecked = false;
+                indexListSingleEmotion.clear();
                 indexListEmotion.clear();
+                traumaRecordList = new ArrayList<>();
 
                 for (int i = 0; i < recordList.size(); i++) {
                     if (recordList.get(i).type.equals("트라우마 일기")) {
@@ -210,6 +246,222 @@ public class Diary extends AppCompatActivity {
                 adaptor.updateItemList(traumaRecordList);
             });
         }
+
+        // 감정별 정렬
+        binding.sortEmotionButton.setOnClickListener(view -> {
+            spinner = binding.emotionSpinner;
+            // strings.xml에 있는 string array (emotions_array)를 사용해서 ArrayAdaptor 만들기
+            // 이 메서드의 세 번째 인수는 선택된 항목이 스피너 컨트롤에 나타나는 방식을 정의하는 레이아웃 리소스,
+            // simple_spinner_item 레이아웃은 플랫폼에서 제공. 스피너의 모양에 관해 자체적인 레이아웃을 직접 정의하고자 하지 않을 경우 사용해야 하는 기본 레이아웃.
+            ArrayAdapter<CharSequence> spinnerAdaptor = ArrayAdapter.createFromResource(this, R.array.emotions_array, android.R.layout.simple_spinner_item);
+            // 어뎁터가 스피너 선택 항목을 표시하는 데 사용해야 하는 레이아웃을 지정. simple_spinner_dropdown_item은 플랫폼에서 정의하는 표준 레이아웃.)
+            spinnerAdaptor.setDropDownViewResource(R.layout.spinneritem);
+            // 어뎁터를 Spinner에 적용
+            spinner.setAdapter(spinnerAdaptor);
+            // 보이게 하기
+            spinner.setVisibility(View.VISIBLE);
+            spinner.performClick();
+
+            // 아이템 클릭 이벤트
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    binding.sortEmotionButton.setText(emotionArray[position]);
+                    switch (emotionArray[position]) {
+                        case "기쁨" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("기쁨")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+                        case "기대" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("기대")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+                        case "신뢰" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("신뢰")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+                        case "놀람" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("놀람")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+                        case "슬픔" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("슬픔")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+                        case "혐오" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("혐오")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+                        case "공포" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("공포")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+                        case "분노" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            singleEmotionList = new ArrayList<>();
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            singleEmotion = emotionArray[position];
+
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).emotionWord.equals("분노")) {
+                                    singleEmotionList.add(recordList.get(i));
+                                    indexListSingleEmotion.add(i);
+                                }
+                            }
+
+                            adaptor.updateItemList(singleEmotionList);
+                        }
+                        break;
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+
+        });
 
 
     }
@@ -257,10 +509,11 @@ public class Diary extends AppCompatActivity {
             viewHolder.binding.emotionCircle.setImageResource(emotionCircle);
 
             // 날짜 세팅
-            Date date = recordList.get(position).date;
-            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd E요일");
-            getTime = mFormat.format(date);
+            date = recordList.get(position).date;
+            final SimpleDateFormat[] mFormat = {new SimpleDateFormat("yyyy-MM-dd E요일")};
+            getTime = mFormat[0].format(date);
             viewHolder.binding.date.setText(getTime);
+            Log.e("timecheck", getTime);
 
             // 감정 이름 세팅
             String emotion = recordList.get(position).emotionWord;
@@ -277,6 +530,9 @@ public class Diary extends AppCompatActivity {
             viewHolder.binding.getRoot().setOnClickListener(view -> {
                 Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
                 intent.putExtra("type", recordList.get(position).type);
+                date = recordList.get(position).date;
+                mFormat[0] = new SimpleDateFormat("yyyy-MM-dd E요일");
+                getTime = mFormat[0].format(date);
                 intent.putExtra("date", getTime);
                 intent.putExtra("situation", recordList.get(position).situation);
                 intent.putExtra("thought", recordList.get(position).thought);
@@ -292,6 +548,8 @@ public class Diary extends AppCompatActivity {
                     intent.putExtra("index", indexListEmotion.get(position));
                 } else if (indexListTrauma.size() != 0) {
                     intent.putExtra("index", indexListTrauma.get(position));
+                } else if (indexListSingleEmotion.size() != 0) {
+                    intent.putExtra("index", indexListSingleEmotion.get(position));
                 } else {
                     intent.putExtra("index", position);
                 }

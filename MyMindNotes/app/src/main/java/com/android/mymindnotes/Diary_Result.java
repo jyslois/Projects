@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Diary_Result extends AppCompatActivity {
@@ -87,7 +88,7 @@ public class Diary_Result extends AppCompatActivity {
         arrayListEdit = arrayList.edit();
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
+        Glide.with(this).load(R.drawable.recordresultbackground).into(binding.background);
 
         // 목록으로 돌아가기 버튼 클릭 시 전 페이지로
         binding.backtoListButton.setOnClickListener(view -> {

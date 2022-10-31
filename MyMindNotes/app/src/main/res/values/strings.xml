@@ -68,5 +68,16 @@
 \n\n내가 분노한 이유는 무엇인가요? 내 감정을 표현했나요? 그렇다면, 어떤 방식으로 표현했나요. 해결하고 싶은 문제가 있었나요. 그 문제와 맞서 싸우려면 앞으로 어떻게 해야 할까요?
     </font></string>
 
+    <string-array name="emotions_array">
+        <item>감정별</item>
+        <item>기쁨</item>
+        <item>기대</item>
+        <item>신뢰</item>
+        <item>놀람</item>
+        <item>슬픔</item>
+        <item>혐오</item>
+        <item>공포</item>
+        <item>분노</item>
+    </string-array>
 
 </resources>

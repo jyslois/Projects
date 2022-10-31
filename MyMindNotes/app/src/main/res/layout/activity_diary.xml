@@ -17,66 +17,107 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="오래된순"
+                    android:textSize="11dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#F3A8938E"
+                    android:textColor="#F3F5F6"
+                    android:textStyle="bold"
+                    android:id="@+id/sort_date_button"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="감정별"
+                    android:textSize="11dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#F3A8938E"
+                    android:textColor="#F3F5F6"
+                    android:textStyle="bold"
+                    android:id="@+id/sort_emotion_button"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="마음일기"
+                    android:textSize="11dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#F3A8938E"
+                    android:textColor="#F3F5F6"
+                    android:textStyle="bold"
+                    android:id="@+id/sort_emotionDiary_button"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="트라우마"
+                    android:textSize="11dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#F3A8938E"
+                    android:textColor="#F3F5F6"
+                    android:textStyle="bold"
+                    android:id="@+id/sort_trauma_button"/>
+            </LinearLayout>
+
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
+            android:layout_marginTop="-18dp"
+            android:layout_marginBottom="-2dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_weight="1"
+            <Spinner
+                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:cornerRadius="100dp"
-                android:text="오래된순"
-                android:textSize="11dp"
                 android:layout_margin="5dp"
-                android:backgroundTint="#F3A8938E"
-                android:textColor="#F3F5F6"
-                android:textStyle="bold"
-                android:id="@+id/sort_date_button"/>
+                android:layout_weight="1.1"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_weight="1"
+            <Spinner
+                android:visibility="invisible"
+                android:dropDownWidth="74dp"
+                android:gravity="center"
+                android:id="@+id/emotionSpinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:cornerRadius="100dp"
-                android:text="감정별"
-                android:textSize="11dp"
                 android:layout_margin="5dp"
-                android:backgroundTint="#F3A8938E"
-                android:textColor="#F3F5F6"
-                android:textStyle="bold"
-                android:id="@+id/sort_emotion_button"/>
+                android:layout_weight="1"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_weight="1"
+            <Spinner
+                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:cornerRadius="100dp"
-                android:text="마음일기"
-                android:textSize="11dp"
                 android:layout_margin="5dp"
-                android:backgroundTint="#F3A8938E"
-                android:textColor="#F3F5F6"
-                android:textStyle="bold"
-                android:id="@+id/sort_emotionDiary_button"/>
-
-            <com.google.android.material.button.MaterialButton
                 android:layout_weight="1"
+                />
+
+            <Spinner
+                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:cornerRadius="100dp"
-                android:text="트라우마"
-                android:textSize="11dp"
                 android:layout_margin="5dp"
-                android:backgroundTint="#F3A8938E"
-                android:textColor="#F3F5F6"
-                android:textStyle="bold"
-                android:id="@+id/sort_trauma_button"/>
+                android:layout_weight="1" />
         </LinearLayout>
+
+
 
 
         <ScrollView
