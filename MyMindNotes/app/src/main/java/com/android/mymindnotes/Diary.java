@@ -222,6 +222,17 @@ public class Diary extends AppCompatActivity {
                 }
 
                 adaptor.updateItemList(emotionRecordList);
+
+                // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                if (binding.sortDateButton.getText().equals("오래된순")) {
+                    linearLayoutManager.setReverseLayout(false);
+                    linearLayoutManager.setStackFromEnd(false);
+                } else if (binding.sortDateButton.getText().equals("최신순")) {
+                    linearLayoutManager.setReverseLayout(true);
+                    linearLayoutManager.setStackFromEnd(true);
+                }
+                diaryView.setLayoutManager(linearLayoutManager);
             });
         }
 
