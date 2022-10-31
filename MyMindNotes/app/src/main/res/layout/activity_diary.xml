@@ -93,7 +93,6 @@
 
             <Spinner
                 android:visibility="invisible"
-                android:dropDownWidth="74dp"
                 android:gravity="center"
                 android:id="@+id/emotionSpinner"
                 android:layout_width="0dp"

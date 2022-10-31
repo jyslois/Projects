@@ -258,8 +258,9 @@ public class Diary extends AppCompatActivity {
             spinnerAdaptor.setDropDownViewResource(R.layout.spinneritem);
             // 어뎁터를 Spinner에 적용
             spinner.setAdapter(spinnerAdaptor);
-            // 보이게 하기
-            spinner.setVisibility(View.VISIBLE);
+            // 버튼 크기만큼 width 설정하기
+            spinner.setDropDownWidth(binding.sortEmotionButton.getWidth());
+            // 스피너가 클릭되는 것으로 처리해서 드롭다운 메뉴가 나타나게 하기
             spinner.performClick();
 
             // 아이템 클릭 이벤트
@@ -268,6 +269,29 @@ public class Diary extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     binding.sortEmotionButton.setText(emotionArray[position]);
                     switch (emotionArray[position]) {
+                        case "All" : {
+                            isEmotionRecordListChecked = false;
+                            isTraumaRecordListChecked = false;
+                            isSingleEmotionListChecked = true;
+
+                            indexListTrauma.clear();
+                            indexListEmotion.clear();
+                            indexListSingleEmotion.clear();
+
+                            adaptor.updateItemList(recordList);
+
+                            // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            if (binding.sortDateButton.getText().equals("오래된순")) {
+                                linearLayoutManager.setReverseLayout(false);
+                                linearLayoutManager.setStackFromEnd(false);
+                            } else if (binding.sortDateButton.getText().equals("최신순")) {
+                                linearLayoutManager.setReverseLayout(true);
+                                linearLayoutManager.setStackFromEnd(true);
+                            }
+                            diaryView.setLayoutManager(linearLayoutManager);
+                        }
+                        break;
                         case "기쁨" : {
                             isEmotionRecordListChecked = false;
                             isTraumaRecordListChecked = false;

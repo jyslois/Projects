@@ -28,17 +28,28 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
                 android:backgroundTint="#574E4D"
-                android:text="모든 감정"
+                android:text="감정 선택"
                 android:textColor="#F3F5F6"
                 android:textSize="11dp"
-                android:textStyle="bold"
-                app:cornerRadius="100dp" />
+                android:textStyle="bold"/>
+
+            <Spinner
+                android:visibility="invisible"
+                android:layout_marginTop="-5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="0dp"
+                android:layout_below="@id/sortButton"
+                android:gravity="center"
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:padding="5dp"
-                android:layout_below="@id/sortButton"
+                android:layout_below="@id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emotionInstructionView">
