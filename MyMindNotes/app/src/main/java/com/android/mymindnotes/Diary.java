@@ -38,28 +38,34 @@ public class Diary extends AppCompatActivity {
     SharedPreferences arrayList;
     SharedPreferences.Editor arrayListEdit;
 
+    // 오리지날 리스트와 리사이클러뷰, 어뎁터
     ArrayList<Record> recordList;
     static RecyclerView diaryView;
     DiaryAdaptor adaptor;
 
+    // 날짜를 위한 변수
+    Date date;
     String getTime;
 
+    // 정렬을 위한 리스트
     ArrayList<Record> emotionRecordList;
-    Boolean isEmotionRecordListChecked = false;
     ArrayList<Record> traumaRecordList;
-    Boolean isTraumaRecordListChecked = false;
     ArrayList<Record> singleEmotionList;
-    Boolean isSingleEmotionListChecked = false;
 
+    // 위의 리스트의 요소들이 오리지날 리스트의 어떤 인덱스에 위치했었는지를 저장해주기 위한 리스트(다음 화면으로 올바른 인덱스를 넘겨주어서 오리지날 리스트를 수정할 수 있도록)
     ArrayList<Integer> indexListEmotion;
     ArrayList<Integer> indexListTrauma;
     ArrayList<Integer> indexListSingleEmotion;
 
+    // onResume()으로 화면으로 돌아왔을 때 어떤 화면에서 돌아왔으며, 어떤 화면을 표시해줄 것인지 구분하기 위한 리스트
+    Boolean isEmotionRecordListChecked = false;
+    Boolean isTraumaRecordListChecked = false;
+    Boolean isSingleEmotionListChecked = false;
+
+    // 스피너(드롭 다운 메뉴)를 위한 변수들
     Spinner spinner;
     String[] emotionArray;
     String singleEmotion;
-
-    Date date;
 
 
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
@@ -166,12 +172,16 @@ public class Diary extends AppCompatActivity {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
 
+        // RecyclerView
         diaryView = binding.diaryView;
+        // RecyclerView에 LayoutManager 적용
         diaryView.setLayoutManager(new LinearLayoutManager(this));
 
-        // recordList에 어뎁터 연결
+        // 어레이리스트를 매개변수로 넘겨주어서 어뎁터 객체를 생성
         adaptor = new DiaryAdaptor(recordList);
+        // 생성한 어뎁터 객체를 RecyclerView에 적용
         diaryView.setAdapter(adaptor);
+        // 생성한 itemDecoration 객체를 RecyclerView에 적용
         diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
 
 
@@ -501,6 +511,7 @@ public class Diary extends AppCompatActivity {
 
     }
 
+    // 목록의 개별 항목을 구성하기 위한 뷰들을 viewBinding을 통해 hold,들고 있는 역할 - 뷰를 재활용할 수 있게 해 준다
     class ViewHolder extends RecyclerView.ViewHolder {
         DiaryitemBinding binding;
 
@@ -511,31 +522,32 @@ public class Diary extends AppCompatActivity {
 
     }
 
+    // viewHolder을 생성하며, 배열에 저장되어 있는 데이터와 recyclerView를 연결시켜 주어서, 데이터를 RecyclerView에서 목록으로 볼 수 있게 한다.
     class DiaryAdaptor extends RecyclerView.Adapter<ViewHolder> {
         // 항목 구성 데이터
-
         private ArrayList<Record> recordList;
 
         public DiaryAdaptor(ArrayList<Record> arrayList) {
             this.recordList = arrayList;
         }
 
-        // 데이터셋을 업데이트하기 위한 메서드 (onResume)에서 사용
+        // 데이터셋을 업데이트하기 위한 메서드
         public void updateItemList(ArrayList<Record> arrayList) {
             this.recordList = arrayList;
             notifyDataSetChanged();
         }
 
+        // 뷰 홀더 객체를 생성한다. 항목을 구성하기 위한 레이아웃 xml파일을 inflate한 binding객체를 ViewHolder 생성자로 넘겨주어 만들어진 viewHOlder 객체를 반환하면, 이를 메모리에 유지했다가 onBindViewHolder() 호출 시에 매개변수로 전달하는 구조이다.
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGorup, int i) {
             DiaryitemBinding binding = DiaryitemBinding.inflate(LayoutInflater.from(viewGorup.getContext()), viewGorup, false);
-
-
+            // 뷰 홀더 생성
             return new ViewHolder(binding);
         }
 
 
-        // 항목 구성하기 위해서 자동 콜된다: 항목이 x개면 x번 호출된다
+        // 배열에 저장되어 있는 데이터와 뷰홀더의 뷰들을 연결시켜준다.
+        // 각 항목 구성하기 위해서 자동 콜된다: 항목이 x개면 x번 호출된다
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
