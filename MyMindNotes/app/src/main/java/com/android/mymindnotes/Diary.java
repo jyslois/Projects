@@ -223,7 +223,7 @@ public class Diary extends AppCompatActivity {
 
                 adaptor.updateItemList(emotionRecordList);
 
-                // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기
+                // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
                 if (binding.sortDateButton.getText().equals("오래된순")) {
                     linearLayoutManager.setReverseLayout(false);
@@ -291,7 +291,7 @@ public class Diary extends AppCompatActivity {
 
                             adaptor.updateItemList(recordList);
 
-                            // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기
+                            // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
                             if (binding.sortDateButton.getText().equals("오래된순")) {
                                 linearLayoutManager.setReverseLayout(false);
