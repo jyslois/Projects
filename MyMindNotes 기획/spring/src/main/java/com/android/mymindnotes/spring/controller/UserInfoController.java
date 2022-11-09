@@ -5,9 +5,11 @@ import com.android.mymindnotes.spring.model.UserInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class UserInfoController {
-
     // Mapper 사용하기: API 호출
     private UserInfoMapper mapper;
 
@@ -22,11 +24,11 @@ public class UserInfoController {
 
     // 회원 관련 API
     // 회원가입
-    @PostMapping("/api/member/addUser/{email}")
+    @PostMapping("/api/member/add")
     @ResponseStatus(value = HttpStatus.OK)
-    public void addUser(@PathVariable("email") String email, @RequestParam("nickname") String nickname, @RequestParam("password") String password, @RequestParam("birthyear") int birthyear) {
+    public void addUser(@RequestBody UserInfo userinfo) {
         // mapper의 api 호출 - api에 매핑된 SQL문 실행
-        mapper.insertUser(email, nickname, password, birthyear);
+        mapper.insertUser(userinfo.getEmail(), userinfo.getNickname(), userinfo.getPassword(), userinfo.getBirthyear());
     }
 
     // 회원 정보 가져오기(조회)
@@ -34,21 +36,35 @@ public class UserInfoController {
     // Path로 전달된 email이 파라미터로 전달될 것이다.
     // api가 호출되면, UserInfoMapper에서 해당 api와 매핑된 sql문이 수행되면서
     // 해당 조건을 갖는 UserInfo의 정보가 자바의 객체로 반환이 되고, 이것을 json형태로 전달되는 것이다.
-    @GetMapping("/api/member/getUserInfo/{email}")
+    @GetMapping("/api/member/get/{email}")
     @ResponseStatus(value = HttpStatus.OK)
-    public UserInfo getUserInfo(@PathVariable("email") String email) {
-        return mapper.getUserInfo(email);
+    public Map<String, Object> getUserInfo(@PathVariable("email") String email) {
+        Map<String, Object> result = new HashMap<>();
+
+        UserInfo userinfo = mapper.getUserInfo(email);
+
+        // 존재하는 회원이라면
+        if (userinfo != null) {
+            result.put("code", 1000);
+            result.put("회원정보", userinfo);
+        // 존재하지 않는 회원이라면
+        } else {
+            result.put("code", 1001);
+            result.put("msg", "존재하지 않는 회원입니다.");
+        }
+
+        return result;
     }
 
     // 회원정보 수정
-    @PutMapping("/api/member/updateUserInfo/{email}")
+    @PutMapping("/api/member/update/{email}")
     @ResponseStatus(value = HttpStatus.OK)
     public void updateUserInfo(@PathVariable("email") String email, @RequestParam("nickname") String nickname, @RequestParam("password") String password, @RequestParam("birthyear") int birthyear) {
          mapper.updateUserInfo(email, nickname, password, birthyear);
     }
 
     // 회원탈퇴
-    @DeleteMapping("/api/member/deleteUser/{email}")
+    @DeleteMapping("/api/member/delete/{email}")
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteUser(@PathVariable("email") String email) {
         mapper.deleteUser(email);

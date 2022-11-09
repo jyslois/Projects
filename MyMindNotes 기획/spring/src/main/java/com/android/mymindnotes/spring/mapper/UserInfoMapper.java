@@ -20,7 +20,7 @@ public interface UserInfoMapper {
     // Insert, Update, Delete를 사용하는 API의 반환 타입은 int로,
     // 해당 SQL문으로 인해서 영향을 받은 SQL record의 갯수가 반환된다. (정상적이라면 모두 1이 반환)
     // 회원가입
-    @Insert("INSERT INTO UserInfo VALUES(#{email}, #{nickname}, #{password}, #{birthyear})")
+    @Insert("INSERT INTO UserInfo(`email`, `nickname`, `password`, `birthyear`) VALUES(#{email}, #{nickname}, #{password}, #{birthyear})")
     int insertUser(@Param("email") String email, @Param("nickname") String nickname, @Param("password") String password, @Param("birthyear") int birthyear);
 
     // 회원정보 수정
