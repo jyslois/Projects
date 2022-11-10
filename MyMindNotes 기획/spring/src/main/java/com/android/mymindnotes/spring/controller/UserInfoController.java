@@ -114,13 +114,37 @@ public class UserInfoController {
     // 회원탈퇴
     @DeleteMapping("/api/member/delete/{email}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void deleteUser(@PathVariable("email") String email) {
+    public Map<String, Object> deleteUser(@PathVariable("email") String email) {
         Map<String, Object> result = new HashMap<>();
         mapper.deleteUser(email);
         result.put("code", 4000);
         result.put("msg", "회원 탈퇴 완료");
+        return result;
     }
 
     // 로그인
-
+    @PostMapping("/api/member/login/{email}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Map<String, Object> login(@PathVariable("email") String email, @RequestBody String password) {
+        Map<String, Object> result = new HashMap<>();
+        // 회원 정보 조회
+        UserInfo userinfo = mapper.getUserInfoFromEmail(email);
+        // 이메일로 조회해서 존재하는 회원이라면,
+        if (userinfo != null) {
+            // 비밀번호 체크
+            if (password.equals(userinfo.getPassword())) {
+                result.put("code", 5000);
+                result.put("index", userinfo.getIndex());
+                result.put("msg", "환영합니다");
+            } else {
+                result.put("code", 5003);
+                result.put("msg", "비밀번호가 틀렸습니다");
+            }
+        } else {
+            // 존재하지 않는 회원이라면,
+            result.put("code", 5001);
+            result.put("msg", "가입되지 않은 이메일입니다");
+        }
+        return result;
+    }
 }

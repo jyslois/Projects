@@ -1,8 +1,11 @@
 package com.android.mymindnotes.spring.model;
 
+import javax.persistence.GeneratedValue;
 import javax.validation.constraints.*;
 
 public class UserInfo {
+    @GeneratedValue
+    private int index;
     @NotBlank(message = "이메일을 입력해 주세요.")
     @Email(message = "올바른 이메일 형식으로 입력해 주세요.")
     private String email;
@@ -17,11 +20,27 @@ public class UserInfo {
     @Min(value = 1901, message = "생년은 1901~2155 사이여야 합니다.")
     private int birthyear;
 
+    public UserInfo(int index, String email, String nickname, String password, int birthyear) {
+        this.index = index;
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.birthyear = birthyear;
+    }
+
     public UserInfo(String email, String nickname, String password, int birthyear) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.birthyear = birthyear;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getEmail() {
