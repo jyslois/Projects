@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserInfoMapper {
-    @Mapper
     // API 작성 & 해당 API가 호출됐을 떄 매핑되어 실행될 SQL문 작성.
 
     // 아이디로 회원 정보 조회 (아이디를 가지고 데이터베이스를 조회해서 UserInfo 객체를 리턴하는 Api
