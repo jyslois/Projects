@@ -29,9 +29,9 @@ public class Diary {
 
     }
 
-    public Diary(int diary_number, int index, String type, String date, String day, String situation, String thought, String emotion, String emotionDescription, String reflection) {
+    public Diary(int diary_number, int user_index, String type, String date, String day, String situation, String thought, String emotion, String emotionDescription, String reflection) {
         this.diary_number = diary_number;
-        this.user_index = index;
+        this.user_index = user_index;
         this.type = type;
         this.date = date;
         this.day = day;
@@ -42,8 +42,8 @@ public class Diary {
         this.reflection = reflection;
     }
 
-    public Diary(int index, String type, String date, String day, String situation, String thought, String emotion, String emotionDescription, String reflection) {
-        this.user_index = index;
+    public Diary(int user_index, String type, String date, String day, String situation, String thought, String emotion, String emotionDescription, String reflection) {
+        this.user_index = user_index;
         this.type = type;
         this.date = date;
         this.day = day;

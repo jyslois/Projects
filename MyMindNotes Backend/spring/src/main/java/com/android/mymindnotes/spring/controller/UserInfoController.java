@@ -2,6 +2,7 @@ package com.android.mymindnotes.spring.controller;
 
 import com.android.mymindnotes.spring.mapper.UserInfoMapper;
 import com.android.mymindnotes.spring.model.UserInfo;
+import com.android.mymindnotes.spring.model.UserInfoEdit;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -91,7 +92,7 @@ public class UserInfoController {
     // 회원정보 수정
     @PutMapping("/api/member/update/{email}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> updateUserInfo(@PathVariable("email") String email, @RequestBody @Valid UserInfo userinfo, Errors errors) {
+    public Map<String, Object> updateUserInfo(@PathVariable("email") String email, @RequestBody @Valid UserInfoEdit userinfo, Errors errors) {
         Map<String, Object> result = new HashMap<>();
         // 유효성 통과 못한 필드와 메시지를 핸들링
         if (errors.hasErrors()) {
@@ -134,7 +135,7 @@ public class UserInfoController {
             // 비밀번호 체크
             if (password.equals(userinfo.getPassword())) {
                 result.put("code", 5000);
-                result.put("index", userinfo.getIndex());
+                result.put("user_index", userinfo.getUser_index());
                 result.put("msg", "환영합니다");
             } else {
                 result.put("code", 5003);

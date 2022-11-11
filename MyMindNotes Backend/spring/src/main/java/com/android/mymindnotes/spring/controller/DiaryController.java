@@ -2,14 +2,15 @@ package com.android.mymindnotes.spring.controller;
 
 import com.android.mymindnotes.spring.mapper.DiaryMapper;
 import com.android.mymindnotes.spring.model.Diary;
+import com.android.mymindnotes.spring.model.DiaryEdit;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -41,23 +42,40 @@ public class DiaryController {
     }
 
     // 일기 모두 가져오기
-    // 이메일 중복 체크
     @GetMapping("/api/diary/getAll/{user_index}")
     @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> getAllDiary(@PathVariable("user_index") int user_index) {
         Map<String, Object> result = new HashMap<>();
         // 회원 정보 조회
         // 조회 결과가 하나 이상이기에 List<Diary>로 반환
-        List<Diary> diary = mapper.getAllDiary(user_index);
+        ArrayList<Diary> diary = mapper.getAllDiary(user_index);
         result.put("code", 7000);
-        result.put("일기", diary);
+        result.put("일기목록", diary);
+        return result;
+    }
+
+    // 특정 일기 가져오기(일기 읽기)
+    @GetMapping("/api/diary/get/{diary_number}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Map<String, Object> getDiary(@PathVariable("diary_number") int diary_number) {
+        Map<String, Object> result = new HashMap<>();
+        // 회원 정보 조회
+        // 조회 결과가 하나 이상이기에 List<Diary>로 반환
+        Diary diary = mapper.getDiary(diary_number);
+        if (diary != null) {
+            result.put("code", 7002);
+            result.put("일기", diary);
+        } else {
+            result.put("code", 7003);
+            result.put("msg", "존재하지 않는 일기입니다.");
+        }
         return result;
     }
 
     // 일기 수정
     @PutMapping("/api/diary/update/{diary_number}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> updateDiary(@PathVariable("diary_number") int diary_number, @RequestBody @Valid Diary diary, Errors errors) {
+    public Map<String, Object> updateDiary(@PathVariable("diary_number") int diary_number, @RequestBody @Valid DiaryEdit diary, Errors errors) {
         Map<String, Object> result = new HashMap<>();
         // 유효성 통과 못한 필드와 메시지를 핸들링
         if (errors.hasErrors()) {
@@ -69,7 +87,7 @@ public class DiaryController {
                 result.put(error.getField(), error.getDefaultMessage());
             }
         } else {
-            mapper.updateDiary(diary_number,diary.getSituation(), diary.getThought(), diary.getEmotion(), diary.getEmotionDescription(), diary.getReflection());
+            mapper.updateDiary(diary_number, diary.getSituation(), diary.getThought(), diary.getEmotion(), diary.getEmotionDescription(), diary.getReflection());
             result.put("code", 8000);
         }
 
