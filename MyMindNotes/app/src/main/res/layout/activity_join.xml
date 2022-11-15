@@ -53,7 +53,7 @@
             <EditText
                 android:backgroundTint="#ABF8E6D8"
                 android:id="@+id/emailInput"
-                android:layout_width="330dp"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/emailText"
                 android:layout_alignLeft="@id/emailText"
@@ -61,8 +61,18 @@
                 android:hint="이메일 입력"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
-                android:textSize="16dp" />
+                android:textSize="14.5dp" />
 
+
+            <Button
+                android:id="@+id/emailCheckButton"
+                android:layout_width="100dp"
+                android:layout_height="62dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="19dp"
+                android:layout_toRightOf="@id/emailInput"
+                android:backgroundTint="#C3BE9F98"
+                android:text="중복확인" />
 
             <TextView
                 android:textColor="#CDAF97"
@@ -96,10 +106,10 @@
                 android:layout_alignLeft="@id/passwardText"
                 android:layout_marginBottom="7dp"
                 android:background="@drawable/rounded_border"
-                android:hint="비밀번호 입력(최소 6자리)"
+                android:hint="비밀번호(알파벳, 숫자 포함 6자 이상)"
                 android:inputType="textPassword"
                 android:padding="15dp"
-                android:textSize="16dp" />
+                android:textSize="14.5dp" />
 
             <EditText
                 android:backgroundTint="#ABF8E6D8"
@@ -112,7 +122,7 @@
                 android:hint="비밀번호 확인"
                 android:inputType="textPassword"
                 android:padding="15dp"
-                android:textSize="16dp" />
+                android:textSize="14.5dp" />
 
             <TextView
                 android:textColor="#CDAF97"
@@ -120,23 +130,80 @@
                 android:layout_below="@id/passwordRetypeInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="닉네임(선택)"
+                android:text="닉네임"
                 android:gravity="center"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/nickNameText"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="*"
+                android:textSize="15dp"
+                android:textColor="#FA1707"
+                android:layout_toRightOf="@id/nickNameText"
+                android:layout_alignTop="@id/nickNameText"
+                android:id="@+id/nickNameStar"/>
+
             <EditText
                 android:backgroundTint="#ABF8E6D8"
                 android:id="@+id/nickNameInput"
-                android:layout_width="330dp"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nickNameText"
                 android:layout_alignLeft="@id/nickNameText"
                 android:background="@drawable/rounded_border"
-                android:hint="닉네임 입력(선택 사항)"
+                android:hint="닉네임(특수문자 제외 2자 이상)"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
-                android:textSize="16dp" />
+                android:textSize="14.5dp" />
+
+            <Button
+                android:id="@+id/nickNameCheckButton"
+                android:layout_marginTop="33dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="100dp"
+                android:layout_height="62dp"
+                android:layout_toRightOf="@id/nickNameInput"
+                android:layout_below="@id/passwordRetypeInput"
+                android:text="중복확인"
+                android:backgroundTint="#C3BE9F98"/>
+
+            <TextView
+                android:textColor="#CDAF97"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/nickNameInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="생년"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/birthyearText"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="*"
+                android:textSize="15dp"
+                android:textColor="#FA1707"
+                android:layout_toRightOf="@id/birthyearText"
+                android:layout_alignTop="@id/birthyearText"
+                android:id="@+id/birthyearStar"/>
+
+            <EditText
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/birthyearInput"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/birthyearText"
+                android:layout_alignLeft="@id/birthyearText"
+                android:background="@drawable/rounded_border"
+                android:hint="태어난 년도"
+                android:inputType="textEmailAddress"
+                android:padding="15dp"
+                android:textSize="14.5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:layout_marginTop="20dp"
@@ -144,7 +211,7 @@
                 android:layout_height="wrap_content"
                 app:cornerRadius="100dp"
                 android:text="회원가입"
-                android:layout_below="@id/nickNameInput"
+                android:layout_below="@id/birthyearInput"
                 android:layout_alignLeft="@id/nickNameInput"
                 android:id="@+id/joinButton"/>
 
