@@ -43,7 +43,6 @@ public class DiaryController {
 
     // 일기 모두 가져오기
     @GetMapping("/api/diary/getAll/{user_index}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> getAllDiary(@PathVariable("user_index") int user_index) {
         Map<String, Object> result = new HashMap<>();
         // 회원 정보 조회
@@ -56,7 +55,6 @@ public class DiaryController {
 
     // 특정 일기 가져오기(일기 읽기)
     @GetMapping("/api/diary/get/{diary_number}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> getDiary(@PathVariable("diary_number") int diary_number) {
         Map<String, Object> result = new HashMap<>();
         // 회원 정보 조회
@@ -74,7 +72,6 @@ public class DiaryController {
 
     // 일기 수정
     @PutMapping("/api/diary/update/{diary_number}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> updateDiary(@PathVariable("diary_number") int diary_number, @RequestBody @Valid DiaryEdit diary, Errors errors) {
         Map<String, Object> result = new HashMap<>();
         // 유효성 통과 못한 필드와 메시지를 핸들링
@@ -96,7 +93,6 @@ public class DiaryController {
 
     // 일기 삭제
     @DeleteMapping("/api/diary/delete/{diary_number}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> deleteDiary(@PathVariable("diary_number") int diary_number) {
         Map<String, Object> result = new HashMap<>();
         mapper.deleteDiary(diary_number);

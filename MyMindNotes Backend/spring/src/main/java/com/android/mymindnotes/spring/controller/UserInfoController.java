@@ -3,7 +3,7 @@ package com.android.mymindnotes.spring.controller;
 import com.android.mymindnotes.spring.mapper.UserInfoMapper;
 import com.android.mymindnotes.spring.model.UserInfo;
 import com.android.mymindnotes.spring.model.UserInfoEdit;
-import org.springframework.http.HttpStatus;
+import com.android.mymindnotes.spring.model.UserInfoLogin;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,6 @@ public class UserInfoController {
 
     // 이메일 중복 체크
     @GetMapping("/api/member/checkEmail/{email}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> checkEmail(@PathVariable("email") String email) {
         Map<String, Object> result = new HashMap<>();
         // 회원 정보 조회
@@ -48,7 +47,6 @@ public class UserInfoController {
 
     // 닉네임 중복 체크
     @GetMapping("/api/member/checkNickname/{nickname}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> checkNickname(@PathVariable("nickname") String nickname) {
         Map<String, Object> result = new HashMap<>();
         // 회원 정보 조회
@@ -67,7 +65,6 @@ public class UserInfoController {
 
     // 회원가입
     @PostMapping("/api/member/add")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> addUser(@RequestBody @Valid UserInfo userinfo, Errors errors) {
         Map<String, Object> result = new HashMap<>();
 
@@ -91,7 +88,6 @@ public class UserInfoController {
 
     // 회원정보 수정
     @PutMapping("/api/member/update/{email}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> updateUserInfo(@PathVariable("email") String email, @RequestBody @Valid UserInfoEdit userinfo, Errors errors) {
         Map<String, Object> result = new HashMap<>();
         // 유효성 통과 못한 필드와 메시지를 핸들링
@@ -114,7 +110,6 @@ public class UserInfoController {
 
     // 회원탈퇴
     @DeleteMapping("/api/member/delete/{email}")
-    @ResponseStatus(value = HttpStatus.OK)
     public Map<String, Object> deleteUser(@PathVariable("email") String email) {
         Map<String, Object> result = new HashMap<>();
         mapper.deleteUser(email);
@@ -124,27 +119,37 @@ public class UserInfoController {
     }
 
     // 로그인
-    @PostMapping("/api/member/login/{email}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> login(@PathVariable("email") String email, @RequestBody String password) {
+    @PostMapping("/api/member/login")
+    public Map<String, Object> login(@RequestBody @Valid UserInfoLogin userinfologin, Errors errors) {
         Map<String, Object> result = new HashMap<>();
-        // 회원 정보 조회
-        UserInfo userinfo = mapper.getUserInfoFromEmail(email);
-        // 이메일로 조회해서 존재하는 회원이라면,
-        if (userinfo != null) {
-            // 비밀번호 체크
-            if (password.equals(userinfo.getPassword())) {
-                result.put("code", 5000);
-                result.put("user_index", userinfo.getUser_index());
-                result.put("msg", "환영합니다");
-            } else {
-                result.put("code", 5003);
-                result.put("msg", "비밀번호가 틀렸습니다");
+        // 유효성 통과 못한 필드와 메시지를 핸들링
+        if (errors.hasErrors()) {
+            // 유효성 검사에 실패한 필드 목록을 가져온다: errors.getFieldErrors()
+            for (FieldError error : errors.getFieldErrors()) {
+                // 유효성 검사에 실패한 필드명을 가져온다. error.getField()
+                // 유효성 검사에 실패한 필드에 정의된 메시지를 가져온다. error.getDefaultMessage()
+                result.put("code", 5005);
+                result.put(error.getField(), error.getDefaultMessage());
             }
         } else {
-            // 존재하지 않는 회원이라면,
-            result.put("code", 5001);
-            result.put("msg", "가입되지 않은 이메일입니다");
+            // 회원 정보 조회
+            UserInfo user = mapper.getUserInfoFromEmail(userinfologin.getEmail());
+            // 이메일로 조회해서 존재하는 회원이라면,
+            if (user != null) {
+                // 비밀번호 체크
+                if (user.getPassword().equals(userinfologin.getPassword())) {
+                    result.put("code", 5000);
+                    result.put("user_index", user.getUser_index());
+                    result.put("msg", "환영합니다");
+                } else {
+                    result.put("code", 5003);
+                    result.put("msg", "비밀번호가 틀렸습니다");
+                }
+            } else {
+                // 존재하지 않는 회원이라면,
+                result.put("code", 5001);
+                result.put("msg", "가입되지 않은 이메일입니다");
+            }
         }
         return result;
     }
