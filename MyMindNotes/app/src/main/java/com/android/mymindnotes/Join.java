@@ -1,5 +1,6 @@
 package com.android.mymindnotes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,12 +11,23 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
+import com.android.mymindnotes.retrofit.CheckEmailApi;
+import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class Join extends AppCompatActivity {
     ActivityJoinBinding binding;
@@ -44,7 +56,7 @@ public class Join extends AppCompatActivity {
         String passwordPattern = "(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}";
         String nicknamePattern = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$";
 
-
+        // 이메일 중복 체크
         binding.emailCheckButton.setOnClickListener(view -> {
             if (binding.emailInput.getText().toString().equals("")) {
                 Toast toast = Toast.makeText(getApplicationContext(), "이메일을 입력해 주세요", Toast.LENGTH_SHORT);
@@ -55,21 +67,22 @@ public class Join extends AppCompatActivity {
                 toast.show();
             } else {
                 if (emailCheck == false) {
-                // (훗날 수정): 만약 통과하지 못한다면 팝업창으로 알려주기
-
-                // api 리턴값이 통과했다면,
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("사용 가능한 이메일입니다.");
-                builder.setPositiveButton("확인", null);
-                alertDialog = builder.create();
-                alertDialog.show();
-                emailCheck = true;
-                binding.emailCheckButton.setText("확인완료");
-                binding.emailCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
+                checkEmail();
+//                // (훗날 수정): 만약 통과하지 못한다면 팝업창으로 알려주기
+//                // api 리턴값이 통과했다면,
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setMessage("사용 가능한 이메일입니다.");
+//                builder.setPositiveButton("확인", null);
+//                alertDialog = builder.create();
+//                alertDialog.show();
+//                emailCheck = true;
+//                binding.emailCheckButton.setText("확인완료");
+//                binding.emailCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
                 }
             }
         });
 
+        // 닉네임 중복 체크
         binding.nickNameCheckButton.setOnClickListener(view -> {
             if (binding.nickNameInput.getText().toString().equals("")) {
                 Toast toast = Toast.makeText(getApplicationContext(), "닉네임을 입력해 주세요", Toast.LENGTH_SHORT);
@@ -184,11 +197,11 @@ public class Join extends AppCompatActivity {
                 toast.show();
             // 이메일 중복확인을 하지 않았다면
             } else if (emailCheck == false) {
-                Toast toast = Toast.makeText(getApplicationContext(), "이메일 중복확인을 해주세요", Toast.LENGTH_SHORT);
-                toast.show();
-            // 닉네임 중복확인을 하지 않았다면
-            } else if (nicknameCheck == false) {
-                Toast toast = Toast.makeText(getApplicationContext(), "닉네임 중복확인을 해주세요", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "이메일 중복확인을 해주세요", Toast.LENGTH_SHORT);
+                    toast.show();
+                    // 닉네임 중복확인을 하지 않았다면
+                } else if (nicknameCheck == false) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "닉네임 중복확인을 해주세요", Toast.LENGTH_SHORT);
                 toast.show();
             } else {
                 // 닉네임 저장
@@ -211,4 +224,38 @@ public class Join extends AppCompatActivity {
         });
     }
 
+    // 백그라운드 쓰레드에서 네트워크 코드 작업
+    public void checkEmail() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrofit 객체 생성
+                RetrofitService retrofitService = new RetrofitService();
+                // Retrofit 객체에 Service 인터페이스 등록
+                CheckEmailApi checkEmailApi = retrofitService.getRetrofit().create(CheckEmailApi.class);
+                // Call 객체 획득
+                Call<Map<String, Object>> call = checkEmailApi.checkEmail(binding.emailInput.getText().toString());
+                // 네트워킹 시도
+                call.enqueue(new Callback<Map<String, Object>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+//                        if (response.isSuccessful()) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT);
+                            toast.show();
+//                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+
+            }
+        });
+        thread.start();
+    }
+
 }
+
