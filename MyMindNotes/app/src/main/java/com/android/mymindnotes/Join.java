@@ -240,7 +240,7 @@ public class Join extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
 //                        if (response.isSuccessful()) {
-                            Toast toast = Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_SHORT);
                             toast.show();
 //                        }
                     }
