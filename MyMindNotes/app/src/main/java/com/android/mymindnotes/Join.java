@@ -1,6 +1,5 @@
 package com.android.mymindnotes;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
@@ -21,13 +19,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class Join extends AppCompatActivity {
     ActivityJoinBinding binding;
@@ -40,6 +34,18 @@ public class Join extends AppCompatActivity {
     boolean emailCheck;
     boolean nicknameCheck;
     AlertDialog alertDialog;
+
+    // 이메일 중복 체크 확인완료 dialogue
+    void confirmEmailDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("사용 가능한 이메일입니다.");
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.create();
+        alertDialog.show();
+        emailCheck = true;
+        binding.emailCheckButton.setText("확인완료");
+        binding.emailCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,20 +73,12 @@ public class Join extends AppCompatActivity {
                 toast.show();
             } else {
                 if (emailCheck == false) {
+                // 네트워크 통신(이메일 중복됐는지 체크)
                 checkEmail();
-//                // (훗날 수정): 만약 통과하지 못한다면 팝업창으로 알려주기
-//                // api 리턴값이 통과했다면,
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setMessage("사용 가능한 이메일입니다.");
-//                builder.setPositiveButton("확인", null);
-//                alertDialog = builder.create();
-//                alertDialog.show();
-//                emailCheck = true;
-//                binding.emailCheckButton.setText("확인완료");
-//                binding.emailCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
                 }
             }
         });
+
 
         // 닉네임 중복 체크
         binding.nickNameCheckButton.setOnClickListener(view -> {
@@ -224,7 +222,7 @@ public class Join extends AppCompatActivity {
         });
     }
 
-    // 백그라운드 쓰레드에서 네트워크 코드 작업
+    // 이메일 중복 체크 - 백그라운드 쓰레드에서 네트워크 코드 작업
     public void checkEmail() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -239,15 +237,18 @@ public class Join extends AppCompatActivity {
                 call.enqueue(new Callback<Map<String, Object>>() {
                     @Override
                     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-//                        if (response.isSuccessful()) {
-                            Toast toast = Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_SHORT);
+                        // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
+                        // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
+                        if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1001) {
+                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
                             toast.show();
-//                        }
+                        } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1000) {
+                            confirmEmailDialog();
+                        }
                     }
-
                     @Override
                     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
