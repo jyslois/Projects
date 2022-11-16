@@ -1,7 +1,7 @@
 package com.android.mymindnotes.spring.controller;
 
 import com.android.mymindnotes.spring.mapper.DiaryMapper;
-import com.android.mymindnotes.spring.model.Diary;
+import com.android.mymindnotes.spring.model.UserDiary;
 import com.android.mymindnotes.spring.model.DiaryEdit;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
@@ -25,7 +25,7 @@ public class DiaryController {
     // 일기 쓰기(일기 저장)
     @PostMapping("/api/diary/add")
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> addDiary(@RequestBody @Valid Diary diary, Errors errors) {
+    public Map<String, Object> addDiary(@RequestBody @Valid UserDiary userDiary, Errors errors) {
         Map<String, Object> result = new HashMap<>();
 
         if (errors.hasErrors()) {
@@ -34,7 +34,7 @@ public class DiaryController {
                 result.put(error.getField(), error.getDefaultMessage());
             }
         } else {
-            mapper.insertDiary(diary.getUser_index(), diary.getType(), diary.getDate(), diary.getDay(), diary.getSituation(), diary.getThought(), diary.getEmotion(), diary.getEmotionDescription(), diary.getReflection());
+            mapper.insertDiary(userDiary.getUser_index(), userDiary.getType(), userDiary.getDate(), userDiary.getDay(), userDiary.getSituation(), userDiary.getThought(), userDiary.getEmotion(), userDiary.getEmotionDescription(), userDiary.getReflection());
             result.put("code", 6000);
         }
 
@@ -47,9 +47,9 @@ public class DiaryController {
         Map<String, Object> result = new HashMap<>();
         // 회원 정보 조회
         // 조회 결과가 하나 이상이기에 List<Diary>로 반환
-        ArrayList<Diary> diary = mapper.getAllDiary(user_index);
+        ArrayList<UserDiary> userDiary = mapper.getAllDiary(user_index);
         result.put("code", 7000);
-        result.put("일기목록", diary);
+        result.put("일기목록", userDiary);
         return result;
     }
 
@@ -59,10 +59,10 @@ public class DiaryController {
         Map<String, Object> result = new HashMap<>();
         // 회원 정보 조회
         // 조회 결과가 하나 이상이기에 List<Diary>로 반환
-        Diary diary = mapper.getDiary(diary_number);
-        if (diary != null) {
+        UserDiary userDiary = mapper.getDiary(diary_number);
+        if (userDiary != null) {
             result.put("code", 7002);
-            result.put("일기", diary);
+            result.put("일기", userDiary);
         } else {
             result.put("code", 7003);
             result.put("msg", "존재하지 않는 일기입니다.");

@@ -36,7 +36,7 @@ public class UserInfoController {
         // 존재하는 회원이라면
         if (userinfo != null) {
             result.put("code", 1001);
-            result.put("msg", "이미 가입된 이메일입니다");
+            result.put("msg", "이미 가입되어 있는 이메일입니다");
             // 존재하지 않는 회원이라면
         } else {
             result.put("code", 1000);
@@ -44,6 +44,7 @@ public class UserInfoController {
         }
         return result;
     }
+
 
     // 닉네임 중복 체크
     @GetMapping("/api/member/checkNickname/{nickname}")

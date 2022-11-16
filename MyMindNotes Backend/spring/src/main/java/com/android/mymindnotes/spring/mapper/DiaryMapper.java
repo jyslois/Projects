@@ -1,6 +1,6 @@
 package com.android.mymindnotes.spring.mapper;
 
-import com.android.mymindnotes.spring.model.Diary;
+import com.android.mymindnotes.spring.model.UserDiary;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
@@ -14,11 +14,11 @@ public interface DiaryMapper {
     // 일기 모두 가져오기(읽기) - user_index로 일기 조회
     // 조회 결과가 하나 이상이기에 List<Diary>로 반환
     @Select("SELECT * FROM Diary WHERE user_index=#{user_index}")
-    ArrayList<Diary> getAllDiary(@Param("user_index") int user_index);
+    ArrayList<UserDiary> getAllDiary(@Param("user_index") int user_index);
 
     // 특정 일기 읽기 - diary_number로 일기 조회
     @Select("SELECT * FROM Diary WHERE diary_number=#{diary_number}")
-    Diary getDiary(@Param("diary_number") int diary_number);
+    UserDiary getDiary(@Param("diary_number") int diary_number);
 
     // 일기 수정
     @Update("UPDATE Diary SET situation=#{situation}, thought=#{thought}, emotion=#{emotion}, emotionDescription=#{emotionDescription}, reflection=#{reflection} WHERE diary_number=#{diary_number}")
