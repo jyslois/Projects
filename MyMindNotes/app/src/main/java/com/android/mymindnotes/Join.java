@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
 import com.android.mymindnotes.retrofit.CheckEmailApi;
+import com.android.mymindnotes.retrofit.CheckNicknameApi;
 import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
@@ -45,6 +46,18 @@ public class Join extends AppCompatActivity {
         emailCheck = true;
         binding.emailCheckButton.setText("확인완료");
         binding.emailCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
+    }
+
+    // 닉네임 중복 체크 확인완료 dialogue
+    void confirmNicknameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("사용 가능한 닉네임입니다.");
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.create();
+        alertDialog.show();
+        nicknameCheck = true;
+        binding.nickNameCheckButton.setText("확인완료");
+        binding.nickNameCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
     }
 
     @Override
@@ -91,17 +104,8 @@ public class Join extends AppCompatActivity {
                 toast.show();
             } else {
                 if (nicknameCheck == false) {
-                    // (훗날 수정): 만약 통과하지 못한다면 팝업창으로 알려주기
-
-                    // api 리턴값이 통과했다면,
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("사용 가능한 닉네임입니다.");
-                    builder.setPositiveButton("확인", null);
-                    alertDialog = builder.create();
-                    alertDialog.show();
-                    nicknameCheck = true;
-                    binding.nickNameCheckButton.setText("확인완료");
-                    binding.nickNameCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
+                    // 네트워크 통신(닉네임이 중복됐는지 체크)
+                    checkNickname();
                 }
             }
         });
@@ -244,6 +248,42 @@ public class Join extends AppCompatActivity {
                             toast.show();
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1000) {
                             confirmEmailDialog();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+
+            }
+        });
+        thread.start();
+    }
+
+    // 닉네임 중복 체크 - 백그라운드 쓰레드에서 네트워크 코드 작업
+    public void checkNickname() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrofit 객체 생성
+                RetrofitService retrofitService = new RetrofitService();
+                // Retrofit 객체에 Service 인터페이스 등록
+                CheckNicknameApi checkNicknameApi = retrofitService.getRetrofit().create(CheckNicknameApi.class);
+                // Call 객체 획득
+                Call<Map<String, Object>> call = checkNicknameApi.checkNickname(binding.nickNameInput.getText().toString());
+                // 네트워킹 시도
+                call.enqueue(new Callback<Map<String, Object>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                        // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
+                        // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
+                        if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1003) {
+                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1002) {
+                            confirmNicknameDialog();
                         }
                     }
                     @Override
