@@ -74,6 +74,12 @@ public class New_Reflection extends AppCompatActivity {
         arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
         arrayListEdit = arrayList.edit();
 
+        // 감정 설명서 페이지로 이동
+        binding.RecordEmotionHelpButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), EmotionInstructions.class);
+            startActivity(intent);
+        });
+
         // 이전 버튼 클릭시 이전 화면으로
         binding.RecordPreviousButton.setOnClickListener(view -> {
             // 회고 저장

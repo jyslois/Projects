@@ -201,12 +201,13 @@
 
 
                 <Button
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
+                    android:id="@+id/Record_EmotionHelpButton"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
-                    android:text="어떤 감정인지 모르겠어요. 도와주세요!"
-                    android:id="@+id/Record_EmotionHelpButton"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#C1A39D"
+                    android:text="감정 설명서 보기" />
 
 
                 <TextView

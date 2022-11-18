@@ -46,7 +46,7 @@ public class Diary_Result_Edit extends AppCompatActivity {
         });
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
+        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
 
 
         // 데이터 세팅

@@ -32,7 +32,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="오래된순"
+                    android:text="최신순"
                     android:textSize="11dp"
                     android:layout_margin="5dp"
                     android:backgroundTint="#574E4D"

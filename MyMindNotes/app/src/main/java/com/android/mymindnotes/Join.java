@@ -66,6 +66,9 @@ public class Join extends AppCompatActivity {
         binding = ActivityJoinBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
+
         // 중복확인
         emailCheck = false;
         nicknameCheck = false;
@@ -150,12 +153,6 @@ public class Join extends AppCompatActivity {
         });
 
 
-
-
-
-        // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
-
         nickName = getSharedPreferences("nickName", Activity.MODE_PRIVATE);
         nickNameEdit = nickName.edit();
 
@@ -179,7 +176,7 @@ public class Join extends AppCompatActivity {
                 toast.show();
                 // 비밀 번호 형식이 잘못되었다면
             } else if (!Pattern.matches(passwordPattern, passwordInput)) {
-                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호는 알파벳과 숫자가 하나 이상 포함된 6자~20자여야 합니다", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호는 영문+숫자 조합 6자~20자여야 합니다", Toast.LENGTH_SHORT);
                 toast.show();
                 // 비밀번호와 비밀번호 확인란이 일치하지 않으면
             } else if (!binding.passwordInput.getText().toString().equals(binding.passwordRetypeInput.getText().toString())) {
