@@ -60,8 +60,8 @@ public class Login extends AppCompatActivity {
 
         // 아이디/비밀번호 저장 체크 박스 클릭 시
         autoSave.setOnClickListener(view -> {
-            // 만약 체크 박스가 체크되어 있다면
-            if (autoSave.isChecked()) {
+            // 만약 체크 박스가 체크되어 있거나, 로그인 상태 유지 체크 박스가 체크되어 있다면,
+            if (autoSave.isChecked() || autoLogin.isChecked()) {
                 // 상태 저장
                 autoSaveEdit.putBoolean("autoSaveCheck", true);
                 autoSaveEdit.apply();
@@ -69,7 +69,8 @@ public class Login extends AppCompatActivity {
                 autoSaveEdit.putString("id", email.getText().toString());
                 autoSaveEdit.putString("password", password.getText().toString());
             } else {
-                // 체크되어 있지 않다면 상태 저장, 아이디와 비밀번호 값을 ""로 저장
+                // 체크되어 있지 않다면,
+                // 상태 저장, 아이디와 비밀번호 값을 ""로 저장
                 autoSaveEdit.putBoolean("autoSaveCheck", false);
                 autoSaveEdit.apply();
                 autoSaveEdit.putString("id", "");
@@ -79,10 +80,12 @@ public class Login extends AppCompatActivity {
         });
 
 
+
         // 만약 로그인 상태 유지 값이 true로 저장되어 있다면
         if (auto.getBoolean("autoLoginCheck", false)) {
-            // 체크박스 상태도 체크로 표시
+            // 체크박스 상태도 체크로 표시 (아이디 비밀번호 저장, 로그인 상태 유지 둘 다 체크)
             autoLogin.setChecked(true);
+            autoSave.setChecked(true);
             // 만약 이메일과 패스워드가 비어 있지 않다면, 자동 로그인 하기
             if (!email.getText().toString().equals("") && !password.getText().toString().equals("")) {
                 Intent intent = new Intent(getApplicationContext(), MainPage.class);
@@ -93,10 +96,12 @@ public class Login extends AppCompatActivity {
         }
 
 
+
         // 자동 로그인 체크 버튼 클릭 이벤트
         autoLogin.setOnClickListener(view -> {
             // 만약 체크 박스가 체크되어 있다면
             if (autoLogin.isChecked()) {
+                autoSave.setChecked(true);
                 autoSaveEdit.putBoolean("autoLoginCheck", true);
                 autoSaveEdit.apply();
             } else {
@@ -138,6 +143,7 @@ public class Login extends AppCompatActivity {
                     // 상태 저장
                     autoSaveEdit.putBoolean("autoLoginCheck", true);
                     autoSaveEdit.apply();
+                    autoSave.setChecked(true);
                 }
 
                 // 아이디/비밀번호 저장 버튼이 체크되어 있다면

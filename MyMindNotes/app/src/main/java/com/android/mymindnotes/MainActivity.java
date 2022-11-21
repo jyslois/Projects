@@ -38,4 +38,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    // 뒤로가기 누를 시 앱 종료
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }

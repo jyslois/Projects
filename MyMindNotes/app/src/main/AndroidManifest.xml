@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.android.mymindnotes">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,11 +14,20 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMindNotes"
+        android:usesCleartextTraffic="true"
         tools:targetApi="32">
+        <activity
+            android:name=".accountInformation"
+            android:exported="false"
+            android:theme="@style/Theme.Main" />
+        <activity
+            android:name=".MainMenu"
+            android:exported="false"
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".Diary_Result_Edit"
             android:exported="false"
-            android:theme="@style/Theme.Main"/>
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".Diary_Result"
             android:exported="false"
@@ -99,10 +109,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>

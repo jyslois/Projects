@@ -633,13 +633,4 @@ public class Diary extends AppCompatActivity {
         }
     }
 
-
-    // xml로 작성한 액션바의 메뉴 설정
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_diary, menu);
-
-        return true;
-    }
-
 }
