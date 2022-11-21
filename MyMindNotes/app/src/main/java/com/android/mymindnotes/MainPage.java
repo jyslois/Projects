@@ -47,11 +47,16 @@ public class MainPage extends AppCompatActivity {
         binding.mainpagetext.setText("오늘 하루도 고생했어요, " + nick + " 님.");
 
         // 메뉴 이미지
-        ImageView mainmenu = binding.mainmenu;
-        mainmenu.setColorFilter(Color.parseColor("#C3BE9F98"));
+        binding.mainmenu.setColorFilter(Color.parseColor("#BCFFD7CE"));
+        binding.diarymenu.setColorFilter(Color.parseColor("#BCFFD7CE"));
 
-        mainmenu.setOnClickListener(view -> {
+        binding.mainmenu.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainMenu.class);
+            startActivity(intent);
+        });
+
+        binding.diarymenu.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Diary.class);
             startActivity(intent);
         });
 

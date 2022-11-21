@@ -10,7 +10,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:background="#BCE8B1A4"
+        android:background="#BCFFD7CE"
         android:padding="10dp">
 
         <ImageView
