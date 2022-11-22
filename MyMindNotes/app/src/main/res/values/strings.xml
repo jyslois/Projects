@@ -94,5 +94,9 @@
         <item>공포</item>
         <item>분노</item>
     </string-array>
+    <string name="title_activity_change_nickname">changeNickname</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>

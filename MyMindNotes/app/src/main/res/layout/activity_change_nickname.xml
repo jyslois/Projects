@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
+
+
+        <RelativeLayout
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+
+            <TextView
+                android:textSize="15sp"
+                android:textColor="#CDAF97"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/nickNameText"/>
+
+            <EditText
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/nickNameInput"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nickNameText"
+                android:layout_alignLeft="@id/nickNameText"
+                android:background="@drawable/rounded_border"
+                android:hint="특수문자 제외 2자 이상"
+                android:inputType="textEmailAddress"
+                android:padding="15dp"
+                android:textSize="14.5dp" />
+
+            <Button
+                android:textSize="11.82sp"
+                android:id="@+id/checkNicknameButton"
+                android:layout_marginTop="43dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="130dp"
+                android:layout_height="62dp"
+                android:layout_toRightOf="@id/nickNameInput"
+                android:text="중복확인"
+                android:backgroundTint="#C3BE9F98"/>
+
+            <com.google.android.material.button.MaterialButton
+                app:cornerRadius="10dp"
+                android:backgroundTint="#C3D6B2AB"
+                android:layout_marginTop="380dp"
+                android:layout_width="330dp"
+                android:layout_height="55dp"
+                android:text="닉네임 변경"
+                android:layout_below="@id/nickNameInput"
+                android:layout_alignLeft="@id/nickNameInput"
+                android:id="@+id/changeNicknameButton"/>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>
