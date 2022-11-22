@@ -1,30 +1,18 @@
 package com.android.mymindnotes;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.drawable.DrawableCompat;
-
 import com.android.mymindnotes.databinding.ActivityMainPageBinding;
 import com.bumptech.glide.Glide;
 
 public class MainPage extends AppCompatActivity {
-    ActivityMainPageBinding binding;
+    com.android.mymindnotes.databinding.ActivityMainPageBinding binding;
     SharedPreferences nickName;
 
     @Override
@@ -48,18 +36,10 @@ public class MainPage extends AppCompatActivity {
 
         // 메뉴 이미지
         binding.mainmenu.setColorFilter(Color.parseColor("#BCFFD7CE"));
-        binding.diarymenu.setColorFilter(Color.parseColor("#BCFFD7CE"));
-
         binding.mainmenu.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainMenu.class);
             startActivity(intent);
         });
-
-        binding.diarymenu.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), Diary.class);
-            startActivity(intent);
-        });
-
 
     }
 

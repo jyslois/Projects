@@ -139,7 +139,6 @@ public class Diary extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,6 +153,7 @@ public class Diary extends AppCompatActivity {
         indexListSingleEmotion = new ArrayList<>();
 
         emotionArray = getResources().getStringArray(R.array.emotions_array);
+
 
         // 만약 SharedPreferences에 저장된 arrayList가 있다면,
         if (!arrayList.getString("arrayList", "").equals("")) {
@@ -289,215 +289,65 @@ public class Diary extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     binding.sortEmotionButton.setText(emotionArray[position]);
-                    switch (emotionArray[position]) {
-                        case "All" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
+                    if (recordList != null) {
+                        switch (emotionArray[position]) {
+                            case "All": {
+                                isEmotionRecordListChecked = false;
+                                isTraumaRecordListChecked = false;
+                                isSingleEmotionListChecked = true;
 
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
+                                indexListTrauma.clear();
+                                indexListEmotion.clear();
+                                indexListSingleEmotion.clear();
 
-                            adaptor.updateItemList(recordList);
+                                adaptor.updateItemList(recordList);
 
-                            // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                            if (binding.sortDateButton.getText().equals("오래된순")) {
-                                linearLayoutManager.setReverseLayout(false);
-                                linearLayoutManager.setStackFromEnd(false);
-                            } else if (binding.sortDateButton.getText().equals("최신순")) {
-                                linearLayoutManager.setReverseLayout(true);
-                                linearLayoutManager.setStackFromEnd(true);
-                            }
-                            diaryView.setLayoutManager(linearLayoutManager);
-                        }
-                        break;
-                        case "기쁨" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("기쁨")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
+                                // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                                if (binding.sortDateButton.getText().equals("오래된순")) {
+                                    linearLayoutManager.setReverseLayout(false);
+                                    linearLayoutManager.setStackFromEnd(false);
+                                } else if (binding.sortDateButton.getText().equals("최신순")) {
+                                    linearLayoutManager.setReverseLayout(true);
+                                    linearLayoutManager.setStackFromEnd(true);
                                 }
+                                diaryView.setLayoutManager(linearLayoutManager);
                             }
-
-                            adaptor.updateItemList(singleEmotionList);
-                        }
-                        break;
-                        case "기대" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("기대")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
-                                }
+                            break;
+                            case "기쁨": {
+                                sortbyemotion("기쁨", position);
                             }
-
-                            adaptor.updateItemList(singleEmotionList);
-                        }
-                        break;
-                        case "신뢰" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("신뢰")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
-                                }
+                            break;
+                            case "기대": {
+                                sortbyemotion("기대", position);
                             }
-
-                            adaptor.updateItemList(singleEmotionList);
-                        }
-                        break;
-                        case "놀람" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("놀람")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
-                                }
+                            break;
+                            case "신뢰": {
+                                sortbyemotion("신뢰", position);
                             }
-
-                            adaptor.updateItemList(singleEmotionList);
-                        }
-                        break;
-                        case "슬픔" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("슬픔")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
-                                }
+                            break;
+                            case "놀람": {
+                                sortbyemotion("놀람", position);
                             }
-
-                            adaptor.updateItemList(singleEmotionList);
-                        }
-                        break;
-                        case "혐오" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("혐오")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
-                                }
+                            break;
+                            case "슬픔": {
+                                sortbyemotion("슬픔", position);
                             }
-
-                            adaptor.updateItemList(singleEmotionList);
-                        }
-                        break;
-                        case "공포" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("공포")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
-                                }
+                            break;
+                            case "혐오": {
+                                sortbyemotion("혐오", position);
                             }
-
-                            adaptor.updateItemList(singleEmotionList);
-                        }
-                        break;
-                        case "분노" : {
-                            isEmotionRecordListChecked = false;
-                            isTraumaRecordListChecked = false;
-                            isSingleEmotionListChecked = true;
-
-                            singleEmotionList = new ArrayList<>();
-
-                            indexListTrauma.clear();
-                            indexListEmotion.clear();
-                            indexListSingleEmotion.clear();
-
-                            singleEmotion = emotionArray[position];
-
-                            for (int i = 0; i < recordList.size(); i++) {
-                                if (recordList.get(i).emotionWord.equals("분노")) {
-                                    singleEmotionList.add(recordList.get(i));
-                                    indexListSingleEmotion.add(i);
-                                }
+                            break;
+                            case "공포": {
+                                sortbyemotion("공포", position);
                             }
+                            break;
+                            case "분노": {
+                                sortbyemotion("분노", position);
+                            }
+                            break;
 
-                            adaptor.updateItemList(singleEmotionList);
                         }
-                        break;
-
                     }
                 }
 
@@ -508,7 +358,30 @@ public class Diary extends AppCompatActivity {
 
         });
 
+    }
 
+    // 감정별 정렬을 위한 함수
+    private void sortbyemotion(String emotion, int position) {
+        isEmotionRecordListChecked = false;
+        isTraumaRecordListChecked = false;
+        isSingleEmotionListChecked = true;
+
+        singleEmotionList = new ArrayList<>();
+
+        indexListTrauma.clear();
+        indexListEmotion.clear();
+        indexListSingleEmotion.clear();
+
+        singleEmotion = emotionArray[position];
+
+        for (int i = 0; i < recordList.size(); i++) {
+            if (recordList.get(i).emotionWord.equals(emotion)) {
+                singleEmotionList.add(recordList.get(i));
+                indexListSingleEmotion.add(i);
+            }
+        }
+
+        adaptor.updateItemList(singleEmotionList);
     }
 
     // 목록의 개별 항목을 구성하기 위한 뷰들을 viewBinding을 통해 hold,들고 있는 역할 - 뷰를 재활용할 수 있게 해 준다
@@ -618,7 +491,6 @@ public class Diary extends AppCompatActivity {
         public int getItemViewType(int position) {
             return position;
         }
-
 
     }
 

@@ -1,9 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".accountInformation">
+    tools:context=".Login">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_marginTop="-50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:src="@drawable/accountsetting"
+            android:layout_marginBottom="30dp"
+            android:id="@+id/accountsetting"/>
+
+        <RelativeLayout
+            android:layout_below="@id/accountsetting"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="이메일"
+                android:textColor="#CDAF97" />
+
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/email"
+                android:text="이메일"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailText"
+                android:layout_alignLeft="@id/emailText"
+                android:background="@drawable/rounded_border"
+                android:padding="15dp"
+                android:textSize="14.5dp" />
+
+
+            <Button
+                android:id="@+id/changePasswordButton"
+                android:textSize="11.82sp"
+                android:layout_width="130dp"
+                android:layout_height="62dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="23dp"
+                android:layout_toRightOf="@id/email"
+                android:backgroundTint="#C3BE9F98"
+                android:text="비밀번호 변경" />
+
+
+            <TextView
+                android:textColor="#CDAF97"
+                android:layout_marginTop="25dp"
+                android:layout_below="@id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/nickNameText"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/nickname"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nickNameText"
+                android:layout_alignLeft="@id/nickNameText"
+                android:text="닉네임"
+                android:background="@drawable/rounded_border"
+                android:padding="15dp"
+                android:textSize="14.5dp" />
+
+            <Button
+                android:textSize="11.82sp"
+                android:id="@+id/changeNicknameButton"
+                android:layout_marginTop="48dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="130dp"
+                android:layout_height="62dp"
+                android:layout_toRightOf="@id/nickname"
+                android:layout_below="@id/email"
+                android:text="변경"
+                android:backgroundTint="#C3BE9F98"/>
+
+            <TextView
+                android:textColor="#CDAF97"
+                android:layout_marginTop="25dp"
+                android:layout_below="@id/nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="생년"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/birthyearText"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:backgroundTint="#ABF8E6D8"
+                android:id="@+id/birthyear"
+                android:text="생년"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/birthyearText"
+                android:layout_alignLeft="@id/birthyearText"
+                android:background="@drawable/rounded_border"
+                android:padding="15dp"
+                android:textSize="14.5dp" />
+
+            <Button
+                android:layout_marginLeft="-13dp"
+                android:textColor="#CDAF97"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/birthyear"
+                android:id="@+id/logoutButton"
+                android:background="#00ff0000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                android:textStyle="bold"
+                android:text="로그아웃"/>
+
+            <Button
+                android:layout_marginLeft="-13dp"
+                android:textColor="#CDAF97"
+                android:textStyle="bold"
+                android:layout_below="@id/logoutButton"
+                android:id="@+id/withdrawalButton"
+                android:background="#00ff0000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                android:text="계정 탈퇴"/>
+
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -21,31 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-<!--            <ImageView-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                android:layout_marginTop="23dp"-->
-<!--                android:layout_width="25dp"-->
-<!--                android:layout_height="25dp"-->
-<!--                android:id="@+id/mainmenu"-->
-<!--                android:src="@drawable/mainmenu2"-->
-<!--                android:layout_toRightOf="@id/diarymenu"/>-->
-
-<!--            <ImageView-->
-<!--                android:layout_marginLeft="270dp"-->
-<!--                android:id="@+id/diarymenu"-->
-<!--                android:layout_marginTop="23dp"-->
-<!--                android:layout_width="25dp"-->
-<!--                android:layout_height="25dp"-->
-<!--                android:src="@drawable/diarymenu"/>-->
-
-            <ImageView
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="23dp"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/diarymenu"
-                android:src="@drawable/diarymenu" />
-
             <ImageView
                 android:layout_marginLeft="315dp"
                 android:id="@+id/mainmenu"

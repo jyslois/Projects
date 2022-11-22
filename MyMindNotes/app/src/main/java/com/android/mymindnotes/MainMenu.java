@@ -28,6 +28,12 @@ public class MainMenu extends AppCompatActivity {
         Glide.with(this).load(R.drawable.mainmenubackground).into(binding.background);
 
         // 버튼 클릭 이벤트
+
+        binding.recordDiaryButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), RecordMindChoice.class);
+            startActivity(intent);
+        });
+
         binding.diaryButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), Diary.class);
             startActivity(intent);
