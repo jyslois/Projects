@@ -33,7 +33,7 @@ public class Old_Emotion extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.recordbackground).into(binding.traumaemotionbackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.traumaemotionbackground);
 
         // 감정 설명서 페이지로 이동
         binding.RecordEmotionHelpButton.setOnClickListener(view -> {

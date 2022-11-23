@@ -44,7 +44,7 @@ public class Old_Reflection extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.recordbackground).into(binding.traumareflectionbackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.traumareflectionbackground);
 
         // Tips
         // Tips 다이얼로그 설정

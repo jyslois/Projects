@@ -28,7 +28,7 @@ public class RecordMindChoice extends AppCompatActivity {
 
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.choicebackground).into(binding.choicebackground);
+        Glide.with(this).load(R.drawable.diarybackground2).into(binding.choicebackground);
 
 
         // 오늘의 마음 일기 버튼 클릭 시

@@ -23,7 +23,7 @@ public class Old_Thought extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.recordbackground).into(binding.traumabackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.traumabackground);
 
         thought = getSharedPreferences("thought", MODE_PRIVATE);
         thoughtEdit = thought.edit();

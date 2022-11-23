@@ -13,6 +13,9 @@
         android:scaleType="fitXY" />
 
     <LinearLayout
+        android:layout_marginTop="-20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -20,47 +23,64 @@
 
         <TextView
             android:text="닉네임 님,"
-            android:layout_gravity="center"
+            android:layout_gravity="left"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#CDAF97"
-            android:textSize="15dp"
+            android:textColor="#E8C3BA"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:id="@+id/nickNameText"/>
 
         <TextView
+            android:layout_marginTop="5dp"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#CDAF97"
+            android:textColor="#E8C3BA"
             android:text="오늘은 어떤 마음에 대해 알아 볼까요?"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:id="@+id/recordText"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow"
+            android:tint="#C3AA8F89" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow"
+            android:tint="#B0BE9F98" />
+
+
         <com.google.android.material.button.MaterialButton
             android:textColor="#1E1010"
-            android:backgroundTint="#B2BE9F98"
-            android:layout_marginTop="10dp"
-            android:layout_width="320dp"
+            android:backgroundTint="#DDD5B2AA"
+            android:layout_marginTop="12dp"
+            android:layout_width="290dp"
             android:layout_height="80dp"
-            app:cornerRadius="20dp"
+            app:cornerRadius="15dp"
             android:text="@string/traumaRecord"
             android:layout_gravity="center"
             android:id="@+id/traumaButton"/>
 
         <com.google.android.material.button.MaterialButton
             android:textColor="#1E1010"
-            android:backgroundTint="#B2BE9F98"
-            android:layout_marginTop="10dp"
-            android:layout_width="320dp"
+            android:backgroundTint="#DDDCB8B0"
+            android:layout_marginTop="12dp"
+            android:layout_width="290dp"
             android:layout_height="80dp"
-            app:cornerRadius="20dp"
+            app:cornerRadius="15dp"
             android:text="@string/mindRecord"
             android:layout_gravity="center"
             android:id="@+id/todayEmotionButton"/>
+
 
 
     </LinearLayout>

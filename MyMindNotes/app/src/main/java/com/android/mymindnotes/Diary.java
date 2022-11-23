@@ -170,7 +170,7 @@ public class Diary extends AppCompatActivity {
 
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground).into(binding.background);
+        Glide.with(this).load(R.drawable.diarybackground4).into(binding.background);
 
         // RecyclerView
         diaryView = binding.diaryView;
