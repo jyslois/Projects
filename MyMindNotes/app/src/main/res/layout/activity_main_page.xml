@@ -22,7 +22,8 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_marginLeft="315dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
                 android:id="@+id/mainmenu"
                 android:layout_marginTop="23dp"
                 android:layout_width="25dp"
