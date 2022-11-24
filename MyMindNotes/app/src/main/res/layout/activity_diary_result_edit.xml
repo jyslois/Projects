@@ -139,7 +139,7 @@
                         android:layout_toRightOf="@id/Result_Emotion_Title"
                         android:padding="10dp"
                         android:src="@drawable/tips"
-                        app:tint="#756558" />
+                        app:tint="#FFD8B9" />
 
                     <EditText
                         android:backgroundTint="#C3D6B3AB"
