@@ -20,6 +20,10 @@ public interface UserInfoMapper {
     @Select("SELECT * FROM UserInfo WHERE nickname=#{nickname}")
     UserInfo getUserInfoFromNickname(@Param("nickname") String nickname);
 
+    // 회원 인덱스로 회원 정보 조회
+    @Select("SELECT * FROM UserInfo WHERE user_index=#{user_index}")
+    UserInfo getUserInfoFromUserIndex(@Param("user_index") int user_index);
+
 
     // Insert, Update, Delete를 사용하는 API의 반환 타입은 int로,
     // 해당 SQL문으로 인해서 영향을 받은 SQL record의 갯수가 반환된다. (정상적이라면 모두 1이 반환)
@@ -28,11 +32,15 @@ public interface UserInfoMapper {
     @Insert("INSERT INTO UserInfo(`email`, `nickname`, `password`, `birthyear`) VALUES(#{email}, #{nickname}, #{password}, #{birthyear})")
     int insertUser(@Param("email") String email, @Param("nickname") String nickname, @Param("password") String password, @Param("birthyear") int birthyear);
 
-    // 회원정보 수정
-    @Update("UPDATE UserInfo SET nickname=#{nickname}, password=#{password} WHERE email=#{email}")
-    int updateUserInfo(@Param("email") String email, @Param("nickname") String nickname, @Param("password") String password);
+    // 닉네임 수정
+    @Update("UPDATE UserInfo SET nickname=#{nickname} WHERE user_index=#{user_index}")
+    int updateUserNickname(@Param("user_index") int user_index, @Param("nickname") String nickname);
+
+    // 비밀번호 수정
+    @Update("UPDATE UserInfo SET password=#{password} WHERE user_index=#{user_index}")
+    int updateUserPassword(@Param("user_index") int user_index, @Param("password") String password);
 
     // 회원탈퇴
-    @Delete("DELETE FROM UserInfo WHERE email=#{email}")
-    int deleteUser(@Param("email") String email);
+    @Delete("DELETE FROM UserInfo WHERE user_index=#{user_index}")
+    int deleteUser(@Param("user_index") int user_index);
 }

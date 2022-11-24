@@ -1,8 +1,9 @@
 package com.android.mymindnotes.spring.controller;
 
 import com.android.mymindnotes.spring.mapper.UserInfoMapper;
+import com.android.mymindnotes.spring.model.ChangeUserNickname;
+import com.android.mymindnotes.spring.model.ChangeUserPassword;
 import com.android.mymindnotes.spring.model.UserInfo;
-import com.android.mymindnotes.spring.model.UserInfoEdit;
 import com.android.mymindnotes.spring.model.UserInfoLogin;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -87,9 +88,9 @@ public class UserInfoController {
         return result;
     }
 
-    // 회원정보 수정
-    @PutMapping("/api/member/update/{email}")
-    public Map<String, Object> updateUserInfo(@PathVariable("email") String email, @RequestBody @Valid UserInfoEdit userinfo, Errors errors) {
+    // 닉네임 수정
+    @PutMapping("/api/member/update/nickname")
+    public Map<String, Object> updateUserNickname(@RequestBody @Valid ChangeUserNickname changeUserNickname, Errors errors) {
         Map<String, Object> result = new HashMap<>();
         // 유효성 통과 못한 필드와 메시지를 핸들링
         if (errors.hasErrors()) {
@@ -101,19 +102,47 @@ public class UserInfoController {
                 result.put(error.getField(), error.getDefaultMessage());
             }
         } else {
-            mapper.updateUserInfo(email, userinfo.getNickname(), userinfo.getPassword());
+            mapper.updateUserNickname(changeUserNickname.getUser_index(), changeUserNickname.getNickname());
             result.put("code", 3000);
-            result.put("msg", "회원 정보가 수정되었습니다");
+            result.put("msg", "닉네임이 변경되었습니다");
         }
+        return result;
+    }
 
+    // 비밀번호 수정
+    @PutMapping("/api/member/update/password")
+    public Map<String, Object> updateUserPassword(@RequestBody @Valid ChangeUserPassword changeUserPassword, Errors errors) {
+        Map<String, Object> result = new HashMap<>();
+        // 인덱스로 회원 정보 조회
+        UserInfo userinfo = mapper.getUserInfoFromUserIndex(changeUserPassword.getUser_index());
+        // 만약 기존 비밀번호가 틀리다면
+        if (!userinfo.getPassword().equals(changeUserPassword.getOriginalpassword())) {
+            result.put("code", 3005);
+            result.put("msg", "기존 비밀번호를 확인해 주세요");
+        } else {
+            // 유효성 통과 못한 필드와 메시지를 핸들링
+            if (errors.hasErrors()) {
+                // 유효성 검사에 실패한 필드 목록을 가져온다: errors.getFieldErrors()
+                for (FieldError error : errors.getFieldErrors()) {
+                    // 유효성 검사에 실패한 필드명을 가져온다. error.getField()
+                    // 유효성 검사에 실패한 필드에 정의된 메시지를 가져온다. error.getDefaultMessage()
+                    result.put("code", 3003);
+                    result.put(error.getField(), error.getDefaultMessage());
+                }
+            } else {
+                mapper.updateUserPassword(changeUserPassword.getUser_index(), changeUserPassword.getPassword());
+                result.put("code", 3002);
+                result.put("msg", "비밀번호가 변경되었습니다");
+            }
+        }
         return result;
     }
 
     // 회원탈퇴
-    @DeleteMapping("/api/member/delete/{email}")
-    public Map<String, Object> deleteUser(@PathVariable("email") String email) {
+    @DeleteMapping("/api/member/delete/{user_index}")
+    public Map<String, Object> deleteUser(@PathVariable("user_index") int user_index) {
         Map<String, Object> result = new HashMap<>();
-        mapper.deleteUser(email);
+        mapper.deleteUser(user_index);
         result.put("code", 4000);
         result.put("msg", "회원 탈퇴 완료");
         return result;
