@@ -15,12 +15,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="14">
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,34 +37,36 @@
                         android:id="@+id/type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="20dp"
                         android:gravity="right"
                         android:text="타입"
-                        android:textColor="#CDAF97"
-                        android:textStyle="bold"/>
+                        android:textColor="#E3C2A7"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0000. 00. 00"
-                        android:textColor="#CDAF97"
-                        android:textStyle="bold"
-                        android:id="@+id/date"
-                        android:gravity="right"
                         android:layout_alignParentRight="true"
-                        android:layout_margin="20dp"/>
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="right"
+                        android:text="0000. 00. 00"
+                        android:textColor="#E3C2A7"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:layout_marginLeft="-10dp"
                         android:id="@+id/Result_Situation_Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginTop="70dp"
                         android:text="（ 상황 ）"
-                        android:textColor="#E4C5AB"
+                        android:textColor="#CDAF97"
                         android:textSize="18dp"
                         android:textStyle="bold" />
 
@@ -71,10 +75,9 @@
                         android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Result_Situation_Title"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/border"
-                        android:backgroundTint="#C3FAD1C8"
+                        android:backgroundTint="#C3D6B3AB"
                         android:hint="어떤 일이 있었나요?"
                         android:padding="10dp"
                         android:text="상황 기록"
@@ -86,14 +89,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="-10dp"
                         android:id="@+id/Result_Thought_Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:text="（ 생각 ）"
                         android:textStyle="bold"
-                        android:textColor="#E4C5AB"
+                        android:textColor="#CDAF97"
                         android:textSize="18dp" />
 
 
@@ -102,10 +105,9 @@
                         android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Result_Thought_Title"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/border"
-                        android:backgroundTint="#C3FAD1C8"
+                        android:backgroundTint="#C3D6B3AB"
                         android:padding="10dp"
                         android:hint="어떤 생각이 들었나요?"
                         android:text="생각 기록"
@@ -118,14 +120,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="-10dp"
                         android:id="@+id/Result_Emotion_Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:text="（ 감정 ）"
                         android:textStyle="bold"
-                        android:textColor="#E4C5AB"
+                        android:textColor="#CDAF97"
                         android:textSize="18dp" />
 
                     <ImageView
@@ -137,24 +139,23 @@
                         android:layout_toRightOf="@id/Result_Emotion_Title"
                         android:padding="10dp"
                         android:src="@drawable/tips"
-                        app:tint="#E4C5AB" />
+                        app:tint="#756558" />
 
                     <EditText
-                        android:backgroundTint="#C3FAD1C8"
+                        android:backgroundTint="#C3D6B3AB"
                         android:padding="10dp"
                         android:id="@+id/edit_emotion"
                         android:text="감정"
                         android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Result_Emotion_Title"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/border"
                         android:hint="어떤 감정을 느꼈나요?"
                         android:textSize="15dp" />
 
                     <EditText
-                        android:backgroundTint="#C3FAD1C8"
+                        android:backgroundTint="#C3D6B3AB"
                         android:padding="10dp"
                         android:id="@+id/edit_emotionText"
                         android:text="감정 기록"
@@ -162,7 +163,6 @@
                         android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/edit_emotion"
-                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/border"
                         android:textSize="15dp" />
@@ -177,14 +177,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="-10dp"
                         android:id="@+id/Result_Reflection_Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:text="（ 회고 ）"
                         android:textStyle="bold"
-                        android:textColor="#E4C5AB"
+                        android:textColor="#756558"
                         android:textSize="18dp" />
 
                     <EditText
@@ -193,10 +193,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Result_Reflection_Title"
                         android:hint="나는 왜 그런 마음이 들었을까요?"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/border"
-                        android:backgroundTint="#C3FAD1C8"
+                        android:backgroundTint="#C3D6B3AB"
                         android:padding="10dp"
                         android:text="회고 기록"
                         android:textSize="15dp" />
@@ -215,11 +214,6 @@
 
             </LinearLayout>
         </ScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
 
     </LinearLayout>
 </FrameLayout>

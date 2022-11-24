@@ -32,7 +32,7 @@
                 android:layout_gravity="left"
                 android:textSize="17dp"
                 android:textStyle="bold"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="25dp"
                 android:textColor="#2C0D0D"
                 android:text="트라우마 ＃ 상황"/>
 
@@ -50,7 +50,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -60,7 +62,6 @@
                     android:id="@+id/Record_Situation_Instruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
                     android:text="어떤 일이 있었나요?"
                     android:textColor="#E4C3A9"
@@ -80,21 +81,21 @@
             </RelativeLayout>
 
             <EditText
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_width="320dp"
+                android:id="@+id/Record_Situation_UserInput"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
-                android:gravity="top|left"
-                android:textSize="15dp"
-                android:lines="10"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/border"
-                android:hint="@string/truamaSituationHints"
                 android:backgroundTint="#E9BE9F98"
-                android:id="@+id/Record_Situation_UserInput"/>
-        <Button
+                android:gravity="top|left"
+                android:hint="@string/truamaSituationHints"
+                android:lines="10"
+                android:textSize="15dp" />
+
+            <Button
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
-            android:layout_width="320dp"
+            android:layout_width="310dp"
             android:layout_height="wrap_content"
             android:text="▶ 다음"
             android:id="@+id/Record_NextButton"

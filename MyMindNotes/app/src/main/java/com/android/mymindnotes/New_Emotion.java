@@ -44,7 +44,7 @@ public class New_Emotion extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.recordbackground).into(binding.newemotionbackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.newemotionbackground);
 
         // 어떤 감정인지 모르겠어요, 도와주세요 버튼 클릭 -> 감정 설명서 페이지로 이동
         binding.RecordEmotionHelpButton.setOnClickListener(view -> {

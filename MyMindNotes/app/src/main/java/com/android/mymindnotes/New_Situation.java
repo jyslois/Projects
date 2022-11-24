@@ -24,7 +24,7 @@ public class New_Situation extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.recordbackground).into(binding.newsituationbackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.newsituationbackground);
 
         situation = getSharedPreferences("situation", Activity.MODE_PRIVATE);
         situationEdit = situation.edit();

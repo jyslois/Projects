@@ -32,9 +32,9 @@
                 android:layout_gravity="left"
                 android:textSize="17dp"
                 android:textStyle="bold"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="20dp"
                 android:textColor="#2C0D0D"
-                android:text="「오늘의 마음 : 감정」"/>
+                android:text="오늘의 마음 ＃ 감정"/>
 
             <ImageView
                 android:layout_width="80dp"
@@ -53,7 +53,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -63,10 +65,9 @@
                         android:id="@+id/Record_Emotion_Instruction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="50dp"
                         android:text="어떤 감정을 느끼셨나요?"
-                        android:textColor="#CDAF97"
+                        android:textColor="#E4C3A9"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
@@ -78,7 +79,7 @@
                         android:layout_toRightOf="@id/Record_Emotion_Instruction"
                         android:padding="10dp"
                         android:src="@drawable/tips"
-                        app:tint="#CDAF97" />
+                        app:tint="#F3D0B4" />
 
                 </RelativeLayout>
 
@@ -87,12 +88,10 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_marginTop="5dp"
                     android:id="@+id/emotions"
                     android:background="@drawable/border"
-                    android:backgroundTint="#BE9F98">
+                    android:backgroundTint="#D5CDACA4">
 
                     <RadioGroup
                         android:layout_marginTop="10dp"
@@ -206,7 +205,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="#C1A39D"
+                    android:backgroundTint="#DCBBB5"
                     android:text="감정 설명서 보기" />
 
 
@@ -214,16 +213,14 @@
                     android:id="@+id/Record_Emotion_Instruction_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="30dp"
                     android:text="감정을 자세하게 기록해 보아요. (선택)"
-                    android:textColor="#CDAF97"
+                    android:textColor="#E4C3A9"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:gravity="top|left"

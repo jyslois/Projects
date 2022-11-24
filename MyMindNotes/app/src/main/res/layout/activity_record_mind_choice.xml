@@ -45,25 +45,12 @@
             android:textStyle="bold"
             android:id="@+id/recordText"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/arrow"
-            android:tint="#C3AA8F89" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/arrow"
-            android:tint="#B0BE9F98" />
-
 
         <com.google.android.material.button.MaterialButton
             android:textColor="#1E1010"
             android:backgroundTint="#DDD5B2AA"
-            android:layout_marginTop="12dp"
-            android:layout_width="290dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="280dp"
             android:layout_height="80dp"
             app:cornerRadius="15dp"
             android:text="@string/traumaRecord"
@@ -73,8 +60,8 @@
         <com.google.android.material.button.MaterialButton
             android:textColor="#1E1010"
             android:backgroundTint="#DDDCB8B0"
-            android:layout_marginTop="12dp"
-            android:layout_width="290dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="280dp"
             android:layout_height="80dp"
             app:cornerRadius="15dp"
             android:text="@string/mindRecord"

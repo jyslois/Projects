@@ -32,7 +32,7 @@
                 android:layout_gravity="left"
                 android:textSize="17dp"
                 android:textStyle="bold"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="25dp"
                 android:textColor="#2C0D0D"
                 android:text="트라우마 ＃ 감정"/>
 
@@ -53,7 +53,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -63,7 +65,6 @@
                         android:id="@+id/Record_Emotion_Instruction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="50dp"
                         android:text="어떤 감정을 느끼셨나요?"
                         android:textColor="#E4C3A9"
@@ -87,8 +88,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_marginTop="5dp"
                     android:id="@+id/emotions"
                     android:background="@drawable/border"
@@ -206,12 +205,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="#D1B1AA"
+                    android:backgroundTint="#DCBBB5"
                     android:text="감정 설명서 보기" />
 
                 <TextView
                     android:layout_marginTop="30dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="감정을 자세하게 기록해 보아요. (선택)"
@@ -222,7 +220,6 @@
 
                 <EditText
                     android:layout_marginTop="15dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:gravity="top|left"

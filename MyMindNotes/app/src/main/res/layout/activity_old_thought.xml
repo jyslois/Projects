@@ -17,40 +17,42 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:minHeight="?attr/actionBarSize"
-            app:contentInsetStart="0dp"
             android:background="#BAE3BEB6"
-            android:gravity="center">
+            android:gravity="center"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetStart="0dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="25dp"
+                android:text="트라우마 ＃ 생각"
                 android:textColor="#2C0D0D"
-                android:text="트라우마 ＃ 생각"/>
+                android:textSize="17dp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/progress_2"
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
-                app:tint="#2C0D0D"/>
+                android:src="@drawable/progress_2"
+                app:tint="#2C0D0D" />
 
         </androidx.appcompat.widget.Toolbar>
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -60,7 +62,6 @@
                     android:id="@+id/Record_CoreEmotion_Instruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
                     android:text="어떤 생각이 들었나요?"
                     android:textColor="#E4C3A9"
@@ -81,8 +82,7 @@
 
             <EditText
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_width="320dp"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:gravity="top|left"
                 android:textSize="15dp"

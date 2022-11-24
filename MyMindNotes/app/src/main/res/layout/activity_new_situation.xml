@@ -32,16 +32,16 @@
                 android:layout_gravity="left"
                 android:textSize="17dp"
                 android:textStyle="bold"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="25dp"
                 android:textColor="#2C0D0D"
-                android:text="「오늘의 마음 : 상황」"/>
+                android:text="오늘의 마음 ＃ 상황"/>
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/progress_2"
                 android:layout_gravity="right"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="20dp"
                 app:tint="#2C0D0D"/>
 
         </androidx.appcompat.widget.Toolbar>
@@ -50,7 +50,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -60,10 +62,9 @@
                     android:id="@+id/Record_Situation_Instruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="50dp"
                     android:text="어떤 일이 있었나요?"
-                    android:textColor="#CDAF97"
+                    android:textColor="#E4C3A9"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
@@ -75,13 +76,12 @@
                     android:layout_toRightOf="@id/Record_Situation_Instruction"
                     android:padding="10dp"
                     android:src="@drawable/tips"
-                    app:tint="#CDAF97" />
+                    app:tint="#F3D0B4" />
 
             </RelativeLayout>
 
             <EditText
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:gravity="top|left"
