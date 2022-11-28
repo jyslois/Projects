@@ -82,6 +82,9 @@ public class UserInfoController {
         } else {
             mapper.insertUser(userinfo.getEmail(), userinfo.getNickname(), userinfo.getPassword(), userinfo.getBirthyear());
             result.put("code", 2000);
+            // user index를 얻기 위한 조회
+            UserInfo user = mapper.getUserInfoFromEmail(userinfo.getEmail());
+            result.put("user_index", user.getUser_index());
             result.put("msg", "회원 가입 성공! 환영합니다");
         }
 

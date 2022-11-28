@@ -13,8 +13,10 @@ import android.text.TextWatcher;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
+import com.android.mymindnotes.model.UserInfo;
 import com.android.mymindnotes.retrofit.CheckEmailApi;
 import com.android.mymindnotes.retrofit.CheckNicknameApi;
+import com.android.mymindnotes.retrofit.JoinApi;
 import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
@@ -31,10 +33,19 @@ public class Join extends AppCompatActivity {
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
 
+    // 회원가입 성공 시 userindex 저장
+    SharedPreferences userindex;
+    SharedPreferences.Editor userindexEdit;
+
     // 중복 확인
     boolean emailCheck;
     boolean nicknameCheck;
     AlertDialog alertDialog;
+
+    String nickNameInput;
+    String emailInput;
+    String passwordInput;
+    String birthyearInput;
 
     // 이메일 중복 체크 확인완료 dialogue
     void confirmEmailDialog() {
@@ -76,7 +87,7 @@ public class Join extends AppCompatActivity {
         // 형식 체크
         String emailPattern = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
         String passwordPattern = "(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}";
-        String nicknamePattern = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$";
+        String nicknamePattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9-_]{2,10}$";
 
         // 이메일 중복 체크
         binding.emailCheckButton.setOnClickListener(view -> {
@@ -159,14 +170,16 @@ public class Join extends AppCompatActivity {
         auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
         autoSaveEdit = auto.edit();
 
+        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        userindexEdit = userindex.edit();
 
         // 회원 가입 버튼 클릭 이벤트
         binding.joinButton.setOnClickListener(view -> {
-            String nickNameInput = binding.nickNameInput.getText().toString();
-            String emailInput = binding.emailInput.getText().toString();
-            String passwordInput = binding.passwordInput.getText().toString();
+            nickNameInput = binding.nickNameInput.getText().toString();
+            emailInput = binding.emailInput.getText().toString();
+            passwordInput = binding.passwordInput.getText().toString();
             String passwordReTypeInput = binding.passwordRetypeInput.getText().toString();
-            String birthyearInput = binding.birthyearInput.getText().toString();
+            birthyearInput = binding.birthyearInput.getText().toString();
 
             // 형식 체크
 
@@ -179,7 +192,7 @@ public class Join extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), "비밀번호는 영문+숫자 조합 6자~20자여야 합니다", Toast.LENGTH_SHORT);
                 toast.show();
                 // 비밀번호와 비밀번호 확인란이 일치하지 않으면
-            } else if (!binding.passwordInput.getText().toString().equals(binding.passwordRetypeInput.getText().toString())) {
+            } else if (!passwordInput.equals(passwordReTypeInput)) {
                 Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT);
                 toast.show();
                 // 닉네임을 적지 않았다면
@@ -216,9 +229,7 @@ public class Join extends AppCompatActivity {
                 autoSaveEdit.putBoolean("autoSaveCheck", true);
                 autoSaveEdit.commit();
 
-                // 메인 화면 전환
-                Intent intent = new Intent(getApplicationContext(), MainPage.class);
-                startActivity(intent);
+                join();
             }
         });
     }
@@ -281,6 +292,51 @@ public class Join extends AppCompatActivity {
                             toast.show();
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1002) {
                             confirmNicknameDialog();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+
+            }
+        });
+        thread.start();
+    }
+
+    // 회원가입 - 백그라운드 쓰레드에서 네트워크 코드 작업
+    public void join() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrofit 객체 생성
+                RetrofitService retrofitService = new RetrofitService();
+                // Retrofit 객체에 Service 인터페이스 등록
+                JoinApi joinApi = retrofitService.getRetrofit().create(JoinApi.class);
+                // Call 객체 획득
+                UserInfo userInfo = new UserInfo(emailInput, nickNameInput, passwordInput, Integer.parseInt(birthyearInput));
+                Call<Map<String, Object>> call = joinApi.addUser(userInfo);
+                // 네트워킹 시도
+                call.enqueue(new Callback<Map<String, Object>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                        // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
+                        // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
+                        if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 2001) {
+                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 2000) {
+                            // 회원 번호 저장
+                            userindexEdit.putInt("userindex", (int) Double.parseDouble(String.valueOf((response.body().get("user_index")))));
+                            userindexEdit.commit();
+                            // 환영 메시지 띄우기
+                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                            toast.show();
+                            // 메인 화면 전환
+                            Intent intent = new Intent(getApplicationContext(), MainPage.class);
+                            startActivity(intent);
                         }
                     }
                     @Override
