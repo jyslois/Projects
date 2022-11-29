@@ -4,6 +4,10 @@ public class UserInfoLogin {
     public String email;
     public String password;
 
+    public UserInfoLogin() {
+
+    }
+
     public UserInfoLogin(String email, String password) {
         this.email = email;
         this.password = password;
