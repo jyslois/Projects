@@ -12,7 +12,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityLoginBinding;
+import com.android.mymindnotes.model.UserInfo;
+import com.android.mymindnotes.model.UserInfoLogin;
+import com.android.mymindnotes.retrofit.JoinApi;
+import com.android.mymindnotes.retrofit.LoginApi;
+import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
+
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
     ActivityLoginBinding binding;
@@ -23,8 +34,12 @@ public class Login extends AppCompatActivity {
     EditText password;
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
+
+    // 로그인 성공 시 nickname과 userindex 저장
     SharedPreferences nickName;
     SharedPreferences.Editor nickNameEdit;
+    SharedPreferences userindex;
+    SharedPreferences.Editor userindexEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +60,8 @@ public class Login extends AppCompatActivity {
         password = binding.password;
         nickName = getSharedPreferences("nickName", Activity.MODE_PRIVATE);
         nickNameEdit = nickName.edit();
+        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        userindexEdit = userindex.edit();
 
 
         // 만약 autoSaveCheck 값이 true로 저장되어 있다면
@@ -128,7 +145,7 @@ public class Login extends AppCompatActivity {
             } else if (passwordInput.equals("")) {
                 Toast toast = Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요", Toast.LENGTH_SHORT);
                 toast.show();
-                // 바른 이메일 형식을 입력하지 않았다면ㄴ
+            // 바른 이메일 형식을 입력하지 않았다면ㄴ
             } else if(!emailInput.contains("@")) {
                 Toast toast = Toast.makeText(getApplicationContext(), "올바른 이메일 형식으로 입력해 주세요", Toast.LENGTH_SHORT);
                 toast.show();
@@ -162,17 +179,7 @@ public class Login extends AppCompatActivity {
                 }
                 autoSaveEdit.commit();
 
-                // 만약 닉네임이 설정되지 않은 상태라면, 이메일 앞부분(아이디)을 닉네임으로 저장
-                if (nickName.getString("nickName", "").equals("")) {
-                    int index = emailInput.indexOf("@");
-                    String emailBeforeAt = emailInput.substring(0, index);
-                    nickNameEdit.putString("nickName", emailBeforeAt);
-                    nickNameEdit.apply();
-                }
-
-                // 로그인 성공
-                Intent intent = new Intent(getApplicationContext(), MainPage.class);
-                startActivity(intent);
+                login();
             }
         });
 
@@ -202,5 +209,53 @@ public class Login extends AppCompatActivity {
 
     }
 
+
+    // 로그인 - 백그라운드 쓰레드에서 네트워크 코드 작업
+    public void login() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrofit 객체 생성
+                RetrofitService retrofitService = new RetrofitService();
+                // Retrofit 객체에 Service 인터페이스 등록
+                LoginApi loginApi = retrofitService.getRetrofit().create(LoginApi.class);
+                // Call 객체 획득
+                UserInfoLogin userInfoLogin = new UserInfoLogin(email.getText().toString(), password.getText().toString());
+                Call<Map<String, Object>> call = loginApi.login(userInfoLogin);
+                // 네트워킹 시도
+                call.enqueue(new Callback<Map<String, Object>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                        // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
+                        // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
+                        if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 5001 || Double.parseDouble(String.valueOf(response.body().get("code"))) == 5003 || Double.parseDouble(String.valueOf(response.body().get("code"))) == 5005) {
+                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 5000) {
+                            // 회원 번호 저장
+                            userindexEdit.putInt("userindex", (int) Double.parseDouble(String.valueOf((response.body().get("user_index")))));
+                            userindexEdit.commit();
+                            // 닉네임 저장
+                            nickNameEdit.putString("nickName", String.valueOf((response.body().get("nickname"))));
+                            nickNameEdit.commit();
+                            // 환영 메시지 띄우기
+                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                            toast.show();
+                            // 화면 전환
+                            Intent intent = new Intent(getApplicationContext(), MainPage.class);
+                            startActivity(intent);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+
+            }
+        });
+        thread.start();
+    }
 
 }

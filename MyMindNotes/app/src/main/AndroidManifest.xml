@@ -17,19 +17,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="32" >
         <activity
-            android:name=".changeNickname"
-            android:parentActivityName=".accountInformation"
+            android:name=".ChangeNickname"
+            android:parentActivityName=".AccountInformation"
             android:exported="false"
             android:theme="@style/Theme.changeScreen"
             android:label="닉네임 변경"/>
         <activity
-            android:name=".changePassword"
-            android:parentActivityName=".accountInformation"
+            android:name=".ChangePassword"
+            android:parentActivityName=".AccountInformation"
             android:exported="false"
             android:theme="@style/Theme.changeScreen"
             android:label="비밀번호 변경"/>
         <activity
-            android:name=".accountInformation"
+            android:name=".AccountInformation"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

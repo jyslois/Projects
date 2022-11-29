@@ -172,7 +172,10 @@ public class UserInfoController {
                 // 비밀번호 체크
                 if (user.getPassword().equals(userinfologin.getPassword())) {
                     result.put("code", 5000);
-                    result.put("user_index", user.getUser_index());
+                    // user index와 닉네임을 얻기 위한 조회
+                    UserInfo userinfo = mapper.getUserInfoFromEmail(userinfologin.getEmail());
+                    result.put("user_index", userinfo.getUser_index());
+                    result.put("nickname", userinfo.getNickname());
                     result.put("msg", "환영합니다");
                 } else {
                     result.put("code", 5003);

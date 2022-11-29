@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.regex.Pattern;
 
-public class changePassword extends AppCompatActivity {
+public class ChangePassword extends AppCompatActivity {
     ActivityChangePasswordBinding binding;
 
     @Override
@@ -48,7 +48,13 @@ public class changePassword extends AppCompatActivity {
                 // 비밀번호와 비밀번호 확인란이 일치하지 않으면
             } else {
                 // 네트워크 통신, 비밀번호 변경
+                changePassword();
             }
         });
+    }
+
+    // 비밀번호 변경 네트워크 통신
+    public void changePassword() {
+
     }
 }

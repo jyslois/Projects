@@ -4,7 +4,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class changeNickname extends AppCompatActivity {
+public class ChangeNickname extends AppCompatActivity {
     ActivityChangeNicknameBinding binding;
     // 중복 확인
     AlertDialog alertDialog;

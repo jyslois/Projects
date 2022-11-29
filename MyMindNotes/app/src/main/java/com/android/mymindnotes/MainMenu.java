@@ -45,7 +45,7 @@ public class MainMenu extends AppCompatActivity {
         });
 
         binding.accountsettingButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), accountInformation.class);
+            Intent intent = new Intent(getApplicationContext(), AccountInformation.class);
             startActivity(intent);
         });
 

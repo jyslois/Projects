@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 
-public class accountInformation extends AppCompatActivity {
+public class AccountInformation extends AppCompatActivity {
     com.android.mymindnotes.databinding.ActivityAccountInformationBinding binding;
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
@@ -31,12 +31,12 @@ public class accountInformation extends AppCompatActivity {
 
         // 변경 버튼 이벤트 처리
         binding.changePasswordButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), changePassword.class);
+            Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
             startActivity(intent);
         });
 
         binding.changeNicknameButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), changeNickname.class);
+            Intent intent = new Intent(getApplicationContext(), ChangeNickname.class);
             startActivity(intent);
         });
 
