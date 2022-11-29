@@ -28,14 +28,15 @@ import retrofit2.Response;
 
 public class Join extends AppCompatActivity {
     ActivityJoinBinding binding;
-    SharedPreferences nickName;
-    SharedPreferences.Editor nickNameEdit;
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
 
     // 회원가입 성공 시 userindex 저장
     SharedPreferences userindex;
     SharedPreferences.Editor userindexEdit;
+    // 닉네임 저장
+    SharedPreferences nickName;
+    SharedPreferences.Editor nickNameEdit;
 
     // 중복 확인
     boolean emailCheck;
@@ -164,7 +165,7 @@ public class Join extends AppCompatActivity {
         });
 
 
-        nickName = getSharedPreferences("nickName", Activity.MODE_PRIVATE);
+        nickName = getSharedPreferences("nickname", Activity.MODE_PRIVATE);
         nickNameEdit = nickName.edit();
 
         auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
@@ -216,19 +217,6 @@ public class Join extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "닉네임 중복확인을 해주세요", Toast.LENGTH_SHORT);
                 toast.show();
             } else {
-                // 닉네임 저장
-                nickNameEdit.putString("nickName", nickNameInput);
-                nickNameEdit.commit();
-
-                // 아이디와 비밀번호 저장
-                autoSaveEdit.putString("id", emailInput);
-                autoSaveEdit.putString("password", passwordInput);
-                autoSaveEdit.commit();
-
-                // 아이디/비밀번호 저장 체크 박스 상태를 true로 저장
-                autoSaveEdit.putBoolean("autoSaveCheck", true);
-                autoSaveEdit.commit();
-
                 join();
             }
         });
@@ -331,6 +319,17 @@ public class Join extends AppCompatActivity {
                             // 회원 번호 저장
                             userindexEdit.putInt("userindex", (int) Double.parseDouble(String.valueOf((response.body().get("user_index")))));
                             userindexEdit.commit();
+                            // 닉네임 저장
+                            nickNameEdit.putString("nickname", nickNameInput);
+                            nickNameEdit.commit();
+                            // 아이디와 비밀번호 저장
+                            autoSaveEdit.putString("id", emailInput);
+                            autoSaveEdit.putString("password", passwordInput);
+                            autoSaveEdit.commit();
+                            // 아이디/비밀번호 저장 체크 박스 상태를 true로 저장
+                            autoSaveEdit.putBoolean("autoSaveCheck", true);
+                            autoSaveEdit.commit();
+
                             // 환영 메시지 띄우기
                             Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
                             toast.show();

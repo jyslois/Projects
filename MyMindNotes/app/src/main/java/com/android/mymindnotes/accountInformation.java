@@ -8,14 +8,30 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.android.mymindnotes.retrofit.GetUserInfoApi;
+import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
+
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AccountInformation extends AppCompatActivity {
     com.android.mymindnotes.databinding.ActivityAccountInformationBinding binding;
+    AlertDialog alertDialog;
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
-    AlertDialog alertDialog;
+    SharedPreferences userindex;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserInfo();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +41,9 @@ public class AccountInformation extends AppCompatActivity {
 
         auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
         autoSaveEdit = auto.edit();
+
+        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        getUserInfo();
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background);
@@ -67,4 +86,33 @@ public class AccountInformation extends AppCompatActivity {
         if (which == DialogInterface.BUTTON_NEGATIVE) {
         }
     };
+
+    public void getUserInfo() {
+        Thread thread = new Thread(() -> {
+            // Retrofit 객체 생성
+            RetrofitService retrofitService = new RetrofitService();
+            // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
+            GetUserInfoApi getUserInfoApi = retrofitService.getRetrofit().create(GetUserInfoApi.class);
+            // Call 객체 획득
+            Call<Map<String, Object>> call = getUserInfoApi.getUserInfo(userindex.getInt("userindex", 0));
+            // 네트워킹 시도
+            call.enqueue(new Callback<Map<String, Object>>() {
+                @Override
+                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                    // 이메일, 닉네임, 생년 세팅
+                    binding.email.setText(String.valueOf(response.body().get("email")));
+                    binding.nickname.setText((String.valueOf(response.body().get("nickname"))));
+                    int birthyear = (int) Double.parseDouble(String.valueOf((response.body().get("birthyear"))));
+                    binding.birthyear.setText(String.valueOf(birthyear));
+                }
+                @Override
+                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+        });
+        thread.start();
+    }
 }

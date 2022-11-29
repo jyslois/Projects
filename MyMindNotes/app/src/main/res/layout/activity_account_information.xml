@@ -46,15 +46,14 @@
 
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#ABF8E6D8"
                 android:id="@+id/email"
-                android:text="seolois@hotmail.com"
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/emailText"
                 android:layout_alignLeft="@id/emailText"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_border"
+                android:backgroundTint="#ABF8E6D8"
                 android:padding="15dp"
                 android:textSize="14.5dp" />
 
@@ -85,15 +84,14 @@
                 android:id="@+id/nickNameText"/>
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#ABF8E6D8"
                 android:id="@+id/nickname"
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nickNameText"
                 android:layout_alignLeft="@id/nickNameText"
-                android:text="로이스"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_border"
+                android:backgroundTint="#ABF8E6D8"
                 android:padding="15dp"
                 android:textSize="14.5dp" />
 
@@ -123,15 +121,14 @@
                 android:id="@+id/birthyearText"/>
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#ABF8E6D8"
                 android:id="@+id/birthyear"
-                android:text="1991"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/birthyearText"
                 android:layout_alignLeft="@id/birthyearText"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_border"
+                android:backgroundTint="#ABF8E6D8"
                 android:padding="15dp"
                 android:textSize="14.5dp" />
 

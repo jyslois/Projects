@@ -96,7 +96,7 @@ public class ChangePassword extends AppCompatActivity {
             public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
-                // Retrofit 객체에 인터페이스 등록, Call 객체 반환하는 Service 객체 생성
+                // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
                 ChangePasswordApi changePasswordApi = retrofitService.getRetrofit().create(ChangePasswordApi.class);
                 // Call 객체 획득
                 ChangeUserPassword changeUserPassword = new ChangeUserPassword(userindex.getInt("userindex", 0), passwordInput, originalPasswordInput);
@@ -118,7 +118,7 @@ public class ChangePassword extends AppCompatActivity {
                             Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
                             toast.show();
                             // 화면 전환
-                            Intent intent = new Intent(getApplicationContext(), AccountInformation.class);
+                            Intent intent = new Intent(getApplicationContext(), MainPage.class);
                             startActivity(intent);
                         }
                     }
