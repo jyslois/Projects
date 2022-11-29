@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.android.mymindnotes.retrofit.DeleteUserApi;
 import com.android.mymindnotes.retrofit.GetUserInfoApi;
 import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
@@ -82,8 +83,9 @@ public class AccountInformation extends AppCompatActivity {
     }
 
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
-        // 탈퇴 눌렀을 때 이벤트 처리(훗날 네트워크 코드 처리해주기)
+        // 탈퇴 눌렀을 때 이벤트 처리
         if (which == DialogInterface.BUTTON_NEGATIVE) {
+            deleteUser();
         }
     };
 
@@ -112,6 +114,46 @@ public class AccountInformation extends AppCompatActivity {
                 }
             });
 
+        });
+        thread.start();
+    }
+
+    public void deleteUser() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrofit 객체 생성
+                RetrofitService retrofitService = new RetrofitService();
+                // Retrofit 객체에 Service 인터페이스 등록
+                DeleteUserApi deleteUserApi = retrofitService.getRetrofit().create(DeleteUserApi.class);
+                // Call 객체 획득
+                Call<Map<String, Object>> call = deleteUserApi.deleteUser(userindex.getInt("userindex", 0));
+                // 네트워킹 시도
+                call.enqueue(new Callback<Map<String, Object>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                        // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
+                        // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
+                        if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 4000) {
+                            // 탈퇴 완료 메시지 띄우기
+                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                            toast.show();
+                            // 저장된 것 모두 지우기
+                            autoSaveEdit.clear();
+                            autoSaveEdit.commit();
+                            // 화면 전환
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+
+            }
         });
         thread.start();
     }

@@ -77,7 +77,7 @@ public class UserInfoController {
                 // 유효성 검사에 실패한 필드명을 가져온다. error.getField()
                 // 유효성 검사에 실패한 필드에 정의된 메시지를 가져온다. error.getDefaultMessage()
                 result.put("code", 2001);
-                result.put(error.getField(), error.getDefaultMessage());
+                result.put("msg", error.getDefaultMessage());
             }
         } else {
             mapper.insertUser(userinfo.getEmail(), userinfo.getNickname(), userinfo.getPassword(), userinfo.getBirthyear());
@@ -102,7 +102,7 @@ public class UserInfoController {
                 // 유효성 검사에 실패한 필드명을 가져온다. error.getField()
                 // 유효성 검사에 실패한 필드에 정의된 메시지를 가져온다. error.getDefaultMessage()
                 result.put("code", 3001);
-                result.put(error.getField(), error.getDefaultMessage());
+                result.put("msg", error.getDefaultMessage());
             }
         } else {
             mapper.updateUserNickname(changeUserNickname.getUser_index(), changeUserNickname.getNickname());
@@ -130,7 +130,7 @@ public class UserInfoController {
                     // 유효성 검사에 실패한 필드명을 가져온다. error.getField()
                     // 유효성 검사에 실패한 필드에 정의된 메시지를 가져온다. error.getDefaultMessage()
                     result.put("code", 3003);
-                    result.put(error.getField(), error.getDefaultMessage());
+                    result.put("msg", error.getDefaultMessage());
                 }
             } else {
                 mapper.updateUserPassword(changeUserPassword.getUser_index(), changeUserPassword.getPassword());
@@ -153,40 +153,41 @@ public class UserInfoController {
 
     // 로그인
     @PostMapping("/api/member/login")
-    public Map<String, Object> login(@RequestBody @Valid UserInfoLogin userinfologin, Errors errors) {
+    public Map<String, Object> login(@RequestBody @Valid UserInfoLogin userinfologin) {
         Map<String, Object> result = new HashMap<>();
-        // 유효성 통과 못한 필드와 메시지를 핸들링
-        if (errors.hasErrors()) {
-            // 유효성 검사에 실패한 필드 목록을 가져온다: errors.getFieldErrors()
-            for (FieldError error : errors.getFieldErrors()) {
-                // 유효성 검사에 실패한 필드명을 가져온다. error.getField()
-                // 유효성 검사에 실패한 필드에 정의된 메시지를 가져온다. error.getDefaultMessage()
-                result.put("code", 5005);
-                result.put(error.getField(), error.getDefaultMessage());
+        // 회원 정보 조회
+        UserInfo user = mapper.getUserInfoFromEmail(userinfologin.getEmail());
+        // 이메일로 조회해서 존재하는 회원이라면,
+        if (user != null) {
+            // 비밀번호 체크
+            if (user.getPassword().equals(userinfologin.getPassword())) {
+                result.put("code", 5000);
+                // user index와 닉네임을 얻기 위한 조회
+                UserInfo userinfo = mapper.getUserInfoFromEmail(userinfologin.getEmail());
+                result.put("user_index", userinfo.getUser_index());
+                result.put("nickname", userinfo.getNickname());
+                result.put("msg", "환영합니다");
+            } else {
+                result.put("code", 5003);
+                result.put("msg", "비밀번호를 확인해 주세요");
             }
         } else {
-            // 회원 정보 조회
-            UserInfo user = mapper.getUserInfoFromEmail(userinfologin.getEmail());
-            // 이메일로 조회해서 존재하는 회원이라면,
-            if (user != null) {
-                // 비밀번호 체크
-                if (user.getPassword().equals(userinfologin.getPassword())) {
-                    result.put("code", 5000);
-                    // user index와 닉네임을 얻기 위한 조회
-                    UserInfo userinfo = mapper.getUserInfoFromEmail(userinfologin.getEmail());
-                    result.put("user_index", userinfo.getUser_index());
-                    result.put("nickname", userinfo.getNickname());
-                    result.put("msg", "환영합니다");
-                } else {
-                    result.put("code", 5003);
-                    result.put("msg", "비밀번호가 틀렸습니다");
-                }
-            } else {
-                // 존재하지 않는 회원이라면,
-                result.put("code", 5001);
-                result.put("msg", "가입되지 않은 이메일입니다");
-            }
+            // 존재하지 않는 회원이라면,
+            result.put("code", 5001);
+            result.put("msg", "가입되지 않은 이메일입니다");
         }
         return result;
     }
+
+    // 회원번호(userindex)로 회원정보 얻기
+    @GetMapping("/api/member/getUserInfo/{user_index}")
+    public Map<String, Object> getUserInfo(@PathVariable("user_index") int user_index) {
+        Map<String, Object> result = new HashMap<>();
+        UserInfo userInfo = mapper.getUserInfoFromUserIndex(user_index);
+        result.put("email", userInfo.getEmail());
+        result.put("nickname", userInfo.getNickname());
+        result.put("birthyear", userInfo.getBirthyear());
+        return result;
+    }
+
 }
