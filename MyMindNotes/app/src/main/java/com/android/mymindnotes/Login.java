@@ -35,9 +35,7 @@ public class Login extends AppCompatActivity {
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
 
-    // 로그인 성공 시 nickname과 userindex 저장
-    SharedPreferences nickName;
-    SharedPreferences.Editor nickNameEdit;
+    // 로그인 성공 시 userindex 저장
     SharedPreferences userindex;
     SharedPreferences.Editor userindexEdit;
 
@@ -58,8 +56,6 @@ public class Login extends AppCompatActivity {
         auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
         autoSaveEdit = auto.edit();
         password = binding.password;
-        nickName = getSharedPreferences("nickname", Activity.MODE_PRIVATE);
-        nickNameEdit = nickName.edit();
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
         userindexEdit = userindex.edit();
 
@@ -235,9 +231,6 @@ public class Login extends AppCompatActivity {
                             // 회원 번호 저장
                             userindexEdit.putInt("userindex", (int) Double.parseDouble(String.valueOf((response.body().get("user_index")))));
                             userindexEdit.commit();
-                            // 닉네임 저장
-                            nickNameEdit.putString("nickname", String.valueOf((response.body().get("nickname"))));
-                            nickNameEdit.commit();
                             // 환영 메시지 띄우기
                             Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
                             toast.show();
