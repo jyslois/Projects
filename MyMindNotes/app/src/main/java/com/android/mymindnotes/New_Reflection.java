@@ -3,12 +3,16 @@ package com.android.mymindnotes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityNewReflectionBinding;
+import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.retrofit.RecordDiaryApi;
+import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -17,7 +21,13 @@ import java.lang.reflect.Type;
 import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class New_Reflection extends AppCompatActivity {
     ActivityNewReflectionBinding binding;
@@ -25,18 +35,16 @@ public class New_Reflection extends AppCompatActivity {
     SharedPreferences.Editor reflectionEdit;
     SharedPreferences type;
     SharedPreferences.Editor typeEdit;
-    Date date;
-
     SharedPreferences emotion;
     SharedPreferences emotionText;
     SharedPreferences situation;
     SharedPreferences thought;
     SharedPreferences emotionColor;
 
-    SharedPreferences arrayList;
-    SharedPreferences.Editor arrayListEdit;
+    SharedPreferences userindex;
 
-    ArrayList<Record> recordList;
+    String date;
+    String day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +79,7 @@ public class New_Reflection extends AppCompatActivity {
         situation = getSharedPreferences("situation", MODE_PRIVATE);
         thought = getSharedPreferences("thought", MODE_PRIVATE);
 
-        arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
-        arrayListEdit = arrayList.edit();
+        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
 
         // 감정 설명서 페이지로 이동
         binding.RecordEmotionHelpButton.setOnClickListener(view -> {
@@ -96,37 +103,18 @@ public class New_Reflection extends AppCompatActivity {
             // 타입 저장
             typeEdit.putString("type", "오늘의 마음 일기");
             typeEdit.commit();
-            // 오늘 날짜 저장
+            // 날짜 저장
             long now = System.currentTimeMillis();
-            date = new Date(now);
+            Date getDate = new Date(now);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+            date = mFormat.format(getDate);
+            // 요일 저장
+            final String[] DAY = {"", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"};
+            Calendar today = Calendar.getInstance();
+            day = DAY[today.get(Calendar.DAY_OF_WEEK)];
 
-            // 최종 기록 저장
-            // 만약 SharedPreferences에 저장된 arrayList가 있다면,
-            if (arrayList.getString("arrayList", "") != "") {
-                // SharedPreferences에 저장된 arrayList를 recordList로 가져오기
-                Gson gson = new Gson();
-                String json = arrayList.getString("arrayList", "");
-                Type type = new TypeToken<ArrayList<Record>>() {
-                }.getType();
-                recordList = gson.fromJson(json, type);
-            } else {
-                // 없다면 새 recordList 만들기
-                recordList = new ArrayList<>();
-            }
-
-            // recordList에 데이터 저장(인스턴트 추가)
-            recordList.add(new Record(emotionColor.getInt("emotionColor", R.drawable.purple_etc), date,
-                    type.getString("type", "ㅇㅇ의 일기"), emotion.getString("emotion", "감정"), situation.getString("situation", "상황"),
-                    thought.getString("thought", "생각"), emotionText.getString("emotionText", ""), reflection.getString("reflection", "")));
-
-            // 업데이트 된 recordList를 SharedPreferences에 저장
-            Gson gson = new Gson();
-            String json = gson.toJson(recordList);
-            arrayListEdit.putString("arrayList", json);
-            arrayListEdit.commit();
-
-            Intent intent = new Intent(getApplicationContext(), Record_Result.class);
-            startActivity(intent);
+            // 서버에 데이터 저장
+            recordDiary();
         });
 
         // 만약 회고가 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
@@ -134,6 +122,40 @@ public class New_Reflection extends AppCompatActivity {
         if (!refle.equals("")) {
             binding.RecordReflectionUserInput.setText(refle);
         }
+    }
+
+    // 서버에 일기 저장 네트워크 통신
+    public void recordDiary() {
+        Thread thread = new Thread(() -> {
+            // Retrofit 객체 생성
+            RetrofitService retrofitService = new RetrofitService();
+            // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
+            RecordDiaryApi recordDiaryApi = retrofitService.getRetrofit().create(RecordDiaryApi.class);
+            // Call 객체 획득
+            UserDiary userDiary = new UserDiary(userindex.getInt("userindex", 0), type.getString("type", ""), date, day, situation.getString("situation", ""),
+                    thought.getString("thought", ""), emotion.getString("emotion", ""), emotionText.getString("emotionText", ""), reflection.getString("reflection", "회고"));
+            Call<Map<String, Object>> call = recordDiaryApi.addDiary(userDiary);
+            // 네트워킹 시도
+            call.enqueue(new Callback<Map<String, Object>>() {
+                @Override
+                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6001) {
+                        Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6000) {
+                        Intent intent = new Intent(getApplicationContext(), Record_Result.class);
+                        startActivity(intent);
+                    }
+                }
+                @Override
+                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+        });
+        thread.start();
     }
 
     // backprssed 시 회고 저장 후 뒤로가기

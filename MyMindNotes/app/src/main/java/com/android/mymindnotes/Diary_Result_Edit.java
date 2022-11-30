@@ -8,20 +8,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryResultEditBinding;
+import com.android.mymindnotes.model.DiaryEdit;
+import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.retrofit.RecordDiaryApi;
+import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.retrofit.UpdateDiaryApi;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Diary_Result_Edit extends AppCompatActivity {
     ActivityDiaryResultEditBinding binding;
-    SharedPreferences arrayList;
-    SharedPreferences.Editor arrayListEdit;
-    ArrayList<Record> recordList;
     String type;
     String situation;
     String thought;
@@ -29,8 +37,7 @@ public class Diary_Result_Edit extends AppCompatActivity {
     String emotionText;
     String reflection;
     String date;
-    int index;
-    int emotionColor;
+    int diaryNumber;
     AlertDialog alertDialog;
 
     @Override
@@ -38,6 +45,7 @@ public class Diary_Result_Edit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDiaryResultEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         // emotion instruction button
         binding.emotioInstructionButton.setOnClickListener(view -> {
@@ -57,8 +65,7 @@ public class Diary_Result_Edit extends AppCompatActivity {
         emotion = intent.getStringExtra("emotion");
         emotionText = intent.getStringExtra("emotionText");
         reflection = intent.getStringExtra("reflection");
-        index = intent.getIntExtra("index", index);
-        Log.d("index", String.valueOf(index));
+        diaryNumber = intent.getIntExtra("diaryNumber", 0);
         date = intent.getStringExtra("date");
 
         // 화면에 뿌리기
@@ -85,62 +92,45 @@ public class Diary_Result_Edit extends AppCompatActivity {
             emotionText = binding.editEmotionText.getText().toString();
             reflection = binding.editReflection.getText().toString();
 
-            // 저장된 arrayList 가져오기
-            arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
-            arrayListEdit = arrayList.edit();
-
-            Gson gson = new Gson();
-            String json = arrayList.getString("arrayList", "");
-            Type type = new TypeToken<ArrayList<Record>>() {
-            }.getType();
-            recordList = gson.fromJson(json, type);
-
-            // 수정된 내용 저장
-            recordList.get(index).situation = situation;
-            recordList.get(index).thought = thought;
-            recordList.get(index).emotionWord = emotion;
-            recordList.get(index).emotionText = emotionText;
-            recordList.get(index).reflection = reflection;
-            // emotionColor 수정
-            switch (emotion) {
-                case "기쁨":
-                    emotionColor = R.drawable.orange_happiness;
-                    break;
-                case "기대":
-                    emotionColor = R.drawable.green_anticipation;
-                    break;
-                case "신뢰":
-                    emotionColor = R.drawable.darkblue_trust;
-                    break;
-                case "놀람":
-                    emotionColor = R.drawable.yellow_surprise;
-                    break;
-                case "슬픔":
-                    emotionColor = R.drawable.grey_sadness;
-                    break;
-                case "혐오":
-                    emotionColor = R.drawable.brown_disgust;
-                    break;
-                case "공포":
-                    emotionColor = R.drawable.black_fear;
-                    break;
-                case "분노":
-                    emotionColor = R.drawable.red_anger;
-                    break;
-                default:
-                    emotionColor = R.drawable.purple_etc;
-                    break;
+            // 일기 수정 네트워크 통신
+            if (reflection.equals("")) {
+                Toast.makeText(this, "회고를 입력해 주세요", Toast.LENGTH_SHORT).show();
+            } else {
+                editdiary();
             }
-            recordList.get(index).emotionCircle = emotionColor;
-
-            // 업데이트 된 recordList를 SharedPreferences에 저장
-            json = gson.toJson(recordList);
-            arrayListEdit.putString("arrayList", json);
-            arrayListEdit.commit();
-
-            finish();
 
         });
+    }
+
+    public void editdiary() {
+        Thread thread = new Thread(() -> {
+            // Retrofit 객체 생성
+            RetrofitService retrofitService = new RetrofitService();
+            // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
+            UpdateDiaryApi updateDiaryApi = retrofitService.getRetrofit().create(UpdateDiaryApi.class);
+            // Call 객체 획득
+            DiaryEdit diaryEdit = new DiaryEdit(situation, thought, emotion, emotionText, reflection);
+            Call<Map<String, Object>> call = updateDiaryApi.updateDiary(diaryNumber, diaryEdit);
+            // 네트워킹 시도
+            call.enqueue(new Callback<Map<String, Object>>() {
+                @Override
+                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 8001) {
+                        Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 8000) {
+                        finish();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+        });
+        thread.start();
     }
 
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
