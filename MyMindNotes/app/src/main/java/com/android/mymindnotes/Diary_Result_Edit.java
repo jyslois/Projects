@@ -93,10 +93,13 @@ public class Diary_Result_Edit extends AppCompatActivity {
             reflection = binding.editReflection.getText().toString();
 
             // 일기 수정 네트워크 통신
-            if (reflection.equals("")) {
-                Toast.makeText(this, "회고를 입력해 주세요", Toast.LENGTH_SHORT).show();
-            } else {
-                editdiary();
+
+            if (type.equals("트라우마 일기")) {
+                if (reflection.equals("")) {
+                    Toast.makeText(this, "회고를 입력해 주세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    editdiary();
+                }
             }
 
         });
