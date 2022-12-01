@@ -88,28 +88,6 @@ public class Diary_Result extends AppCompatActivity {
         index = intent.getIntExtra("index", index);
         diaryNumber = intent.getIntExtra("diaryNumber", 0);
 
-        // 수정 버튼 클릭 시
-        binding.editButton.setOnClickListener(view -> {
-            Intent intento = new Intent(getApplicationContext(), Diary_Result_Edit.class);
-            intento.putExtra("date", date);
-            intento.putExtra("type", type);
-            intento.putExtra("situation", situation);
-            intento.putExtra("thought", thought);
-            intento.putExtra("emotion", emotion);
-            intento.putExtra("emotionText", emotionText);
-            intento.putExtra("reflection", reflection);
-            intento.putExtra("diaryNumber", diaryNumber);
-            intento.putExtra("index", index);
-            startActivity(intento);
-        });
-
-        // 삭제 버튼 클릭 시
-        binding.deleteButton.setOnClickListener(view -> {
-            deleteDiary();
-        });
-
-
-
         // 타입 뿌리기
         binding.type.setText(type);
         // 오늘 날짜 뿌리기
@@ -135,10 +113,30 @@ public class Diary_Result extends AppCompatActivity {
             binding.ResultReflectionTitle.setVisibility(View.GONE);
         }
 
+        // 수정 버튼 클릭 시
+        binding.editButton.setOnClickListener(view -> {
+            Intent intento = new Intent(getApplicationContext(), Diary_Result_Edit.class);
+            intento.putExtra("date", date);
+            intento.putExtra("type", type);
+            intento.putExtra("situation", situation);
+            intento.putExtra("thought", thought);
+            intento.putExtra("emotion", emotion);
+            intento.putExtra("emotionText", emotionText);
+            intento.putExtra("reflection", reflection);
+            intento.putExtra("diaryNumber", diaryNumber);
+            intento.putExtra("index", index);
+            startActivity(intento);
+        });
+
+        // 삭제 버튼 클릭 시
+        binding.deleteButton.setOnClickListener(view -> {
+            deleteDiary();
+        });
+
     }
 
+    // 네트워크 통신: 일기 삭제
     public void deleteDiary() {
-        Thread thread = new Thread(() -> {
             RetrofitService retrofitService = new RetrofitService();
             DeleteDiaryApi deleteDiaryApi = retrofitService.getRetrofit().create(DeleteDiaryApi.class);
             Call<Map<String, Object>> call = deleteDiaryApi.deleteDiary(diaryNumber);
@@ -156,16 +154,13 @@ public class Diary_Result extends AppCompatActivity {
                     toast.show();
                 }
             });
-        });
-        thread.start();
     }
 
 
 
 
-    // 업데이트 (네트워크 통신)
+    // 네트워크 통신: 일기리스트 가져와서 업데이트된 일기 내용 뿌리기
     public void refreshDiary() {
-        Thread thread = new Thread(() -> {
             RetrofitService retrofitService = new RetrofitService();
             GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
             Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
@@ -222,8 +217,6 @@ public class Diary_Result extends AppCompatActivity {
                     toast.show();
                 }
             });
-        });
-        thread.start();
     }
 
 }

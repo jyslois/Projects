@@ -78,7 +78,7 @@ public class MainPage extends AppCompatActivity {
     }
 
 
-    // 회원 정보 가져오기 네트워크 통신
+    // 네트워크 통신 : 회원 정보 가져오기(닉네임 세팅하기)
     public void getUserNickname() {
         Thread thread = new Thread(() -> {
             // Retrofit 객체 생성

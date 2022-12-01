@@ -45,8 +45,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
 
-        // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
+        // 백그라운드 이미지
+        Glide.with(Login.this).load(R.drawable.mainbackground).into(binding.background);
 
         // 로그인 정보 저장 & 자동 로그인 구현 관련
         loginButton = binding.loginButton;
@@ -206,11 +206,8 @@ public class Login extends AppCompatActivity {
     }
 
 
-    // 로그인 - 백그라운드 쓰레드에서 네트워크 코드 작업
+    // 네트워크 통신: 로그인
     public void login() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
                 // Retrofit 객체에 Service 인터페이스 등록
@@ -245,10 +242,5 @@ public class Login extends AppCompatActivity {
                         toast.show();
                     }
                 });
-
             }
-        });
-        thread.start();
     }
-
-}

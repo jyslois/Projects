@@ -79,7 +79,10 @@ public class Diary extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        refreshDiary();
+        // 일기 수정 화면이 아닌 다른 화면에서 돌아오면 일어나는 null exception 대비
+        if (recordList != null) {
+            refreshDiary();
+        }
 
     }
 
@@ -106,12 +109,11 @@ public class Diary extends AppCompatActivity {
 
         // RecyclerView
         diaryView = binding.diaryView;
-        // RecyclerView에 LayoutManager 적용
+        // RecyclerView에 LayoutManager 적용 (기본을 최근순)
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         diaryView.setLayoutManager(linearLayoutManager);
-
 
 
         // 날짜별 최신순/오래된순 정렬
@@ -468,9 +470,8 @@ public class Diary extends AppCompatActivity {
         }
     }
 
-    // 일기 가져오기 - 네트워크 통신
+    // 네트워크 통신: 일기 목록 가져와서 어뎁터에 넘겨주기
     public void getDiaryList() {
-        Thread thread = new Thread(() -> {
             RetrofitService retrofitService = new RetrofitService();
             GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
             Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
@@ -501,13 +502,11 @@ public class Diary extends AppCompatActivity {
                     toast.show();
                 }
             });
-        });
-        thread.start();
     }
 
 
+    // 네트워크 통신: 일기 목록 가져와서 업데이트된 일기 목록 화면에 보이게 하기
     public void refreshDiary() {
-        Thread thread = new Thread(() -> {
             RetrofitService retrofitService = new RetrofitService();
             GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
             Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
@@ -538,7 +537,6 @@ public class Diary extends AppCompatActivity {
                         adaptor.updateItemList(recordList);
 
 
-
                         // 만약 마음일기 모음에서 클릭이나 수정 후 돌아온 거라면
                         if (isEmotionRecordListChecked) {
                             emotionRecordList = new ArrayList<>();
@@ -564,15 +562,15 @@ public class Diary extends AppCompatActivity {
 
 
                         // 감정별 정렬에서 클릭이나 수정 후 돌아온 거라면
-                            if (isSingleEmotionListChecked) {
-                                singleEmotionList = new ArrayList<>();
-                                for (int i = 0; i < recordList.size(); i++) {
-                                    if (recordList.get(i).getEmotion().equals(singleEmotion)) {
-                                        singleEmotionList.add(recordList.get(i));
-                                    }
+                        if (isSingleEmotionListChecked) {
+                            singleEmotionList = new ArrayList<>();
+                            for (int i = 0; i < recordList.size(); i++) {
+                                if (recordList.get(i).getEmotion().equals(singleEmotion)) {
+                                    singleEmotionList.add(recordList.get(i));
                                 }
-                                adaptor.updateItemList(singleEmotionList);
                             }
+                            adaptor.updateItemList(singleEmotionList);
+                        }
 
                     }
                 }
@@ -583,8 +581,6 @@ public class Diary extends AppCompatActivity {
                     toast.show();
                 }
             });
-        });
-        thread.start();
-    }
+        }
 
 }

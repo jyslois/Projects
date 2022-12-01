@@ -128,9 +128,8 @@ public class Record_Result extends AppCompatActivity {
 
     }
 
-    // 일기 가져오기 - 네트워크 통신
+    // 네트워크 통신: 일기 목록 얻어서 일기 가져오기
     public void getDiary() {
-        Thread thread = new Thread(() -> {
             RetrofitService retrofitService = new RetrofitService();
             GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
             Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
@@ -191,8 +190,6 @@ public class Record_Result extends AppCompatActivity {
                     toast.show();
                 }
             });
-        });
-        thread.start();
     }
 
     // 뒤로 가기 버튼 누를 시, 메인 페이지로 돌아가기 (모든 기록 삭제)

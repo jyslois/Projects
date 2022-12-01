@@ -145,6 +145,7 @@ public class UserInfoController {
     @DeleteMapping("/api/member/delete/{user_index}")
     public Map<String, Object> deleteUser(@PathVariable("user_index") int user_index) {
         Map<String, Object> result = new HashMap<>();
+        mapper.deleteAllDiary(user_index);
         mapper.deleteUser(user_index);
         result.put("code", 4000);
         result.put("msg", "회원 탈퇴 완료");

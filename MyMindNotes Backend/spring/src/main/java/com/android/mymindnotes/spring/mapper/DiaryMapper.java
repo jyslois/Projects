@@ -27,6 +27,4 @@ public interface DiaryMapper {
     // 일기 삭제
     @Delete("DELETE FROM Diary WHERE diary_number=#{diary_number}")
     int deleteDiary(@Param("diary_number") int diary_number);
-
-
 }

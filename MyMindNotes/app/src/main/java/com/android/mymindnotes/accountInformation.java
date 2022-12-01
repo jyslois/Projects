@@ -27,6 +27,9 @@ public class AccountInformation extends AppCompatActivity {
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
     SharedPreferences userindex;
+    String email;
+    String nickname;
+    int birthyear;
 
     @Override
     protected void onResume() {
@@ -89,8 +92,8 @@ public class AccountInformation extends AppCompatActivity {
         }
     };
 
+    // 네트워크 통신: 회원 정보 가져오기
     public void getUserInfo() {
-        Thread thread = new Thread(() -> {
             // Retrofit 객체 생성
             RetrofitService retrofitService = new RetrofitService();
             // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
@@ -113,15 +116,10 @@ public class AccountInformation extends AppCompatActivity {
                     toast.show();
                 }
             });
-
-        });
-        thread.start();
     }
 
+    // 네트워크 통신: 회원 탈퇴 처리
     public void deleteUser() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
                 // Retrofit 객체에 Service 인터페이스 등록
@@ -154,7 +152,4 @@ public class AccountInformation extends AppCompatActivity {
                 });
 
             }
-        });
-        thread.start();
-    }
 }

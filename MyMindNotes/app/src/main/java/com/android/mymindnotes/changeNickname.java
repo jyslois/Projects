@@ -74,7 +74,7 @@ public class ChangeNickname extends AppCompatActivity {
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
 
         // 닉네임 형식 체크
-        String nicknamePattern = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$";
+        String nicknamePattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9-_]{2,10}$";
 
         // 닉네임 중복 체크
         binding.checkNicknameButton.setOnClickListener(view -> {
@@ -136,11 +136,8 @@ public class ChangeNickname extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-    // 닉네임 중복 체크 - 백그라운드 쓰레드에서 네트워크 코드 작업
+    // 네트워크 통신: 닉네임 중복 체크
     public void checkNickname() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
                 // Retrofit 객체에 Service 인터페이스 등록
@@ -167,14 +164,11 @@ public class ChangeNickname extends AppCompatActivity {
                     }
                 });
 
-            }
-        });
-        thread.start();
     }
 
-    // 닉네임 변경 네트워크 통신
+
+    // 네트워크 통신: 닉네임 변경
     public void changeNickname() {
-        Thread thread = new Thread(() -> {
             // Retrofit 객체 생성
             RetrofitService retrofitService = new RetrofitService();
             // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
@@ -206,9 +200,6 @@ public class ChangeNickname extends AppCompatActivity {
                     toast.show();
                 }
             });
-
-        });
-        thread.start();
     }
 
 }

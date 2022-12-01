@@ -130,9 +130,8 @@ public class Old_Reflection extends AppCompatActivity {
     }
 
 
-    // 서버에 일기 저장 네트워크 통신
+    // 네트워크 통신: 일기 저장
     public void recordDiary() {
-        Thread thread = new Thread(() -> {
             // Retrofit 객체 생성
             RetrofitService retrofitService = new RetrofitService();
             // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
@@ -159,9 +158,6 @@ public class Old_Reflection extends AppCompatActivity {
                     toast.show();
                 }
             });
-
-        });
-        thread.start();
     }
 
     // backprssed 시 회고 저장 후 뒤로가기

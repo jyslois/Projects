@@ -89,11 +89,8 @@ public class ChangePassword extends AppCompatActivity {
         });
     }
 
-    // 비밀번호 변경 네트워크 통신
+    // 네트워크 통신: 비밀번호 변경
     public void changePassword() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
                 // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
@@ -129,8 +126,5 @@ public class ChangePassword extends AppCompatActivity {
                     }
                 });
 
-            }
-        });
-        thread.start();
     }
 }

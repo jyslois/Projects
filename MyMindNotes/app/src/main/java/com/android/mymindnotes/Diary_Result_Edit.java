@@ -93,20 +93,21 @@ public class Diary_Result_Edit extends AppCompatActivity {
             reflection = binding.editReflection.getText().toString();
 
             // 일기 수정 네트워크 통신
-
             if (type.equals("트라우마 일기")) {
                 if (reflection.equals("")) {
                     Toast.makeText(this, "회고를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     editdiary();
                 }
+            } else {
+                editdiary();
             }
 
         });
     }
 
+    // 네트워크 통신: 일기 수정
     public void editdiary() {
-        Thread thread = new Thread(() -> {
             // Retrofit 객체 생성
             RetrofitService retrofitService = new RetrofitService();
             // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
@@ -131,9 +132,6 @@ public class Diary_Result_Edit extends AppCompatActivity {
                     toast.show();
                 }
             });
-
-        });
-        thread.start();
     }
 
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {

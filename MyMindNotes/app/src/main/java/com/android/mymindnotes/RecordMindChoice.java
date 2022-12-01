@@ -53,9 +53,8 @@ public class RecordMindChoice extends AppCompatActivity {
 
     }
 
-    // 회원 정보 가져오기 네트워크 통신
+    // 네트워크 통신: 회원 정보 가져와서 닉네임 세팅해주기
     public void getUserNickname() {
-        Thread thread = new Thread(() -> {
             // Retrofit 객체 생성
             RetrofitService retrofitService = new RetrofitService();
             // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
@@ -76,9 +75,6 @@ public class RecordMindChoice extends AppCompatActivity {
                     toast.show();
                 }
             });
-
-        });
-        thread.start();
     }
 
 }

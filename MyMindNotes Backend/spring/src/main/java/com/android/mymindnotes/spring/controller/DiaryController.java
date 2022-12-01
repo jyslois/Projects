@@ -31,7 +31,7 @@ public class DiaryController {
         if (errors.hasErrors()) {
             for (FieldError error : errors.getFieldErrors()) {
                 result.put("code", 6001);
-                result.put(error.getField(), error.getDefaultMessage());
+                result.put("msg", error.getDefaultMessage());
             }
         } else {
             mapper.insertDiary(userDiary.getUser_index(), userDiary.getType(), userDiary.getDate(), userDiary.getDay(), userDiary.getSituation(), userDiary.getThought(), userDiary.getEmotion(), userDiary.getEmotionDescription(), userDiary.getReflection());
@@ -49,7 +49,7 @@ public class DiaryController {
         // 조회 결과가 하나 이상이기에 List<Diary>로 반환
         ArrayList<UserDiary> userDiary = mapper.getAllDiary(user_index);
         result.put("code", 7000);
-        result.put("일기목록", userDiary);
+        result.put("diaryList", userDiary);
         return result;
     }
 
@@ -62,7 +62,7 @@ public class DiaryController {
         UserDiary userDiary = mapper.getDiary(diary_number);
         if (userDiary != null) {
             result.put("code", 7002);
-            result.put("일기", userDiary);
+            result.put("diary", userDiary);
         } else {
             result.put("code", 7003);
             result.put("msg", "존재하지 않는 일기입니다.");
@@ -81,7 +81,7 @@ public class DiaryController {
                 // 유효성 검사에 실패한 필드명을 가져온다. error.getField()
                 // 유효성 검사에 실패한 필드에 정의된 메시지를 가져온다. error.getDefaultMessage()
                 result.put("code", 8001);
-                result.put(error.getField(), error.getDefaultMessage());
+                result.put("msg", error.getDefaultMessage());
             }
         } else {
             mapper.updateDiary(diary_number, diary.getSituation(), diary.getThought(), diary.getEmotion(), diary.getEmotionDescription(), diary.getReflection());

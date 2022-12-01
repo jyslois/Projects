@@ -43,4 +43,8 @@ public interface UserInfoMapper {
     // 회원탈퇴
     @Delete("DELETE FROM UserInfo WHERE user_index=#{user_index}")
     int deleteUser(@Param("user_index") int user_index);
+
+    // 일기 전체 삭제(회원 탈퇴 시에 쓸 것)
+    @Delete("DELETE FROM Diary WHERE user_index=#{user_index}")
+    int deleteAllDiary(@Param("user_index") int user_index);
 }

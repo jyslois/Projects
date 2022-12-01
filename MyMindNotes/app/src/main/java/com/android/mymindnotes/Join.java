@@ -215,11 +215,8 @@ public class Join extends AppCompatActivity {
         });
     }
 
-    // 이메일 중복 체크 - 백그라운드 쓰레드에서 네트워크 코드 작업
+    // 네트워크 통신: 이메일 중복 체크
     public void checkEmail() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
                 // Retrofit 객체에 Service 인터페이스 등록
@@ -246,16 +243,11 @@ public class Join extends AppCompatActivity {
                     }
                 });
 
-            }
-        });
-        thread.start();
     }
 
-    // 닉네임 중복 체크 - 백그라운드 쓰레드에서 네트워크 코드 작업
+
+    // 네트워크 통신: 닉네임 중복 체크
     public void checkNickname() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
                 // Retrofit 객체에 Service 인터페이스 등록
@@ -282,16 +274,10 @@ public class Join extends AppCompatActivity {
                     }
                 });
 
-            }
-        });
-        thread.start();
     }
 
-    // 회원가입 - 백그라운드 쓰레드에서 네트워크 코드 작업
+    // // 네트워크 통신: 회원 가입
     public void join() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // Retrofit 객체 생성
                 RetrofitService retrofitService = new RetrofitService();
                 // Retrofit 객체에 Service 인터페이스 등록
@@ -334,10 +320,6 @@ public class Join extends AppCompatActivity {
                         toast.show();
                     }
                 });
-
-            }
-        });
-        thread.start();
     }
 
 }

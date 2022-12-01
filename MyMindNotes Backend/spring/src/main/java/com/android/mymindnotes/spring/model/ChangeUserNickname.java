@@ -6,7 +6,6 @@ import javax.validation.constraints.Pattern;
 public class ChangeUserNickname {
     private int user_index;
     @NotBlank(message = "닉네임을 입력해 주세요.")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "닉네임은 특수문자를 제외한 2~10자여야 합니다.")
     private String nickname;
 
     public ChangeUserNickname(int user_index, String nickname) {
