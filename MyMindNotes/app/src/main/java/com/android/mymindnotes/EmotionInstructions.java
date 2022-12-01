@@ -20,6 +20,7 @@ import android.widget.Spinner;
 
 import com.android.mymindnotes.databinding.ActivityEmotionInstructionsBinding;
 import com.android.mymindnotes.databinding.EmotionitemBinding;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +40,9 @@ public class EmotionInstructions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEmotionInstructionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.diarybackground5image).into(binding.background);
 
         emotionArray = getResources().getStringArray(R.array.emotions_array_forinstruction);
 
