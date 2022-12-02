@@ -12,110 +12,116 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/logintitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.2"
+            android:src="@drawable/logintitle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_border"
+            android:backgroundTint="#ABF8E6D8"
+            android:hint="이메일"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:textSize="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logintitle"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_border"
+            android:backgroundTint="#ABF8E6D8"
+            android:hint="비밀번호"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:textSize="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <CheckBox
+            android:id="@+id/autoSaveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:buttonTint="#CDAF97"
+            android:text="아이디/비밀번호 저장"
+            android:textColor="#CDAF97"
+            android:textSize="13dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <CheckBox
+            android:id="@+id/autoLoginButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/autoSaveButton"
+            android:layout_marginTop="10dp"
+            android:buttonTint="#CDAF97"
+            android:text="로그인 상태 유지"
+            android:textColor="#CDAF97"
+            android:textSize="13dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/autoSaveButton"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/autoLoginButton"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:text="로그인"
+            app:cornerRadius="100dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/autoLoginButton"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <Button
+            android:id="@+id/findPasswordButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <ImageView
-                android:layout_marginTop="-15dp"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/logintitle"
-                android:id="@+id/logintitle"/>
-
-
-            <LinearLayout
-                android:layout_below="@id/logintitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/edittexts">
-
-                <EditText
-                    android:padding="15dp"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:backgroundTint="#ABF8E6D8"
-                    android:hint="이메일"
-                    android:textSize="16dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/rounded_border"
-                    android:id="@+id/email"/>
-
-                <EditText
-                    android:layout_below="@id/email"
-                    android:layout_marginTop="20dp"
-                    android:padding="15dp"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:backgroundTint="#ABF8E6D8"
-                    android:hint="비밀번호"
-                    android:textSize="16dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/rounded_border"
-                    android:id="@+id/password"/>
-
-                <CheckBox
-                    android:layout_below="@id/edittexts"
-                    android:textColor="#CDAF97"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="아이디/비밀번호 저장"
-                    android:textSize="13dp"
-                    android:buttonTint="#CDAF97"
-                    android:id="@+id/autoSaveButton"/>
-
-                <CheckBox
-                    android:layout_below="@id/autoSaveButton"
-                    android:id="@+id/autoLoginButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="로그인 상태 유지"
-                    android:textColor="#CDAF97"
-                    android:buttonTint="#CDAF97"
-                    android:textSize="13dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:layout_below="@id/autoLoginButton"
-                    android:layout_marginTop="12dp"
-                    android:layout_width="310dp"
-                    android:layout_height="wrap_content"
-                    app:cornerRadius="100dp"
-                    android:text="로그인"
-                    android:layout_gravity="center"
-                    android:id="@+id/loginButton"/>
-
-                <Button
-                    android:layout_gravity="center"
-                    android:layout_below="@id/loginButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="비밀번호 찾기"
-                    android:textSize="12dp"
-                    android:textColor="#CDAF97"
-                    android:id="@+id/findPasswordButton"
-                    android:background="@android:color/transparent"/>
-            </LinearLayout>
+            android:layout_below="@id/loginButton"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:text="비밀번호 찾기"
+            android:textColor="#CDAF97"
+            android:textSize="12dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginButton" />
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </RelativeLayout>
-
-    </LinearLayout>
 
 </FrameLayout>
