@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.mymindnotes" >
+    package="com.android.mymindnotes">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,19 +15,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMindNotes"
         android:usesCleartextTraffic="true"
-        tools:targetApi="32" >
+        tools:targetApi="32">
+        <activity
+            android:name=".FindPassword"
+            android:exported="false"
+            android:label="비밀번호 찾기"
+            android:parentActivityName=".Login"
+            android:theme="@style/Theme.changeScreen">
+        </activity>
         <activity
             android:name=".ChangeNickname"
-            android:parentActivityName=".AccountInformation"
             android:exported="false"
-            android:theme="@style/Theme.changeScreen"
-            android:label="닉네임 변경"/>
+            android:label="닉네임 변경"
+            android:parentActivityName=".AccountInformation"
+            android:theme="@style/Theme.changeScreen" />
         <activity
             android:name=".ChangePassword"
-            android:parentActivityName=".AccountInformation"
             android:exported="false"
-            android:theme="@style/Theme.changeScreen"
-            android:label="비밀번호 변경"/>
+            android:label="비밀번호 변경"
+            android:parentActivityName=".AccountInformation"
+            android:theme="@style/Theme.changeScreen" />
         <activity
             android:name=".AccountInformation"
             android:exported="false"
@@ -110,7 +117,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Main" >
+            android:theme="@style/Theme.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

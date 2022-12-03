@@ -179,6 +179,12 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        // 비밀번호 찾기 버튼 클릭시
+        binding.findPasswordButton.setOnClickListener(view -> {
+            Intent intent = new Intent(this, FindPassword.class);
+            startActivity(intent);
+        });
+
 
     }
 
