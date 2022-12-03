@@ -40,6 +40,10 @@ public interface UserInfoMapper {
     @Update("UPDATE UserInfo SET password=#{password} WHERE user_index=#{user_index}")
     int updateUserPassword(@Param("user_index") int user_index, @Param("password") String password);
 
+    // 이메일로 비밀번호 수정(임시비밀번호)
+    @Update("UPDATE UserInfo SET password=#{password} WHERE email=#{email}")
+    int toTemPassword(@Param("email") String email, @Param("password") String password);
+
     // 회원탈퇴
     @Delete("DELETE FROM UserInfo WHERE user_index=#{user_index}")
     int deleteUser(@Param("user_index") int user_index);

@@ -3,8 +3,6 @@ package com.android.mymindnotes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -33,7 +31,7 @@ public class FindPassword extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.mainpagebackground).into(binding.background);
+        Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
 
         // 액션 바 타이틀
         getSupportActionBar().setDisplayShowTitleEnabled(false); // 기본 타이틀 사용 안함

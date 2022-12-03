@@ -1,10 +1,9 @@
 package com.android.mymindnotes.spring.controller;
 
 import com.android.mymindnotes.spring.mapper.UserInfoMapper;
-import com.android.mymindnotes.spring.model.ChangeUserNickname;
-import com.android.mymindnotes.spring.model.ChangeUserPassword;
-import com.android.mymindnotes.spring.model.UserInfo;
-import com.android.mymindnotes.spring.model.UserInfoLogin;
+import com.android.mymindnotes.spring.model.*;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +17,16 @@ import java.util.Map;
 public class UserInfoController {
     // Mapper 사용하기: API 호출
     private UserInfoMapper mapper;
+    private JavaMailSender javaMailSender;
 
     // 생성자를 통해서 전달받은 mapper를 내부 mapper에 저장
     // 이렇게 하면 스프링부트가 알아서 mapper 클래스를 만들고,
     // 그 객체를 UserInfoController를 생성하면서 생성자로 전달해 준다.
     // 그러면은 우리는 이렇게 전달받은 mapper을 사용해서 api를 호출할 수 있다.
 
-    public UserInfoController(UserInfoMapper mapper) {
+    public UserInfoController(UserInfoMapper mapper, JavaMailSender javaMailSender) {
         this.mapper = mapper;
+        this.javaMailSender = javaMailSender;
     }
 
     // 이메일 중복 체크
@@ -141,6 +142,47 @@ public class UserInfoController {
         return result;
     }
 
+
+    // 임시 비밀번호로 비밀번호 수정
+    @PutMapping("/api/member/update/password/temp")
+    public Map<String, Object> toTemPassword(@RequestBody ChangeToTemporaryPassword changeToTemporaryPassword) {
+        Map<String, Object> result = new HashMap<>();
+        // 이메일로 회원 정보 조회
+        UserInfo userinfo = mapper.getUserInfoFromEmail(changeToTemporaryPassword.getEmail());
+        // 존재하는 회원이라면
+        if (userinfo != null) {
+            // 비밀번호 변경
+            mapper.toTemPassword(changeToTemporaryPassword.getEmail(), changeToTemporaryPassword.getPassword());
+            result.put("code", 3006);
+            result.put("msg", "임시 비밀번호가 전송되었습니다.");
+
+            // 이메일 보내기
+
+            // SimpleMailMessage (단순 텍스트 구성 메일 메시지 생성할 때 이용)
+            SimpleMailMessage simpleMessage = new SimpleMailMessage();
+
+            // 수신자 설정
+            simpleMessage.setTo(changeToTemporaryPassword.getEmail());
+
+            // 메일 제목
+            simpleMessage.setSubject("나의 마음 일지 비밀번호");
+
+            // 메일 내용
+            simpleMessage.setText("귀하의 임시 비밀번호는 \"" + changeToTemporaryPassword.getPassword() + "\"입니다. \n로그인 후 계정 설정에서 비밀번호를 꼭 변경해 주세요.");
+
+            // 메일 발송
+            javaMailSender.send(simpleMessage);
+
+
+        // 존재하지 않는 회원이라면
+        } else {
+            result.put("code", 3007);
+            result.put("msg", "가입되어 있지 않은 이메일입니다");
+        }
+        return result;
+    }
+
+
     // 회원탈퇴
     @DeleteMapping("/api/member/delete/{user_index}")
     public Map<String, Object> deleteUser(@PathVariable("user_index") int user_index) {
@@ -191,4 +233,9 @@ public class UserInfoController {
         return result;
     }
 
+
 }
+
+
+
+
