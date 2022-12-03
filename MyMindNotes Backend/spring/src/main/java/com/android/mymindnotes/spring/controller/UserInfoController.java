@@ -4,10 +4,13 @@ import com.android.mymindnotes.spring.mapper.UserInfoMapper;
 import com.android.mymindnotes.spring.model.*;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -145,7 +148,7 @@ public class UserInfoController {
 
     // 임시 비밀번호로 비밀번호 수정
     @PutMapping("/api/member/update/password/temp")
-    public Map<String, Object> toTemPassword(@RequestBody ChangeToTemporaryPassword changeToTemporaryPassword) {
+    public Map<String, Object> toTemPassword(@RequestBody ChangeToTemporaryPassword changeToTemporaryPassword) throws MessagingException {
         Map<String, Object> result = new HashMap<>();
         // 이메일로 회원 정보 조회
         UserInfo userinfo = mapper.getUserInfoFromEmail(changeToTemporaryPassword.getEmail());
@@ -154,10 +157,9 @@ public class UserInfoController {
             // 비밀번호 변경
             mapper.toTemPassword(changeToTemporaryPassword.getEmail(), changeToTemporaryPassword.getPassword());
             result.put("code", 3006);
-            result.put("msg", "임시 비밀번호가 전송되었습니다.");
+            result.put("msg", "전송 완료");
 
             // 이메일 보내기
-
             // SimpleMailMessage (단순 텍스트 구성 메일 메시지 생성할 때 이용)
             SimpleMailMessage simpleMessage = new SimpleMailMessage();
 
@@ -165,14 +167,13 @@ public class UserInfoController {
             simpleMessage.setTo(changeToTemporaryPassword.getEmail());
 
             // 메일 제목
-            simpleMessage.setSubject("나의 마음 일지 비밀번호");
+            simpleMessage.setSubject("나의 마음 일지 임시 비밀번호입니다.");
 
             // 메일 내용
-            simpleMessage.setText("귀하의 임시 비밀번호는 \"" + changeToTemporaryPassword.getPassword() + "\"입니다. \n로그인 후 계정 설정에서 비밀번호를 꼭 변경해 주세요.");
+            simpleMessage.setText("귀하의 임시 비밀번호는 \"" + changeToTemporaryPassword.getPassword() + "\"입니다. \n\n로그인 후 계정 설정에서 비밀번호를 꼭 변경해 주세요.");
 
             // 메일 발송
             javaMailSender.send(simpleMessage);
-
 
         // 존재하지 않는 회원이라면
         } else {

@@ -56,6 +56,8 @@ public class FindPassword extends AppCompatActivity {
                         .toString();
             }
 
+            Toast toast = Toast.makeText(getApplicationContext(), "임시 비밀번호가 전송되었습니다", Toast.LENGTH_SHORT);
+            toast.show();
             changePassword();
 
 
@@ -81,7 +83,7 @@ public class FindPassword extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
                     toast.show();
                 } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3006) {
-                    // 변경 완료 알림 띄우기
+                    // 전송 완료 알림 띄우기
                     Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
                     toast.show();
                 }
