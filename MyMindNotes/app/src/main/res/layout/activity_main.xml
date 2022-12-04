@@ -52,8 +52,9 @@
                 android:layout_marginBottom="5dp"
                 android:padding="15dp"
                 android:text="로그인"
-                android:autoSizeMinTextSize="17sp"
-                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeMaxTextSize="25sp"
+                android:autoSizeStepGranularity="0.1sp"
                 android:autoSizeTextType="uniform" />
 
             <Button
@@ -69,8 +70,9 @@
                 android:id="@+id/joinButton"
                 android:padding="15dp"
                 android:text="회원가입"
-                android:autoSizeMinTextSize="17sp"
-                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeMaxTextSize="25sp"
+                android:autoSizeStepGranularity="0.1sp"
                 android:autoSizeTextType="uniform" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
