@@ -12,38 +12,38 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
 
-
-        <RelativeLayout
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-
-            <TextView
+        <TextView
+            app:layout_constraintBottom_toTopOf="@id/nickNameInput"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
                 android:textSize="15sp"
                 android:textColor="#CDAF97"
                 android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="닉네임"
                 android:textStyle="bold"
-                android:gravity="center"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/nickNameText"/>
 
             <EditText
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/checkNicknameButton"
+                app:layout_constraintTop_toBottomOf="@id/nickNameText"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="#ABF8E6D8"
                 android:id="@+id/nickNameInput"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.6"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.07"
                 android:layout_below="@id/nickNameText"
                 android:layout_alignLeft="@id/nickNameText"
                 android:background="@drawable/rounded_border"
@@ -52,31 +52,39 @@
                 android:padding="15dp"
                 android:textSize="14.5dp" />
 
-            <Button
-                android:textSize="11.82sp"
+
+        <Button
+                app:layout_constraintLeft_toRightOf="@id/nickNameInput"
+                app:layout_constraintTop_toBottomOf="@id/nickNameText"
+                android:layout_marginTop="4dp"
                 android:id="@+id/checkNicknameButton"
-                android:layout_marginTop="43dp"
-                android:layout_marginLeft="15dp"
-                android:layout_width="130dp"
-                android:layout_height="62dp"
+                android:layout_marginLeft="16dp"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.34"
+                app:layout_constraintHeight_percent="0.085"
+                android:layout_height="0dp"
                 android:layout_toRightOf="@id/nickNameInput"
                 android:text="중복확인"
                 android:backgroundTint="#C3BE9F98"/>
 
             <com.google.android.material.button.MaterialButton
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="150dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:cornerRadius="10dp"
                 android:backgroundTint="#C3D6B2AB"
                 android:layout_marginTop="380dp"
-                android:layout_width="330dp"
-                android:layout_height="55dp"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="1"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.07"
                 android:text="닉네임 변경"
                 android:layout_below="@id/nickNameInput"
                 android:layout_alignLeft="@id/nickNameInput"
                 android:id="@+id/changeNicknameButton"/>
 
 
-        </RelativeLayout>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

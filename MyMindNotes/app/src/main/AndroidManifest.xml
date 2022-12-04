@@ -19,9 +19,8 @@
         <activity
             android:name=".FindPassword"
             android:exported="false"
-            android:label="비밀번호 찾기"
             android:parentActivityName=".Login"
-            android:theme="@style/Theme.changeScreen">
+            android:theme="@style/Theme.Main">
         </activity>
         <activity
             android:name=".ChangeNickname"
