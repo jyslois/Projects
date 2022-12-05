@@ -24,6 +24,7 @@
             android:id="@+id/space"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginLeft="2dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.8"
@@ -41,11 +42,6 @@
                 android:text="일기"
                 android:textStyle="bold"/>
 
-
-<!--            android:autoSizeTextType="uniform"-->
-<!--            android:autoSizeMinTextSize="12sp"-->
-<!--            android:autoSizeMaxTextSize="18sp"-->
-<!--            android:autoSizeStepGranularity="0.1sp"-->
             <Button
                 android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@id/diarytitle"

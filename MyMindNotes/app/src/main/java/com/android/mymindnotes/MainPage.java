@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.widget.Toast;
 import com.android.mymindnotes.databinding.ActivityMainPageBinding;
 import com.android.mymindnotes.model.ChangeUserNickname;
@@ -26,6 +28,26 @@ public class MainPage extends AppCompatActivity {
     SharedPreferences nickName;
     String nick;
     SharedPreferences userindex;
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
 
     @Override
     protected void onResume() {
@@ -57,6 +79,10 @@ public class MainPage extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MainMenu.class);
             startActivity(intent);
         });
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.mainpagetext.setTextSize((float) (standardSize_X / 23));
 
     }
 
