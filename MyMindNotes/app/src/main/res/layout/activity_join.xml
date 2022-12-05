@@ -56,17 +56,12 @@
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text="이메일"
-                    android:autoSizeTextType="uniform"
-                    android:autoSizeMinTextSize="14sp"
-                    android:autoSizeMaxTextSize="16sp"
-                    android:autoSizeStepGranularity="0.1sp"
                     android:textColor="#CDAF97" />
 
 
                 <EditText
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/emailCheckButton"
                     app:layout_constraintTop_toBottomOf="@id/emailText"
                     android:backgroundTint="#ABF8E6D8"
                     android:id="@+id/emailInput"
@@ -74,27 +69,29 @@
                     app:layout_constraintWidth_percent="0.6"
                     android:layout_height="0dp"
                     app:layout_constraintHeight_percent="0.08"
+                    android:padding="15dp"
+                    android:textSize="14.5dp"
                     android:layout_below="@id/emailText"
                     android:layout_alignLeft="@id/emailText"
                     android:background="@drawable/rounded_border"
                     android:hint="이메일 입력"
-                    android:inputType="textEmailAddress"
-                    android:padding="15dp"
-                    android:textSize="15sp" />
+                    android:inputType="textEmailAddress" />
 
 
                 <Button
+                    android:padding="15dp"
                     android:id="@+id/emailCheckButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="8dp"
+                    app:layout_constraintHeight_percent="0.092"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
                     android:layout_toRightOf="@id/emailInput"
                     android:backgroundTint="#C3BE9F98"
                     android:text="중복확인"
-                    app:layout_constraintWidth_percent="0.33"
-                    app:layout_constraintHeight_percent="0.08"
+                    app:layout_constraintWidth_percent="0.345"
                     app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toEndOf="@id/emailInput"
                     app:layout_constraintTop_toBottomOf="@id/emailText" />
 
@@ -115,7 +112,7 @@
                     app:layout_constraintTop_toBottomOf="@id/passwardText"
                     android:id="@+id/passwordInput"
                     android:layout_width="0dp"
-                    app:layout_constraintWidth_percent="0.96"
+                    app:layout_constraintWidth_percent="1"
                     android:layout_height="0dp"
                     app:layout_constraintHeight_percent="0.08"
                     android:layout_below="@id/passwardText"
@@ -136,7 +133,7 @@
                     android:backgroundTint="#ABF8E6D8"
                     android:id="@+id/passwordRetypeInput"
                     android:layout_width="0dp"
-                    app:layout_constraintWidth_percent="0.96"
+                    app:layout_constraintWidth_percent="1"
                     android:layout_height="0dp"
                     app:layout_constraintHeight_percent="0.08"
                     android:layout_below="@id/passwordInput"
@@ -177,16 +174,18 @@
                     android:textSize="14.5dp" />
 
                 <Button
+                    android:padding="15dp"
+                    android:layout_marginTop="-5dp"
                     android:id="@+id/nickNameCheckButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="12dp"
+                    app:layout_constraintHeight_percent="0.092"
+                    android:layout_marginLeft="16dp"
                     android:backgroundTint="#C3BE9F98"
                     android:text="중복확인"
-                    app:layout_constraintHeight_percent="0.08"
                     app:layout_constraintLeft_toRightOf="@id/nickNameInput"
                     app:layout_constraintTop_toTopOf="@id/nickNameInput"
-                    app:layout_constraintWidth_percent="0.33" />
+                    app:layout_constraintWidth_percent="0.345" />
 
                 <TextView
                     app:layout_constraintTop_toBottomOf="@id/nickNameInput"
@@ -208,7 +207,7 @@
                     android:backgroundTint="#ABF8E6D8"
                     android:id="@+id/birthyearInput"
                     android:layout_width="0dp"
-                    app:layout_constraintWidth_percent="0.96"
+                    app:layout_constraintWidth_percent="1"
                     android:layout_height="0dp"
                     app:layout_constraintHeight_percent="0.08"
                     android:layout_below="@id/birthyearText"
@@ -222,11 +221,12 @@
                 <com.google.android.material.button.MaterialButton
                     app:layout_constraintTop_toBottomOf="@id/birthyearInput"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginTop="20dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="30dp"
                     android:layout_width="0dp"
-                    app:layout_constraintWidth_percent="0.95"
+                    app:layout_constraintWidth_percent="1"
                     android:layout_height="0dp"
-                    app:layout_constraintHeight_percent="0.08"
+                    app:layout_constraintHeight_percent="0.07"
                     app:cornerRadius="100dp"
                     android:text="회원가입"
                     android:layout_below="@id/birthyearInput"

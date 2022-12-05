@@ -7,9 +7,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
@@ -44,6 +46,26 @@ public class Join extends AppCompatActivity {
     String emailInput;
     String passwordInput;
     String birthyearInput;
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
 
     // 이메일 중복 체크 확인완료 dialogue
     void confirmEmailDialog() {
@@ -160,6 +182,27 @@ public class Join extends AppCompatActivity {
 
             }
         });
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.emailInput.setTextSize((float) (standardSize_X / 23));
+        binding.passwordInput.setTextSize((float) (standardSize_X / 23));
+        binding.passwordRetypeInput.setTextSize((float) (standardSize_X / 23));
+        binding.nickNameInput.setTextSize((float) (standardSize_X / 23));
+        binding.birthyearInput.setTextSize((float) (standardSize_X / 23));
+        binding.nickNameCheckButton.setTextSize((float) (standardSize_X / 23));
+        binding.emailCheckButton.setTextSize((float) (standardSize_X / 23));
+        binding.joinButton.setTextSize((float) (standardSize_X / 24));
+        binding.emailText.setTextSize((float) (standardSize_X / 25));
+        binding.passwardText.setTextSize((float) (standardSize_X / 25));
+        binding.nickNameText.setTextSize((float) (standardSize_X / 25));
+        binding.birthyearText.setTextSize((float) (standardSize_X / 25));
+//        binding.password.setTextSize((float) (standardSize_X / 22));
+//        binding.autoSaveButton.setTextSize((float) (standardSize_X / 25));
+//        binding.autoLoginButton.setTextSize((float) (standardSize_X / 25));
+//        binding.loginButton.setTextSize((float) (standardSize_X / 23));
+//        binding.findPasswordButton.setTextSize((float) (standardSize_X / 26));
+
 
         auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
         autoSaveEdit = auto.edit();
