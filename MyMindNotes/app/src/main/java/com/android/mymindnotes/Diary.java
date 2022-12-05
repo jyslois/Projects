@@ -8,15 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryBinding;
@@ -74,6 +77,26 @@ public class Diary extends AppCompatActivity {
     String singleEmotion;
 
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
+
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
     @Override
     public void onResume() {
@@ -102,6 +125,13 @@ public class Diary extends AppCompatActivity {
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background);
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.sortDateButton.setTextSize((float) (standardSize_X / 32));
+        binding.sortEmotionButton.setTextSize((float) (standardSize_X / 32));
+        binding.sortEmotionDiaryButton.setTextSize((float) (standardSize_X / 32));
+        binding.sortTraumaButton.setTextSize((float) (standardSize_X / 32));
 
         // 일기 목록 가져오기
         getDiaryList();
@@ -364,6 +394,8 @@ public class Diary extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
+            // 글짜 크기 조절
+            getStandardSize();
             // 감정 아이콘 세팅
             String emotion = recordList.get(position).getEmotion();
             switch (emotion) {
@@ -400,17 +432,21 @@ public class Diary extends AppCompatActivity {
             // 날짜 세팅
             date = recordList.get(position).getDate() + " " + recordList.get(position).getDay();
             viewHolder.binding.date.setText(date);
+            viewHolder.binding.date.setTextSize((float) (standardSize_X / 25));
 
             // 감정 이름 세팅
             viewHolder.binding.emotionWord.setText(emotion);
+            viewHolder.binding.emotionWord.setTextSize((float) (standardSize_X / 24.5));
 
             // 상황 세팅
             String situation = recordList.get(position).getSituation();
             viewHolder.binding.situation.setText(situation);
+            viewHolder.binding.situation.setTextSize((float) (standardSize_X / 25));
 
             // 타입 세팅
             String type = recordList.get(position).getType();
             viewHolder.binding.type.setText(type);
+            viewHolder.binding.type.setTextSize((float) (standardSize_X / 25));
 
             viewHolder.binding.getRoot().setOnClickListener(view -> {
                 Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
