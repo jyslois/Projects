@@ -5,15 +5,38 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 
 import com.android.mymindnotes.databinding.ActivityMainMenuBinding;
 import com.bumptech.glide.Glide;
+
 
 public class MainMenu extends AppCompatActivity {
     ActivityMainMenuBinding binding;
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +79,17 @@ public class MainMenu extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         });
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.diaryButton.setTextSize((float) (standardSize_X / 23));
+        binding.recordDiaryButton.setTextSize((float) (standardSize_X / 23));
+        binding.emotionInstructionButton.setTextSize((float) (standardSize_X / 23));
+        binding.accountsettingButton.setTextSize((float) (standardSize_X / 23));
+        binding.logoutButton.setTextSize((float) (standardSize_X / 23));
+
+        binding.diarytitle.setTextSize((float) (standardSize_X / 18));
+        binding.settingTitle.setTextSize((float) (standardSize_X / 18));
 
     }
 }

@@ -3,7 +3,10 @@ package com.android.mymindnotes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityFindPasswordBinding;
@@ -23,6 +26,25 @@ public class FindPassword extends AppCompatActivity {
     ActivityFindPasswordBinding binding;
     String randomPassword;
     String email;
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +78,12 @@ public class FindPassword extends AppCompatActivity {
 
 
         });
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.emailInput.setTextSize((float) (standardSize_X / 22));
+        binding.sendEmailButton.setTextSize((float) (standardSize_X / 25));
+        binding.instruction.setTextSize((float) (standardSize_X / 26));
     }
 
     // 네트워크 통신: 비밀번호 변경

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -34,6 +36,26 @@ public class Login extends AppCompatActivity {
     EditText password;
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
 
     // 로그인 성공 시 userindex 저장
     SharedPreferences userindex;
@@ -185,6 +207,14 @@ public class Login extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.email.setTextSize((float) (standardSize_X / 22));
+        binding.password.setTextSize((float) (standardSize_X / 22));
+        binding.autoSaveButton.setTextSize((float) (standardSize_X / 25));
+        binding.autoLoginButton.setTextSize((float) (standardSize_X / 25));
+        binding.loginButton.setTextSize((float) (standardSize_X / 23));
+        binding.findPasswordButton.setTextSize((float) (standardSize_X / 26));
 
     }
 
