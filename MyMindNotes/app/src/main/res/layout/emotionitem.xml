@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/emotionitem_roundedcorner"
     android:orientation="vertical"
     android:layout_marginTop="10dp"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -16,8 +17,10 @@
 
 
         <TextView
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="기쁨"
@@ -26,28 +29,35 @@
             android:id="@+id/emotion"/>
 
         <ImageView
-            android:layout_marginLeft="-12dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintRight_toLeftOf="@id/emotion"
+            app:layout_constraintTop_toTopOf="@id/emotion"
+            app:layout_constraintBottom_toBottomOf="@id/emotion"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:src="@drawable/orange_happiness"
             android:id="@+id/emotionIcon"/>
 
 
-    </LinearLayout>
+        <TextView
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emotion"
+            android:padding="5dp"
+            android:textColor="#F3E8E8"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/happiness"
+            android:id="@+id/emotionInstruction"/>
 
-    <TextView
-        android:padding="5dp"
-        android:textColor="#F3E8E8"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/happiness"
-        android:id="@+id/emotionInstruction"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </LinearLayout>

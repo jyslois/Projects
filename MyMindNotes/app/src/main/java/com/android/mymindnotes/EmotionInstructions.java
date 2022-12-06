@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +32,29 @@ import java.util.List;
 
 public class EmotionInstructions extends AppCompatActivity {
     ActivityEmotionInstructionsBinding binding;
-    Spinner spinner;
     String[] emotionArray;
     EmotionInstructionAdaptor adaptor;
     ArrayList<Emotion> emotionList;
     ArrayList<Emotion> singleEmotion;
+
+
+    // 화면 크기에 따른 글자 크기 조절
+    static int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
 
 
     @Override
@@ -44,6 +65,7 @@ public class EmotionInstructions extends AppCompatActivity {
                 //데이터 받기
                 String emotion = data.getStringExtra("emotion");
                 binding.sortButton.setText(emotion);
+                binding.sortButton.setTextSize((float) (standardSize_X / 25));
                 switch (emotion) {
                     case "모든 감정": {
                         singleEmotion.clear();
@@ -162,6 +184,11 @@ public class EmotionInstructions extends AppCompatActivity {
         binding.emotionInstructionView.setAdapter(adaptor);
         binding.emotionInstructionView.addItemDecoration(new EmotionRecyclerViewDecoration());
 
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.sortButton.setTextSize((float) (standardSize_X / 27));
+
         // 감정 정렬 버튼
         binding.sortButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, EmotionInstructionSortingPopup.class);
@@ -199,12 +226,14 @@ class EmotionInstructionAdaptor extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         // 감정 이름 세팅
-        viewHolder.binding.emotion.setText("〔 " + emotionList.get(position).emotion + " 〕");
+        viewHolder.binding.emotion.setText(emotionList.get(position).emotion);
+        viewHolder.binding.emotion.setTextSize((float) (EmotionInstructions.standardSize_X / 15));
 
         // 감정 아이콘 세팅
         viewHolder.binding.emotionIcon.setImageResource(emotionList.get(position).emotionIcon);
 
         // 감정 설명 세팅
+        viewHolder.binding.emotionInstruction.setTextSize((float) (EmotionInstructions.standardSize_X / 25));
         viewHolder.binding.emotionInstruction.setText(emotionList.get(position).instruction);
         viewHolder.binding.emotionInstruction.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
     }
