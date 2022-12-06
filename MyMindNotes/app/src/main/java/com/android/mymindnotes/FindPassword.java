@@ -72,8 +72,6 @@ public class FindPassword extends AppCompatActivity {
                         .toString();
             }
 
-            Toast toast = Toast.makeText(getApplicationContext(), "임시 비밀번호가 전송되었습니다", Toast.LENGTH_SHORT);
-            toast.show();
             changePassword();
 
 

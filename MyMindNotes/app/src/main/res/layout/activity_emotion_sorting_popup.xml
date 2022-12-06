@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".EmotionSortingPopup">
+
+    <RelativeLayout
+        android:padding="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emotions"
+        android:background="@drawable/border"
+        android:backgroundTint="#D5CDACA4">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/emotions1"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/happinessButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="기쁨"
+                android:buttonTint="#FFC000"
+                android:layout_gravity="center"
+                />
+
+            <RadioButton
+                android:id="@+id/anticipationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="기대"
+                android:buttonTint="#00B050"
+                android:layout_gravity="center"
+                />
+
+            <RadioButton
+                android:id="@+id/trustButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="신뢰"
+                android:buttonTint="#0628A1"
+                android:layout_gravity="center"
+                />
+
+
+            <RadioButton
+                android:id="@+id/surpriseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="놀람"
+                android:buttonTint="#FFFF00"
+                android:layout_gravity="center"
+                />
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/emotions1"
+            android:id="@+id/emotions2"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
+
+            <RadioButton
+                android:id="@+id/sadnessButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="슬픔"
+                android:buttonTint="#767171"
+                android:layout_gravity="center"
+                />
+
+            <RadioButton
+                android:id="@+id/disgustButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="혐오"
+                android:buttonTint="#C55A11"
+                android:layout_gravity="center"
+                />
+
+            <RadioButton
+                android:id="@+id/fearButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="공포"
+                android:buttonTint="#000000"
+                android:layout_gravity="center"
+                />
+
+
+            <RadioButton
+                android:id="@+id/angerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="분노"
+                android:buttonTint="#FF0000"
+                android:layout_gravity="center"
+                />
+        </RadioGroup>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

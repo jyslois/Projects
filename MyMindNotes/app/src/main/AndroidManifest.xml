@@ -17,11 +17,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="32">
         <activity
+            android:name=".EmotionSortingPopup"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:label="감정 선택"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".FindPassword"
             android:exported="false"
             android:parentActivityName=".Login"
-            android:theme="@style/Theme.Main">
-        </activity>
+            android:theme="@style/Theme.Main"></activity>
         <activity
             android:name=".ChangeNickname"
             android:exported="false"

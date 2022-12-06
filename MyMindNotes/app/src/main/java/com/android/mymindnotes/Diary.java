@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,10 +17,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryBinding;
@@ -71,8 +69,7 @@ public class Diary extends AppCompatActivity {
     Boolean isTraumaRecordListChecked = false;
     Boolean isSingleEmotionListChecked = false;
 
-    // 스피너(드롭 다운 메뉴)를 위한 변수들
-    Spinner spinner;
+    // 감정별 정렬을 위한 변수들
     String[] emotionArray;
     String singleEmotion;
 
@@ -109,6 +106,22 @@ public class Diary extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                //데이터 받기
+                String emotion = data.getStringExtra("emotion");
+                sortbyemotion(emotion);
+                binding.sortEmotionButton.setText(emotion);
+
+            }
+        }
+    }
+
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,10 +141,10 @@ public class Diary extends AppCompatActivity {
 
         // 글짜 크기 조절
         getStandardSize();
-        binding.sortDateButton.setTextSize((float) (standardSize_X / 32));
-        binding.sortEmotionButton.setTextSize((float) (standardSize_X / 32));
-        binding.sortEmotionDiaryButton.setTextSize((float) (standardSize_X / 32));
-        binding.sortTraumaButton.setTextSize((float) (standardSize_X / 32));
+        binding.sortDateButton.setTextSize((float) (standardSize_X / 30));
+        binding.sortEmotionButton.setTextSize((float) (standardSize_X / 30));
+        binding.sortEmotionDiaryButton.setTextSize((float) (standardSize_X / 30));
+        binding.sortTraumaButton.setTextSize((float) (standardSize_X / 30));
 
         // 일기 목록 가져오기
         getDiaryList();
@@ -206,7 +219,6 @@ public class Diary extends AppCompatActivity {
 
 
         // 트라우마 일기 모음
-
             binding.sortTraumaButton.setOnClickListener(view -> {
                 binding.sortEmotionButton.setText("감정별");
                 isTraumaRecordListChecked = true;
@@ -238,100 +250,18 @@ public class Diary extends AppCompatActivity {
             });
 
 
-        // 감정별 정렬
+
+        // 감정별 정렬 (Activity 팝업창 띄우기)
         binding.sortEmotionButton.setOnClickListener(view -> {
-            spinner = binding.emotionSpinner;
-            // strings.xml에 있는 string array (emotions_array)를 사용해서 ArrayAdaptor 만들기
-            // 이 메서드의 세 번째 인수는 선택된 항목이 스피너 컨트롤에 나타나는 방식을 정의하는 레이아웃 리소스,
-            // simple_spinner_item 레이아웃은 플랫폼에서 제공. 스피너의 모양에 관해 자체적인 레이아웃을 직접 정의하고자 하지 않을 경우 사용해야 하는 기본 레이아웃.
-            ArrayAdapter<CharSequence> spinnerAdaptor = ArrayAdapter.createFromResource(this, R.array.emotions_array, android.R.layout.simple_spinner_item);
-            // 어뎁터가 스피너 선택 항목을 표시하는 데 사용해야 하는 레이아웃을 지정. simple_spinner_dropdown_item은 플랫폼에서 정의하는 표준 레이아웃.)
-            spinnerAdaptor.setDropDownViewResource(R.layout.spinneritem);
-            // 어뎁터를 Spinner에 적용
-            spinner.setAdapter(spinnerAdaptor);
-            // 버튼 크기만큼 width 설정하기
-            spinner.setDropDownWidth(binding.sortEmotionButton.getWidth());
-            // 스피너가 클릭되는 것으로 처리해서 드롭다운 메뉴가 나타나게 하기
-            spinner.performClick();
-
-            // 아이템 클릭 이벤트
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    binding.sortEmotionButton.setText(emotionArray[position]);
-                    if (recordList != null) {
-                        switch (emotionArray[position]) {
-                            case "All": {
-                                isEmotionRecordListChecked = false;
-                                isTraumaRecordListChecked = false;
-                                isSingleEmotionListChecked = true;
-
-                                indexListTrauma.clear();
-                                indexListEmotion.clear();
-                                indexListSingleEmotion.clear();
-
-                                adaptor.updateItemList(recordList);
-
-                                // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
-                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                                if (binding.sortDateButton.getText().equals("오래된순")) {
-                                    linearLayoutManager.setReverseLayout(false);
-                                    linearLayoutManager.setStackFromEnd(false);
-                                } else if (binding.sortDateButton.getText().equals("최신순")) {
-                                    linearLayoutManager.setReverseLayout(true);
-                                    linearLayoutManager.setStackFromEnd(true);
-                                }
-                                diaryView.setLayoutManager(linearLayoutManager);
-                            }
-                            break;
-                            case "기쁨": {
-                                sortbyemotion("기쁨", position);
-                            }
-                            break;
-                            case "기대": {
-                                sortbyemotion("기대", position);
-                            }
-                            break;
-                            case "신뢰": {
-                                sortbyemotion("신뢰", position);
-                            }
-                            break;
-                            case "놀람": {
-                                sortbyemotion("놀람", position);
-                            }
-                            break;
-                            case "슬픔": {
-                                sortbyemotion("슬픔", position);
-                            }
-                            break;
-                            case "혐오": {
-                                sortbyemotion("혐오", position);
-                            }
-                            break;
-                            case "공포": {
-                                sortbyemotion("공포", position);
-                            }
-                            break;
-                            case "분노": {
-                                sortbyemotion("분노", position);
-                            }
-                            break;
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-
+            Intent intent = new Intent(this, EmotionSortingPopup.class);
+            startActivityForResult(intent, 1);
         });
+
 
     }
 
     // 감정별 정렬을 위한 함수
-    private void sortbyemotion(String emotion, int position) {
+    private void sortbyemotion(String emotion) {
         isEmotionRecordListChecked = false;
         isTraumaRecordListChecked = false;
         isSingleEmotionListChecked = true;
@@ -342,7 +272,7 @@ public class Diary extends AppCompatActivity {
         indexListEmotion.clear();
         indexListSingleEmotion.clear();
 
-        singleEmotion = emotionArray[position];
+        singleEmotion = emotion;
 
         for (int i = 0; i < recordList.size(); i++) {
             if (recordList.get(i).getEmotion().equals(emotion)) {
