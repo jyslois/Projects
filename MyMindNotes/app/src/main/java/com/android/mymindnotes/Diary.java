@@ -116,6 +116,7 @@ public class Diary extends AppCompatActivity {
                 String emotion = data.getStringExtra("emotion");
                 sortbyemotion(emotion);
                 binding.sortEmotionButton.setText(emotion);
+                binding.sortEmotionButton.setTextSize((float) (standardSize_X / 30));
 
             }
         }
