@@ -39,22 +39,10 @@
                 android:textSize="11dp"
                 android:textStyle="bold"/>
 
-            <Spinner
-                android:visibility="invisible"
-                android:layout_marginTop="-5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="0dp"
-                android:layout_below="@id/sortButton"
-                android:gravity="center"
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                />
-
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="20dp"
                 android:padding="5dp"
-                android:layout_below="@id/spinner"
+                android:layout_below="@id/sortButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emotionInstructionView">

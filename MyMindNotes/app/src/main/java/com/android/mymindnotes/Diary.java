@@ -458,7 +458,6 @@ public class Diary extends AppCompatActivity {
                         diaryView.setAdapter(adaptor);
                         // 생성한 itemDecoration 객체를 RecyclerView에 적용
                         diaryView.addItemDecoration(new DiaryRecyclerViewDecoration());
-
                     }
                 }
 

@@ -27,6 +27,18 @@
 
             <RadioButton
                 android:textAlignment="center"
+                android:id="@+id/allEmotionsButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="모든 감정"
+                android:buttonTint="#FFFFFF"
+                android:layout_gravity="center"
+                />
+
+            <RadioButton
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
                 android:id="@+id/happinessButton"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

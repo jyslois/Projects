@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
@@ -36,6 +37,105 @@ public class EmotionInstructions extends AppCompatActivity {
 
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                //데이터 받기
+                String emotion = data.getStringExtra("emotion");
+                binding.sortButton.setText(emotion);
+                switch (emotion) {
+                    case "모든 감정": {
+                        singleEmotion.clear();
+                        adaptor.updateItemList(emotionList);
+                    }
+                    break;
+                    case "기쁨": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("기쁨")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                    case "기대": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("기대")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                    case "신뢰": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("신뢰")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                    case "놀람": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("놀람")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                    case "슬픔": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("슬픔")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                    case "혐오": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("혐오")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                    case "공포": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("공포")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                    case "분노": {
+                        singleEmotion.clear();
+                        for (Emotion i : emotionList) {
+                            if (i.emotion.equals("분노")) {
+                                singleEmotion.add(i);
+                            }
+                        }
+                        adaptor.updateItemList(singleEmotion);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEmotionInstructionsBinding.inflate(getLayoutInflater());
@@ -64,119 +164,8 @@ public class EmotionInstructions extends AppCompatActivity {
 
         // 감정 정렬 버튼
         binding.sortButton.setOnClickListener(view -> {
-            spinner = binding.spinner;
-            // strings.xml에 있는 string array (emotions_array)를 사용해서 ArrayAdaptor 만들기
-            // 이 메서드의 세 번째 인수는 선택된 항목이 스피너 컨트롤에 나타나는 방식을 정의하는 레이아웃 리소스,
-            // simple_spinner_item 레이아웃은 플랫폼에서 제공. 스피너의 모양에 관해 자체적인 레이아웃을 직접 정의하고자 하지 않을 경우 사용해야 하는 기본 레이아웃.
-            ArrayAdapter<CharSequence> spinnerAdaptor = ArrayAdapter.createFromResource(this, R.array.emotions_array_forinstruction, android.R.layout.simple_spinner_item);
-            // 어뎁터가 스피너 선택 항목을 표시하는 데 사용해야 하는 레이아웃을 지정. simple_spinner_dropdown_item은 플랫폼에서 정의하는 표준 레이아웃.)
-            spinnerAdaptor.setDropDownViewResource(R.layout.spinneritemforemotioninsturction);
-            // 어뎁터를 Spinner에 적용
-            spinner.setAdapter(spinnerAdaptor);
-            // 버튼 길이만큼 spinner 길이 조정하기
-            spinner.setDropDownWidth(binding.sortButton.getWidth());
-            // 스피너가 클릭되는 것으로 처리해서 드롭다운 메뉴가 나타나게 하기
-            spinner.performClick();
-
-            // 아이템 클릭 이벤트
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    binding.sortButton.setText(emotionArray[position]);
-                    switch (emotionArray[position]) {
-                        case "모든 감정" : {
-                            singleEmotion.clear();
-                            adaptor.updateItemList(emotionList);
-                        }
-                        break;
-                        case "기쁨" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("기쁨")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                        case "기대" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("기대")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                        case "신뢰" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("신뢰")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                        case "놀람" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("놀람")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                        case "슬픔" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("슬픔")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                        case "혐오" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("혐오")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                        case "공포" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("공포")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                        case "분노" : {
-                            singleEmotion.clear();
-                            for (Emotion i : emotionList) {
-                                if (i.emotion.equals("분노")) {
-                                    singleEmotion.add(i);
-                                }
-                            }
-                            adaptor.updateItemList(singleEmotion);
-                        }
-                        break;
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
+            Intent intent = new Intent(this, EmotionInstructionSortingPopup.class);
+            startActivityForResult(intent, 1);
         });
     }
 

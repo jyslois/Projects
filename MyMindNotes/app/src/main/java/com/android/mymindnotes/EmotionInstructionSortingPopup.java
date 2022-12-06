@@ -9,15 +9,15 @@ import android.os.Bundle;
 import android.view.Display;
 import android.widget.RadioGroup;
 
-import com.android.mymindnotes.databinding.ActivityEmotionSortingPopupBinding;
+import com.android.mymindnotes.databinding.ActivityEmotionInstructionSortingPopupBinding;
 
-public class EmotionSortingPopup extends AppCompatActivity {
-    ActivityEmotionSortingPopupBinding binding;
-    RadioGroup emotionGroup;
+public class EmotionInstructionSortingPopup extends AppCompatActivity {
+    ActivityEmotionInstructionSortingPopupBinding binding;
 
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
     float density;
+    RadioGroup emotionGroup;
 
     public Point getScreenSize(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
@@ -46,20 +46,20 @@ public class EmotionSortingPopup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityEmotionSortingPopupBinding.inflate(getLayoutInflater());
+        binding = ActivityEmotionInstructionSortingPopupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // 글자 크기 조절
         getStandardSize();
-        binding.angerButton.setTextSize((float) (standardSize_X / 22));
-        binding.anticipationButton.setTextSize((float) (standardSize_X / 22));
-        binding.disgustButton.setTextSize((float) (standardSize_X / 22));
-        binding.fearButton.setTextSize((float) (standardSize_X / 22));
-        binding.happinessButton.setTextSize((float) (standardSize_X / 22));
-        binding.sadnessButton.setTextSize((float) (standardSize_X / 22));
-        binding.surpriseButton.setTextSize((float) (standardSize_X / 22));
-        binding.trustButton.setTextSize((float) (standardSize_X / 22));
-
+        binding.allEmotionsButton.setTextSize((float) (standardSize_X / 23));
+        binding.angerButton.setTextSize((float) (standardSize_X / 23));
+        binding.anticipationButton.setTextSize((float) (standardSize_X / 23));
+        binding.disgustButton.setTextSize((float) (standardSize_X / 23));
+        binding.fearButton.setTextSize((float) (standardSize_X / 23));
+        binding.happinessButton.setTextSize((float) (standardSize_X / 23));
+        binding.sadnessButton.setTextSize((float) (standardSize_X / 23));
+        binding.surpriseButton.setTextSize((float) (standardSize_X / 23));
+        binding.trustButton.setTextSize((float) (standardSize_X / 23));
 
         emotionGroup = binding.emotionsGroup;
         emotionGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -94,7 +94,6 @@ public class EmotionSortingPopup extends AppCompatActivity {
             }
         });
 
+
     }
 }
-
-
