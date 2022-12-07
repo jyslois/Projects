@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityChangePasswordBinding;
@@ -39,6 +41,25 @@ public class ChangePassword extends AppCompatActivity {
     String passwordRetypeInput;
     String originalPasswordInput;
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +75,16 @@ public class ChangePassword extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.changepassword_actionbartext); // 커스텀 사용할 파일 위치
         // Up 버튼 제공
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // 글짜 크기 세팅
+        getStandardSize();
+        binding.originalPasswordText.setTextSize((float) (standardSize_X / 23));
+        binding.passwordText.setTextSize((float) (standardSize_X / 23));
+        binding.passwordRetypeText.setTextSize((float) (standardSize_X / 23));
+        binding.passwordInput.setTextSize((float) (standardSize_X / 23));
+        binding.passwordReypeInput.setTextSize((float) (standardSize_X / 23));
+        binding.originalPasswordInput.setTextSize((float) (standardSize_X / 23));
+        binding.changePasswordButton.setTextSize((float) (standardSize_X / 22));
 
 
         // 회원번호 불러오기

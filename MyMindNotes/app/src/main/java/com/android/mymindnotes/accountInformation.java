@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.retrofit.DeleteUserApi;
@@ -31,6 +33,25 @@ public class AccountInformation extends AppCompatActivity {
     String nickname;
     int birthyear;
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -48,6 +69,19 @@ public class AccountInformation extends AppCompatActivity {
 
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
         getUserInfo();
+
+        // 글씨 크기 조절
+        getStandardSize();
+        binding.emailText.setTextSize((float) (standardSize_X / 23));
+        binding.nickNameText.setTextSize((float) (standardSize_X / 23));
+        binding.birthyearText.setTextSize((float) (standardSize_X / 23));
+        binding.email.setTextSize((float) (standardSize_X / 24));
+        binding.nickname.setTextSize((float) (standardSize_X / 24));
+        binding.birthyear.setTextSize((float) (standardSize_X / 24));
+        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 24));
+        binding.changePasswordButton.setTextSize((float) (standardSize_X / 24));
+        binding.logoutButton.setTextSize((float) (standardSize_X / 25));
+        binding.withdrawalButton.setTextSize((float) (standardSize_X / 25));
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background);

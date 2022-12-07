@@ -8,9 +8,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityChangeNicknameBinding;
@@ -41,6 +43,25 @@ public class ChangeNickname extends AppCompatActivity {
     // 닉네임
     String nickname;
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
     // 닉네임 중복 체크 확인완료 dialogue
     void confirmNicknameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -69,6 +90,14 @@ public class ChangeNickname extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.changenickname_actionbartext); // 커스텀 사용할 파일 위치
         // Up 버튼 제공
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // 글짜 크기 세팅
+        getStandardSize();
+        binding.nickNameText.setTextSize((float) (standardSize_X / 23));
+        binding.nickNameInput.setTextSize((float) (standardSize_X / 23));
+        binding.checkNicknameButton.setTextSize((float) (standardSize_X / 23));
+        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 22));
+
 
         // 회원번호 불러오기
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
