@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="타입"
                 android:textColor="#FFDABB"
-                android:textStyle="bold"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +39,7 @@
                 android:gravity="right"
                 android:text="0000. 00. 00"
                 android:textColor="#FFDABB"
-                android:textStyle="bold"
+
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,9 +49,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="상황"
-                android:textColor="#FBE1CB"
-                android:textSize="18dp"
                 android:textStyle="bold"
+                android:textColor="#FFDABB"
+                android:textSize="18dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/type" />
 
@@ -80,9 +80,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="생각"
-                android:textColor="#FBE1CB"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#FFDABB"
+                android:textSize="18dp" />
 
 
             <TextView
@@ -107,9 +107,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="감정"
-                android:textColor="#FBE1CB"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#FFDABB"
+                android:textSize="18dp"/>
 
 
             <TextView
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="회고"
-                android:textColor="#836F6B"
+                android:textColor="#685E5C"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
