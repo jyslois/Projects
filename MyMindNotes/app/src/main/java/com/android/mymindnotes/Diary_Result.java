@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,6 +48,26 @@ public class Diary_Result extends AppCompatActivity {
     SharedPreferences userindex;
     ArrayList<UserDiary> diarylist;
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
+
     // 다시 돌아왔을 때 수정된 데이터로 보이기
     @Override
     protected void onResume() {
@@ -66,7 +88,7 @@ public class Diary_Result extends AppCompatActivity {
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground2).into(binding.background);
+        Glide.with(this).load(R.drawable.diarybackground4).into(binding.background);
 
         // 목록으로 돌아가기 버튼 클릭 시 전 페이지로
         binding.backtoListButton.setOnClickListener(view -> {
@@ -98,11 +120,29 @@ public class Diary_Result extends AppCompatActivity {
         // 생각 텍스트 뿌리기
         binding.ResultThoughtUserInput.setText(thought);
         // 감정 뿌리기
-        binding.resultEmotionText.setText(emotion);
+        binding.ResultEmotionText.setText(emotion);
         // 감정 텍스트 뿌리기
         binding.ResultEmotionUserInput.setText(emotionText);
         // 회고 텍스트 뿌리기
         binding.ResultReflectionUserInput.setText(reflection);
+
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.type.setTextSize((float) (standardSize_X / 24));
+        binding.date.setTextSize((float) (standardSize_X / 24));
+        binding.ResultSituationTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultReflectionTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultSituationUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.ResultThoughtUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.ResultEmotionUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.ResultEmotionText.setTextSize((float) (standardSize_X / 22));
+        binding.ResultReflectionUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.deleteButton.setTextSize((float) (standardSize_X / 23));
+        binding.editButton.setTextSize((float) (standardSize_X / 23));
+        binding.backtoListButton.setTextSize((float) (standardSize_X / 23));
 
         // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기.
         if (binding.ResultEmotionUserInput.getText().toString().equals("")) {
@@ -189,7 +229,7 @@ public class Diary_Result extends AppCompatActivity {
                         // 생각 텍스트 뿌리기
                         binding.ResultThoughtUserInput.setText(thought);
                         // 감정 뿌리기
-                        binding.resultEmotionText.setText(emotion);
+                        binding.ResultEmotionText.setText(emotion);
                         // 감정 텍스트 뿌리기
                         binding.ResultEmotionUserInput.setText(emotionText);
                         // 회고 텍스트 뿌리기

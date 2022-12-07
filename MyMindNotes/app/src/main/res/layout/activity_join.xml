@@ -85,15 +85,14 @@
                     android:layout_height="0dp"
                     app:layout_constraintHeight_percent="0.092"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="3dp"
                     android:layout_toRightOf="@id/emailInput"
                     android:backgroundTint="#C3BE9F98"
                     android:text="중복확인"
                     app:layout_constraintWidth_percent="0.345"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/emailInput"
-                    app:layout_constraintTop_toBottomOf="@id/emailText" />
+                    app:layout_constraintLeft_toRightOf="@id/emailInput"
+                    app:layout_constraintTop_toBottomOf="@id/emailText"/>
 
                 <TextView
                     app:layout_constraintTop_toBottomOf="@id/emailInput"
@@ -184,6 +183,7 @@
                     android:backgroundTint="#C3BE9F98"
                     android:text="중복확인"
                     app:layout_constraintLeft_toRightOf="@id/nickNameInput"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/nickNameInput"
                     app:layout_constraintWidth_percent="0.345" />
 

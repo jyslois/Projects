@@ -233,7 +233,7 @@ class EmotionInstructionAdaptor extends RecyclerView.Adapter<ViewHolder> {
         viewHolder.binding.emotionIcon.setImageResource(emotionList.get(position).emotionIcon);
 
         // 감정 설명 세팅
-        viewHolder.binding.emotionInstruction.setTextSize((float) (EmotionInstructions.standardSize_X / 25));
+        viewHolder.binding.emotionInstruction.setTextSize((float) (EmotionInstructions.standardSize_X / 22));
         viewHolder.binding.emotionInstruction.setText(emotionList.get(position).instruction);
         viewHolder.binding.emotionInstruction.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
     }

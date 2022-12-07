@@ -3,11 +3,14 @@ package com.android.mymindnotes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryResultEditBinding;
@@ -40,6 +43,25 @@ public class Diary_Result_Edit extends AppCompatActivity {
     int diaryNumber;
     AlertDialog alertDialog;
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +69,8 @@ public class Diary_Result_Edit extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        // emotion instruction button
-        binding.emotioInstructionButton.setOnClickListener(view -> {
-            Intent emotion = new Intent(getApplicationContext(), EmotionInstructions.class);
-            startActivity(emotion);
-        });
-
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground2).into(binding.background);
+        Glide.with(this).load(R.drawable.diarybackground4).into(binding.background);
 
 
         // 데이터 세팅
@@ -83,6 +99,22 @@ public class Diary_Result_Edit extends AppCompatActivity {
         } else if (type.equals("트라우마 일기")) {
             binding.editReflection.setHint("지금의 내게 어떤 영향을 미치고 있나요?");
         }
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.type.setTextSize((float) (standardSize_X / 24));
+        binding.date.setTextSize((float) (standardSize_X / 24));
+        binding.ResultSituationTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultReflectionTitle.setTextSize((float) (standardSize_X / 19));
+        binding.editSituation.setTextSize((float) (standardSize_X / 22));
+        binding.editEmotion.setTextSize((float) (standardSize_X / 22));
+        binding.editEmotionText.setTextSize((float) (standardSize_X / 22));
+        binding.editThought.setTextSize((float) (standardSize_X / 22));
+        binding.editReflection.setTextSize((float) (standardSize_X / 22));
+        binding.editButton.setTextSize((float) (standardSize_X / 23));
+
 
         // 수정 (완료) 버튼
         binding.editButton.setOnClickListener(view -> {
