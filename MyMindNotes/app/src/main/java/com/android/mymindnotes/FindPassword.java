@@ -1,14 +1,15 @@
 package com.android.mymindnotes;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import com.android.mymindnotes.databinding.ActivityFindPasswordBinding;
 import com.android.mymindnotes.model.ChangeToTemporaryPassword;
 import com.android.mymindnotes.retrofit.ChangeToTempPassword;
@@ -26,6 +27,21 @@ public class FindPassword extends AppCompatActivity {
     ActivityFindPasswordBinding binding;
     String randomPassword;
     String email;
+    AlertDialog alertDialog;
+
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
+    }
 
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
@@ -65,20 +81,24 @@ public class FindPassword extends AppCompatActivity {
         binding.sendEmailButton.setOnClickListener(view -> {
             email = binding.emailInput.getText().toString();
 
-            // 임시 비밀번호 (랜덤)
-            int leftLimit = 48; // numeral '0'
-            int rightLimit = 122; // letter 'z'
-            int targetStringLength = 10;
-            Random random = new Random();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                randomPassword = random.ints(leftLimit,rightLimit + 1)
-                        .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                        .limit(targetStringLength)
-                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                        .toString();
-            }
+            if (email.equals("")) {
+                dialog("임시 비밀번호를 보낼 이메일을 입력해 주세요.");
+            } else {
+                // 임시 비밀번호 (랜덤)
+                int leftLimit = 48; // numeral '0'
+                int rightLimit = 122; // letter 'z'
+                int targetStringLength = 10;
+                Random random = new Random();
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    randomPassword = random.ints(leftLimit, rightLimit + 1)
+                            .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                            .limit(targetStringLength)
+                            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                            .toString();
+                }
 
-            changePassword();
+                changePassword();
+            }
 
 
         });
@@ -106,18 +126,15 @@ public class FindPassword extends AppCompatActivity {
                 // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                 // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                 if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3007) {
-                    Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                    toast.show();
+                   dialog((String) response.body().get("msg"));
                 } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3006) {
                     // 전송 완료 알림 띄우기
-                    Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                    toast.show();
+                    dialog((String) response.body().get("msg"));
                 }
             }
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
             }
         });
 

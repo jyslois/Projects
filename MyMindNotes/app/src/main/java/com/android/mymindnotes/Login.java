@@ -1,8 +1,10 @@
 package com.android.mymindnotes;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -11,12 +13,9 @@ import android.view.Display;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import com.android.mymindnotes.databinding.ActivityLoginBinding;
-import com.android.mymindnotes.model.UserInfo;
 import com.android.mymindnotes.model.UserInfoLogin;
-import com.android.mymindnotes.retrofit.JoinApi;
 import com.android.mymindnotes.retrofit.LoginApi;
 import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
@@ -36,6 +35,7 @@ public class Login extends AppCompatActivity {
     EditText password;
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
+    AlertDialog alertDialog;
 
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
@@ -60,6 +60,21 @@ public class Login extends AppCompatActivity {
     // 로그인 성공 시 userindex 저장
     SharedPreferences userindex;
     SharedPreferences.Editor userindexEdit;
+
+
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,23 +169,16 @@ public class Login extends AppCompatActivity {
             String passwordInput = password.getText().toString();
 
             // 만약 이메일/페스워드를 적지 않았다면
-            if (emailInput.equals("") && passwordInput.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "아이디와 비밀번호를 입력하세요", Toast.LENGTH_SHORT);
-                toast.show();
-            } else if (emailInput.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "아이디를 입력하세요", Toast.LENGTH_SHORT);
-                toast.show();
+            if (emailInput.equals("")) {
+                dialog("아이디를 입력하세요");
             } else if (passwordInput.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("비밀번호를 입력하세요");
             // 바른 이메일 형식을 입력하지 않았다면ㄴ
             } else if(!emailInput.contains("@")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "올바른 이메일 형식으로 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("올바른 이메일 형식으로 입력해 주세요");
             // 비밀번호가 6자리 이하라면
             } else if (binding.password.getText().toString().length() < 6){
-                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("비밀번호가 틀렸습니다");
             // 올바르게 적었다면
             } else {
                 // 만약 자동 로그인 버튼이 체크되어 있다면
@@ -258,15 +266,11 @@ public class Login extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 5001 || Double.parseDouble(String.valueOf(response.body().get("code"))) == 5003 || Double.parseDouble(String.valueOf(response.body().get("code"))) == 5005) {
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
+                            dialog((String) response.body().get("msg"));
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 5000) {
                             // 회원 번호 저장
                             userindexEdit.putInt("userindex", (int) Double.parseDouble(String.valueOf((response.body().get("user_index")))));
                             userindexEdit.commit();
-                            // 환영 메시지 띄우기
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
                             // 화면 전환
                             Intent intent = new Intent(getApplicationContext(), MainPage.class);
                             startActivity(intent);
@@ -274,8 +278,7 @@ public class Login extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                     }
                 });
             }

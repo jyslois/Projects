@@ -1,14 +1,17 @@
 package com.android.mymindnotes;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityChangePasswordBinding;
@@ -28,6 +31,7 @@ import retrofit2.Response;
 
 public class ChangePassword extends AppCompatActivity {
     ActivityChangePasswordBinding binding;
+    AlertDialog alertDialog;
 
     // 회원 번호 불러오기
     SharedPreferences userindex;
@@ -44,6 +48,20 @@ public class ChangePassword extends AppCompatActivity {
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
     float density;
+
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
+    }
 
     public Point getScreenSize(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
@@ -104,14 +122,11 @@ public class ChangePassword extends AppCompatActivity {
             passwordRetypeInput = binding.passwordReypeInput.getText().toString();
             originalPasswordInput = binding.originalPasswordInput.getText().toString();
             if (originalPasswordInput.equals("") || passwordInput.equals("") || passwordRetypeInput.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호를 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("비밀번호를 입력해 주세요");
             } else if (!passwordInput.equals(passwordRetypeInput)) {
-                Toast toast = Toast.makeText(getApplicationContext(), "새로운 비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("새로운 비밀번호가 일치하지 않습니다");
             } else if (!Pattern.matches(passwordPattern, passwordInput)) {
-                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호는 영문+숫자 조합 6자~20자여야 합니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("영문+숫자 조합 6자~20자여야 합니다.");
                 // 비밀번호와 비밀번호 확인란이 일치하지 않으면
             } else {
                 // 네트워크 통신, 비밀번호 변경
@@ -136,15 +151,11 @@ public class ChangePassword extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3005 || Double.parseDouble(String.valueOf(response.body().get("code"))) == 3003) {
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
+                            dialog((String) response.body().get("msg"));
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3002) {
                             // 비밀번호 재저장
                             autoSaveEdit.putString("password", passwordInput);
                             autoSaveEdit.commit();
-                            // 변경 완료 알림 띄우기
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
                             // 화면 전환
                             Intent intent = new Intent(getApplicationContext(), MainPage.class);
                             startActivity(intent);
@@ -152,8 +163,7 @@ public class ChangePassword extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                     }
                 });
 

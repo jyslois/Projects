@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,13 +14,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.mymindnotes.databinding.ActivityChangeNicknameBinding;
 import com.android.mymindnotes.model.ChangeUserNickname;
-import com.android.mymindnotes.model.ChangeUserPassword;
 import com.android.mymindnotes.retrofit.ChangeNicknameApi;
-import com.android.mymindnotes.retrofit.ChangePasswordApi;
 import com.android.mymindnotes.retrofit.CheckNicknameApi;
 import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
@@ -47,6 +46,20 @@ public class ChangeNickname extends AppCompatActivity {
     int standardSize_X, standardSize_Y;
     float density;
 
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
+    }
+
     public Point getScreenSize(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -67,7 +80,12 @@ public class ChangeNickname extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("사용 가능한 닉네임입니다.");
         builder.setPositiveButton("확인", null);
-        alertDialog = builder.create();
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
         alertDialog.show();
         nicknameCheck = true;
         binding.checkNicknameButton.setText("확인완료");
@@ -109,12 +127,10 @@ public class ChangeNickname extends AppCompatActivity {
         binding.checkNicknameButton.setOnClickListener(view -> {
             nickname = binding.nickNameInput.getText().toString();
             if (nickname.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "닉네임을 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("닉네임을 입력해 주세요");
                 // 닉네임 형식 체크
             } else if(!Pattern.matches(nicknamePattern, nickname)) {
-                Toast toast = Toast.makeText(getApplicationContext(), "닉네임은 특수문자를 제외한 2~10자여야 합니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("특수문자를 제외한 2~10자여야 합니다.");
             } else {
                 if (nicknameCheck == false) {
                     // 네트워크 통신(닉네임이 중복됐는지 체크)
@@ -147,8 +163,7 @@ public class ChangeNickname extends AppCompatActivity {
         binding.changeNicknameButton.setOnClickListener(view -> {
             // 중복확인을 하지 않았다면
             if (nicknameCheck == false) {
-                Toast toast = Toast.makeText(getApplicationContext(), "닉네임 중복확인을 해주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("닉네임 중복확인을 해주세요");
             } else {
                 nickname = binding.nickNameInput.getText().toString();
                 // 닉네임 수정 네트워크 코드
@@ -180,16 +195,14 @@ public class ChangeNickname extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1003) {
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
+                            dialog((String) response.body().get("msg"));
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1002) {
                             confirmNicknameDialog();
                         }
                     }
                     @Override
                     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                     }
                 });
 
@@ -212,12 +225,8 @@ public class ChangeNickname extends AppCompatActivity {
                     // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                     // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                     if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3001) {
-                        Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog((String) response.body().get("msg"));
                     } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3000) {
-                        // 변경 완료 알림 띄우기
-                        Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                        toast.show();
                         // 화면 전환
                         Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         startActivity(intent);
@@ -225,8 +234,7 @@ public class ChangeNickname extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                    toast.show();
+                    dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                 }
             });
     }

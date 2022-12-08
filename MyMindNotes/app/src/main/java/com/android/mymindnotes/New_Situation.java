@@ -2,11 +2,22 @@ package com.android.mymindnotes;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityNewSituationBinding;
@@ -16,6 +27,25 @@ public class New_Situation extends AppCompatActivity {
     ActivityNewSituationBinding binding;
     SharedPreferences situation;
     SharedPreferences.Editor situationEdit;
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +68,12 @@ public class New_Situation extends AppCompatActivity {
         builder.setPositiveButton("확인", null);
         // Tips 이미지 클릭 시 다이얼로그 띄우기
         binding.RecordSituationTips.setOnClickListener(view -> {
-            AlertDialog alertDialog = builder.create();
+            AlertDialog alertDialog = builder.show();
+            // 메시지 크기 조절
+            TextView messageText = alertDialog.findViewById(android.R.id.message);
+            messageText.setTextSize((float) (standardSize_X / 24));
+            // 버튼 크기 조절
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
             alertDialog.show();
         });
 
@@ -67,6 +102,14 @@ public class New_Situation extends AppCompatActivity {
         if (!sit.equals("")) {
             binding.RecordSituationUserInput.setText(sit);
         }
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.title.setTextSize((float) (standardSize_X / 21));
+        binding.RecordSituationTips.setTextSize((float) (standardSize_X / 25));
+        binding.RecordSituationUserInput.setTextSize((float) (standardSize_X / 23));
+        binding.RecordPreviousButton.setTextSize((float) (standardSize_X / 23));
+        binding.RecordNextButton.setTextSize((float) (standardSize_X / 23));
 
     }
 

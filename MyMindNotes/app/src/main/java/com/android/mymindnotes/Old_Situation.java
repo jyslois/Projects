@@ -7,7 +7,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldSituationBinding;
@@ -31,6 +34,26 @@ public class Old_Situation extends AppCompatActivity {
     SharedPreferences emotionColor;
     SharedPreferences.Editor emotionColorEdit;
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +61,7 @@ public class Old_Situation extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground1).into(binding.traumasituationbackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.newsituationbackground);
 
         // Tips
         // Tips 다이얼로그 설정
@@ -49,10 +72,14 @@ public class Old_Situation extends AppCompatActivity {
         builder.setPositiveButton("확인", null);
         // Tips 이미지 클릭 시 다이얼로그 띄우기
         binding.RecordSituationTips.setOnClickListener(view -> {
-            AlertDialog alertDialog = builder.create();
+            AlertDialog alertDialog = builder.show();
+            TextView messageText = alertDialog.findViewById(android.R.id.message);
+            // 메시지 크기 조절
+            messageText.setTextSize((float) (standardSize_X / 24));
+            // 버튼 크기 조절
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 24));
             alertDialog.show();
         });
-
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener(view -> {
@@ -66,6 +93,13 @@ public class Old_Situation extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.title.setTextSize((float) (standardSize_X / 21));
+        binding.RecordSituationTips.setTextSize((float) (standardSize_X / 25));
+        binding.RecordSituationUserInput.setTextSize((float) (standardSize_X / 23));
+        binding.RecordNextButton.setTextSize((float) (standardSize_X / 23));
 
         emotion = getSharedPreferences("emotion", Activity.MODE_PRIVATE);
         emotionEdit = emotion.edit();
@@ -118,7 +152,13 @@ public class Old_Situation extends AppCompatActivity {
         builder.setMessage("입력한 기록이 사라져요. 정말 종료하시겠어요?");
         builder.setNegativeButton("종료", dialogListener);
         builder.setPositiveButton("계속 작성", null);
-        alertDialog = builder.create();
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextSize((float) (standardSize_X / 25));
         alertDialog.show();
     }
 }

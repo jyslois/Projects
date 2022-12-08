@@ -12,65 +12,93 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
 
-    <LinearLayout
-        android:layout_marginTop="-20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_gravity="center">
 
         <TextView
-            android:text="닉네임 님,"
-            android:layout_gravity="left"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#E8C3BA"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:id="@+id/nickNameText"/>
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.32"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#E8C3BA"
-            android:text="오늘은 어떤 마음에 대해 알아 볼까요?"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:id="@+id/recordText"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            app:layout_constraintHeight_percent="0.7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/space">
 
+            <TextView
+                android:id="@+id/nickNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="닉네임 님,"
+                android:textColor="#E8C3BA"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/recordText"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:textColor="#1E1010"
-            android:backgroundTint="#DDD5B2AA"
-            android:layout_marginTop="20dp"
-            android:layout_width="280dp"
-            android:layout_height="80dp"
-            app:cornerRadius="15dp"
-            android:text="@string/traumaRecord"
-            android:layout_gravity="center"
-            android:id="@+id/traumaButton"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:textColor="#1E1010"
-            android:backgroundTint="#DDDCB8B0"
-            android:layout_marginTop="20dp"
-            android:layout_width="280dp"
-            android:layout_height="80dp"
-            app:cornerRadius="15dp"
-            android:text="@string/mindRecord"
-            android:layout_gravity="center"
-            android:id="@+id/todayEmotionButton"/>
-
+            <TextView
+                android:id="@+id/recordText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="오늘은 어떤 마음에 대해 알아 볼까요?"
+                android:textColor="#E8C3BA"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/traumaButton"
+                app:layout_constraintRight_toRightOf="@id/traumaButton"
+                app:layout_constraintTop_toBottomOf="@id/nickNameText" />
 
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/traumaButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#DDD5B2AA"
+                android:text="트라우마"
+                android:textSize="18dp"
+                android:textColor="#1E1010"
+                app:cornerRadius="15dp"
+                app:layout_constraintHeight_percent="0.15"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recordText"
+                app:layout_constraintWidth_percent="0.9" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/todayEmotionButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#DDDCB8B0"
+                android:text="오늘의 마음"
+                android:textSize="18dp"
+                android:textColor="#1E1010"
+                app:cornerRadius="15dp"
+                app:layout_constraintHeight_percent="0.15"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/traumaButton"
+                app:layout_constraintWidth_percent="0.9" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </FrameLayout>

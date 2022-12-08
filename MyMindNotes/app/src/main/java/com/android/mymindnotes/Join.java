@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,8 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
 import com.android.mymindnotes.model.UserInfo;
 import com.android.mymindnotes.retrofit.CheckEmailApi;
@@ -72,7 +72,12 @@ public class Join extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("사용 가능한 이메일입니다.");
         builder.setPositiveButton("확인", null);
-        alertDialog = builder.create();
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
         alertDialog.show();
         emailCheck = true;
         binding.emailCheckButton.setText("확인완료");
@@ -84,11 +89,30 @@ public class Join extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("사용 가능한 닉네임입니다.");
         builder.setPositiveButton("확인", null);
-        alertDialog = builder.create();
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
         alertDialog.show();
         nicknameCheck = true;
         binding.nickNameCheckButton.setText("확인완료");
         binding.nickNameCheckButton.setBackgroundColor(Color.parseColor("#FFDDD5")); // String으로된 Color값을 Int로 바꾸기
+    }
+
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
     }
 
     @Override
@@ -112,12 +136,10 @@ public class Join extends AppCompatActivity {
         // 이메일 중복 체크
         binding.emailCheckButton.setOnClickListener(view -> {
             if (binding.emailInput.getText().toString().equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "이메일을 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("이메일을 입력해 주세요");
             // 이메일 형식 체크
             } else if(!Pattern.matches(emailPattern, binding.emailInput.getText())) {
-                Toast toast = Toast.makeText(getApplicationContext(), "올바른 이메일 형식으로 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("올바른 이메일 형식으로 입력해 주세요");
             } else {
                 if (emailCheck == false) {
                 // 네트워크 통신(이메일 중복됐는지 체크)
@@ -130,12 +152,10 @@ public class Join extends AppCompatActivity {
         // 닉네임 중복 체크
         binding.nickNameCheckButton.setOnClickListener(view -> {
             if (binding.nickNameInput.getText().toString().equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "닉네임을 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("닉네임을 입력해 주세요");
                 // 이메일 형식 체크
             } else if(!Pattern.matches(nicknamePattern, binding.nickNameInput.getText())) {
-                Toast toast = Toast.makeText(getApplicationContext(), "닉네임은 특수문자를 제외한 2~10자여야 합니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("닉네임은 특수문자를 제외한 2~10자여야 합니다");
             } else {
                 if (nicknameCheck == false) {
                     // 네트워크 통신(닉네임이 중복됐는지 체크)
@@ -193,15 +213,10 @@ public class Join extends AppCompatActivity {
         binding.nickNameCheckButton.setTextSize((float) (standardSize_X / 23));
         binding.emailCheckButton.setTextSize((float) (standardSize_X / 23));
         binding.joinButton.setTextSize((float) (standardSize_X / 24));
-        binding.emailText.setTextSize((float) (standardSize_X / 25));
-        binding.passwardText.setTextSize((float) (standardSize_X / 25));
-        binding.nickNameText.setTextSize((float) (standardSize_X / 25));
-        binding.birthyearText.setTextSize((float) (standardSize_X / 25));
-//        binding.password.setTextSize((float) (standardSize_X / 22));
-//        binding.autoSaveButton.setTextSize((float) (standardSize_X / 25));
-//        binding.autoLoginButton.setTextSize((float) (standardSize_X / 25));
-//        binding.loginButton.setTextSize((float) (standardSize_X / 23));
-//        binding.findPasswordButton.setTextSize((float) (standardSize_X / 26));
+        binding.emailText.setTextSize((float) (standardSize_X / 24));
+        binding.passwardText.setTextSize((float) (standardSize_X / 24));
+        binding.nickNameText.setTextSize((float) (standardSize_X / 24));
+        binding.birthyearText.setTextSize((float) (standardSize_X / 24));
 
 
         auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
@@ -222,36 +237,28 @@ public class Join extends AppCompatActivity {
 
             // 만약 이메일이나 페스워드를 적지 않았다면
             if (emailInput.equals("") || passwordInput.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "이메일과 비밀번호를 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("이메일과 비밀번호를 입력해 주세요");
                 // 비밀 번호 형식이 잘못되었다면
             } else if (!Pattern.matches(passwordPattern, passwordInput)) {
-                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호는 영문+숫자 조합 6자~20자여야 합니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("비밀번호는 영문+숫자 조합 6자~20자여야 합니다");
                 // 비밀번호와 비밀번호 확인란이 일치하지 않으면
             } else if (!passwordInput.equals(passwordReTypeInput)) {
-                Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("비밀번호가 일치하지 않습니다");
                 // 닉네임을 적지 않았다면
             } else if (nickNameInput.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "닉네임을 입력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("닉네임을 입력해 주세요");
                 // 생년을 입력하지 않았다면
             } else if (birthyearInput.equals("")) {
-                Toast toast = Toast.makeText(getApplicationContext(), "태어난 년도를 력해 주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("태어난 년도를 력해 주세요");
             // 생년의 형식이 잘못되었다면
             } else if (Integer.parseInt(birthyearInput) < 1901 || Integer.parseInt(birthyearInput) > 2155) {
-                Toast toast = Toast.makeText(getApplicationContext(), "생년은 1901~2155 사이여야 합니다", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("생년은 1901~2155 사이여야 합니다");
             // 이메일 중복확인을 하지 않았다면
             } else if (emailCheck == false) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "이메일 중복확인을 해주세요", Toast.LENGTH_SHORT);
-                    toast.show();
+                dialog("이메일 중복확인을 해주세요");
                     // 닉네임 중복확인을 하지 않았다면
                 } else if (nicknameCheck == false) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "닉네임 중복확인을 해주세요", Toast.LENGTH_SHORT);
-                toast.show();
+                dialog("닉네임 중복확인을 해주세요");
             } else {
                 join();
             }
@@ -273,16 +280,14 @@ public class Join extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1001) {
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
+                            dialog((String) response.body().get("msg"));
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1000) {
                             confirmEmailDialog();
                         }
                     }
                     @Override
                     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                     }
                 });
 
@@ -304,16 +309,14 @@ public class Join extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1003) {
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
+                            dialog((String) response.body().get("msg"));
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 1002) {
                             confirmNicknameDialog();
                         }
                     }
                     @Override
                     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                     }
                 });
 
@@ -335,8 +338,7 @@ public class Join extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 2001) {
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
+                            dialog((String) response.body().get("msg"));
                         } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 2000) {
                             // 회원 번호 저장
                             userindexEdit.putInt("userindex", (int) Double.parseDouble(String.valueOf((response.body().get("user_index")))));
@@ -349,9 +351,6 @@ public class Join extends AppCompatActivity {
                             autoSaveEdit.putBoolean("autoSaveCheck", true);
                             autoSaveEdit.commit();
 
-                            // 환영 메시지 띄우기
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
                             // 메인 화면 전환
                             Intent intent = new Intent(getApplicationContext(), MainPage.class);
                             startActivity(intent);
@@ -359,8 +358,7 @@ public class Join extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                     }
                 });
     }
