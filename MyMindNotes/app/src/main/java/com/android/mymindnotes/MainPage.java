@@ -3,12 +3,16 @@ package com.android.mymindnotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Display;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.mymindnotes.databinding.ActivityMainPageBinding;
 import com.android.mymindnotes.model.ChangeUserNickname;
@@ -25,7 +29,6 @@ import retrofit2.Response;
 
 public class MainPage extends AppCompatActivity {
     com.android.mymindnotes.databinding.ActivityMainPageBinding binding;
-    SharedPreferences nickName;
     String nick;
     SharedPreferences userindex;
 
@@ -95,6 +98,7 @@ public class MainPage extends AppCompatActivity {
             // 메세지 띄우기
             Toast toast = Toast.makeText(this, "종료 하려면 한 번 더 누르세요", Toast.LENGTH_SHORT);
             toast.show();
+
             // 현재 시간을 initTime에 지정
             initTime = System.currentTimeMillis();
         } else {

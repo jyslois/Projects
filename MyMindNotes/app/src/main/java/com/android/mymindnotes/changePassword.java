@@ -122,9 +122,9 @@ public class ChangePassword extends AppCompatActivity {
             passwordRetypeInput = binding.passwordReypeInput.getText().toString();
             originalPasswordInput = binding.originalPasswordInput.getText().toString();
             if (originalPasswordInput.equals("") || passwordInput.equals("") || passwordRetypeInput.equals("")) {
-                dialog("비밀번호를 입력해 주세요");
+                dialog("비밀번호를 입력해 주세요.");
             } else if (!passwordInput.equals(passwordRetypeInput)) {
-                dialog("새로운 비밀번호가 일치하지 않습니다");
+                dialog("새로운 비밀번호가 일치하지 않습니다.");
             } else if (!Pattern.matches(passwordPattern, passwordInput)) {
                 dialog("영문+숫자 조합 6자~20자여야 합니다.");
                 // 비밀번호와 비밀번호 확인란이 일치하지 않으면

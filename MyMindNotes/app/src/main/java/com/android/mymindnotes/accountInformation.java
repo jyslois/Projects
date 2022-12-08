@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.retrofit.DeleteUserApi;
@@ -114,7 +115,13 @@ public class AccountInformation extends AppCompatActivity {
             builder.setMessage("정말 탈퇴하시겠습니까?");
             builder.setNegativeButton("탈퇴", dialogListener);
             builder.setPositiveButton("취소", null);
-            alertDialog = builder.create();
+            alertDialog = builder.show();
+            // 메시지 크기 조절
+            TextView messageText = alertDialog.findViewById(android.R.id.message);
+            messageText.setTextSize((float) (standardSize_X / 24));
+            // 버튼 크기 조절
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextSize((float) (standardSize_X / 25));
             alertDialog.show();
         });
     }
@@ -167,9 +174,6 @@ public class AccountInformation extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 4000) {
-                            // 탈퇴 완료 메시지 띄우기
-                            Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                            toast.show();
                             // 저장된 것 모두 지우기
                             autoSaveEdit.clear();
                             autoSaveEdit.commit();

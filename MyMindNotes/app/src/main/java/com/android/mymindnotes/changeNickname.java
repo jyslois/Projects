@@ -127,7 +127,7 @@ public class ChangeNickname extends AppCompatActivity {
         binding.checkNicknameButton.setOnClickListener(view -> {
             nickname = binding.nickNameInput.getText().toString();
             if (nickname.equals("")) {
-                dialog("닉네임을 입력해 주세요");
+                dialog("닉네임을 입력해 주세요.");
                 // 닉네임 형식 체크
             } else if(!Pattern.matches(nicknamePattern, nickname)) {
                 dialog("특수문자를 제외한 2~10자여야 합니다.");
@@ -163,7 +163,7 @@ public class ChangeNickname extends AppCompatActivity {
         binding.changeNicknameButton.setOnClickListener(view -> {
             // 중복확인을 하지 않았다면
             if (nicknameCheck == false) {
-                dialog("닉네임 중복확인을 해주세요");
+                dialog("닉네임 중복확인을 해주세요.");
             } else {
                 nickname = binding.nickNameInput.getText().toString();
                 // 닉네임 수정 네트워크 코드
