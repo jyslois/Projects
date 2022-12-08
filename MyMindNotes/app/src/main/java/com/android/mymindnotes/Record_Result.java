@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Toast;
 
@@ -52,6 +54,26 @@ public class Record_Result extends AppCompatActivity {
     int index;
     int diaryNumber;
 
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -67,7 +89,7 @@ public class Record_Result extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground2).into(binding.background);
+        Glide.with(this).load(R.drawable.diarybackground4).into(binding.background);
 
         emotion = getSharedPreferences("emotion", Activity.MODE_PRIVATE);
         emotionEdit = emotion.edit();
@@ -90,6 +112,21 @@ public class Record_Result extends AppCompatActivity {
         // 화면 세팅
         getDiary();
 
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.type.setTextSize((float) (standardSize_X / 24));
+        binding.date.setTextSize((float) (standardSize_X / 24));
+        binding.ResultSituationTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultReflectionTitle.setTextSize((float) (standardSize_X / 19));
+        binding.ResultSituationUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.ResultThoughtUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.ResultEmotionUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.ResultEmotionText.setTextSize((float) (standardSize_X / 22));
+        binding.ResultReflectionUserInput.setTextSize((float) (standardSize_X / 22));
+        binding.ResultEditButton.setTextSize((float) (standardSize_X / 23));
+        binding.ResultEndButton.setTextSize((float) (standardSize_X / 23));
 
         // 수정 버튼 클릭 시
         binding.ResultEditButton.setOnClickListener(view -> {
@@ -162,7 +199,7 @@ public class Record_Result extends AppCompatActivity {
                         // 생각 텍스트 뿌리기
                         binding.ResultThoughtUserInput.setText(diarylist.get(index).getThought());
                         // 감정 뿌리기
-                        binding.resultEmotionText.setText(diarylist.get(index).getEmotion());
+                        binding.ResultEmotionText.setText(diarylist.get(index).getEmotion());
                         // 감정 텍스트 뿌리기
                         binding.ResultEmotionUserInput.setText(diarylist.get(index).getEmotionDescription());
                         // 회고 텍스트 뿌리기
