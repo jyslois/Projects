@@ -27,6 +27,21 @@ public class New_Situation extends AppCompatActivity {
     ActivityNewSituationBinding binding;
     SharedPreferences situation;
     SharedPreferences.Editor situationEdit;
+    AlertDialog alertDialog;
+
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
+    }
 
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
@@ -87,7 +102,7 @@ public class New_Situation extends AppCompatActivity {
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener(view -> {
             if (binding.RecordSituationUserInput.getText().toString().equals("")) {
-                Toast.makeText(getApplicationContext(), "상황을 작성해 주세요", Toast.LENGTH_SHORT).show();
+                dialog("상황을 작성해 주세요.");
             } else {
                 // 상황 저장
                 situationEdit.putString("situation", binding.RecordSituationUserInput.getText().toString());

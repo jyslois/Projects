@@ -4,23 +4,21 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.Display;
+import android.widget.TextView;
 
 import com.android.mymindnotes.databinding.ActivityNewReflectionBinding;
 import com.android.mymindnotes.model.UserDiary;
 import com.android.mymindnotes.retrofit.RecordDiaryApi;
 import com.android.mymindnotes.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -45,6 +43,40 @@ public class New_Reflection extends AppCompatActivity {
 
     String date;
     String day;
+    AlertDialog alertDialog;
+
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
+    }
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +85,7 @@ public class New_Reflection extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground1).into(binding.newreflectionbackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.recordbackground);
 
         // Tips
         // Tips 다이얼로그 설정
@@ -64,7 +96,12 @@ public class New_Reflection extends AppCompatActivity {
         builder.setPositiveButton("확인", null);
         // Tips 이미지 클릭 시 다이얼로그 띄우기
         binding.RecordReflectionTips.setOnClickListener(view -> {
-            AlertDialog alertDialog = builder.create();
+            AlertDialog alertDialog = builder.show();
+            // 메시지 크기 조절
+            TextView messageText = alertDialog.findViewById(android.R.id.message);
+            messageText.setTextSize((float) (standardSize_X / 24));
+            // 버튼 크기 조절
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
             alertDialog.show();
         });
 
@@ -80,6 +117,15 @@ public class New_Reflection extends AppCompatActivity {
         thought = getSharedPreferences("thought", MODE_PRIVATE);
 
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.title.setTextSize((float) (standardSize_X / 21));
+        binding.RecordReflectionTips.setTextSize((float) (standardSize_X / 25));
+        binding.RecordReflectionUserInput.setTextSize((float) (standardSize_X / 23));
+        binding.RecordEmotionHelpButton.setTextSize((float) (standardSize_X / 23));
+        binding.RecordPreviousButton.setTextSize((float) (standardSize_X / 23));
+        binding.RecordSaveButton.setTextSize((float) (standardSize_X / 23));
 
         // 감정 설명서 페이지로 이동
         binding.RecordEmotionHelpButton.setOnClickListener(view -> {
@@ -139,8 +185,7 @@ public class New_Reflection extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                     if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6001) {
-                        Toast toast = Toast.makeText(getApplicationContext(), (CharSequence) response.body().get("msg"), Toast.LENGTH_SHORT);
-                        toast.show();
+                        dialog((String) response.body().get("msg"));
                     } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6000) {
                         Intent intent = new Intent(getApplicationContext(), Record_Result.class);
                         startActivity(intent);
@@ -148,8 +193,7 @@ public class New_Reflection extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                    toast.show();
+                    dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
                 }
             });
     }
