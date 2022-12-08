@@ -4,11 +4,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.mymindnotes.databinding.ActivityOldEmotionBinding;
 import com.bumptech.glide.Glide;
@@ -25,7 +28,40 @@ public class Old_Emotion extends AppCompatActivity {
     SharedPreferences.Editor emotionTextEdit;
     SharedPreferences emotionColor;
     SharedPreferences.Editor emotionColorEdit;
+    AlertDialog alertDialog;
 
+    // 알림 dialoguee
+    void dialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg);
+        builder.setPositiveButton("확인", null);
+        alertDialog = builder.show();
+        // 메시지 크기 조절
+        TextView messageText = alertDialog.findViewById(android.R.id.message);
+        messageText.setTextSize((float) (standardSize_X / 24));
+        // 버튼 크기 조절
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
+        alertDialog.show();
+    }
+
+    // 화면 크기에 따른 글자 크기 조절
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +69,7 @@ public class Old_Emotion extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground1).into(binding.traumaemotionbackground);
+        Glide.with(this).load(R.drawable.diarybackground1).into(binding.recordbackground);
 
         // 감정 설명서 페이지로 이동
         binding.RecordEmotionHelpButton.setOnClickListener(view -> {
@@ -49,11 +85,30 @@ public class Old_Emotion extends AppCompatActivity {
         emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
         emotionColorEdit = emotionColor.edit();
 
+        // 글짜 크기 조절
+        getStandardSize();
+        binding.title.setTextSize((float) (standardSize_X / 21));
+        binding.angerButton.setTextSize((float) (standardSize_X / 22));
+        binding.anticipationButton.setTextSize((float) (standardSize_X / 22));
+        binding.disgustButton.setTextSize((float) (standardSize_X / 22));
+        binding.fearButton.setTextSize((float) (standardSize_X / 22));
+        binding.happinessButton.setTextSize((float) (standardSize_X / 22));
+        binding.sadnessButton.setTextSize((float) (standardSize_X / 22));
+        binding.surpriseButton.setTextSize((float) (standardSize_X / 22));
+        binding.trustButton.setTextSize((float) (standardSize_X / 22));
+
+        binding.RecordEmotionTips.setTextSize((float) (standardSize_X / 25));
+        binding.RecordEmotionUserInput.setTextSize((float) (standardSize_X / 23));
+        binding.RecordEmotionHelpButton.setTextSize((float) (standardSize_X / 25));
+        binding.RecordEmotionInstruction2.setTextSize((float) (standardSize_X / 23));
+        binding.RecordNextButton.setTextSize((float) (standardSize_X / 23));
+        binding.RecordPreviousButton.setTextSize((float) (standardSize_X / 23));
+
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener(view -> {
             // emotion 저장
             if (chosenEmotionId == 0) {
-                Toast.makeText(getApplicationContext(), "감정을 선택해 주세요", Toast.LENGTH_SHORT).show();
+                dialog("감정을 선택해 주세요.");
             } else {
                 switch (chosenEmotionId) {
                     case R.id.happinessButton:
@@ -123,7 +178,12 @@ public class Old_Emotion extends AppCompatActivity {
 
         // Tips 버튼 누르면 다이얼로그 띄우기
         binding.RecordEmotionTips.setOnClickListener(view -> {
-            AlertDialog alertDialog = builder.create();
+            AlertDialog alertDialog = builder.show();
+            // 메시지 크기 조절
+            TextView messageText = alertDialog.findViewById(android.R.id.message);
+            messageText.setTextSize((float) (standardSize_X / 24));
+            // 버튼 크기 조절
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
             alertDialog.show();
         });
 

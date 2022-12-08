@@ -4,11 +4,8 @@
     <string name="mindRecord"><font size="18">오늘의 마음</font>\n<font size="12">(시점: 현재)</font></string>
     <string name="traumaRecord"><font size="18">트라우마</font>\n<font size="12">(시점: 과거 → 현재)</font></string>
 
-    <string name="emotionHints">Tips. 감정은 세세하게 느낄 수록 좋습니다.
-        \n나의 다양한 감정들을 직접 기록해 보세요.</string>
-    <string name="emotionTips">가장 강렬하게 느끼는 감정을 하나 선택해 주세요.
-        \n감정은 세세하게 느낄 수록 좋습니다.
-        \n선택한 감정 외에 다른 감정은 없었는지 생각해 보고, 직접 기록해 보세요.
+    <string name="emotionHints">Tips. 감정은 세세하고 다양합니다. 느낀 감정에 대해 섬세하게 기록해 보세요. 또, 선택한 감정 외에 느낀 또다른 감정은 없었는지도 한번 생각해 봐요.</string>
+    <string name="emotionTips">가장 강렬하게 느낀 감정 하나를 선택해 주세요.
     </string>
 
     <string name="situationHints">Tips. 감정과 생각을 최대한 배재하고, 상황에 대해서만 작성해 주세요.</string>
