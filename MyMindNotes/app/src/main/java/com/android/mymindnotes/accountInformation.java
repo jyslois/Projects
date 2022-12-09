@@ -77,7 +77,7 @@ public class AccountInformation extends AppCompatActivity {
         binding.emailText.setTextSize((float) (standardSize_X / 23));
         binding.nickNameText.setTextSize((float) (standardSize_X / 23));
         binding.birthyearText.setTextSize((float) (standardSize_X / 23));
-        binding.emailtype.setTextSize((float) (standardSize_X / 24));
+        binding.email.setTextSize((float) (standardSize_X / 24));
         binding.nickname.setTextSize((float) (standardSize_X / 24));
         binding.birthyear.setTextSize((float) (standardSize_X / 24));
         binding.changeNicknameButton.setTextSize((float) (standardSize_X / 24));
@@ -147,7 +147,7 @@ public class AccountInformation extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                     // 이메일, 닉네임, 생년 세팅
-                    binding.emailtype.setText(String.valueOf(response.body().get("email")));
+                    binding.email.setText(String.valueOf(response.body().get("email")));
                     binding.nickname.setText((String.valueOf(response.body().get("nickname"))));
                     int birthyear = (int) Double.parseDouble(String.valueOf((response.body().get("birthyear"))));
                     binding.birthyear.setText(String.valueOf(birthyear));

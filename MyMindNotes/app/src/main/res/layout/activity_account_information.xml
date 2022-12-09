@@ -74,29 +74,22 @@
                 app:layout_constraintTop_toBottomOf="@id/accountsetting" />
 
 
-            <HorizontalScrollView
+            <TextView
+                android:maxLines="1"
+                android:scrollbars="vertical"
+                android:id="@+id/email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintWidth_percent="0.6"
-                android:id="@+id/email"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_border"
+                android:backgroundTint="#ABF8E6D8"
+                android:gravity="center"
+                android:padding="20dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/changePasswordButton"
                 app:layout_constraintTop_toBottomOf="@id/emailText"
                 app:layout_constraintBottom_toTopOf="@id/nickNameText"
-                >
-                <TextView
-                    android:id="@+id/emailtype"
-                    android:scrollHorizontally="true"
-                    android:maxLines="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/rounded_border"
-                    android:backgroundTint="#ABF8E6D8"
-                    android:gravity="center"
-                    android:padding="20dp" />
-            </HorizontalScrollView>
-
+                app:layout_constraintWidth_percent="0.6" />
 
             <Button
                 android:id="@+id/changePasswordButton"
