@@ -17,24 +17,28 @@
         android:layout_height="match_parent"
         android:layout_gravity="center">
 
-        <TextView
-            android:id="@+id/space"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.32"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.06" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.94"/>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            app:layout_constraintHeight_percent="0.7"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/space">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/leftguideline"
+            app:layout_constraintRight_toRightOf="@id/rightguideline"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/nickNameText"
@@ -45,8 +49,10 @@
                 android:textColor="#E8C3BA"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/recordText"
                 app:layout_constraintLeft_toLeftOf="@id/recordText"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/recordText"
@@ -59,8 +65,9 @@
                 android:textColor="#E8C3BA"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="@id/traumaButton"
-                app:layout_constraintRight_toRightOf="@id/traumaButton"
+                app:layout_constraintBottom_toTopOf="@id/traumaButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nickNameText" />
 
 
@@ -72,14 +79,15 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#DDD5B2AA"
                 android:text="트라우마"
-                android:textSize="18dp"
                 android:textColor="#1E1010"
+                android:textSize="18dp"
                 app:cornerRadius="15dp"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recordText"
-                app:layout_constraintWidth_percent="0.9" />
+                app:layout_constraintBottom_toTopOf="@id/todayEmotionButton"
+                app:layout_constraintHeight_percent="0.11"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toLeftOf="@id/recordText"
+                app:layout_constraintRight_toRightOf="@id/recordText"
+                app:layout_constraintTop_toBottomOf="@id/recordText" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/todayEmotionButton"
@@ -89,14 +97,14 @@
                 android:layout_marginTop="10dp"
                 android:backgroundTint="#DDDCB8B0"
                 android:text="오늘의 마음"
-                android:textSize="18dp"
                 android:textColor="#1E1010"
+                android:textSize="18dp"
                 app:cornerRadius="15dp"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/traumaButton"
-                app:layout_constraintWidth_percent="0.9" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_percent="0.11"
+                app:layout_constraintLeft_toLeftOf="@id/recordText"
+                app:layout_constraintRight_toRightOf="@id/recordText"
+                app:layout_constraintTop_toBottomOf="@id/traumaButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
