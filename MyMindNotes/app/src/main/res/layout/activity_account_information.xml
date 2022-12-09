@@ -16,8 +16,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.07" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.93"/>
 
         <TextView
             android:id="@+id/space"
@@ -29,11 +42,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/leftguideline"
+            app:layout_constraintRight_toRightOf="@id/rightguideline"
             app:layout_constraintTop_toBottomOf="@id/space">
 
             <ImageView
@@ -61,37 +74,47 @@
                 app:layout_constraintTop_toBottomOf="@id/accountsetting" />
 
 
-            <TextView
-                android:id="@+id/email"
+            <HorizontalScrollView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/rounded_border"
-                android:backgroundTint="#ABF8E6D8"
-                android:gravity="center"
-                android:padding="20dp"
+                app:layout_constraintWidth_percent="0.6"
+                android:id="@+id/email"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/changePasswordButton"
                 app:layout_constraintTop_toBottomOf="@id/emailText"
-                app:layout_constraintWidth_percent="0.6" />
+                app:layout_constraintBottom_toTopOf="@id/nickNameText"
+                >
+                <TextView
+                    android:id="@+id/emailtype"
+                    android:scrollHorizontally="true"
+                    android:maxLines="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rounded_border"
+                    android:backgroundTint="#ABF8E6D8"
+                    android:gravity="center"
+                    android:padding="20dp" />
+            </HorizontalScrollView>
 
 
             <Button
                 android:id="@+id/changePasswordButton"
+                android:layout_marginTop="3.5dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="9dp"
                 android:layout_toRightOf="@id/email"
                 android:backgroundTint="#C3BE9F98"
                 android:padding="20dp"
                 android:text="비밀번호"
                 android:textSize="11.82sp"
+                app:layout_constraintBottom_toTopOf="@id/nickNameText"
                 app:layout_constraintLeft_toRightOf="@id/email"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/emailText"
+                app:layout_constraintVertical_bias="0.166"
                 app:layout_constraintWidth_percent="0.35" />
-
 
             <TextView
                 android:id="@+id/nickNameText"
