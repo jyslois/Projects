@@ -142,10 +142,10 @@ public class Diary extends AppCompatActivity {
 
         // 글짜 크기 조절
         getStandardSize();
-        binding.sortDateButton.setTextSize((float) (standardSize_X / 30));
-        binding.sortEmotionButton.setTextSize((float) (standardSize_X / 30));
-        binding.sortEmotionDiaryButton.setTextSize((float) (standardSize_X / 30));
-        binding.sortTraumaButton.setTextSize((float) (standardSize_X / 30));
+        binding.sortDateButton.setTextSize((float) (standardSize_X / 32));
+        binding.sortEmotionButton.setTextSize((float) (standardSize_X / 32));
+        binding.sortEmotionDiaryButton.setTextSize((float) (standardSize_X / 32));
+        binding.sortTraumaButton.setTextSize((float) (standardSize_X / 32));
 
         // 일기 목록 가져오기
         getDiaryList();

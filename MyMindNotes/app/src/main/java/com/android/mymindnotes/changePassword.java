@@ -102,7 +102,7 @@ public class ChangePassword extends AppCompatActivity {
         binding.passwordInput.setTextSize((float) (standardSize_X / 23));
         binding.passwordReypeInput.setTextSize((float) (standardSize_X / 23));
         binding.originalPasswordInput.setTextSize((float) (standardSize_X / 23));
-        binding.changePasswordButton.setTextSize((float) (standardSize_X / 22));
+        binding.changePasswordButton.setTextSize((float) (standardSize_X / 23));
 
 
         // 회원번호 불러오기

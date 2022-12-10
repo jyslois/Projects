@@ -114,7 +114,7 @@ public class ChangeNickname extends AppCompatActivity {
         binding.nickNameText.setTextSize((float) (standardSize_X / 23));
         binding.nickNameInput.setTextSize((float) (standardSize_X / 23));
         binding.checkNicknameButton.setTextSize((float) (standardSize_X / 23));
-        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 22));
+        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 23));
 
 
         // 회원번호 불러오기

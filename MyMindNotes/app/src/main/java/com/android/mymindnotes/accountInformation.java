@@ -80,8 +80,8 @@ public class AccountInformation extends AppCompatActivity {
         binding.email.setTextSize((float) (standardSize_X / 24));
         binding.nickname.setTextSize((float) (standardSize_X / 24));
         binding.birthyear.setTextSize((float) (standardSize_X / 24));
-        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 24));
-        binding.changePasswordButton.setTextSize((float) (standardSize_X / 24));
+        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 23));
+        binding.changePasswordButton.setTextSize((float) (standardSize_X / 23));
         binding.logoutButton.setTextSize((float) (standardSize_X / 25));
         binding.withdrawalButton.setTextSize((float) (standardSize_X / 25));
 
