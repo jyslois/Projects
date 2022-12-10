@@ -15,8 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        >
+        android:layout_gravity="center">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftguideline"
@@ -30,83 +29,100 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.93"/>
+            app:layout_constraintGuide_percent="0.93" />
 
-        <TextView
-            android:id="@+id/space"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.12"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomguideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomguideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomguideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.9"
+            app:layout_constraintBottom_toBottomOf="@id/bottomguideline1"
             app:layout_constraintLeft_toLeftOf="@id/leftguideline"
             app:layout_constraintRight_toRightOf="@id/rightguideline"
-            app:layout_constraintTop_toBottomOf="@id/space">
+            app:layout_constraintTop_toTopOf="@id/topguideline">
+
 
             <ImageView
-                android:layout_marginTop="-20dp"
                 android:id="@+id/accountsetting"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:src="@drawable/accountsetting"
+                app:layout_constraintBottom_toTopOf="@+id/emailText"
                 app:layout_constraintHeight_percent="0.2"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside" />
 
             <TextView
                 android:id="@+id/emailText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-30dp"
-                android:layout_marginBottom="5dp"
                 android:text="이메일"
                 android:textColor="#CDAF97"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/accountsetting" />
+                app:layout_constraintBottom_toTopOf="@+id/email"
+                app:layout_constraintTop_toBottomOf="@+id/accountsetting" />
 
 
             <TextView
-                android:maxLines="1"
-                android:scrollbars="vertical"
                 android:id="@+id/email"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.14"
                 android:background="@drawable/rounded_border"
                 android:backgroundTint="#ABF8E6D8"
                 android:gravity="center"
+                android:maxLines="1"
                 android:padding="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/changePasswordButton"
-                app:layout_constraintTop_toBottomOf="@id/emailText"
-                app:layout_constraintBottom_toTopOf="@id/nickNameText"
-                app:layout_constraintWidth_percent="0.6" />
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/nickNameText"
+                app:layout_constraintTop_toBottomOf="@+id/emailText"
+                app:layout_constraintWidth_percent="0.6"
+                tools:layout_editor_absoluteX="1dp" />
 
             <Button
+                app:layout_constraintRight_toRightOf="parent"
                 android:id="@+id/changePasswordButton"
-                android:layout_marginTop="3.5dp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.17"
                 android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@id/email"
                 android:backgroundTint="#C3BE9F98"
                 android:padding="20dp"
                 android:text="비밀번호"
                 android:textSize="11.82sp"
-                app:layout_constraintBottom_toTopOf="@id/nickNameText"
+                app:layout_constraintTop_toTopOf="@id/email"
+                app:layout_constraintBottom_toBottomOf="@id/email"
                 app:layout_constraintLeft_toRightOf="@id/email"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/emailText"
-                app:layout_constraintVertical_bias="0.166"
                 app:layout_constraintWidth_percent="0.35" />
 
             <TextView
@@ -114,43 +130,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/email"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="5dp"
                 android:text="닉네임"
                 android:textColor="#CDAF97"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/nickNameText"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/email" />
+                app:layout_constraintBottom_toTopOf="@+id/nickname"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
 
             <TextView
                 android:id="@+id/nickname"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.14"
                 android:background="@drawable/rounded_border"
                 android:backgroundTint="#ABF8E6D8"
                 android:gravity="center"
                 android:padding="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/changeNicknameButton"
-                app:layout_constraintTop_toBottomOf="@id/nickNameText"
-                app:layout_constraintWidth_percent="0.6" />
+                app:layout_constraintBottom_toTopOf="@+id/birthyearText"
+                app:layout_constraintTop_toBottomOf="@+id/nickNameText"
+                app:layout_constraintWidth_percent="0.6"
+                tools:layout_editor_absoluteX="1dp" />
 
             <Button
+                app:layout_constraintBottom_toBottomOf="@id/nickname"
                 android:id="@+id/changeNicknameButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.17"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="9dp"
                 android:layout_toRightOf="@id/email"
                 android:backgroundTint="#C3BE9F98"
                 android:padding="20dp"
                 android:text="변경"
                 android:textSize="11.82sp"
+                app:layout_constraintTop_toTopOf="@id/nickname"
                 app:layout_constraintLeft_toRightOf="@id/nickname"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nickNameText"
                 app:layout_constraintWidth_percent="0.35" />
 
 
@@ -159,45 +173,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nickname"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:text="생년"
                 android:textColor="#CDAF97"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/birthyear"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nickname" />
+                app:layout_constraintBottom_toTopOf="@+id/birthyear"
+                app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
             <TextView
                 android:id="@+id/birthyear"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.14"
                 android:background="@drawable/rounded_border"
                 android:backgroundTint="#ABF8E6D8"
                 android:gravity="center"
                 android:padding="15dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/birthyearText"
-                app:layout_constraintWidth_percent="0.98" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/birthyearText"
+                app:layout_constraintWidth_percent="1"
+                tools:layout_editor_absoluteX="3dp" />
 
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/bottomguideline3"
+            app:layout_constraintLeft_toLeftOf="@id/leftguideline"
+            app:layout_constraintRight_toRightOf="@id/rightguideline"
+            app:layout_constraintTop_toTopOf="@id/bottomguideline2"
+            >
 
             <Button
                 android:id="@+id/logoutButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/birthyear"
                 android:layout_marginLeft="-12dp"
-                android:layout_marginTop="30dp"
                 android:background="#00ff0000"
                 android:text="로그아웃"
                 android:textAlignment="viewStart"
                 android:textColor="#ECCDB6"
+                app:layout_constraintBottom_toTopOf="@+id/withdrawalButton"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/birthyear" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <Button
                 android:id="@+id/withdrawalButton"
@@ -209,9 +230,13 @@
                 android:text="계정 탈퇴"
                 android:textAlignment="viewStart"
                 android:textColor="#ECCDB6"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/logoutButton" />
+                app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

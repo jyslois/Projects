@@ -34,22 +34,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.07"
+                    android:id="@+id/guideline_title_left"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.93"
+                    android:id="@+id/guideline_title_right"/>
+
+
                 <TextView
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@id/guideline_title_left"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:layout_marginLeft="25dp"
                     android:text="트라우마 ㆍ 회고"
                     android:textColor="#2C0D0D"
                     android:textSize="17dp"
                     android:textStyle="bold" />
 
                 <ImageView
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_title_right"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:id="@+id/progressbar"
@@ -57,10 +72,8 @@
                     app:layout_constraintWidth_percent="0.23"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginRight="20dp"
                     android:src="@drawable/progress_4"
                     app:tint="#2C0D0D" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -68,80 +81,136 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            app:layout_constraintHeight_percent="1"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.06"
+                android:id="@+id/guideline_left"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.93"
+                android:id="@+id/guideline_right"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.12"
+                android:id="@+id/guideline_top"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.42"
+                android:id="@+id/guideline_bottom"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.45"
+                android:id="@+id/guideline_top2"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.65"
+                android:id="@+id/guideline_bottom2"/>
+
+
             <EditText
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:padding="10dp"
+                app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+                app:layout_constraintRight_toRightOf="@id/guideline_right"
+                app:layout_constraintTop_toTopOf="@id/guideline_top"
+                app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
                 android:id="@+id/Record_Reflection_UserInput"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_height="0dp"
                 android:background="@drawable/border"
                 android:backgroundTint="#E9BE9F98"
                 android:gravity="top|left"
                 android:hint="@string/traumaReflectionHints"
                 android:lines="10"
-                android:textSize="15dp"
-                app:layout_constraintWidth_percent="1" />
+                android:textSize="15dp"/>
 
-            <Button
-                android:layout_marginTop="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/Record_Reflection_UserInput"
-                android:backgroundTint="#F6D0C7"
-                android:id="@+id/Record_Reflection_Tips"
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="1"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.06"
-                android:text="지금의 내게 어떤 영향을 미치고 있나요?" />
-
-            <Button
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/Record_Reflection_Tips"
-                android:id="@+id/Record_EmotionHelpButton"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.06"
-                app:layout_constraintWidth_percent="1"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:backgroundTint="#DCBBB5"
-                android:text="감정 설명서 보기" />
+                app:layout_constraintBottom_toBottomOf="@id/guideline_bottom2"
+                app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+                app:layout_constraintRight_toRightOf="@id/guideline_right"
+                app:layout_constraintTop_toBottomOf="@id/guideline_top2">
 
-            <Button
-                android:id="@+id/Record_PreviousButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.06"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="30dp"
-                android:backgroundTint="#A68B86"
-                android:text="이전"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/Record_EmotionHelpButton"
-                app:layout_constraintWidth_percent="0.3" />
+                <Button
+                    android:id="@+id/Record_Reflection_Tips"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:backgroundTint="#F6D0C7"
+                    android:text="지금의 내게 어떤 영향을 미치고 있나요?"
+                    app:layout_constraintHeight_percent="0.32"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="spread_inside"
+                    app:layout_constraintBottom_toTopOf="@id/Record_EmotionHelpButton"
+                    app:layout_constraintWidth_percent="1" />
 
-            <Button
-                android:id="@+id/Record_SaveButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.06"
-                android:backgroundTint="#E1BEB6"
-                android:text="저장"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/Record_PreviousButton"
-                app:layout_constraintTop_toTopOf="@id/Record_PreviousButton"
-                app:layout_constraintWidth_percent="0.64" />
+                <Button
+                    android:id="@+id/Record_EmotionHelpButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#DCBBB5"
+                    android:text="감정 설명서 보기"
+                    app:layout_constraintHeight_percent="0.32"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/Record_Reflection_Tips"
+                    app:layout_constraintWidth_percent="1" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.75"
+                    android:id="@+id/guideline_top3"/>
+
+                <Button
+                    android:id="@+id/Record_PreviousButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:backgroundTint="#A68B86"
+                    android:text="이전"
+                    app:layout_constraintBottom_toBottomOf="@id/Record_SaveButton"
+                    app:layout_constraintHeight_percent="0.32"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/Record_SaveButton"
+                    app:layout_constraintWidth_percent="0.3" />
+
+                <Button
+                    android:id="@+id/Record_SaveButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:backgroundTint="#E1BEB6"
+                    android:text="저장"
+                    app:layout_constraintTop_toTopOf="@id/guideline_top3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.32"
+                    app:layout_constraintTop_toBottomOf="@id/Record_EmotionHelpButton"
+                    app:layout_constraintWidth_percent="0.64" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
