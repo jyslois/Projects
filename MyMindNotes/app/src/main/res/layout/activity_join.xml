@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.09"
+        app:layout_constraintGuide_percent="0.05"
         android:id="@+id/guideline3"/>
 
 
@@ -82,6 +82,7 @@
 
 
             <EditText
+                android:paddingLeft="15dp"
                 android:id="@+id/emailInput"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -91,7 +92,6 @@
                 android:backgroundTint="#ABF8E6D8"
                 android:hint="이메일 입력"
                 android:inputType="textEmailAddress"
-                android:padding="15dp"
                 android:textSize="14.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/passwardText"
                 app:layout_constraintHeight_percent="0.08"
@@ -106,7 +106,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_toRightOf="@id/emailInput"
                 android:backgroundTint="#C3BE9F98"
-                android:padding="15dp"
                 android:text="중복확인"
                 app:layout_constraintBottom_toBottomOf="@id/emailInput"
                 app:layout_constraintHeight_percent="0.1"
@@ -128,6 +127,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
             <EditText
+                android:paddingLeft="15dp"
                 android:id="@+id/passwordInput"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -137,7 +137,6 @@
                 android:backgroundTint="#ABF8E6D8"
                 android:hint="영문+숫자 조합 6자 이상"
                 android:inputType="textPassword"
-                android:padding="15dp"
                 android:textSize="14.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/passwordRetypeInput"
                 app:layout_constraintHeight_percent="0.08"
@@ -145,6 +144,7 @@
                 app:layout_constraintWidth_percent="1" />
 
             <EditText
+                android:paddingLeft="15dp"
                 android:id="@+id/passwordRetypeInput"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -154,7 +154,6 @@
                 android:backgroundTint="#ABF8E6D8"
                 android:hint="비밀번호 확인"
                 android:inputType="textPassword"
-                android:padding="15dp"
                 android:textSize="14.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/nickNameText"
                 app:layout_constraintHeight_percent="0.08"
@@ -173,6 +172,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/passwordRetypeInput" />
 
             <EditText
+                android:paddingLeft="15dp"
                 android:id="@+id/nickNameInput"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -182,7 +182,6 @@
                 android:backgroundTint="#ABF8E6D8"
                 android:hint="특수문자 제외 2자 이상"
                 android:inputType="textEmailAddress"
-                android:padding="15dp"
                 android:textSize="14.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/birthyearText"
                 app:layout_constraintHeight_percent="0.08"
@@ -195,7 +194,6 @@
                 android:layout_height="0dp"
                 android:layout_marginLeft="16dp"
                 android:backgroundTint="#C3BE9F98"
-                android:padding="15dp"
                 android:text="중복확인"
                 app:layout_constraintBottom_toBottomOf="@id/nickNameInput"
                 app:layout_constraintHeight_percent="0.1"
@@ -226,7 +224,7 @@
                 android:backgroundTint="#ABF8E6D8"
                 android:hint="태어난 년도"
                 android:inputType="textEmailAddress"
-                android:padding="15dp"
+                android:paddingLeft="15dp"
                 android:textSize="14.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/joinButton"
                 app:layout_constraintHeight_percent="0.08"
