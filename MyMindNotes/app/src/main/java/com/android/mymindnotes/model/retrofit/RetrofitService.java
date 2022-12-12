@@ -1,4 +1,4 @@
-package com.android.mymindnotes.retrofit;
+package com.android.mymindnotes.model.retrofit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

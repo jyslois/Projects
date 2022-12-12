@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.android.mymindnotes.databinding.ActivityNewReflectionBinding;
 import com.android.mymindnotes.model.UserDiary;
-import com.android.mymindnotes.retrofit.RecordDiaryApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.RecordDiaryApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;

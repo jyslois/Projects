@@ -9,14 +9,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Display;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.mymindnotes.retrofit.DeleteUserApi;
-import com.android.mymindnotes.retrofit.GetUserInfoApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.DeleteUserApi;
+import com.android.mymindnotes.model.retrofit.GetUserInfoApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

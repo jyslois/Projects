@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityFindPasswordBinding;
 import com.android.mymindnotes.model.ChangeToTemporaryPassword;
-import com.android.mymindnotes.retrofit.ChangeToTempPassword;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.ChangeToTempPassword;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

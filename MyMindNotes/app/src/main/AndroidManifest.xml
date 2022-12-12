@@ -20,13 +20,12 @@
             android:name=".EmotionInstructionSortingPopup"
             android:exported="false"
             android:label="감정 선택"
-            android:theme="@style/Theme.dialogue">
-        </activity>
+            android:theme="@style/Theme.dialogue" />
         <activity
             android:name=".EmotionSortingPopup"
             android:exported="false"
             android:label="감정 선택"
-            android:theme="@style/Theme.dialogue"></activity>
+            android:theme="@style/Theme.dialogue" />
         <activity
             android:name=".FindPassword"
             android:exported="false"
@@ -55,6 +54,7 @@
         <activity
             android:name=".Diary_Result_Edit"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Main" />
         <activity
             android:name=".Diary_Result"

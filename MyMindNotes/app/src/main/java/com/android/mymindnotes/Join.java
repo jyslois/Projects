@@ -16,10 +16,10 @@ import android.view.Display;
 import android.widget.TextView;
 import com.android.mymindnotes.databinding.ActivityJoinBinding;
 import com.android.mymindnotes.model.UserInfo;
-import com.android.mymindnotes.retrofit.CheckEmailApi;
-import com.android.mymindnotes.retrofit.CheckNicknameApi;
-import com.android.mymindnotes.retrofit.JoinApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.CheckEmailApi;
+import com.android.mymindnotes.model.retrofit.CheckNicknameApi;
+import com.android.mymindnotes.model.retrofit.JoinApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

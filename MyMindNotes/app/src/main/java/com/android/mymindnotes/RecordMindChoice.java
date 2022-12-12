@@ -11,8 +11,8 @@ import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityRecordMindChoiceBinding;
-import com.android.mymindnotes.retrofit.GetUserInfoApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.GetUserInfoApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

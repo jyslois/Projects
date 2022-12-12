@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,16 +14,10 @@ import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryResultEditBinding;
 import com.android.mymindnotes.model.DiaryEdit;
-import com.android.mymindnotes.model.UserDiary;
-import com.android.mymindnotes.retrofit.RecordDiaryApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
-import com.android.mymindnotes.retrofit.UpdateDiaryApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.UpdateDiaryApi;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -85,7 +78,7 @@ public class Diary_Result_Edit extends AppCompatActivity {
         date = intent.getStringExtra("date");
 
         // 화면에 뿌리기
-        binding.date.setText(date);
+        binding.date.setText(date + " ");
         binding.type.setText(type);
         binding.editSituation.setText(situation);
         binding.editThought.setText(thought);
@@ -108,13 +101,21 @@ public class Diary_Result_Edit extends AppCompatActivity {
         binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 19));
         binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 19));
         binding.ResultReflectionTitle.setTextSize((float) (standardSize_X / 19));
-        binding.editSituation.setTextSize((float) (standardSize_X / 22));
-        binding.editEmotion.setTextSize((float) (standardSize_X / 22));
-        binding.editEmotionText.setTextSize((float) (standardSize_X / 22));
-        binding.editThought.setTextSize((float) (standardSize_X / 22));
-        binding.editReflection.setTextSize((float) (standardSize_X / 22));
-        binding.editButton.setTextSize((float) (standardSize_X / 23));
+        binding.editSituation.setTextSize((float) (standardSize_X / 23));
+        binding.editEmotion.setTextSize((float) (standardSize_X / 23));
+        binding.editEmotionText.setTextSize((float) (standardSize_X / 23));
+        binding.editThought.setTextSize((float) (standardSize_X / 23));
+        binding.editReflection.setTextSize((float) (standardSize_X / 23));
+        binding.editButton.setTextSize((float) (standardSize_X / 24));
+        binding.emotionHelp.setTextSize((float) (standardSize_X / 24));
 
+
+        // 감정 설명서 페이지 이동
+        // 감정 설명서 페이지로 이동
+        binding.emotionHelp.setOnClickListener(view -> {
+            Intent intento = new Intent(getApplicationContext(), EmotionInstructions.class);
+            startActivity(intento);
+        });
 
         // 수정 (완료) 버튼
         binding.editButton.setOnClickListener(view -> {
@@ -168,6 +169,7 @@ public class Diary_Result_Edit extends AppCompatActivity {
 
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
         if (which == DialogInterface.BUTTON_NEGATIVE) {
+            // 취소면 Activity.RESULT_CANCEL 로 처리
             finish();
         }
     };
@@ -181,5 +183,11 @@ public class Diary_Result_Edit extends AppCompatActivity {
         builder.setPositiveButton("계속 수정", null);
         alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void finish() {
+        setResult(Activity.RESULT_OK);
+        super.finish();
     }
 }

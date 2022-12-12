@@ -1,6 +1,15 @@
 package com.android.mymindnotes;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,21 +18,20 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryResultBinding;
 import com.android.mymindnotes.model.UserDiary;
-import com.android.mymindnotes.retrofit.DeleteDiaryApi;
-import com.android.mymindnotes.retrofit.GetDiaryApi;
-import com.android.mymindnotes.retrofit.GetDiaryListApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.DeleteDiaryApi;
+import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +42,6 @@ import retrofit2.Response;
 
 public class Diary_Result extends AppCompatActivity {
     ActivityDiaryResultBinding binding;
-    SharedPreferences arrayList;
-    SharedPreferences.Editor arrayListEdit;
     String type;
     String date;
     String situation;
@@ -52,6 +58,13 @@ public class Diary_Result extends AppCompatActivity {
     int standardSize_X, standardSize_Y;
     float density;
 
+    // viewpager2, tablayout
+    ViewPager2 viewPager2;
+    TabLayout tabLayout;
+    private String[] tabs = new String[]{"상황", "생각", "감정", "회고"};
+    ViewPager2Adapter adapter;
+
+    // 화면 크기에 따라서 글자 사이즈 조절하기
     public Point getScreenSize(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -67,14 +80,21 @@ public class Diary_Result extends AppCompatActivity {
         standardSize_Y = (int) (ScreenSize.y / density);
     }
 
+    private ActivityResultLauncher editResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),new ActivityResultCallback<ActivityResult>(){
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                // 서버를 요청해서 갱신 처리할수도 있고, 자체적으로 갱신처리도 가능.
+                refreshDiary();
+            }
+        }
+    });
 
-    // 다시 돌아왔을 때 수정된 데이터로 보이기
+
     @Override
     protected void onResume() {
-        super.onResume();
-
         refreshDiary();
-
+        super.onResume();
     }
 
     @Override
@@ -83,8 +103,7 @@ public class Diary_Result extends AppCompatActivity {
         binding = ActivityDiaryResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        arrayList = getSharedPreferences("recordList", MODE_PRIVATE);
-        arrayListEdit = arrayList.edit();
+        // 회원 번호 저장
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
 
         // gif 이미지를 이미지뷰에 띄우기
@@ -111,47 +130,31 @@ public class Diary_Result extends AppCompatActivity {
         diaryNumber = intent.getIntExtra("diaryNumber", 0);
 
         // 타입 뿌리기
-        binding.type.setText(type);
+        binding.type.setText(type + ",  ");
         // 오늘 날짜 뿌리기
-        binding.date.setText(date);
-
-        // 상황 텍스트 뿌리기
-        binding.ResultSituationUserInput.setText(situation);
-        // 생각 텍스트 뿌리기
-        binding.ResultThoughtUserInput.setText(thought);
-        // 감정 뿌리기
-        binding.ResultEmotionText.setText(emotion);
-        // 감정 텍스트 뿌리기
-        binding.ResultEmotionUserInput.setText(emotionText);
-        // 회고 텍스트 뿌리기
-        binding.ResultReflectionUserInput.setText(reflection);
-
+        binding.date.setText(date + " ");
 
         // 글짜 크기 조절
         getStandardSize();
-        binding.type.setTextSize((float) (standardSize_X / 24));
-        binding.date.setTextSize((float) (standardSize_X / 24));
-        binding.ResultSituationTitle.setTextSize((float) (standardSize_X / 19));
-        binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 19));
-        binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 19));
-        binding.ResultReflectionTitle.setTextSize((float) (standardSize_X / 19));
-        binding.ResultSituationUserInput.setTextSize((float) (standardSize_X / 22));
-        binding.ResultThoughtUserInput.setTextSize((float) (standardSize_X / 22));
-        binding.ResultEmotionUserInput.setTextSize((float) (standardSize_X / 22));
-        binding.ResultEmotionText.setTextSize((float) (standardSize_X / 22));
-        binding.ResultReflectionUserInput.setTextSize((float) (standardSize_X / 22));
-        binding.deleteButton.setTextSize((float) (standardSize_X / 23));
-        binding.editButton.setTextSize((float) (standardSize_X / 23));
-        binding.backtoListButton.setTextSize((float) (standardSize_X / 23));
+        binding.type.setTextSize((float) (standardSize_X / 25));
+        binding.date.setTextSize((float) (standardSize_X / 25));
+        binding.deleteButton.setTextSize((float) (standardSize_X / 24));
+        binding.editButton.setTextSize((float) (standardSize_X / 24));
+        binding.backtoListButton.setTextSize((float) (standardSize_X / 24));
 
-        // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기.
-        if (binding.ResultEmotionUserInput.getText().toString().equals("")) {
-            binding.ResultEmotionUserInput.setVisibility(View.GONE);
-        }
-        if (binding.ResultReflectionUserInput.getText().toString().equals("")) {
-            binding.ResultReflectionUserInput.setVisibility(View.GONE);
-            binding.ResultReflectionTitle.setVisibility(View.GONE);
-        }
+        // viewPager2와 tablayout 세팅
+        tabLayout = binding.tabLayout;
+        viewPager2 = binding.viewpager2;
+        adapter = new ViewPager2Adapter(this);
+        viewPager2.setAdapter(adapter);
+        viewPager2.setOffscreenPageLimit(4);
+
+        // viewPager2와 tablayout 연동하기
+        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+            tab.setText(tabs[position]);
+        }).attach();
+
+
 
         // 수정 버튼 클릭 시
         binding.editButton.setOnClickListener(view -> {
@@ -165,13 +168,15 @@ public class Diary_Result extends AppCompatActivity {
             intento.putExtra("reflection", reflection);
             intento.putExtra("diaryNumber", diaryNumber);
             intento.putExtra("index", index);
-            startActivity(intento);
+            editResult.launch(intento);
         });
 
         // 삭제 버튼 클릭 시
         binding.deleteButton.setOnClickListener(view -> {
             deleteDiary();
         });
+
+
 
     }
 
@@ -208,7 +213,6 @@ public class Diary_Result extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                     if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 7000) {
-
                         // 서버로부터 리스트 받아와서 저장하기
                         // https://ppizil.tistory.com/4
                         Gson gson = new Gson();
@@ -216,38 +220,8 @@ public class Diary_Result extends AppCompatActivity {
                         }.getType();
                         String jsonResult = gson.toJson(response.body().get("diaryList"));
                         diarylist = gson.fromJson(jsonResult, type);
-                        // 데이터 세팅
-                        situation = diarylist.get(index).getSituation();
-                        thought = diarylist.get(index).getThought();
-                        emotion = diarylist.get(index).getEmotion();
-                        emotionText = diarylist.get(index).getEmotionDescription();
-                        reflection = diarylist.get(index).getReflection();
+                        sendFragmentsData(diarylist.get(index));
 
-
-                        // 상황 텍스트 뿌리기
-                        binding.ResultSituationUserInput.setText(situation);
-                        // 생각 텍스트 뿌리기
-                        binding.ResultThoughtUserInput.setText(thought);
-                        // 감정 뿌리기
-                        binding.ResultEmotionText.setText(emotion);
-                        // 감정 텍스트 뿌리기
-                        binding.ResultEmotionUserInput.setText(emotionText);
-                        // 회고 텍스트 뿌리기
-                        binding.ResultReflectionUserInput.setText(reflection);
-
-                        // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기. 비어 있지 않다면, 보이게 하기.
-                        if (binding.ResultEmotionUserInput.getText().toString().equals("")) {
-                            binding.ResultEmotionUserInput.setVisibility(View.GONE);
-                        } else {
-                            binding.ResultEmotionUserInput.setVisibility(View.VISIBLE);
-                        }
-                        if (binding.ResultReflectionUserInput.getText().toString().equals("")) {
-                            binding.ResultReflectionUserInput.setVisibility(View.GONE);
-                            binding.ResultReflectionTitle.setVisibility(View.GONE);
-                        } else {
-                            binding.ResultReflectionUserInput.setVisibility(View.VISIBLE);
-                            binding.ResultReflectionTitle.setVisibility(View.VISIBLE);
-                        }
                     }
                 }
 
@@ -259,4 +233,62 @@ public class Diary_Result extends AppCompatActivity {
             });
     }
 
+    // 데이터 새로고침
+    private void sendFragmentsData(UserDiary diary) {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (int index = 0; index < fragments.size(); index++) {
+            Fragment fragment = fragments.get(index);
+            if (fragment instanceof SituationFragment) {
+                ((SituationFragment) fragment).refreshData(diary);
+                // 재새팅
+                situation = diary.getSituation();
+            } else if (fragment instanceof ThoughtFragment) {
+                ((ThoughtFragment) fragment).refreshData(diary);
+                // 재새팅
+                thought = diary.getThought();
+            } else if (fragment instanceof EmotionFragment) {
+                ((EmotionFragment) fragment).refreshData(diary);
+                // 재새팅
+                emotion = diary.getEmotion();
+                emotionText = diary.getEmotionDescription();
+            } else if (fragment instanceof ReflectionFragment) {
+                ((ReflectionFragment) fragment).refreshData(diary);
+                // 재새팅
+                reflection = diary.getReflection();
+            }
+        }
+    }
+
+
+    // viewPager2 어뎁터
+    public class ViewPager2Adapter extends FragmentStateAdapter {
+
+        public ViewPager2Adapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position) {
+                // 데이터 통째로 보내기
+                case 0:
+                    return SituationFragment.newInstance(getIntent().getExtras());
+                case 1:
+                    return ThoughtFragment.newInstance(getIntent().getExtras());
+                case 2:
+                    return EmotionFragment.newInstance(getIntent().getExtras());
+                case 3:
+                    return ReflectionFragment.newInstance(getIntent().getExtras());
+            }
+            return SituationFragment.newInstance(getIntent().getExtras());
+        }
+
+        @Override
+        public int getItemCount() {
+            return tabs.length;
+        }
+    }
 }
+
+

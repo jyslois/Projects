@@ -16,8 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.android.mymindnotes.databinding.ActivityLoginBinding;
 import com.android.mymindnotes.model.UserInfoLogin;
-import com.android.mymindnotes.retrofit.LoginApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.LoginApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

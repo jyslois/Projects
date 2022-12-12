@@ -3,22 +3,16 @@ package com.android.mymindnotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Display;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.android.mymindnotes.databinding.ActivityMainPageBinding;
-import com.android.mymindnotes.model.ChangeUserNickname;
-import com.android.mymindnotes.retrofit.ChangeNicknameApi;
-import com.android.mymindnotes.retrofit.GetUserInfoApi;
-import com.android.mymindnotes.retrofit.RetrofitService;
+import com.android.mymindnotes.model.retrofit.GetUserInfoApi;
+import com.android.mymindnotes.model.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;
