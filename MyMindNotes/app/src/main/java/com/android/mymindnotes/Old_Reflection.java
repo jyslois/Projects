@@ -37,6 +37,11 @@ public class Old_Reflection extends AppCompatActivity {
     SharedPreferences situation;
     SharedPreferences thought;
     SharedPreferences emotionColor;
+    SharedPreferences.Editor emotionEdit;
+    SharedPreferences.Editor emotionTextEdit;
+    SharedPreferences.Editor situationEdit;
+    SharedPreferences.Editor thoughtEdit;
+    SharedPreferences.Editor emotionColorEdit;
 
     SharedPreferences userindex;
 
@@ -111,10 +116,15 @@ public class Old_Reflection extends AppCompatActivity {
         typeEdit = type.edit();
 
         emotion = getSharedPreferences("emotion", MODE_PRIVATE);
+        emotionEdit = emotion.edit();
         emotionText = getSharedPreferences("emotionText", MODE_PRIVATE);
+        emotionTextEdit = emotionText.edit();
         emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
+        emotionColorEdit = emotionColor.edit();
         situation = getSharedPreferences("situation", MODE_PRIVATE);
+        situationEdit = situation.edit();
         thought = getSharedPreferences("thought", MODE_PRIVATE);
+        thoughtEdit = thought.edit();
 
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
 
@@ -193,7 +203,22 @@ public class Old_Reflection extends AppCompatActivity {
                     if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6001) {
                         dialog((String) response.body().get("msg"));
                     } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6000) {
-                        Intent intent = new Intent(getApplicationContext(), Record_Result.class);
+                        // 저장한 것 삭제
+                        reflectionEdit.clear();
+                        reflectionEdit.commit();
+                        emotionColorEdit.clear();
+                        emotionColorEdit.commit();
+                        emotionEdit.clear();
+                        emotionEdit.commit();
+                        emotionTextEdit.clear();
+                        emotionTextEdit.commit();
+                        situationEdit.clear();
+                        situationEdit.commit();
+                        thoughtEdit.clear();
+                        thoughtEdit.commit();
+                        typeEdit.clear();
+                        typeEdit.commit();
+                        Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         startActivity(intent);
                     }
                 }
@@ -213,10 +238,4 @@ public class Old_Reflection extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        reflectionEdit.putString("reflection", binding.RecordReflectionUserInput.getText().toString());
-        reflectionEdit.commit();
-    }
 }

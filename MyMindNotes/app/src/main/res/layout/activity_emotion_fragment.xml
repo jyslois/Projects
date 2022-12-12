@@ -8,6 +8,7 @@
     android:background="@drawable/emotioninstruction_roundedcorner">
 
     <TextView
+        android:textStyle="bold"
         android:textSize="16sp"
         android:paddingTop="40dp"
         android:paddingLeft="40dp"

@@ -109,7 +109,6 @@
             <Button
                 app:layout_constraintTop_toTopOf="@id/guideline_button"
                 app:layout_constraintLeft_toLeftOf="@id/guideline_left"
-                android:padding="10dp"
                 android:id="@+id/deleteButton"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent="0.3"
@@ -120,7 +119,6 @@
 
             <Button
                 app:layout_constraintTop_toTopOf="@id/guideline_button"
-                android:padding="10dp"
                 android:layout_marginLeft="15dp"
                 app:layout_constraintRight_toRightOf="@id/guideline_right"
                 android:id="@+id/editButton"
@@ -133,7 +131,6 @@
                 android:text="수정" />
 
             <Button
-                android:padding="10dp"
                 app:layout_constraintTop_toBottomOf="@id/deleteButton"
                 android:id="@+id/backtoListButton"
                 android:layout_width="0dp"

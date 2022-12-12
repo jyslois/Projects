@@ -227,7 +227,7 @@
                 <Button
                     android:padding="10dp"
                     android:text="감정 설명서 보기"
-                    android:backgroundTint="#F1CFC6"
+                    android:backgroundTint="#C3FAD1C8"
                     android:id="@+id/emotion_help"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

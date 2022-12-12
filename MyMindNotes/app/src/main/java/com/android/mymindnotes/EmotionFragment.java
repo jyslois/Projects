@@ -17,11 +17,6 @@ import com.android.mymindnotes.model.UserDiary;
 public class EmotionFragment extends Fragment {
     ActivityEmotionFragmentBinding binding;
 
-    // 화면 크기에 따른 글자 크기 조절
-    int standardSize_X, standardSize_Y;
-    float density;
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
