@@ -30,9 +30,6 @@ public class AccountInformation extends AppCompatActivity {
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
     SharedPreferences userindex;
-    String email;
-    String nickname;
-    int birthyear;
 
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;

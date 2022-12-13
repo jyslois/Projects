@@ -1,0 +1,150 @@
+package com.android.mymindnotes;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TimePicker;
+
+import com.android.mymindnotes.databinding.ActivityAlarmSettingBinding;
+import com.bumptech.glide.Glide;
+
+public class AlarmSetting extends AppCompatActivity {
+    ActivityAlarmSettingBinding binding;
+    SharedPreferences alarm;
+    SharedPreferences.Editor alarmEdit;
+    TimePickerDialog dialog;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityAlarmSettingBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // gif 이미지를 이미지뷰에 띄우기
+        Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background);
+
+        // 액션 바 타이틀
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // 기본 타이틀 사용 안함
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); // 커스텀 사용
+        getSupportActionBar().setCustomView(R.layout.changepassword_actionbartext); // 커스텀 사용할 파일 위치
+        // Up 버튼 제공
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        alarm = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
+        alarmEdit = alarm.edit();
+
+        // 알람 상태 불러오기
+        // true: if(true), false: if(false), none: if(false)
+        if (alarm.getBoolean("alarm", false)) {
+            // 알람이 설정된 적이 있으면
+            binding.alarmSwitch.setChecked(true);
+            // On일 때의 동작
+            binding.timeText.setTextColor(Color.BLACK);
+            binding.setTimeButtton.setVisibility(View.VISIBLE);
+            if (alarm.getString("time", "").equals("")) {
+                binding.setTimeButtton.setText("오후 10:00");
+            } else {
+                binding.setTimeButtton.setText(alarm.getString("time", ""));
+            }
+        } else {
+            // 알람이 설정된 적이 없거나 off이다면
+            binding.alarmSwitch.setChecked(false);
+            // Off일 때의 동작
+            binding.timeText.setTextColor(Color.parseColor("#979696"));
+            binding.setTimeButtton.setVisibility(View.INVISIBLE);
+        }
+
+        // 알람 스위치 바뀔 때의 이벤트
+        binding.alarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
+                binding.timeText.setTextColor(Color.BLACK);
+                binding.setTimeButtton.setVisibility(View.VISIBLE);
+                // 상태 저장
+                alarmEdit.putBoolean("alarm", true);
+                alarmEdit.commit();
+                // 오후 10시로 설정 저장
+                alarmEdit.putString("time", "오후 10:00");
+                alarmEdit.commit();
+                binding.setTimeButtton.setText("오후 10:00");
+                // 오후 10시로 기본 알람 설정
+
+            } else {
+                // Off일 때의 동작
+                binding.timeText.setTextColor(Color.parseColor("#979696"));
+                // Text 원래대로 오후 10시로 돌리기
+                binding.setTimeButtton.setText("오후 10:00");
+                binding.setTimeButtton.setVisibility(View.GONE);
+                // 모든 상태저장 삭제
+                alarmEdit.clear();
+                alarmEdit.commit();
+                // 모든 알람 설정 해제 (기본 알람 설정이면 기본 알람설정 해제, 선택한 시간으로 알람 설정했으면 선택한 시간 알람 설정 해제)
+            }
+        });
+
+
+
+        // 클릭 시 다일러로그 띄우기, OK버튼 누름녀 기본 알람 설정 해제. 선택한 시간으로 새로운 알람 설정. 버튼 텍스트 선택한 시간으로 변경.
+        binding.setTimeButtton.setOnClickListener(view -> {
+            dialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    String min = "";
+                    String time = "";
+                    String daynight = "";
+                    String hour = "";
+
+                    if (minute >= 0 && minute < 10) {
+                        min = "0" + minute;
+                    } else {
+                        min = "" + minute;
+                    }
+
+                    // 선택한 24시 시간을 12시간으로(오전/오후) 표시.
+                    // 24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11: 오전
+                    // 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23: 오후
+                    if (hourOfDay >= 0 && hourOfDay <= 11) {
+                        daynight = "오전";
+                        hour = hourOfDay + "";
+
+                        if (hourOfDay == 0) {
+                            hour = "12";
+                        }
+                    } else {
+                        daynight = "오후";
+                        hour = hourOfDay - 12 + "";
+                        if (hourOfDay == 12) {
+                            hour = "12";
+                        }
+                    }
+                    // 선택한 시간으로 텍스트 설정
+                    time = daynight + " " + hour + ":" + min;
+                    binding.setTimeButtton.setText(time);
+
+                    // 선택한 시간 저장
+                    alarmEdit.putString("time", time);
+                    alarmEdit.commit();
+
+                    alarmEdit.putInt("hour", hourOfDay);
+                    alarmEdit.commit();
+
+                    alarmEdit.putInt("minute", Integer.parseInt(min));
+                    alarmEdit.commit();
+
+                    // 기본 알람 설정 해제.
+                    // 선택한 시간으로 알람 설정.
+                }
+            }, alarm.getInt("hour", 22), alarm.getInt("minute", 00), false);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.show();
+        });
+
+    }
+
+}

@@ -72,6 +72,11 @@ public class MainMenu extends AppCompatActivity {
             startActivity(intent);
         });
 
+        binding.alarmsettingButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), AlarmSetting.class);
+            startActivity(intent);
+        });
+
         binding.logoutButton.setOnClickListener(view -> {
             // 상태 저장
             autoSaveEdit.putBoolean("autoLoginCheck", false);
@@ -87,6 +92,7 @@ public class MainMenu extends AppCompatActivity {
         binding.emotionInstructionButton.setTextSize((float) (standardSize_X / 23));
         binding.accountsettingButton.setTextSize((float) (standardSize_X / 23));
         binding.logoutButton.setTextSize((float) (standardSize_X / 23));
+        binding.alarmsettingButton.setTextSize((float) (standardSize_X / 23));
 
         binding.diarytitle.setTextSize((float) (standardSize_X / 18));
         binding.settingTitle.setTextSize((float) (standardSize_X / 18));

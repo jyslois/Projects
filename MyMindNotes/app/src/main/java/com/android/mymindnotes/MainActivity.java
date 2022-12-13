@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    SharedPreferences auto;
 
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
@@ -40,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
+
+        // 만약 로그인 상태 유지 값이 true로 저장되어 있다면
+        if (auto.getBoolean("autoLoginCheck", false)) {
+            // 자동 로그인해서 메인페이지로 넘어가기
+            Intent intent = new Intent(getApplicationContext(), MainPage.class);
+            startActivity(intent);
+        }
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainbackground2).into(binding.background);

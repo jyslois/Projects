@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="32">
         <activity
+            android:name=".AlarmSetting"
+            android:exported="false"
+            android:theme="@style/Theme.changeScreen"
+            android:parentActivityName=".MainMenu"
+            android:label="알림 설정"/>
+        <activity
             android:name=".EmotionInstructionSortingPopup"
             android:exported="false"
             android:label="감정 선택"
@@ -54,8 +60,8 @@
         <activity
             android:name=".Diary_Result_Edit"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.Main" />
+            android:theme="@style/Theme.Main"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Diary_Result"
             android:exported="false"

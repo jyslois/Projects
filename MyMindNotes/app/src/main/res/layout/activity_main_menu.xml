@@ -48,10 +48,10 @@
             app:layout_constraintTop_toTopOf="@id/guideline3">
 
             <TextView
-                android:layout_marginLeft="15dp"
                 android:id="@+id/diarytitle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginLeft="15dp"
                 android:text="일기"
                 android:textColor="#ECCDB6"
                 android:textSize="20sp"
@@ -106,8 +106,8 @@
                 android:id="@+id/settingTitle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="35dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="35dp"
                 android:text="설정"
                 android:textColor="#ECCDB6"
                 android:textSize="20sp"
@@ -126,9 +126,25 @@
                 android:textAlignment="viewStart"
                 android:textColor="#ECCDB6"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@id/logoutButton"
+                app:layout_constraintBottom_toTopOf="@+id/alarmsettingButton"
                 app:layout_constraintHeight_percent="0.08"
-                app:layout_constraintTop_toBottomOf="@id/settingTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/settingTitle"
+                app:layout_constraintVertical_bias="0.5" />
+
+
+            <Button
+                android:id="@+id/alarmsettingButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#00ff0000"
+                android:text="알람"
+                android:textAlignment="viewStart"
+                android:textColor="#ECCDB6"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/logoutButton"
+                app:layout_constraintHeight_percent="0.08"
+                app:layout_constraintTop_toBottomOf="@+id/accountsettingButton"
+                app:layout_constraintVertical_bias="0.5" />
 
             <Button
                 android:id="@+id/logoutButton"
@@ -141,7 +157,8 @@
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_percent="0.08"
-                app:layout_constraintTop_toBottomOf="@id/accountsettingButton" />
+                app:layout_constraintTop_toBottomOf="@+id/alarmsettingButton"
+                app:layout_constraintVertical_bias="0.5" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
