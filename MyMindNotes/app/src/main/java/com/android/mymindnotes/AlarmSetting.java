@@ -4,21 +4,31 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
 import com.android.mymindnotes.databinding.ActivityAlarmSettingBinding;
 import com.bumptech.glide.Glide;
 
+import java.util.Calendar;
+
 public class AlarmSetting extends AppCompatActivity {
     ActivityAlarmSettingBinding binding;
     SharedPreferences alarm;
     SharedPreferences.Editor alarmEdit;
     TimePickerDialog dialog;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +84,11 @@ public class AlarmSetting extends AppCompatActivity {
                 alarmEdit.commit();
                 binding.setTimeButtton.setText("오후 10:00");
                 // 오후 10시로 기본 알람 설정
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, 22);
+                calendar.set(Calendar.MINUTE, 00);
+                calendar.set(Calendar.SECOND, 00);
+                setAlarm(calendar);
 
             } else {
                 // Off일 때의 동작
@@ -84,7 +99,8 @@ public class AlarmSetting extends AppCompatActivity {
                 // 모든 상태저장 삭제
                 alarmEdit.clear();
                 alarmEdit.commit();
-                // 모든 알람 설정 해제 (기본 알람 설정이면 기본 알람설정 해제, 선택한 시간으로 알람 설정했으면 선택한 시간 알람 설정 해제)
+                // 알람 설정 해제
+                stopAlarm();
             }
         });
 
@@ -137,13 +153,66 @@ public class AlarmSetting extends AppCompatActivity {
                     alarmEdit.putInt("minute", Integer.parseInt(min));
                     alarmEdit.commit();
 
-                    // 기본 알람 설정 해제.
+                    // 원래 설정되어 있던 알람 설정 해제.
+                    stopAlarm();
                     // 선택한 시간으로 알람 설정.
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calendar.set(Calendar.MINUTE, minute);
+                    calendar.set(Calendar.SECOND, 00);
+                    setAlarm(calendar);
                 }
             }, alarm.getInt("hour", 22), alarm.getInt("minute", 00), false);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.show();
         });
+
+    }
+
+    // 알람 설정
+    private void setAlarm(Calendar calendar) {
+        // 알람 메니져 선언
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // Receiver 설정
+        Intent intent = new Intent(this, AlarmReceiver.class);
+
+        this.pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_IMMUTABLE);
+
+
+        // 현재 시간보다 이전이면
+        if (calendar.before(Calendar.getInstance())) {
+            // 다음 날로 설정
+            calendar.add(Calendar.DATE, 1);
+        }
+
+        // 알람설정: API 19부터는 모든 반복 알람이 부정확해짐.
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//        } else {
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//        }
+
+    }
+
+    // 알람 중지
+    private void stopAlarm() {
+        // 알람 메니져 선언
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // 알람이 설정된 적 없으면 그대로 return
+        if (this.pendingIntent == null) {
+            return;
+        }
+        // 알람 취소
+        Intent intent = new Intent(this, AlarmReceiver.class);
+
+        this.pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        alarmManager.cancel(pendingIntent);
 
     }
 
