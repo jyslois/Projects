@@ -106,7 +106,7 @@ public class AlarmSetting extends AppCompatActivity {
 
 
 
-        // 클릭 시 다일러로그 띄우기, OK버튼 누름녀 기본 알람 설정 해제. 선택한 시간으로 새로운 알람 설정. 버튼 텍스트 선택한 시간으로 변경.
+        // 클릭 시 다일러로그 띄우기, OK버튼 누르면 기본 알람 설정 해제. 선택한 시간으로 새로운 알람 설정. 버튼 텍스트 선택한 시간으로 변경.
         binding.setTimeButtton.setOnClickListener(view -> {
             dialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
                 @Override

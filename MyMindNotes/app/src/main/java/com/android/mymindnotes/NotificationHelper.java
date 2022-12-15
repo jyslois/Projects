@@ -7,16 +7,22 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
 
 public class NotificationHelper extends ContextWrapper {
 
     static final String channelId = "Alarm";
-    static final String channelName = "나의 마음 일지";
+    static final String channelName = "일기 알람";
 
     private NotificationManager manager;
 
@@ -34,7 +40,7 @@ public class NotificationHelper extends ContextWrapper {
     public void createChannel(){
         NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
         channel.enableLights(true);
-        channel.setLightColor(Color.parseColor("#C3BE9F98"));
+        channel.setLightColor(Color.parseColor("#e0037a"));
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         getManager().createNotificationChannel(channel);
     }
@@ -49,16 +55,18 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannelNotification(){
-
+        // 알림창 클릭했을 때 넘어가는 페이지 세팅
         Intent intent1 = new Intent(this, MainPage.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 1, intent1, PendingIntent.FLAG_IMMUTABLE);
-        // builder의 build() 함수로 Notification 객체 생성
+
 
         return new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.notification_icon)
+                // notification 이미지 배경 설정
+                .setColor(Color.parseColor("#e0037a"))
                 .setContentTitle("나의 마음 일지")
                 .setContentText("오늘의 마음을 기록해 봐요")
+                // 림창 클릭했을 때 MainPage 나타나기
                 .setContentIntent(pIntent);
-
     }
 }
