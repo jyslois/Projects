@@ -64,8 +64,8 @@ public class NotificationHelper extends ContextWrapper {
                 .setSmallIcon(R.drawable.notification_icon)
                 // notification 이미지 배경 설정
                 .setColor(Color.parseColor("#e0037a"))
-                .setContentTitle("나의 마음 일지")
-                .setContentText("오늘의 마음을 기록해 봐요")
+                .setContentTitle("오늘 하루는 어떠셨나요?")
+                .setContentText("나의 마음을 기록해 봐요")
                 // 림창 클릭했을 때 MainPage 나타나기
                 .setContentIntent(pIntent);
     }

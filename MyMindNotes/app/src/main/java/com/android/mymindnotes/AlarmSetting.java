@@ -1,8 +1,12 @@
 package com.android.mymindnotes;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -16,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityAlarmSettingBinding;
 import com.bumptech.glide.Glide;
@@ -70,9 +75,10 @@ public class AlarmSetting extends AppCompatActivity {
             binding.setTimeButtton.setVisibility(View.INVISIBLE);
         }
 
-        // 알람 스위치 바뀔 때의 이벤트
-        binding.alarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
+        // 권한 요청 팝업창
+        ActivityResultLauncher<String> permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                // 만약 허용해주었다면
                 // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
                 binding.timeText.setTextColor(Color.BLACK);
                 binding.setTimeButtton.setVisibility(View.VISIBLE);
@@ -89,7 +95,38 @@ public class AlarmSetting extends AppCompatActivity {
                 calendar.set(Calendar.MINUTE, 00);
                 calendar.set(Calendar.SECOND, 00);
                 setAlarm(calendar);
+            } else {
+                // 허용해주지 않았다면
+                Toast.makeText(this, "설정 > 앱 > 권한에서 알림 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
+                binding.alarmSwitch.setChecked(false);
+            }
+        });
 
+        // 알람 스위치 바뀔 때의 이벤트
+        binding.alarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // 권한 허용을 받았다면
+                if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == 0) {
+                    // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
+                    binding.timeText.setTextColor(Color.BLACK);
+                    binding.setTimeButtton.setVisibility(View.VISIBLE);
+                    // 상태 저장
+                    alarmEdit.putBoolean("alarm", true);
+                    alarmEdit.commit();
+                    // 오후 10시로 설정 저장
+                    alarmEdit.putString("time", "오후 10:00");
+                    alarmEdit.commit();
+                    binding.setTimeButtton.setText("오후 10:00");
+                    // 오후 10시로 기본 알람 설정
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, 22);
+                    calendar.set(Calendar.MINUTE, 00);
+                    calendar.set(Calendar.SECOND, 00);
+                    setAlarm(calendar);
+                // 권한 허용을 받지 못했다면
+                } else {
+                    permissionLauncher.launch("android.permission.POST_NOTIFICATIONS");
+                }
             } else {
                 // Off일 때의 동작
                 binding.timeText.setTextColor(Color.parseColor("#979696"));
@@ -177,8 +214,11 @@ public class AlarmSetting extends AppCompatActivity {
         // Receiver 설정
         Intent intent = new Intent(this, AlarmReceiver.class);
 
-        this.pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_IMMUTABLE);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            this.pendingIntent = PendingIntent.getBroadcast(this,1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+        }else{
+            this.pendingIntent = PendingIntent.getBroadcast(this,1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        }
 
         // 현재 시간보다 이전이면
         if (calendar.before(Calendar.getInstance())) {
@@ -189,7 +229,6 @@ public class AlarmSetting extends AppCompatActivity {
         // 알람설정: API 19부터는 모든 반복 알람이 부정확해짐.
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, pendingIntent);
-
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //        } else {
@@ -207,12 +246,17 @@ public class AlarmSetting extends AppCompatActivity {
         if (this.pendingIntent == null) {
             return;
         }
-        // 알람 취소
+
         Intent intent = new Intent(this, AlarmReceiver.class);
 
-        this.pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_IMMUTABLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            this.pendingIntent = PendingIntent.getBroadcast(this,1,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_NO_CREATE);
+        }else{
+            this.pendingIntent = PendingIntent.getBroadcast(this,1,intent, PendingIntent.FLAG_NO_CREATE);
+        }
 
         alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
 
     }
 
