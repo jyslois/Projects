@@ -4,17 +4,22 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,8 +37,8 @@ public class AlarmSetting extends AppCompatActivity {
     SharedPreferences alarm;
     SharedPreferences.Editor alarmEdit;
     TimePickerDialog dialog;
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
+    private static AlarmManager alarmManager;
+    private static PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +99,7 @@ public class AlarmSetting extends AppCompatActivity {
                 calendar.set(Calendar.HOUR_OF_DAY, 22);
                 calendar.set(Calendar.MINUTE, 00);
                 calendar.set(Calendar.SECOND, 00);
-                setAlarm(calendar);
+                setAlarm(calendar, getApplicationContext());
             } else {
                 // 허용해주지 않았다면
                 Toast.makeText(this, "설정 > 앱 > 권한에서 알림 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
@@ -122,7 +127,7 @@ public class AlarmSetting extends AppCompatActivity {
                     calendar.set(Calendar.HOUR_OF_DAY, 22);
                     calendar.set(Calendar.MINUTE, 00);
                     calendar.set(Calendar.SECOND, 00);
-                    setAlarm(calendar);
+                    setAlarm(calendar, getApplicationContext());
                 // 권한 허용을 받지 못했다면
                 } else {
                     permissionLauncher.launch("android.permission.POST_NOTIFICATIONS");
@@ -137,7 +142,7 @@ public class AlarmSetting extends AppCompatActivity {
                 alarmEdit.clear();
                 alarmEdit.commit();
                 // 알람 설정 해제
-                stopAlarm();
+                stopAlarm(getApplicationContext());
             }
         });
 
@@ -191,13 +196,20 @@ public class AlarmSetting extends AppCompatActivity {
                     alarmEdit.commit();
 
                     // 원래 설정되어 있던 알람 설정 해제.
-                    stopAlarm();
+                    stopAlarm(getApplicationContext());
                     // 선택한 시간으로 알람 설정.
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
                     calendar.set(Calendar.SECOND, 00);
-                    setAlarm(calendar);
+
+                    // 현재 시간보다 이전이면
+                    if (calendar.before(Calendar.getInstance())) {
+                        // 다음 날로 설정
+                        calendar.add(Calendar.DATE, 1);
+                    }
+
+                    setAlarm(calendar, getApplicationContext());
                 }
             }, alarm.getInt("hour", 22), alarm.getInt("minute", 00), false);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -207,57 +219,55 @@ public class AlarmSetting extends AppCompatActivity {
     }
 
     // 알람 설정
-    private void setAlarm(Calendar calendar) {
+    static void setAlarm(Calendar calendar, Context context) {
         // 알람 메니져 선언
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
+        AlarmSetting.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // Receiver 설정
-        Intent intent = new Intent(this, AlarmReceiver.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            this.pendingIntent = PendingIntent.getBroadcast(this,1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-        }else{
-            this.pendingIntent = PendingIntent.getBroadcast(this,1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+        } else {
+            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         }
+        Log.e("PendingIntent", "PendingIntent - Start>>" + AlarmSetting.pendingIntent);
 
-        // 현재 시간보다 이전이면
-        if (calendar.before(Calendar.getInstance())) {
-            // 다음 날로 설정
-            calendar.add(Calendar.DATE, 1);
-        }
 
         // 알람설정: API 19부터는 모든 반복 알람이 부정확해짐.
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingIntent);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-//        } else {
-//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-//        }
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+//                AlarmManager.INTERVAL_DAY, pendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+
+        
 
     }
 
     // 알람 중지
-    private void stopAlarm() {
+    static void stopAlarm(Context context) {
         // 알람 메니져 선언
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         // 알람이 설정된 적 없으면 그대로 return
-        if (this.pendingIntent == null) {
+        if (pendingIntent == null) {
             return;
         }
 
-        Intent intent = new Intent(this, AlarmReceiver.class);
+//        Intent intent = new Intent(context, AlarmReceiver.class);
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+//            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+//        } else {
+//            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            this.pendingIntent = PendingIntent.getBroadcast(this,1,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-        }else{
-            this.pendingIntent = PendingIntent.getBroadcast(this,1,intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        }
-
-        alarmManager.cancel(pendingIntent);
-//        pendingIntent.cancel();
-
+        Log.e("PendingIntent", "PendingIntent - Stop>>" + AlarmSetting.pendingIntent);
+        alarmManager.cancel(AlarmSetting.pendingIntent);
+        AlarmSetting.pendingIntent.cancel();
     }
 
 }
