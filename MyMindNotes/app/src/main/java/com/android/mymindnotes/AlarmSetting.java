@@ -255,9 +255,9 @@ public class AlarmSetting extends AppCompatActivity {
         Intent intent = new Intent(context, AlarmReceiver.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_NO_CREATE);
         } else {
-            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_NO_CREATE);
         }
 
         Log.e("PendingIntent", "PendingIntent - Stop>>" + pendingIntent);
