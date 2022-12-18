@@ -226,16 +226,16 @@ public class AlarmSetting extends AppCompatActivity {
         Intent intent = new Intent(context, AlarmReceiver.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        Log.e("PendingIntent", "PendingIntent - Start>>" + AlarmSetting.pendingIntent);
+        Log.e("PendingIntent", "PendingIntent - Start>>" + pendingIntent);
 
 
-        // 알람설정: API 19부터는 모든 반복 알람이 부정확해짐.
+////         알람설정: API 19부터는 모든 반복 알람이 부정확해짐. cancel이 제대로 되는지를 위한 테스트.
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                AlarmManager.INTERVAL_DAY, pendingIntent);
+//                30 * 1000, pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
@@ -252,22 +252,17 @@ public class AlarmSetting extends AppCompatActivity {
         // 알람 메니져 선언
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        // 알람이 설정된 적 없으면 그대로 return
-        if (pendingIntent == null) {
-            return;
+        Intent intent = new Intent(context, AlarmReceiver.class);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-//        Intent intent = new Intent(context, AlarmReceiver.class);
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-//            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-//        } else {
-//            AlarmSetting.pendingIntent = PendingIntent.getBroadcast(context,1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-//        }
-
-        Log.e("PendingIntent", "PendingIntent - Stop>>" + AlarmSetting.pendingIntent);
-        alarmManager.cancel(AlarmSetting.pendingIntent);
-        AlarmSetting.pendingIntent.cancel();
+        Log.e("PendingIntent", "PendingIntent - Stop>>" + pendingIntent);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
     }
 
 }

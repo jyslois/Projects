@@ -31,7 +31,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         // 알람 재호출 (반복 알람 세팅을 위해)
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 1);
-
         AlarmSetting.setAlarm(calendar, context);
     }
 }
