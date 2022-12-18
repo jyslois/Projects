@@ -237,13 +237,14 @@ public class AlarmSetting extends AppCompatActivity {
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
 //                30 * 1000, pendingIntent);
 
+        // 마시멜로(6.0 / api23) 버전부터 도즈모드가 도입되면서 기존에 사용하던 setExact, set 메소드를 사용했을 경우 도즈모드에 진입한 경우 알람이 울리지 않는다.  'setExactAndAllowWhileIdle'은 도즈모드에서도 잠깐 깨어나 알람을 울리게 한다.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        } else {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
-
-        
 
     }
 
