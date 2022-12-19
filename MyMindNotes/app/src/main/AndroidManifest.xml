@@ -22,13 +22,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="32">
 
-        <receiver android:name=".AlarmReceiver"
+        <receiver android:name=".AlarmBootReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
+        </receiver>
+
+        <receiver android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
         </receiver>
 
         <activity

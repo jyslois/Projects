@@ -34,8 +34,12 @@ import java.util.Calendar;
 
 public class AlarmSetting extends AppCompatActivity {
     ActivityAlarmSettingBinding binding;
+    // 알람 시간 설정 여부와 UI text 세팅을 위한 sharedpreferences
     SharedPreferences alarm;
     SharedPreferences.Editor alarmEdit;
+    // 부팅시 알람 재설정을 위한 sharedpreferences
+    SharedPreferences timeSave;
+    SharedPreferences.Editor timeSaveEdit;
     TimePickerDialog dialog;
     private static AlarmManager alarmManager;
     private static PendingIntent pendingIntent;
@@ -58,6 +62,8 @@ public class AlarmSetting extends AppCompatActivity {
 
         alarm = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
         alarmEdit = alarm.edit();
+        timeSave = getSharedPreferences("time", Activity.MODE_PRIVATE);
+        timeSaveEdit = timeSave.edit();
 
         // 알람 상태 불러오기
         // true: if(true), false: if(false), none: if(false)
@@ -99,7 +105,17 @@ public class AlarmSetting extends AppCompatActivity {
                 calendar.set(Calendar.HOUR_OF_DAY, 22);
                 calendar.set(Calendar.MINUTE, 00);
                 calendar.set(Calendar.SECOND, 00);
+                // 현재 시간보다 이전이면
+                if (calendar.before(Calendar.getInstance())) {
+                    // 다음 날로 설정
+                    calendar.add(Calendar.DATE, 1);
+                }
                 setAlarm(calendar, getApplicationContext());
+                // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
+                timeSaveEdit.putLong("time", calendar.getTimeInMillis());
+                timeSaveEdit.commit();
+                Log.e("TimeCheck", "Time : " + timeSave.getLong("time", 0));
+                Log.e("TimeCheck", "Time : " + calendar.getTime());
             } else {
                 // 허용해주지 않았다면
                 Toast.makeText(this, "설정 > 앱 > 권한에서 알림 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
@@ -122,12 +138,24 @@ public class AlarmSetting extends AppCompatActivity {
                     alarmEdit.putString("time", "오후 10:00");
                     alarmEdit.commit();
                     binding.setTimeButtton.setText("오후 10:00");
+
                     // 오후 10시로 기본 알람 설정
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, 22);
                     calendar.set(Calendar.MINUTE, 00);
                     calendar.set(Calendar.SECOND, 00);
+                    // 현재 시간보다 이전이면
+                    if (calendar.before(Calendar.getInstance())) {
+                        // 다음 날로 설정
+                        calendar.add(Calendar.DATE, 1);
+                    }
                     setAlarm(calendar, getApplicationContext());
+                    // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
+                    timeSaveEdit.putLong("time", calendar.getTimeInMillis());
+                    timeSaveEdit.commit();
+                    Log.e("TimeCheck", "Time : " + timeSave.getLong("time", 0));
+                    Log.e("TimeCheck", "Time : " + calendar.getTime());
+
                 // 권한 허용을 받지 못했다면
                 } else {
                     permissionLauncher.launch("android.permission.POST_NOTIFICATIONS");
@@ -141,8 +169,13 @@ public class AlarmSetting extends AppCompatActivity {
                 // 모든 상태저장 삭제
                 alarmEdit.clear();
                 alarmEdit.commit();
+
                 // 알람 설정 해제
                 stopAlarm(getApplicationContext());
+                // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
+                timeSaveEdit.clear();
+                timeSaveEdit.commit();
+                Log.e("TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
             }
         });
 
@@ -197,19 +230,27 @@ public class AlarmSetting extends AppCompatActivity {
 
                     // 원래 설정되어 있던 알람 설정 해제.
                     stopAlarm(getApplicationContext());
+                    // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
+                    timeSaveEdit.clear();
+                    timeSaveEdit.commit();
+                    Log.e("TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
+
                     // 선택한 시간으로 알람 설정.
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
                     calendar.set(Calendar.SECOND, 00);
-
                     // 현재 시간보다 이전이면
                     if (calendar.before(Calendar.getInstance())) {
                         // 다음 날로 설정
                         calendar.add(Calendar.DATE, 1);
                     }
-
                     setAlarm(calendar, getApplicationContext());
+                    // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
+                    timeSaveEdit.putLong("time", calendar.getTimeInMillis());
+                    timeSaveEdit.commit();
+                    Log.e("TimeCheck", "Time : " + timeSave.getLong("time", 0));
+                    Log.e("TimeCheck", "Time : " + calendar.getTime());
                 }
             }, alarm.getInt("hour", 22), alarm.getInt("minute", 00), false);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -237,7 +278,8 @@ public class AlarmSetting extends AppCompatActivity {
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
 //                30 * 1000, pendingIntent);
 
-        // 마시멜로(6.0 / api23) 버전부터 도즈모드가 도입되면서 기존에 사용하던 setExact, set 메소드를 사용했을 경우 도즈모드에 진입한 경우 알람이 울리지 않는다.  'setExactAndAllowWhileIdle'은 도즈모드에서도 잠깐 깨어나 알람을 울리게 한다.
+        // 마시멜로(6.0 / api23) 버전부터 도즈모드가 도입되면서 기존에 사용하던 setExact, set 메소드를 사용했을 경우 도즈모드에 진입한 경우 알람이 울리지 않는다.
+        // 'setExactAndAllowWhileIdle'은 도즈모드에서도 잠깐 깨어나 알람을 울리게 한다.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -245,7 +287,6 @@ public class AlarmSetting extends AppCompatActivity {
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
-
     }
 
     // 알람 중지
@@ -256,9 +297,9 @@ public class AlarmSetting extends AppCompatActivity {
         Intent intent = new Intent(context, AlarmReceiver.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_NO_CREATE);
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_NO_CREATE);
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         Log.e("PendingIntent", "PendingIntent - Stop>>" + pendingIntent);
