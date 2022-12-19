@@ -225,9 +225,10 @@
                     app:layout_constraintWidth_percent="1" />
 
                 <Button
+                    android:layout_marginTop="15dp"
                     android:padding="10dp"
                     android:text="감정 설명서 보기"
-                    android:backgroundTint="#C3FAD1C8"
+                    android:backgroundTint="#C3EACAC2"
                     android:id="@+id/emotion_help"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

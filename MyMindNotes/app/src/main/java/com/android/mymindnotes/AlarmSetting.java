@@ -157,7 +157,7 @@ public class AlarmSetting extends AppCompatActivity {
             } else {
                 // Off일 때의 동작
                 binding.timeText.setTextColor(Color.parseColor("#979696"));
-                // Text 원래대로 오후 10시로 돌리기
+                // Text 원래대로 오후 10시로 돌리기. 그런 다음 보이지 않게 하기.
                 binding.setTimeButtton.setText("오후 10:00");
                 binding.setTimeButtton.setVisibility(View.GONE);
                 // 모든 상태저장 삭제
