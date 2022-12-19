@@ -30,6 +30,12 @@ public class AccountInformation extends AppCompatActivity {
     SharedPreferences auto;
     SharedPreferences.Editor autoSaveEdit;
     SharedPreferences userindex;
+    // 알람 시간 설정 여부와 UI text 세팅을 위한 sharedpreferences
+    SharedPreferences alarm;
+    SharedPreferences.Editor alarmEdit;
+    // 부팅시 알람 재설정을 위한 sharedpreferences
+    SharedPreferences timeSave;
+    SharedPreferences.Editor timeSaveEdit;
 
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
@@ -67,6 +73,10 @@ public class AccountInformation extends AppCompatActivity {
 
         userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
         getUserInfo();
+        alarm = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
+        alarmEdit = alarm.edit();
+        timeSave = getSharedPreferences("time", Activity.MODE_PRIVATE);
+        timeSaveEdit = timeSave.edit();
 
         // 글씨 크기 조절
         getStandardSize();
@@ -171,6 +181,15 @@ public class AccountInformation extends AppCompatActivity {
                         // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 4000) {
+                            // 알람 삭제
+                            AlarmSetting.stopAlarm(getApplicationContext());
+                            // 모든 상태저장 삭제
+                            alarmEdit.clear();
+                            alarmEdit.commit();
+                            // 알람 설정 해제
+                            // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
+                            timeSaveEdit.clear();
+                            timeSaveEdit.commit();
                             // 저장된 것 모두 지우기
                             autoSaveEdit.clear();
                             autoSaveEdit.commit();
