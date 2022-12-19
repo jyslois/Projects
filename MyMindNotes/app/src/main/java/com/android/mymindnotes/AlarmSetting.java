@@ -93,13 +93,16 @@ public class AlarmSetting extends AppCompatActivity {
                 // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
                 binding.timeText.setTextColor(Color.BLACK);
                 binding.setTimeButtton.setVisibility(View.VISIBLE);
+
                 // 상태 저장
                 alarmEdit.putBoolean("alarm", true);
                 alarmEdit.commit();
+
                 // 오후 10시로 설정 저장
                 alarmEdit.putString("time", "오후 10:00");
                 alarmEdit.commit();
                 binding.setTimeButtton.setText("오후 10:00");
+
                 // 오후 10시로 기본 알람 설정
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, 22);
@@ -110,12 +113,10 @@ public class AlarmSetting extends AppCompatActivity {
                     // 다음 날로 설정
                     calendar.add(Calendar.DATE, 1);
                 }
-                setAlarm(calendar, getApplicationContext());
                 // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
                 timeSaveEdit.putLong("time", calendar.getTimeInMillis());
                 timeSaveEdit.commit();
-                Log.e("TimeCheck", "Time : " + timeSave.getLong("time", 0));
-                Log.e("TimeCheck", "Time : " + calendar.getTime());
+                setAlarm(calendar, getApplicationContext());
             } else {
                 // 허용해주지 않았다면
                 Toast.makeText(this, "설정 > 앱 > 권한에서 알림 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
@@ -149,12 +150,10 @@ public class AlarmSetting extends AppCompatActivity {
                         // 다음 날로 설정
                         calendar.add(Calendar.DATE, 1);
                     }
-                    setAlarm(calendar, getApplicationContext());
                     // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
                     timeSaveEdit.putLong("time", calendar.getTimeInMillis());
                     timeSaveEdit.commit();
-                    Log.e("TimeCheck", "Time : " + timeSave.getLong("time", 0));
-                    Log.e("TimeCheck", "Time : " + calendar.getTime());
+                    setAlarm(calendar, getApplicationContext());
 
                 // 권한 허용을 받지 못했다면
                 } else {
@@ -171,11 +170,11 @@ public class AlarmSetting extends AppCompatActivity {
                 alarmEdit.commit();
 
                 // 알람 설정 해제
-                stopAlarm(getApplicationContext());
                 // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
                 timeSaveEdit.clear();
                 timeSaveEdit.commit();
-                Log.e("TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
+                stopAlarm(getApplicationContext());
+                Log.e("MyChecker:TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
             }
         });
 
@@ -229,11 +228,11 @@ public class AlarmSetting extends AppCompatActivity {
                     alarmEdit.commit();
 
                     // 원래 설정되어 있던 알람 설정 해제.
-                    stopAlarm(getApplicationContext());
                     // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
                     timeSaveEdit.clear();
                     timeSaveEdit.commit();
-                    Log.e("TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
+                    stopAlarm(getApplicationContext());
+                    Log.e("MyChecker:TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
 
                     // 선택한 시간으로 알람 설정.
                     Calendar calendar = Calendar.getInstance();
@@ -245,12 +244,10 @@ public class AlarmSetting extends AppCompatActivity {
                         // 다음 날로 설정
                         calendar.add(Calendar.DATE, 1);
                     }
-                    setAlarm(calendar, getApplicationContext());
                     // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
                     timeSaveEdit.putLong("time", calendar.getTimeInMillis());
                     timeSaveEdit.commit();
-                    Log.e("TimeCheck", "Time : " + timeSave.getLong("time", 0));
-                    Log.e("TimeCheck", "Time : " + calendar.getTime());
+                    setAlarm(calendar, getApplicationContext());
                 }
             }, alarm.getInt("hour", 22), alarm.getInt("minute", 00), false);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -261,6 +258,7 @@ public class AlarmSetting extends AppCompatActivity {
 
     // 알람 설정
     static void setAlarm(Calendar calendar, Context context) {
+
         // 알람 메니져 선언
         AlarmSetting.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // Receiver 설정
@@ -271,7 +269,6 @@ public class AlarmSetting extends AppCompatActivity {
         } else {
             pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        Log.e("PendingIntent", "PendingIntent - Start>>" + pendingIntent);
 
 
 ////         알람설정: API 19부터는 모든 반복 알람이 부정확해짐. cancel이 제대로 되는지를 위한 테스트.
@@ -287,6 +284,9 @@ public class AlarmSetting extends AppCompatActivity {
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
+
+        Log.e("MyChecker:PendingInten", "PendingIntent - Start>>" + pendingIntent);
+        Log.e("MyChecker:TimeCheck", "TimeSet - " + calendar.getTime());
     }
 
     // 알람 중지
@@ -302,7 +302,7 @@ public class AlarmSetting extends AppCompatActivity {
             pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-        Log.e("PendingIntent", "PendingIntent - Stop>>" + pendingIntent);
+        Log.e("MyChecker:PendingInten", "PendingIntent - Stop>>" + pendingIntent);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
     }

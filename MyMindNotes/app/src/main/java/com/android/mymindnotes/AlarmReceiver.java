@@ -38,7 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
         timeSaveEdit.clear();
         timeSaveEdit.commit();
-//        Log.e("TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
+        Log.e("MyChecker:TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
 
         // 알람 재호출 (반복 알람 세팅을 위해)
         Calendar calendar = Calendar.getInstance();
@@ -47,6 +47,5 @@ public class AlarmReceiver extends BroadcastReceiver {
         // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
         timeSaveEdit.putLong("time", calendar.getTimeInMillis());
         timeSaveEdit.commit();
-//        Log.e("TimeCheck", "Time : " + timeSave.getLong("time", 0));
     }
 }
