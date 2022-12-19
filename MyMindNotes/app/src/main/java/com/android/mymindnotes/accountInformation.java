@@ -184,13 +184,13 @@ public class AccountInformation extends AppCompatActivity {
                             // 알람 삭제
                             AlarmSetting.stopAlarm(getApplicationContext());
                             // 모든 상태저장 삭제
+                            // 알람 설정 해제
                             alarmEdit.clear();
                             alarmEdit.commit();
-                            // 알람 설정 해제
                             // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
                             timeSaveEdit.clear();
                             timeSaveEdit.commit();
-                            // 저장된 것 모두 지우기
+                            // 저장 설정 지우기
                             autoSaveEdit.clear();
                             autoSaveEdit.commit();
                             // 화면 전환
