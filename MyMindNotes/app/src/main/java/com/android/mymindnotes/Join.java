@@ -37,6 +37,10 @@ public class Join extends AppCompatActivity {
     SharedPreferences userindex;
     SharedPreferences.Editor userindexEdit;
 
+    // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
+    SharedPreferences firsTime;
+    SharedPreferences.Editor firstTimeEdit;
+
     // 중복 확인
     boolean emailCheck;
     boolean nicknameCheck;
@@ -123,6 +127,10 @@ public class Join extends AppCompatActivity {
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainbackground).into(binding.background);
+
+        // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
+        firsTime = getSharedPreferences("firstTime", MODE_PRIVATE);
+        firstTimeEdit = firsTime.edit();
 
         // 중복확인
         emailCheck = false;
@@ -350,6 +358,10 @@ public class Join extends AppCompatActivity {
                             // 아이디/비밀번호 저장 체크 박스 상태를 true로 저장
                             autoSaveEdit.putBoolean("autoSaveCheck", true);
                             autoSaveEdit.commit();
+
+                            // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
+                            firstTimeEdit.putString("firstTime", "firstTime");
+                            firstTimeEdit.commit();
 
                             // 메인 화면 전환
                             Intent intent = new Intent(getApplicationContext(), MainPage.class);

@@ -56,7 +56,7 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannelNotification(){
         // 알림창 클릭했을 때 넘어가는 페이지 세팅
-        Intent intent1 = new Intent(this, MainPage.class);
+        Intent intent1 = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 1, intent1, PendingIntent.FLAG_IMMUTABLE);
 
 
