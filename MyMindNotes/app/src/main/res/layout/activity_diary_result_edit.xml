@@ -286,7 +286,7 @@
             android:id="@+id/editButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:backgroundTint="#F1CFC6"
+            android:backgroundTint="#F3D4CC"
             android:text="수정"
             app:layout_constraintTop_toTopOf="@id/guideline_top2"
             app:layout_constraintBottom_toBottomOf="@id/guideline_bottom2"
