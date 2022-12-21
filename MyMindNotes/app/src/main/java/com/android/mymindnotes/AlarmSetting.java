@@ -20,7 +20,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -72,9 +71,11 @@ public class AlarmSetting extends AppCompatActivity {
             binding.setTimeButtton.setVisibility(View.VISIBLE);
             binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             if (alarm.getString("time", "").equals("")) {
-                binding.setTimeButtton.setText("오후 10:00");
+                binding.setTimeButtton.setText("시간선택(클릭)");
+                binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             } else {
                 binding.setTimeButtton.setText(alarm.getString("time", ""));
+                binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             }
         } else {
             // 알람이 설정된 적이 없거나 off이다면
@@ -97,25 +98,7 @@ public class AlarmSetting extends AppCompatActivity {
                 alarmEdit.putBoolean("alarm", true);
                 alarmEdit.commit();
 
-                // 오후 10시로 설정 저장
-                alarmEdit.putString("time", "오후 10:00");
-                alarmEdit.commit();
-                binding.setTimeButtton.setText("오후 10:00");
-
-                // 오후 10시로 기본 알람 설정
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 22);
-                calendar.set(Calendar.MINUTE, 00);
-                calendar.set(Calendar.SECOND, 00);
-                // 현재 시간보다 이전이면
-                if (calendar.before(Calendar.getInstance())) {
-                    // 다음 날로 설정
-                    calendar.add(Calendar.DATE, 1);
-                }
-                // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
-                timeSaveEdit.putLong("time", calendar.getTimeInMillis());
-                timeSaveEdit.commit();
-                setAlarm(calendar, getApplicationContext());
+                binding.setTimeButtton.setText("시간선택(클릭)");
             } else {
                 // 허용해주지 않았다면
                 Toast.makeText(this, "설정 > 앱 > 권한에서 알림 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
@@ -130,32 +113,12 @@ public class AlarmSetting extends AppCompatActivity {
                 if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == 0) {
                     // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
                     binding.timeText.setTextColor(Color.BLACK);
+                    binding.setTimeButtton.setText("시간선택(클릭)");
                     binding.setTimeButtton.setVisibility(View.VISIBLE);
                     binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
                     // 상태 저장
                     alarmEdit.putBoolean("alarm", true);
                     alarmEdit.commit();
-                    // 오후 10시로 설정 저장
-                    alarmEdit.putString("time", "오후 10:00");
-                    alarmEdit.commit();
-                    binding.setTimeButtton.setText("오후 10:00");
-
-                    // 오후 10시로 기본 알람 설정
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.HOUR_OF_DAY, 22);
-                    calendar.set(Calendar.MINUTE, 00);
-                    calendar.set(Calendar.SECOND, 00);
-                    // 현재 시간보다 이전이면
-                    if (calendar.before(Calendar.getInstance())) {
-                        // 다음 날로 설정
-                        calendar.add(Calendar.DATE, 1);
-                    }
-                    // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
-                    timeSaveEdit.putLong("time", calendar.getTimeInMillis());
-                    timeSaveEdit.commit();
-                    setAlarm(calendar, getApplicationContext());
-
-                    Toast.makeText(getApplicationContext(), "파랑색 밑줄이 그어진 시간을 클릭하면, 알람 시간을 변경할 수 있어요.", Toast.LENGTH_SHORT).show();
 
                 // 권한 허용을 받지 못했다면
                 } else {
@@ -164,8 +127,9 @@ public class AlarmSetting extends AppCompatActivity {
             } else {
                 // Off일 때의 동작
                 binding.timeText.setTextColor(Color.parseColor("#979696"));
-                // Text 원래대로 오후 10시로 돌리기. 그런 다음 보이지 않게 하기.
-                binding.setTimeButtton.setText("오후 10:00");
+                // Text 원래대로 되돌리기. 그런 다음 보이지 않게 하기.
+                binding.setTimeButtton.setText("시간선택(클릭)");
+                binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
                 binding.setTimeButtton.setVisibility(View.GONE);
                 // 모든 상태저장 삭제
                 alarmEdit.clear();
@@ -219,6 +183,7 @@ public class AlarmSetting extends AppCompatActivity {
                     // 선택한 시간으로 텍스트 설정
                     time = daynight + " " + hour + ":" + min;
                     binding.setTimeButtton.setText(time);
+                    binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
                     // 선택한 시간 저장
                     alarmEdit.putString("time", time);
