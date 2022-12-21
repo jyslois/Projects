@@ -61,7 +61,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/logintitle"
                 app:layout_constraintWidth_percent="0.79"
-                android:textSize="16sp"/>
+                android:textSize="16dp"/>
 
             <EditText
                 android:id="@+id/password"
@@ -80,10 +80,10 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/email"
                 app:layout_constraintWidth_percent="0.79"
-                android:textSize="16sp"/>
+                android:textSize="16dp"/>
 
             <CheckBox
-                android:textSize="13sp"
+                android:textSize="13dp"
                 android:id="@+id/autoSaveButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -98,7 +98,7 @@
                 app:layout_constraintWidth_percent="0.8" />
 
             <CheckBox
-                android:textSize="13sp"
+                android:textSize="13dp"
                 android:id="@+id/autoLoginButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

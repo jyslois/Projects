@@ -104,4 +104,10 @@ public class RecordMindChoice extends AppCompatActivity {
             });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
 }

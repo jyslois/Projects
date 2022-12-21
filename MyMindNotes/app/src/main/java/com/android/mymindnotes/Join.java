@@ -355,9 +355,11 @@ public class Join extends AppCompatActivity {
                             autoSaveEdit.putString("id", emailInput);
                             autoSaveEdit.putString("password", passwordInput);
                             autoSaveEdit.commit();
-                            // 아이디/비밀번호 저장 체크 박스 상태를 true로 저장
+                            // 아이디/비밀번호 저장 체크 박스 상태를 true로 저장, 자동 로그인 설정
                             autoSaveEdit.putBoolean("autoSaveCheck", true);
                             autoSaveEdit.commit();
+                            autoSaveEdit.putBoolean("autoLoginCheck", true);
+                            autoSaveEdit.apply();
 
                             // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
                             firstTimeEdit.putString("firstTime", "firstTime");

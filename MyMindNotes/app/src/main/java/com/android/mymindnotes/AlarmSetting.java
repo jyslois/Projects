@@ -15,10 +15,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -68,6 +70,7 @@ public class AlarmSetting extends AppCompatActivity {
             // On일 때의 동작
             binding.timeText.setTextColor(Color.BLACK);
             binding.setTimeButtton.setVisibility(View.VISIBLE);
+            binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
             if (alarm.getString("time", "").equals("")) {
                 binding.setTimeButtton.setText("오후 10:00");
             } else {
@@ -88,6 +91,7 @@ public class AlarmSetting extends AppCompatActivity {
                 // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
                 binding.timeText.setTextColor(Color.BLACK);
                 binding.setTimeButtton.setVisibility(View.VISIBLE);
+                binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
                 // 상태 저장
                 alarmEdit.putBoolean("alarm", true);
@@ -127,6 +131,7 @@ public class AlarmSetting extends AppCompatActivity {
                     // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
                     binding.timeText.setTextColor(Color.BLACK);
                     binding.setTimeButtton.setVisibility(View.VISIBLE);
+                    binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
                     // 상태 저장
                     alarmEdit.putBoolean("alarm", true);
                     alarmEdit.commit();
@@ -150,6 +155,8 @@ public class AlarmSetting extends AppCompatActivity {
                     timeSaveEdit.commit();
                     setAlarm(calendar, getApplicationContext());
 
+                    Toast.makeText(getApplicationContext(), "파랑색 밑줄이 그어진 시간을 클릭하면, 알람 시간을 변경할 수 있어요.", Toast.LENGTH_SHORT).show();
+
                 // 권한 허용을 받지 못했다면
                 } else {
                     permissionLauncher.launch("android.permission.POST_NOTIFICATIONS");
@@ -170,6 +177,7 @@ public class AlarmSetting extends AppCompatActivity {
                 timeSaveEdit.commit();
                 stopAlarm(getApplicationContext());
                 Log.e("MyChecker:TimeCheck", "TimeCancel : " + timeSave.getLong("time", 0));
+                Toast.makeText(getApplicationContext(), "알람이 해제되었습니다", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -243,6 +251,8 @@ public class AlarmSetting extends AppCompatActivity {
                     timeSaveEdit.putLong("time", calendar.getTimeInMillis());
                     timeSaveEdit.commit();
                     setAlarm(calendar, getApplicationContext());
+
+                    Toast.makeText(getApplicationContext(), "매일 " + time + " 분에 알람이 울려요", Toast.LENGTH_SHORT).show();
                 }
             }, alarm.getInt("hour", 22), alarm.getInt("minute", 00), false);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

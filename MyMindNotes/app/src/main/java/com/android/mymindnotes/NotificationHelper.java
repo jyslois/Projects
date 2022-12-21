@@ -50,7 +50,7 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannelNotification(){
         // 알림창 클릭했을 때 넘어가는 페이지 세팅
-        Intent intent1 = new Intent(this, MainActivity.class);
+        Intent intent1 = new Intent(this, RecordMindChoice.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 1, intent1, PendingIntent.FLAG_IMMUTABLE);
 
 
@@ -60,7 +60,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setColor(Color.parseColor("#e0037a"))
                 .setContentTitle("오늘 하루는 어떠셨나요?")
                 .setContentText("나의 마음을 기록해 봐요")
-                // 림창 클릭했을 때 MainPage 나타나기
+                // 알림창 클릭했을 때 MainPage 나타나기
                 .setContentIntent(pIntent);
     }
 }

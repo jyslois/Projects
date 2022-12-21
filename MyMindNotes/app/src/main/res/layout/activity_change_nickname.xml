@@ -60,7 +60,7 @@
                 app:layout_constraintBottom_toTopOf="@id/nickNameInput"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:textSize="15sp"
+                android:textSize="15dp"
                 android:textColor="#CDAF97"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
