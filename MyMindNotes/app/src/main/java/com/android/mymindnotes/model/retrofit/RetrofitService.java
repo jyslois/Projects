@@ -20,7 +20,7 @@ public class RetrofitService {
     private void initializeRetrofit() {
         // Retrofit creator - .client(OkHttpClient Object)로 okHttp logging interpreter 등록
         // 안드로이드에서는 localhost 말고 다른 주소를 넣어주어야 한다.
-        retrofit = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/").client(client).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofit = new Retrofit.Builder().baseUrl("http://ec2-3-36-66-94.ap-northeast-2.compute.amazonaws.com:8080/").client(client).addConverterFactory(GsonConverterFactory.create()).build();
     }
 
     public Retrofit getRetrofit() {
