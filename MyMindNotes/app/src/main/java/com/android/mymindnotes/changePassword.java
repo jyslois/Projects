@@ -12,6 +12,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityChangePasswordBinding;
 import com.android.mymindnotes.model.ChangeUserPassword;
@@ -99,7 +100,7 @@ public class ChangePassword extends AppCompatActivity {
         binding.passwordInput.setTextSize((float) (standardSize_X / 23));
         binding.passwordReypeInput.setTextSize((float) (standardSize_X / 23));
         binding.originalPasswordInput.setTextSize((float) (standardSize_X / 23));
-        binding.changePasswordButton.setTextSize((float) (standardSize_X / 23));
+        binding.changePasswordButton.setTextSize((float) (standardSize_X / 24));
 
 
         // 회원번호 불러오기
@@ -153,6 +154,7 @@ public class ChangePassword extends AppCompatActivity {
                             // 비밀번호 재저장
                             autoSaveEdit.putString("password", passwordInput);
                             autoSaveEdit.commit();
+                            Toast.makeText(getApplicationContext(), "비밀번호가 변경되었습니다.", Toast.LENGTH_SHORT).show();
                             // 화면 전환
                             Intent intent = new Intent(getApplicationContext(), MainPage.class);
                             startActivity(intent);

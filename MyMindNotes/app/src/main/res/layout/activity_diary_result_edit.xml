@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.04"
+            app:layout_constraintGuide_percent="0.03"
             android:id="@+id/guideline_top"/>
 
         <androidx.constraintlayout.widget.Guideline
@@ -125,13 +125,14 @@
                     android:id="@+id/Result_Situation_Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="⊂ 상황 ⊃"
+                    android:text="상황"
                     android:textColor="#FFDABB"
                     android:textSize="16dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/edit_Situation"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="spread_inside" />
 
                 <EditText
                     android:id="@+id/edit_Situation"
@@ -157,7 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text="⊂ 생각 ⊃"
+                    android:text="생각"
                     android:textColor="#FFDABB"
                     android:textSize="16dp"
                     android:textStyle="bold"
@@ -186,12 +187,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text="⊂ 감정 ⊃"
+                    android:text="감정"
                     android:textColor="#FFDABB"
                     android:textSize="16dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/edit_emotion"
                     app:layout_constraintTop_toBottomOf="@+id/edit_thought" />
+
+                <com.google.android.material.button.MaterialButton
+                    app:cornerRadius="10dp"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/emotion_help"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#CDEAD1CB"
+                    android:padding="10dp"
+                    android:text="감정 설명서 보기"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_emotion"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/Result_Emotion_Title" />
 
 
                 <EditText
@@ -206,7 +221,7 @@
                     android:padding="10dp"
                     android:textSize="15dp"
                     app:layout_constraintBottom_toTopOf="@+id/edit_emotion_text"
-                    app:layout_constraintTop_toBottomOf="@+id/Result_Emotion_Title"
+                    app:layout_constraintTop_toBottomOf="@+id/emotion_help"
                     app:layout_constraintWidth_percent="1" />
 
                 <EditText
@@ -220,22 +235,9 @@
                     android:hint="느낀 감정에 대해 세세하게 기록해 보세요."
                     android:padding="10dp"
                     android:textSize="15dp"
-                    app:layout_constraintBottom_toTopOf="@+id/emotion_help"
                     app:layout_constraintTop_toBottomOf="@+id/edit_emotion"
-                    app:layout_constraintWidth_percent="1" />
-
-                <Button
-                    android:layout_marginTop="15dp"
-                    android:padding="10dp"
-                    android:text="감정 설명서 보기"
-                    android:backgroundTint="#C3EACAC2"
-                    android:id="@+id/emotion_help"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/edit_emotion_text"
                     app:layout_constraintBottom_toTopOf="@id/Result_Reflection_Title"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintWidth_percent="1" />
 
 
                 <TextView
@@ -243,12 +245,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text="⊂ 회고 ⊃"
+                    android:text="회고"
                     android:textColor="#FFDABB"
                     android:textSize="16dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/edit_reflection"
-                    app:layout_constraintTop_toBottomOf="@+id/emotion_help" />
+                    app:layout_constraintTop_toBottomOf="@+id/edit_emotion_text" />
 
                 <EditText
                     android:id="@+id/edit_reflection"
@@ -272,14 +274,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.85"
+            app:layout_constraintGuide_percent="0.86"
             android:id="@+id/guideline_top2"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.92"
+            app:layout_constraintGuide_percent="0.93"
             android:id="@+id/guideline_bottom2"/>
 
         <Button

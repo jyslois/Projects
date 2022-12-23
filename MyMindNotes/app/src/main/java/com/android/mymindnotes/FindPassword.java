@@ -86,9 +86,6 @@ public class FindPassword extends AppCompatActivity {
             if (email.equals("")) {
                 dialog("임시 비밀번호를 보낼 이메일을 입력해 주세요.");
             } else {
-                // 메세지 띄우기
-                Toast toast = Toast.makeText(this, "처리 중......", Toast.LENGTH_SHORT);
-                toast.show();
                 // 임시 비밀번호 (랜덤)
                 int leftLimit = 48; // numeral '0'
                 int rightLimit = 122; // letter 'z'

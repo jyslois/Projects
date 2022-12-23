@@ -95,19 +95,19 @@ public class Diary_Result_Edit extends AppCompatActivity {
 
         // 글짜 크기 조절
         getStandardSize();
-        binding.type.setTextSize((float) (standardSize_X / 24));
-        binding.date.setTextSize((float) (standardSize_X / 24));
-        binding.ResultSituationTitle.setTextSize((float) (standardSize_X / 19));
-        binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 19));
-        binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 19));
-        binding.ResultReflectionTitle.setTextSize((float) (standardSize_X / 19));
+        binding.type.setTextSize((float) (standardSize_X / 23));
+        binding.date.setTextSize((float) (standardSize_X / 23));
+        binding.ResultSituationTitle.setTextSize((float) (standardSize_X / 20));
+        binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 20));
+        binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 20));
+        binding.ResultReflectionTitle.setTextSize((float) (standardSize_X / 20));
         binding.editSituation.setTextSize((float) (standardSize_X / 23));
         binding.editEmotion.setTextSize((float) (standardSize_X / 23));
         binding.editEmotionText.setTextSize((float) (standardSize_X / 23));
         binding.editThought.setTextSize((float) (standardSize_X / 23));
         binding.editReflection.setTextSize((float) (standardSize_X / 23));
-        binding.editButton.setTextSize((float) (standardSize_X / 24));
-        binding.emotionHelp.setTextSize((float) (standardSize_X / 24));
+        binding.editButton.setTextSize((float) (standardSize_X / 25));
+        binding.emotionHelp.setTextSize((float) (standardSize_X / 25));
 
 
         // 감정 설명서 페이지 이동

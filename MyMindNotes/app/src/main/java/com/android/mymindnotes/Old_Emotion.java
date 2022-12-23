@@ -88,14 +88,14 @@ public class Old_Emotion extends AppCompatActivity {
         // 글짜 크기 조절
         getStandardSize();
         binding.title.setTextSize((float) (standardSize_X / 21));
-        binding.angerButton.setTextSize((float) (standardSize_X / 22));
-        binding.anticipationButton.setTextSize((float) (standardSize_X / 22));
-        binding.disgustButton.setTextSize((float) (standardSize_X / 22));
-        binding.fearButton.setTextSize((float) (standardSize_X / 22));
-        binding.happinessButton.setTextSize((float) (standardSize_X / 22));
-        binding.sadnessButton.setTextSize((float) (standardSize_X / 22));
-        binding.surpriseButton.setTextSize((float) (standardSize_X / 22));
-        binding.trustButton.setTextSize((float) (standardSize_X / 22));
+        binding.angerButton.setTextSize((float) (standardSize_X / 23));
+        binding.anticipationButton.setTextSize((float) (standardSize_X / 23));
+        binding.disgustButton.setTextSize((float) (standardSize_X / 23));
+        binding.fearButton.setTextSize((float) (standardSize_X / 23));
+        binding.happinessButton.setTextSize((float) (standardSize_X / 23));
+        binding.sadnessButton.setTextSize((float) (standardSize_X / 23));
+        binding.surpriseButton.setTextSize((float) (standardSize_X / 23));
+        binding.trustButton.setTextSize((float) (standardSize_X / 23));
 
         binding.RecordEmotionTips.setTextSize((float) (standardSize_X / 25));
         binding.RecordEmotionUserInput.setTextSize((float) (standardSize_X / 23));

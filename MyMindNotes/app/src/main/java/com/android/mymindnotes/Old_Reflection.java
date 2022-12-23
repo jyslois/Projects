@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldReflectionBinding;
 import com.android.mymindnotes.model.UserDiary;
@@ -133,7 +134,7 @@ public class Old_Reflection extends AppCompatActivity {
         binding.title.setTextSize((float) (standardSize_X / 21));
         binding.RecordReflectionTips.setTextSize((float) (standardSize_X / 25));
         binding.RecordReflectionUserInput.setTextSize((float) (standardSize_X / 23));
-        binding.RecordEmotionHelpButton.setTextSize((float) (standardSize_X / 23));
+        binding.RecordEmotionHelpButton.setTextSize((float) (standardSize_X / 25));
         binding.RecordPreviousButton.setTextSize((float) (standardSize_X / 23));
         binding.RecordSaveButton.setTextSize((float) (standardSize_X / 23));
 
@@ -218,6 +219,7 @@ public class Old_Reflection extends AppCompatActivity {
                         thoughtEdit.commit();
                         typeEdit.clear();
                         typeEdit.commit();
+                        Toast.makeText(getApplicationContext(), "일기 쓰기 성공! 오늘 하루도 고생했어요.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         startActivity(intent);
                     }

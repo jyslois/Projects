@@ -187,7 +187,7 @@ public class EmotionInstructions extends AppCompatActivity {
 
         // 글짜 크기 조절
         getStandardSize();
-        binding.sortButton.setTextSize((float) (standardSize_X / 27));
+        binding.sortButton.setTextSize((float) (standardSize_X / 25));
 
         // 감정 정렬 버튼
         binding.sortButton.setOnClickListener(view -> {
@@ -233,7 +233,7 @@ class EmotionInstructionAdaptor extends RecyclerView.Adapter<ViewHolder> {
         viewHolder.binding.emotionIcon.setImageResource(emotionList.get(position).emotionIcon);
 
         // 감정 설명 세팅
-        viewHolder.binding.emotionInstruction.setTextSize((float) (EmotionInstructions.standardSize_X / 22));
+        viewHolder.binding.emotionInstruction.setTextSize((float) (EmotionInstructions.standardSize_X / 23));
         viewHolder.binding.emotionInstruction.setText(emotionList.get(position).instruction);
         viewHolder.binding.emotionInstruction.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
     }

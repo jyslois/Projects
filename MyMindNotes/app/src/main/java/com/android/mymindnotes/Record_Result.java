@@ -111,8 +111,8 @@ public class Record_Result extends AppCompatActivity {
 
         // 글짜 크기 조절
         getStandardSize();
-        binding.type.setTextSize((float) (standardSize_X / 24));
-        binding.date.setTextSize((float) (standardSize_X / 24));
+        binding.type.setTextSize((float) (standardSize_X / 25));
+        binding.date.setTextSize((float) (standardSize_X / 25));
         binding.ResultSituationTitle.setTextSize((float) (standardSize_X / 19));
         binding.ResultThoughtTitle.setTextSize((float) (standardSize_X / 19));
         binding.ResultEmotionTitle.setTextSize((float) (standardSize_X / 19));

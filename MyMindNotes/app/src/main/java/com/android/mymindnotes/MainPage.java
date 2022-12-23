@@ -131,7 +131,7 @@ public class MainPage extends AppCompatActivity {
     public void onBackPressed() {
         if (System.currentTimeMillis() - initTime > 3000) {
             // 메세지 띄우기
-            Toast toast = Toast.makeText(this, "종료 하려면 한 번 더 누르세요", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT);
             toast.show();
 
             // 현재 시간을 initTime에 지정

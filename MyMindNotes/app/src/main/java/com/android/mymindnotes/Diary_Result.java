@@ -138,9 +138,9 @@ public class Diary_Result extends AppCompatActivity {
         getStandardSize();
         binding.type.setTextSize((float) (standardSize_X / 25));
         binding.date.setTextSize((float) (standardSize_X / 25));
-        binding.deleteButton.setTextSize((float) (standardSize_X / 24));
-        binding.editButton.setTextSize((float) (standardSize_X / 24));
-        binding.backtoListButton.setTextSize((float) (standardSize_X / 24));
+        binding.deleteButton.setTextSize((float) (standardSize_X / 25));
+        binding.editButton.setTextSize((float) (standardSize_X / 25));
+        binding.backtoListButton.setTextSize((float) (standardSize_X / 25));
 
         // viewPager2와 tablayout 세팅
         tabLayout = binding.tabLayout;

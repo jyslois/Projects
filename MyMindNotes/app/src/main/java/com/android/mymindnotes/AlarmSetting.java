@@ -14,6 +14,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
@@ -109,8 +110,25 @@ public class AlarmSetting extends AppCompatActivity {
         // 알람 스위치 바뀔 때의 이벤트
         binding.alarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                // 권한 허용을 받았다면
-                if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == 0) {
+                // Android 12까지는 앱을 설치하면 기본적으로 Notification을 띄울 수 있었지만,
+                // 안드로이드 13, 티라미슈 - 2022년 2월 10일 처음공개 - 부터는 Notification 런타임 권한이 추가되었고, 이제 이 권한으로 앱의 Notification 발송 권한을 제어할 수 있도록 변경되었다. 
+                // 또한, 기본적으로 Runtime permission은 OFF이기 때문에, 앱은 사용자에게 이 권한을 받기 전까지 노티피케이션을 발송할 수 없다.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    // 권한 허용을 받았다면
+                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                        // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
+                        binding.timeText.setTextColor(Color.BLACK);
+                        binding.setTimeButtton.setText("시간선택(클릭)");
+                        binding.setTimeButtton.setVisibility(View.VISIBLE);
+                        binding.setTimeButtton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                        // 상태 저장
+                        alarmEdit.putBoolean("alarm", true);
+                        alarmEdit.commit();
+                    } else {
+                        // 권한 허용을 받지 못했다면
+                        permissionLauncher.launch("android.permission.POST_NOTIFICATIONS");
+                    }
+                } else {
                     // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
                     binding.timeText.setTextColor(Color.BLACK);
                     binding.setTimeButtton.setText("시간선택(클릭)");
@@ -119,10 +137,6 @@ public class AlarmSetting extends AppCompatActivity {
                     // 상태 저장
                     alarmEdit.putBoolean("alarm", true);
                     alarmEdit.commit();
-
-                // 권한 허용을 받지 못했다면
-                } else {
-                    permissionLauncher.launch("android.permission.POST_NOTIFICATIONS");
                 }
             } else {
                 // Off일 때의 동작

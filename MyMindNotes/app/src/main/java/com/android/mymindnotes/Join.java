@@ -218,8 +218,8 @@ public class Join extends AppCompatActivity {
         binding.passwordRetypeInput.setTextSize((float) (standardSize_X / 23));
         binding.nickNameInput.setTextSize((float) (standardSize_X / 23));
         binding.birthyearInput.setTextSize((float) (standardSize_X / 23));
-        binding.nickNameCheckButton.setTextSize((float) (standardSize_X / 23));
-        binding.emailCheckButton.setTextSize((float) (standardSize_X / 23));
+        binding.nickNameCheckButton.setTextSize((float) (standardSize_X / 25));
+        binding.emailCheckButton.setTextSize((float) (standardSize_X / 25));
         binding.joinButton.setTextSize((float) (standardSize_X / 24));
         binding.emailText.setTextSize((float) (standardSize_X / 24));
         binding.passwardText.setTextSize((float) (standardSize_X / 24));
@@ -364,7 +364,7 @@ public class Join extends AppCompatActivity {
                             // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
                             firstTimeEdit.putString("firstTime", "firstTime");
                             firstTimeEdit.commit();
-
+                            
                             // 메인 화면 전환
                             Intent intent = new Intent(getApplicationContext(), MainPage.class);
                             startActivity(intent);

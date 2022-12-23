@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityChangeNicknameBinding;
 import com.android.mymindnotes.model.ChangeUserNickname;
@@ -113,8 +114,8 @@ public class ChangeNickname extends AppCompatActivity {
         getStandardSize();
         binding.nickNameText.setTextSize((float) (standardSize_X / 23));
         binding.nickNameInput.setTextSize((float) (standardSize_X / 23));
-        binding.checkNicknameButton.setTextSize((float) (standardSize_X / 23));
-        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 23));
+        binding.checkNicknameButton.setTextSize((float) (standardSize_X / 24));
+        binding.changeNicknameButton.setTextSize((float) (standardSize_X / 24));
 
 
         // 회원번호 불러오기
@@ -227,6 +228,7 @@ public class ChangeNickname extends AppCompatActivity {
                     if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3001) {
                         dialog((String) response.body().get("msg"));
                     } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 3000) {
+                        Toast.makeText(getApplicationContext(), "닉네임이 변경되었습니다.", Toast.LENGTH_SHORT).show();
                         // 화면 전환
                         Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         startActivity(intent);
