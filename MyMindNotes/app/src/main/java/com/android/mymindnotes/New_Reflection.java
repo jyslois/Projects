@@ -214,7 +214,7 @@ public class New_Reflection extends AppCompatActivity {
                         thoughtEdit.commit();
                         typeEdit.clear();
                         typeEdit.commit();
-                        Toast.makeText(getApplicationContext(), "일기 쓰기 성공! 오늘 하루도 고생했어요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.successfulRecord, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         startActivity(intent);
                     }
