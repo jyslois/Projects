@@ -6,21 +6,21 @@
     <string name="mindRecord"><font size="18">오늘의 마음</font>\n<font size="12">(시점: 현재)</font></string>
     <string name="traumaRecord"><font size="18">트라우마</font>\n<font size="12">(시점: 과거 → 현재)</font></string>
 
-    <string name="emotionHints">Tips. 감정은 세세하고 다양합니다. 느낀 감정에 대해 섬세하게 기록해 보세요. 또, 선택한 감정 외에 느낀 또다른 감정은 없었는지도 한번 생각해 봐요.</string>
+    <string name="emotionHints">감정은 세세하고 다양합니다. 느낀 감정에 대해 섬세하게 기록해 보세요. 또, 선택한 감정 외에 느낀 또다른 감정은 없었는지도 한번 생각해 봐요.</string>
     <string name="emotionTips">가장 강렬하게 느낀 감정 하나를 선택해 주세요.
     </string>
 
-    <string name="situationHints">Tips. 감정과 생각을 최대한 배재하고, 상황에 대해서만 작성해 주세요.</string>
-    <string name="truamaSituationHints">Tips. 감정과 생각을 최대한 배재하고, 과거에 벌어진 사건에 대해서만 작성해 주세요.</string>
+    <string name="situationHints">감정과 생각을 최대한 배재하고, 상황에 대해서만 작성해 주세요.</string>
+    <string name="truamaSituationHints">감정과 생각을 최대한 배재하고, 과거에 벌어진 사건에 대해서만 작성해 주세요.</string>
     <string name="situationTips">감정과 생각을 최대한 배제한 채, FACT 위주의 육하원칙에 따라 작성해 주세요.</string>
 
-    <string name="thoughtHints">Tips. 상황이 발생했을 때, 내 머릿속에 스쳤던 생각을 기록해 봐요.</string>
+    <string name="thoughtHints">상황이 발생했을 때, 내 머릿속에 스쳤던 생각을 기록해 봐요.</string>
     <string name="thoughtTips">\"마음 속으로 하는 생각\"과 \"감정\"은 다릅니다. 상황이 발생했을 때, 나는 어떤 생각을 했나요?\n\n상황이 벌어진 직후에 들었던 생각과 현재 생각이 다르다면, 어떻게 다른가요?\n\n혹시 예전에 비슷한 상황에서, 같은 패턴의 생각을 한 적이 있나요?</string>
     <string name="traumaThoughtTips">\"마음 속으로 하는 생각\"과 \"감정\"은 다릅니다. 상황이 발생했을 때, 나는 어떤 생각을 했나요? \n\n만약 그 당시의 생각과 현재 생각이 다르다면, 어떻게 다른가요?
         \n\n혹시 이후에 다른 비슷한 상황에서, 같은 패턴의 생각을 한 적이 있나요?</string>
 
-    <string name="reflectionHints">Tips. 왜 그런 생각과 감정이 들었는지 스스로를 이해해 봐요. (회고는 필수는 아니며, 필요하다고 생각될 때만 작성해 주세요.)</string>
-    <string name="traumaReflectionHints">Tips. 과거의 상황이 현재까지 미치고 있는 영향에 대해 생각해 봐요.</string>
+    <string name="reflectionHints">왜 그런 생각과 감정이 들었는지 스스로를 이해해 봐요. (회고는 필수는 아니며, 필요하다고 생각될 때만 작성해 주세요.)</string>
+    <string name="traumaReflectionHints">과거의 상황이 현재까지 미치고 있는 영향에 대해 생각해 봐요.</string>
     <string name="reflectionTips">오늘의 감정이 부정적이라고 해도 걱정하지 마세요. 사람의 모든 감정은 잘못된 것이 없으며, 모든 마음은 그 자체로 인정받고, 존중받아야 합니다.
         \n\n하지만 지속적인 감정이 나 자신이나 타인을 불편하게 한다면, 나 자신이 평안하게 살아가기 위해서라도 한번 생각해 볼 필요는 있어요.
         \n\n모든 "감정"은 "생각"으로부터 비롯된다고 합니다. 나의 생각 패턴, 사고 방식에 대해서 생각해 봅시다. 나는 왜 그렇게 생각했을까요?

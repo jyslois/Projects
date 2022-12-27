@@ -102,14 +102,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.12" />
+                app:layout_constraintGuide_percent="0.14" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.42" />
+                app:layout_constraintGuide_percent="0.44" />
 
             <EditText
                 android:id="@+id/Record_Situation_UserInput"
@@ -133,14 +133,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.44" />
+                app:layout_constraintGuide_percent="0.465" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_bottom2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.505" />
+                app:layout_constraintGuide_percent="0.53" />
 
             <Button
                 android:id="@+id/Record_Situation_Tips"
@@ -159,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.515" />
+                app:layout_constraintGuide_percent="0.545" />
 
 
             <Button

@@ -102,28 +102,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.12"
+                app:layout_constraintGuide_percent="0.14"
                 android:id="@+id/guideline_top"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.42"
+                app:layout_constraintGuide_percent="0.44"
                 android:id="@+id/guideline_bottom"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.45"
+                app:layout_constraintGuide_percent="0.47"
                 android:id="@+id/guideline_top2"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.65"
+                app:layout_constraintGuide_percent="0.67"
                 android:id="@+id/guideline_bottom2"/>
 
 

@@ -141,23 +141,9 @@
                 android:textAlignment="viewStart"
                 android:textColor="#ECCDB6"
                 android:textSize="15dp"
-                app:layout_constraintBottom_toTopOf="@+id/logoutButton"
-                app:layout_constraintHeight_percent="0.08"
-                app:layout_constraintTop_toBottomOf="@+id/accountsettingButton"
-                app:layout_constraintVertical_bias="0.5" />
-
-            <Button
-                android:id="@+id/logoutButton"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="#00ff0000"
-                android:text="로그아웃"
-                android:textAlignment="viewStart"
-                android:textColor="#ECCDB6"
-                android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_percent="0.08"
-                app:layout_constraintTop_toBottomOf="@+id/alarmsettingButton"
+                app:layout_constraintTop_toBottomOf="@+id/accountsettingButton"
                 app:layout_constraintVertical_bias="0.5" />
 
 
