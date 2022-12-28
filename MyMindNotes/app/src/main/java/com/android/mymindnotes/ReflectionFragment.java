@@ -45,7 +45,7 @@ public class ReflectionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = ActivityReflectionFragmentBinding.inflate(getLayoutInflater());
         getStandardSize();
-        binding.content.setTextSize((float) (standardSize_X / 23));
+        binding.content.setTextSize((float) (standardSize_X / 22));
         return binding.getRoot();
     }
 

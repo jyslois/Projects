@@ -54,7 +54,7 @@ public class SituationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.content.setText(getArguments().getString("situation"));
         getStandardSize();
-        binding.content.setTextSize((float) (standardSize_X / 23));
+        binding.content.setTextSize((float) (standardSize_X / 22));
     }
 
     public void refreshData(UserDiary diary) {

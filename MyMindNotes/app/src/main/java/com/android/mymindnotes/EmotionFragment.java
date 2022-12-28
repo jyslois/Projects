@@ -42,8 +42,8 @@ public class EmotionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = ActivityEmotionFragmentBinding.inflate(getLayoutInflater());
         getStandardSize();
-        binding.contentEmotion.setTextSize((float) (standardSize_X / 23));
-        binding.contentEmotionDescription.setTextSize((float) (standardSize_X / 23));
+        binding.contentEmotion.setTextSize((float) (standardSize_X / 22));
+        binding.contentEmotionDescription.setTextSize((float) (standardSize_X / 22));
         return binding.getRoot();
     }
 
