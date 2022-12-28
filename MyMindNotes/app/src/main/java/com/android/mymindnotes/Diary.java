@@ -381,7 +381,7 @@ public class Diary extends AppCompatActivity {
             viewHolder.binding.getRoot().setOnClickListener(view -> {
                 Intent intent = new Intent(getApplicationContext(), Diary_Result.class);
                 intent.putExtra("type", recordList.get(position).getType());
-                intent.putExtra("date", date);
+                intent.putExtra("date", recordList.get(position).getDate() + " " + recordList.get(position).getDay());
                 intent.putExtra("situation", recordList.get(position).getSituation());
                 intent.putExtra("thought", recordList.get(position).getThought());
                 intent.putExtra("emotion", recordList.get(position).getEmotion());
