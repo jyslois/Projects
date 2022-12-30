@@ -326,7 +326,7 @@
                 android:id="@+id/Record_Emotion_Instruction_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="감정을 자세하게 기록해 보아요. (선택)"
+                android:text="감정 직접 기록하기. (선택)"
                 android:textColor="#E4C3A9"
                 android:textSize="15dp"
                 android:textStyle="bold"
