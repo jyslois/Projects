@@ -164,7 +164,7 @@ public class EmotionInstructions extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.diarybackground5image).into(binding.background);
+        Glide.with(this).load(R.drawable.diarybackground5).into(binding.background);
 
         emotionArray = getResources().getStringArray(R.array.emotions_array_forinstruction);
 

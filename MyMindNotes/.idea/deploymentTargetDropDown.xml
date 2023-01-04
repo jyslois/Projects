@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\seolo\.android\avd\S22_Ultra_1440_x_3088_6.8_API_33.avd" />
+            <value value="C:\Users\seolo\.android\avd\S22_1080_x_2340_6.1_API_33.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-12-30T08:10:18.217244800Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-01-04T06:48:31.233111900Z" />
   </component>
 </project>
