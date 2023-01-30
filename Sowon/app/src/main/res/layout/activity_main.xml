@@ -4,16 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/mainbackground">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <ImageView
+        android:id="@+id/mainLogo"
+        android:layout_width="82dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="156dp"
+        android:src="@drawable/mainlogo"
+        app:layout_constraintHorizontal_bias="0.353"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/mainTitle"
+        android:layout_width="75dp"
+        android:layout_height="38dp"
+        android:src="@drawable/maintitle"
+        app:layout_constraintBottom_toBottomOf="@id/mainLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.63"
+        app:layout_constraintLeft_toRightOf="@id/mainLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mainLogo"
+        app:layout_constraintVertical_bias="0.7" />
+
+    <ImageView
+        android:layout_width="226dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/mainsubtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintLeft_toLeftOf="@id/mainLogo"
+        app:layout_constraintRight_toRightOf="@id/mainTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainLogo" />
+
+    <ImageView
+        android:id="@+id/emailLoginButton"
+        android:layout_width="342dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/email_login"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="next"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/naverLoginButton"
+        android:layout_width="342dp"
+        android:layout_height="47dp"
+        android:src="@drawable/naver_login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/emailLoginButton"
+        android:layout_marginBottom="15dp"/>
+
+    <ImageView
+        android:id="@+id/kakaoLoginButton"
+        android:layout_width="342dp"
+        android:layout_height="47dp"
+        android:src="@drawable/kakao_login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/naverLoginButton"
+        android:layout_marginBottom="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

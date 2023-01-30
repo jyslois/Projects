@@ -22,6 +22,7 @@ class MainPage : AppCompatActivity() {
         setContentView(binding.root)
 
         val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+        // 홈 프레그먼트를 기본 화면으로 띄우기 (우선적으로 프레임레이아웃에 추가하기)
         transaction.add(R.id.mainFrameLayout, homeFragment).commit()
 
         // 하단 탭이 눌렸을 때, 화면을 전환하기 위해서 이벤트 처리 위해 BottomNavigationView 객체 생성
