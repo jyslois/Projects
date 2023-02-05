@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="@id/titlebottom"
         android:src="@drawable/title3"/>
 
-<!--    서브 타이틀: 시니어를 위한 나의 디지털 선생님-->
+<!-- 서브 타이틀: 시니어를 위한 나의 디지털 선생님 -->
 
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
         android:src="@drawable/subtitle3"/>
 
 
-<!--    할머니 사진-->
+<!-- 할머니 사진 -->
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
         app:layout_constraintBottom_toBottomOf="@id/imagebottom"/>
 
 
-<!--    Hint: 여기를 클릭하세요-->
+<!-- Hint: 여기를 클릭하세요-->
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
