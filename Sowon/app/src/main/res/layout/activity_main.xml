@@ -4,76 +4,200 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/mainbackground">
+    tools:context=".MainActivity">
+
+<!-- 소원 타이틀 -->
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.08"
+        android:id="@+id/leftmargin"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.038"
+        android:id="@+id/titletop"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.089"
+        android:id="@+id/titlebottom"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.29"
+        android:id="@+id/titleright"/>
+
+    <ImageView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/leftmargin"
+        app:layout_constraintRight_toRightOf="@id/titleright"
+        app:layout_constraintTop_toBottomOf="@id/titletop"
+        app:layout_constraintBottom_toBottomOf="@id/titlebottom"
+        android:src="@drawable/title3"/>
+
+<!--    서브 타이틀: 시니어를 위한 나의 디지털 선생님-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.145"
+        android:id="@+id/subtitletop"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.246"
+        android:id="@+id/subtitlebottom"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.735"
+        android:id="@+id/subtitleright"/>
+
+    <ImageView
+        android:id="@+id/subtitle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/leftmargin"
+        app:layout_constraintRight_toRightOf="@id/subtitleright"
+        app:layout_constraintTop_toTopOf="@id/subtitletop"
+        app:layout_constraintBottom_toBottomOf="@id/subtitlebottom"
+        android:src="@drawable/subtitle3"/>
+
+
+<!--    할머니 사진-->
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="-0.04"
+        android:id="@+id/imageLeft"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.93"
+        android:id="@+id/imageRight"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.19"
+        android:id="@+id/imagetop"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.86"
+        android:id="@+id/imagebottom"/>
 
 
     <ImageView
-        android:id="@+id/mainLogo"
-        android:layout_width="82dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="156dp"
-        android:src="@drawable/mainlogo"
-        app:layout_constraintHorizontal_bias="0.353"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/mainimage3"
+        app:layout_constraintLeft_toLeftOf="@id/imageLeft"
+        app:layout_constraintRight_toRightOf="@id/imageRight"
+        app:layout_constraintTop_toTopOf="@id/imagetop"
+        app:layout_constraintBottom_toBottomOf="@id/imagebottom"/>
+
+
+<!--    Hint: 여기를 클릭하세요-->
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8"
+        android:id="@+id/hinttop"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.868"
+        android:id="@+id/hintbottom"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.26"
+        android:id="@+id/hintleft"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.77"
+        android:id="@+id/hintright"/>
 
     <ImageView
-        android:id="@+id/mainTitle"
-        android:layout_width="75dp"
-        android:layout_height="38dp"
-        android:src="@drawable/maintitle"
-        app:layout_constraintBottom_toBottomOf="@id/mainLogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.63"
-        app:layout_constraintLeft_toRightOf="@id/mainLogo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mainLogo"
-        app:layout_constraintVertical_bias="0.7" />
+        android:id="@+id/hint"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/tip3"
+        app:layout_constraintTop_toTopOf="@id/hinttop"
+        app:layout_constraintBottom_toBottomOf="@id/hintbottom"
+        app:layout_constraintLeft_toLeftOf="@id/hintleft"
+        app:layout_constraintRight_toRightOf="@id/hintright"/>
 
-    <ImageView
-        android:layout_width="226dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="4dp"
-        android:src="@drawable/mainsubtitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintLeft_toLeftOf="@id/mainLogo"
-        app:layout_constraintRight_toRightOf="@id/mainTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mainLogo" />
 
-    <ImageView
-        android:id="@+id/emailLoginButton"
-        android:layout_width="342dp"
-        android:layout_height="47dp"
-        android:layout_marginBottom="70dp"
-        android:src="@drawable/email_login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    카카오 로그인 버튼-->
 
-    <ImageView
-        android:id="@+id/naverLoginButton"
-        android:layout_width="342dp"
-        android:layout_height="47dp"
-        android:src="@drawable/naver_login"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/emailLoginButton"
-        android:layout_marginBottom="15dp"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.06"
+        android:id="@+id/kakaologinleft"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.93"
+        android:id="@+id/kakaologinright"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88"
+        android:id="@+id/kakaologintop"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95"
+        android:id="@+id/kakaologinbottom"/>
 
     <ImageView
         android:id="@+id/kakaoLoginButton"
-        android:layout_width="342dp"
-        android:layout_height="47dp"
-        android:src="@drawable/kakao_login"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/naverLoginButton"
-        android:layout_marginBottom="15dp"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/kakaologinleft"
+        app:layout_constraintRight_toRightOf="@id/kakaologinright"
+        app:layout_constraintTop_toTopOf="@id/kakaologintop"
+        app:layout_constraintBottom_toBottomOf="@id/kakaologinbottom"
+        android:src="@drawable/kakaologin3"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

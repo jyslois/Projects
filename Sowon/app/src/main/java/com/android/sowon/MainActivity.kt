@@ -14,25 +14,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 임시
-        binding.emailLoginButton.setOnClickListener {
-            // 메인 페이지로 이동
-            val intent: Intent = Intent(this, MainPage::class.java)
-            // 인텐트를 시스템에 전달(시작)
-            startActivity(intent)
-        }
-
         binding.kakaoLoginButton.setOnClickListener {
             // 메인 페이지로 이동
             val intent: Intent = Intent(this, MainPage::class.java)
             // 인텐트를 시스템에 전달(시작)
             startActivity(intent) }
 
-        binding.naverLoginButton.setOnClickListener {
-            // 메인 페이지로 이동
-            val intent: Intent = Intent(this, MainPage::class.java)
-            // 인텐트를 시스템에 전달(시작)
-            startActivity(intent)
-        }
 
     }
 }
