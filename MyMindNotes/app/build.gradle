@@ -1,5 +1,9 @@
 plugins {
     id 'com.android.application'
+    // Hilt
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -20,16 +24,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
 
     viewBinding {
         enabled = true
     }
     buildFeatures {
         viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -54,4 +59,19 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     // logging-interceptor 설치
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+    // 뷰모델을 위한 dependency 추가
+    implementation "androidx.activity:activity-ktx:1.6.1"
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
+
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

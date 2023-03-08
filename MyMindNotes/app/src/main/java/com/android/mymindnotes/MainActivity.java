@@ -13,10 +13,13 @@ import android.widget.Button;
 import com.android.mymindnotes.databinding.ActivityMainBinding;
 import com.bumptech.glide.Glide;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     SharedPreferences auto;
-
+    
     // 화면 크기에 따른 글자 크기 조절
     int standardSize_X, standardSize_Y;
     float density;
