@@ -4,11 +4,10 @@
     package="com.android.mymindnotes">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name = "android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".hilt.HiltApplication"
@@ -23,25 +22,25 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="32">
 
-        <receiver android:name=".AlarmBootReceiver"
+        <receiver
+            android:name=".AlarmBootReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".AlarmReceiver"
+        <receiver
+            android:name=".AlarmReceiver"
             android:enabled="true"
-            android:exported="false">
-        </receiver>
+            android:exported="false" />
 
         <activity
             android:name=".AlarmSetting"
             android:exported="false"
-            android:theme="@style/Theme.changeScreen"
+            android:label="알림 설정"
             android:parentActivityName=".MainMenu"
-            android:label="알림 설정"/>
+            android:theme="@style/Theme.changeScreen" />
         <activity
             android:name=".EmotionInstructionSortingPopup"
             android:exported="false"
@@ -141,15 +140,15 @@
         <activity
             android:name=".Login"
             android:exported="true"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".presentation.ui.MainActivity"
             android:theme="@style/Theme.Main" />
         <activity
             android:name=".Join"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".presentation.ui.MainActivity"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Main">
             <intent-filter>
