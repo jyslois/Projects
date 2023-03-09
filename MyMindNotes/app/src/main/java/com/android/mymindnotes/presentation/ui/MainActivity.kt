@@ -18,6 +18,7 @@ import com.android.mymindnotes.Login
 import com.android.mymindnotes.MainPage
 import com.android.mymindnotes.databinding.ActivityMainBinding
 import com.bumptech.glide.Glide.init
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -58,26 +59,46 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+
+                launch {
+                    // 뷰모델의 SharedFlow에 값이 emit되면 collect해서 화면 전환
+                    viewModel.login.collect {
+                        if (it) {
+                            val intent = Intent(applicationContext, Login::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.join.collect {
+                        if (it) {
+                            val intent = Intent(applicationContext, Join::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
             }
         }
 
 
-        // 로그인 클릭 시 화면 전환
-        binding.loginButton.setOnClickListener { view: View? ->
-            val intent = Intent(applicationContext, Login::class.java)
-            startActivity(intent)
+        // 로그인 클릭 시 뷰모델의 메서드 호출
+        binding.loginButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.clickLoginButton()
+            }
         }
 
-        // 회원가입 클릭 시 화면 전환
-        binding.joinButton.setOnClickListener { view: View? ->
-            val intent = Intent(applicationContext, Join::class.java)
-            startActivity(intent)
+        // 회원가입 클릭 시 뷰모델의 메서드 호출
+        binding.joinButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.clickJoinButton()
+            }
         }
     }
 
     // 뒤로가기 누를 시 앱 종료
     override fun onBackPressed() {
-        super.onBackPressed()
         finishAffinity()
     }
 }

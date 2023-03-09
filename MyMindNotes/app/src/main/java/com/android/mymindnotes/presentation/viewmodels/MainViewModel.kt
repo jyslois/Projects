@@ -32,7 +32,10 @@ class MainViewModel @Inject constructor(
     val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
 
     // 버튼 클릭 감지를 위한 SharedFlow
-
+    private val _login = MutableSharedFlow<Boolean>()
+    val login get() = _login.asSharedFlow()
+    private val _join = MutableSharedFlow<Boolean>()
+    val join get() = _join.asSharedFlow()
 
     // ViewModel instance가 만들어질 때,
     init {
@@ -51,12 +54,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun clickLoginButton() {
-
+    suspend fun clickLoginButton() {
+        _login.emit(true)
     }
 
-    fun clickJoinButton() {
-
+    suspend fun clickJoinButton() {
+        _join.emit(true)
     }
 
 
