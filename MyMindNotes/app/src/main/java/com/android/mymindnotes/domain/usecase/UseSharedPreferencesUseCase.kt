@@ -1,12 +1,10 @@
 package com.android.mymindnotes.domain.usecase
 
-import android.util.Log
 import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

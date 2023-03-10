@@ -45,11 +45,7 @@ class MainActivity : AppCompatActivity() {
             // lifecycle의 상태state가 Started에서 벗어나면 코루틴을 cancel 시키기
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    // 자식 코루틴은 부모 코루틴의 context를 물려받음 - Dispatchers.Main
-                    // Dispatchers.IO을 사용하는 코루틴에서 SharedFlow에 값을 emit하고,
-                    // Dispatchers.Main을 사용하는 또다른 코루튼에서 SharedFlow를 collect()한다면,
-                    // 값의 방출은 계속해서 IO thread에서 이루어지지만, 수집된 값은 Main Thread에서 처리된다.
-                    // Main thread로 결과가 보내진다.
+                    // 자식 코루틴은 부모 코루틴의 context를 물려받음 - Dispatchers.Main. Dispatchers.IO을 사용하는 코루틴에서 SharedFlow에 값을 emit하고, Dispatchers.Main을 사용하는 또다른 코루튼에서 SharedFlow를 collect()한다면, 값의 방출은 계속해서 IO thread에서 이루어지지만, 수집된 값은 Main Thread에서 처리된다. Main thread로 결과가 보내진다.
                     viewModel.autoLoginCheck.collect {
                         // if you want to trigger the intent every time the value of autoLoginCheck is true, you should use collect() instead of collectLatest()
                         // viewModel의 SharedFlow 값을 관찰하고 있다가 값이 emit되고, 그 값이 true라면 아래를 수행한다.
