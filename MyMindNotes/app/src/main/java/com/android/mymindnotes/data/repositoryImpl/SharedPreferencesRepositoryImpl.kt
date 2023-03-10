@@ -5,7 +5,9 @@ import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepo
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SharedPreferencesRepositoryImpl @Inject constructor(
     private val dataSource: SharedPreferencesDataSource
 ): SharedPreferencesRepository {
