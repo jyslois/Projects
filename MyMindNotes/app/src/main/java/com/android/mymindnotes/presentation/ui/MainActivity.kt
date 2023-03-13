@@ -7,19 +7,13 @@ import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import com.android.mymindnotes.presentation.viewmodels.MainViewModel
 import android.content.Intent
-import android.util.Log
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.Join
-import com.android.mymindnotes.Login
 import com.android.mymindnotes.MainPage
 import com.android.mymindnotes.databinding.ActivityMainBinding
-import com.bumptech.glide.Glide.init
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

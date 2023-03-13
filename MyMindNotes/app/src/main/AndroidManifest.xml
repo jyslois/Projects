@@ -54,7 +54,7 @@
         <activity
             android:name=".FindPassword"
             android:exported="false"
-            android:parentActivityName=".Login"
+            android:parentActivityName=".presentation.ui.Login"
             android:theme="@style/Theme.changeScreen" />
         <activity
             android:name=".ChangeNickname"
@@ -138,7 +138,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".Login"
+            android:name=".presentation.ui.Login"
             android:exported="true"
             android:parentActivityName=".presentation.ui.MainActivity"
             android:theme="@style/Theme.Main" />
