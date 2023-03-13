@@ -1,23 +1,13 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.content.SharedPreferences
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
-import com.android.mymindnotes.hilt.module.AutoSave
 import com.android.mymindnotes.hilt.module.IoDispatcher
-import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
-import com.bumptech.glide.Glide.init
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
