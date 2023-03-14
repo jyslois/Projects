@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.Join
 import com.android.mymindnotes.MainPage
 import com.android.mymindnotes.databinding.ActivityMainBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainbackground2).into(binding.background)
 
-
         // 로그인 상태 유지 값 SharedFlow 관찰하고 있다가 값에 따라서 동작하기
         // activity의 lifecycle과 결합하기
         // UI update가 이루어져야 하기 때문에 Dispatchers.Main의 쓰레드(메인 쓰레드)에서 진행
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                         // if you want to trigger the intent every time the value of autoLoginCheck is true, you should use collect() instead of collectLatest()
                         // viewModel의 SharedFlow 값을 관찰하고 있다가 값이 emit되고, 그 값이 true라면 아래를 수행한다.
                         if (it) {
-                            val intent = Intent(baseContext, MainPage::class.java)
+                            val intent = Intent(applicationContext, MainPage::class.java)
                             startActivity(intent);
                         }
                     }

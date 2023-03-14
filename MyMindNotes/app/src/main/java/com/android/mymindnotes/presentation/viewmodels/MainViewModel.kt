@@ -17,7 +17,7 @@ class MainViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ): ViewModel() {
 
-    // autoLoginCheck 값을 저장하는 SharedFlow
+//     autoLoginCheck 값을 저장하는 SharedFlow
     private val _autoLoginCheck = MutableSharedFlow<Boolean>()
     val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
 

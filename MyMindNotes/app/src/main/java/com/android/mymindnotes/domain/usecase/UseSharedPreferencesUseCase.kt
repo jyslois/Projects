@@ -5,6 +5,7 @@ import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +20,9 @@ class UseSharedPreferencesUseCase @Inject constructor(
     // autoSave 값을 저장하는 SharedFlow
     private val _autoSaveCheck = MutableSharedFlow<Boolean>()
     val autoSaveCheck = _autoSaveCheck.asSharedFlow()
+    // autoLoginState 값을 저장하는 SharedFlow
+    private val _autoLoginState = MutableSharedFlow<Boolean>()
+    val autoLoginState = _autoLoginState.asSharedFlow()
     // Id 값을 저장하는 SharedFlow
     private val _id = MutableSharedFlow<String>()
     val id = _id.asSharedFlow()
@@ -26,7 +30,7 @@ class UseSharedPreferencesUseCase @Inject constructor(
     private val _password = MutableSharedFlow<String>()
     val password = _password.asSharedFlow()
 
-
+    // get methods
     suspend fun getAutoLogin() {
         repository.getAutoLoginCheckfromAutoSaveSharedPreferences()
     }
@@ -39,6 +43,7 @@ class UseSharedPreferencesUseCase @Inject constructor(
         repository.getIdAndPasswordfromAutoSaveSharedPreferences()
     }
 
+    // emit values got from Sharedpreference
     init {
         ioDispatcherCoroutineScope.launch {
             launch {
@@ -65,6 +70,19 @@ class UseSharedPreferencesUseCase @Inject constructor(
                 }
             }
         }
+    }
+
+    // save methods
+    suspend fun saveAutoLoginCheck(state: Boolean) {
+        repository.saveAutoLoginChecktoAutoSaveSharedPreferences(state)
+    }
+
+    suspend fun saveAutoSaveCheck(state: Boolean) {
+        repository.saveAutoSaveChecktoAutoSaveSharedPreferences(state)
+    }
+
+    suspend fun saveIdAndPassword(id: String?, password: String?) {
+        repository.saveIdAndPasswordtoAutoSaveSharedPreferences(id, password)
     }
 
 }
