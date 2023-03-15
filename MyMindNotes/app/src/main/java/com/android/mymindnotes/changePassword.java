@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.android.mymindnotes.databinding.ActivityChangePasswordBinding;
 import com.android.mymindnotes.model.ChangeUserPassword;
 import com.android.mymindnotes.model.retrofit.ChangePasswordApi;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

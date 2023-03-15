@@ -10,12 +10,11 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityFindPasswordBinding;
 import com.android.mymindnotes.model.ChangeToTemporaryPassword;
 import com.android.mymindnotes.model.retrofit.ChangeToTempPassword;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

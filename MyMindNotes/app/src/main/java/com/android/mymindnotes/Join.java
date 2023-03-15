@@ -20,7 +20,7 @@ import com.android.mymindnotes.model.UserInfo;
 import com.android.mymindnotes.model.retrofit.CheckEmailApi;
 import com.android.mymindnotes.model.retrofit.CheckNicknameApi;
 import com.android.mymindnotes.model.retrofit.JoinApi;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

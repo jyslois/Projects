@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.android.mymindnotes.databinding.ActivityRecordResultBinding;
 import com.android.mymindnotes.model.UserDiary;
 import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

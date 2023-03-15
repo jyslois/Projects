@@ -1,5 +1,6 @@
 package com.android.mymindnotes.data.repositoryImpl
 
+import android.util.Log
 import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,12 +32,17 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 
     // dataSource의 SharedPreferences에 접근하는 변수
     private val sharedPreferencesforAutoSave = dataSource.sharedPreferencesforAutoSave
-    private val sharedPreferencesforAutoSaveEditor = dataSource.sharedPreferencesforAutoSave.edit()
+    private val sharedPreferencesforAutoSaveEditor = sharedPreferencesforAutoSave.edit()
+
+    private val sharedPreferenceforUser = dataSource.sharedPreferenceforUser
+    private val sharedPreferenceforUserEditor = sharedPreferenceforUser.edit()
 
     // get methods
     override suspend fun getAutoLoginCheckfromAutoSaveSharedPreferences() {
+        Log.e("확인", "Repository - 메서드 호출")
         // dataSource의 SharedPreferences에 접근해서 autoLoginCheck 값을 가져와 SharedFlow에 emit하기
         _autoLoginCheck.emit(sharedPreferencesforAutoSave.getBoolean("autoLoginCheck", false))
+        Log.e("확인", "Repository - 가져온 값 emit")
     }
 
     override suspend fun getAutoSaveCheckfromAutoSaveSharedPreferences() {
@@ -63,6 +69,10 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
     override suspend fun saveIdAndPasswordtoAutoSaveSharedPreferences(id: String?, password: String?) {
         sharedPreferencesforAutoSaveEditor.putString("id", id).commit()
         sharedPreferencesforAutoSaveEditor.putString("password", password).commit()
+    }
+
+    override suspend fun saveUserIndextoUserSharedPreferences(index: Int) {
+        sharedPreferenceforUserEditor.putInt("userindex", index).commit()
     }
 
 }

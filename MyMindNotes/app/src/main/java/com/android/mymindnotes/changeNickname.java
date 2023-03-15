@@ -21,7 +21,7 @@ import com.android.mymindnotes.databinding.ActivityChangeNicknameBinding;
 import com.android.mymindnotes.model.ChangeUserNickname;
 import com.android.mymindnotes.model.retrofit.ChangeNicknameApi;
 import com.android.mymindnotes.model.retrofit.CheckNicknameApi;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

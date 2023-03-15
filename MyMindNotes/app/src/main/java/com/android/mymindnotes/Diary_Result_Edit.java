@@ -8,13 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryResultEditBinding;
 import com.android.mymindnotes.model.DiaryEdit;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.android.mymindnotes.model.retrofit.UpdateDiaryApi;
 import com.bumptech.glide.Glide;
 

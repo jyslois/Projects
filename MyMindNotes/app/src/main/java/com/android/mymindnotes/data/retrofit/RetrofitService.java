@@ -1,4 +1,6 @@
-package com.android.mymindnotes.model.retrofit;
+package com.android.mymindnotes.data.retrofit;
+
+import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -13,6 +15,7 @@ public class RetrofitService {
     private Retrofit retrofit;
     // initialization
 
+    @Inject
     public RetrofitService() {
         initializeRetrofit();
     }

@@ -1,9 +1,11 @@
 package com.android.mymindnotes.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
 import com.android.mymindnotes.hilt.module.IoDispatcher
+import com.android.mymindnotes.hilt.module.MainDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,15 +33,18 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             launch {
-                // useCase의 메서드 자동 호출. - SharedPreference에 저장된 autoLoginCheck값을 가져오기 위한.
-                useCase.getAutoLogin()
+                // useCase의 SharedFlow에 저장된 값 관찰해서 viewModel의 SharedFlow에 방출하기.
+                useCase.autoLoginCheck.collect {
+                    Log.e("확인", "MainViewModel - emit 전")
+                    _autoLoginCheck.emit(it)
+                    Log.e("확인", "MainViewModel - emit 됨")
+                }
             }
 
             launch {
-                // useCase의 SharedFlow에 저장된 값 관찰해서 viewModel의 SharedFlow에 방출하기.
-                useCase.autoLoginCheck.collect {
-                    _autoLoginCheck.emit(it)
-                }
+                // useCase의 메서드 자동 호출. - SharedPreference에 저장된 autoLoginCheck값을 가져오기 위한.
+                Log.e("확인", "MainViewModel - 메서드호출")
+                useCase.getAutoLogin()
             }
         }
     }

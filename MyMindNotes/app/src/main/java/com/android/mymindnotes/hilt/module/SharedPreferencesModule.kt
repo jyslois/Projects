@@ -17,9 +17,17 @@ object SharedPreferencesModule {
     @Provides
     fun provideSharedPreferencesforAutoSave(application: Application): SharedPreferences
     = application.getSharedPreferences("autoSave", Activity.MODE_PRIVATE)
+
+    @User
+    @Provides
+    fun provideSharedPreferencesforUser(application: Application): SharedPreferences
+    = application.getSharedPreferences("user", Activity.MODE_PRIVATE)
 }
 
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class AutoSave
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class User

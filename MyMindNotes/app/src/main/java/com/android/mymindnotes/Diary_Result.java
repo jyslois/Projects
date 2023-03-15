@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
 
@@ -24,7 +23,7 @@ import com.android.mymindnotes.databinding.ActivityDiaryResultBinding;
 import com.android.mymindnotes.model.UserDiary;
 import com.android.mymindnotes.model.retrofit.DeleteDiaryApi;
 import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

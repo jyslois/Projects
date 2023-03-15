@@ -2,8 +2,10 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.mymindnotes.domain.usecase.LogInandOutUseCase
 import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
 import com.android.mymindnotes.hilt.module.IoDispatcher
+import com.bumptech.glide.Glide.init
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val useCase: UseSharedPreferencesUseCase,
+    private val shared_useCase: UseSharedPreferencesUseCase,
+    private val login_useCase: LogInandOutUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     // autoSaveCheck 값을 저장하는 SharedFlow
@@ -43,6 +46,14 @@ class LoginViewModel @Inject constructor(
     private val _loginButton = MutableSharedFlow<Boolean>()
     val loginButton get() = _loginButton.asSharedFlow()
 
+    // 로그인 결과 값을 저장하는 SharedFlow
+    private val _logInResult = MutableSharedFlow<Map<String, Object>>()
+    val logInResult = _logInResult.asSharedFlow()
+
+    // 로그인 메서드
+    suspend fun login(email: String, password: String) {
+        login_useCase.login(email, password)
+    }
 
     // 버튼 클릭 메서드
     suspend fun clickAutoSaveBox() {
@@ -61,54 +72,64 @@ class LoginViewModel @Inject constructor(
         _loginButton.emit(true)
     }
 
-    // get methods
+    // get methods - sharedPreferneces
     suspend fun getIdAndPassword() {
-        useCase.getIdAndPassword()
+        shared_useCase.getIdAndPassword()
     }
 
-    // save methods
+    // save methods - SharedPreferneces
     suspend fun saveAutoLoginCheck(state: Boolean) {
-        useCase.saveAutoLoginCheck(state)
+        shared_useCase.saveAutoLoginCheck(state)
     }
 
     suspend fun saveAutoSaveCheck(state: Boolean) {
-        useCase.saveAutoSaveCheck(state)
+        shared_useCase.saveAutoSaveCheck(state)
     }
 
     suspend fun saveIdAndPassword(id: String?, password: String?) {
-        useCase.saveIdAndPassword(id, password)
+        shared_useCase.saveIdAndPassword(id, password)
+    }
+
+    suspend fun saveUserIndex(index: Int) {
+        shared_useCase.saveUserIndex(index)
     }
 
     // ViewModel instance가 만들어질 때, autoSaveCheck/autoLoginCheck/id/password 값 불러오기
     init {
         viewModelScope.launch(ioDispatcher) {
             launch {
-                useCase.getAutoLogin()
-                useCase.getAutoSave()
+                shared_useCase.getAutoLogin()
+                shared_useCase.getAutoSave()
             }
 
             launch {
                 // useCase의 SharedFlow에 저장된 값 관찰해서 viewModel의 SharedFlow에 방출하기.
-                useCase.autoSaveCheck.collect {
+                shared_useCase.autoSaveCheck.collect {
                     _autoSaveCheck.emit(it)
                 }
             }
 
             launch {
-                useCase.autoLoginCheck.collect {
+                shared_useCase.autoLoginCheck.collect {
                     _autoLoginCheck.emit(it)
                 }
             }
 
             launch {
-                useCase.id.collect {
+                shared_useCase.id.collect {
                     _id.emit(it)
                 }
             }
 
             launch {
-                useCase.password.collect {
+                shared_useCase.password.collect {
                     _password.emit(it)
+                }
+            }
+
+            launch {
+                login_useCase.logInResult.collect {
+                    _logInResult.emit(it)
                 }
             }
 

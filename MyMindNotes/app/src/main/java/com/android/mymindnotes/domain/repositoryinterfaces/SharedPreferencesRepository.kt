@@ -14,6 +14,7 @@ interface SharedPreferencesRepository {
     suspend fun saveAutoSaveChecktoAutoSaveSharedPreferences(state: Boolean)
     suspend fun saveIdAndPasswordtoAutoSaveSharedPreferences(id: String?, password: String?)
 
+    suspend fun saveUserIndextoUserSharedPreferences(index: Int)
 
     // AutoLoginCheck 값을 저장하는 변수
     val autoLoginCheck: SharedFlow<Boolean>

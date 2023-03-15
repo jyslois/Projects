@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.android.mymindnotes.databinding.ActivityMainPageBinding;
 import com.android.mymindnotes.model.retrofit.GetUserInfoApi;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;
@@ -74,7 +74,7 @@ public class MainPage extends AppCompatActivity {
         binding = ActivityMainPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        userindex = getSharedPreferences("user", Activity.MODE_PRIVATE);
         // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
         firsTime = getSharedPreferences("firstTime", MODE_PRIVATE);
         firstTimeEdit = firsTime.edit();

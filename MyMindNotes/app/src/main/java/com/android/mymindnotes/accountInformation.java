@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.android.mymindnotes.model.retrofit.DeleteUserApi;
 import com.android.mymindnotes.model.retrofit.GetUserInfoApi;
-import com.android.mymindnotes.model.retrofit.RetrofitService;
+import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.android.mymindnotes.presentation.ui.MainActivity;
 import com.bumptech.glide.Glide;
 
@@ -72,7 +72,7 @@ public class AccountInformation extends AppCompatActivity {
         auto = getSharedPreferences("autoSave", Activity.MODE_PRIVATE);
         autoSaveEdit = auto.edit();
 
-        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        userindex = getSharedPreferences("user", Activity.MODE_PRIVATE);
         getUserInfo();
         alarm = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
         alarmEdit = alarm.edit();

@@ -1,11 +1,13 @@
 package com.android.mymindnotes.domain.usecase
 
+import android.util.Log
 import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +34,7 @@ class UseSharedPreferencesUseCase @Inject constructor(
 
     // get methods
     suspend fun getAutoLogin() {
+        Log.e("확인", "UseCase - 메서드 호출")
         repository.getAutoLoginCheckfromAutoSaveSharedPreferences()
     }
 
@@ -49,6 +52,7 @@ class UseSharedPreferencesUseCase @Inject constructor(
             launch {
                 repository.autoLoginCheck.collect {
                     _autoLoginCheck.emit(it)
+                    Log.e("확인", "UseCase - emit 됨")
                 }
             }
 
@@ -83,6 +87,10 @@ class UseSharedPreferencesUseCase @Inject constructor(
 
     suspend fun saveIdAndPassword(id: String?, password: String?) {
         repository.saveIdAndPasswordtoAutoSaveSharedPreferences(id, password)
+    }
+
+    suspend fun saveUserIndex(index: Int) {
+        repository.saveUserIndextoUserSharedPreferences(index)
     }
 
 }

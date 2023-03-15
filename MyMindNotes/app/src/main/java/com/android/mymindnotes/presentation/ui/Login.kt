@@ -7,31 +7,22 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences.Editor
-import android.util.Log
-import android.view.View
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.MainPage
 import com.android.mymindnotes.FindPassword
+import com.android.mymindnotes.MainPage
+import com.android.mymindnotes.data.retrofit.LoginApi
+import com.android.mymindnotes.data.retrofit.RetrofitService
 import com.android.mymindnotes.databinding.ActivityLoginBinding
-import com.android.mymindnotes.model.retrofit.RetrofitService
-import com.android.mymindnotes.model.retrofit.LoginApi
-import com.android.mymindnotes.model.UserInfoLogin
 import com.android.mymindnotes.presentation.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class Login : AppCompatActivity() {
@@ -196,13 +187,47 @@ class Login : AppCompatActivity() {
                                 viewModel.saveAutoSaveCheck(false)
                                 viewModel.saveIdAndPassword(null, null)
                             }
-                            Log.e("확인", "여기까지 들어옴")
-                            login()
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                                    viewModel.login(emailInput, passwordInput) // 로그인 결과 가져와 emit하기
+                                }
+                            }
                         }
                     }
                 }
 
+                // 로그인 결과 구독
+                launch {
+                    viewModel.logInResult.collect {
 
+                        if (it["code"].toString().toDouble() == 5001.0 || it["code"].toString()
+                                .toDouble() == 5003.0
+                            || it["code"].toString().toDouble() == 5005.0
+                        ) {
+
+                            // 형식 오류/아이디와 비번 불일치로 인한 메시지
+                            dialog(it["msg"] as String?)
+
+                        } else if (it["code"].toString().toDouble() == 5000.0) {
+                            // 로그인 성공
+
+                            if (autoLogin.isChecked) {
+                                // MainActivity에서의 자동 로그인을 위한 상태 저장
+                                autoSave.isChecked = true
+                                viewModel.saveAutoLoginCheck(true)
+                            }
+
+                            // 회원 번호 저장
+                            viewModel.saveUserIndex(it["user_index"].toString().toDouble().toInt())
+
+                            // 화면 전환
+                            val intent = Intent(applicationContext, MainPage::class.java)
+                            startActivity(intent)
+                        }
+                    }
+
+
+                }
             }
         }
 
@@ -236,6 +261,7 @@ class Login : AppCompatActivity() {
                 viewModel.clickLoginButton()
             }
         }
+
     }
 
 
@@ -258,60 +284,5 @@ class Login : AppCompatActivity() {
 
     }
 
-
-    // 네트워크 통신: 로그인
-    fun login() {
-        Log.e("확인", "여기까지 들어옴")
-        // Retrofit 객체 생성
-        val retrofitService = RetrofitService()
-        // Retrofit 객체에 Service 인터페이스 등록
-        val loginApi = retrofitService.retrofit.create(LoginApi::class.java)
-        // Call 객체 획득
-        val userInfoLogin = UserInfoLogin(email!!.text.toString(), password!!.text.toString())
-        val call = loginApi.login(userInfoLogin)
-        // 네트워킹 시도
-        call.enqueue(object : Callback<Map<String?, Any>> {
-            override fun onResponse(
-                call: Call<Map<String?, Any>>,
-                response: Response<Map<String?, Any>>
-            ) {
-                // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
-                // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
-
-                if (response.body()!!["code"].toString()
-                        .toDouble() == 5001.0 || response.body()!!["code"].toString()
-                        .toDouble() == 5003.0 || response.body()!!["code"].toString()
-                        .toDouble() == 5005.0
-                ) {
-                    dialog(response.body()!!["msg"] as String?)
-                } else if (response.body()!!["code"].toString().toDouble() == 5000.0) {
-                    // 올바르게 적었다면
-
-                    lifecycleScope.launch {
-                        if (autoLogin.isChecked) {
-                            // MainActivity에서의 자동 로그인을 위한 상태 저장
-                            autoSave.isChecked = true
-                            viewModel.saveAutoLoginCheck(true)
-
-                        }
-                    }
-
-                    // 회원 번호 저장
-                    userindexEdit!!.putInt(
-                        "userindex", response.body()!!["user_index"].toString().toDouble()
-                            .toInt()
-                    )
-                    userindexEdit!!.commit()
-                    // 화면 전환
-                    val intent = Intent(applicationContext, MainPage::class.java)
-                    startActivity(intent)
-                }
-            }
-
-            override fun onFailure(call: Call<Map<String?, Any>>, t: Throwable) {
-                dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.")
-            }
-        })
-    }
 
 }
