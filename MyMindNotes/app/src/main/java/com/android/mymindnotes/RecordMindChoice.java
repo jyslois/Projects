@@ -52,7 +52,7 @@ public class RecordMindChoice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
 
-        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        userindex = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         getUserNickname();
 

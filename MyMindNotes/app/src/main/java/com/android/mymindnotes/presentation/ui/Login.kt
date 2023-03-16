@@ -16,8 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.FindPassword
 import com.android.mymindnotes.MainPage
-import com.android.mymindnotes.data.retrofit.LoginApi
-import com.android.mymindnotes.data.retrofit.RetrofitService
 import com.android.mymindnotes.databinding.ActivityLoginBinding
 import com.android.mymindnotes.presentation.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -200,17 +198,13 @@ class Login : AppCompatActivity() {
                 launch {
                     viewModel.logInResult.collect {
 
-                        if (it["code"].toString().toDouble() == 5001.0 || it["code"].toString()
-                                .toDouble() == 5003.0
+                        if (it["code"].toString().toDouble() == 5001.0 || it["code"].toString().toDouble() == 5003.0
                             || it["code"].toString().toDouble() == 5005.0
                         ) {
-
                             // 형식 오류/아이디와 비번 불일치로 인한 메시지
-                            dialog(it["msg"] as String?)
-
+                            dialog(it["msg"] as String)
                         } else if (it["code"].toString().toDouble() == 5000.0) {
                             // 로그인 성공
-
                             if (autoLogin.isChecked) {
                                 // MainActivity에서의 자동 로그인을 위한 상태 저장
                                 autoSave.isChecked = true

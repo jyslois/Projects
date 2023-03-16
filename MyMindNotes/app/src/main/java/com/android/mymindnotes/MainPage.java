@@ -8,11 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.mymindnotes.AlarmSetting;
+import com.android.mymindnotes.MainMenu;
+import com.android.mymindnotes.R;
+import com.android.mymindnotes.RecordMindChoice;
 import com.android.mymindnotes.databinding.ActivityMainPageBinding;
 import com.android.mymindnotes.model.retrofit.GetUserInfoApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
@@ -25,31 +27,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainPage extends AppCompatActivity {
-    com.android.mymindnotes.databinding.ActivityMainPageBinding binding;
+    ActivityMainPageBinding binding;
     String nick;
     SharedPreferences userindex;
     // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
     SharedPreferences firsTime;
     SharedPreferences.Editor firstTimeEdit;
 
-    // 화면 크기에 따른 글자 크기 조절
-    int standardSize_X, standardSize_Y;
-    float density;
-
-    public Point getScreenSize(Activity activity) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        return size;
-    }
-    public void getStandardSize() {
-        Point ScreenSize = getScreenSize(this);
-        density  = getResources().getDisplayMetrics().density;
-
-        standardSize_X = (int) (ScreenSize.x / density);
-        standardSize_Y = (int) (ScreenSize.y / density);
-    }
 
     DialogInterface.OnClickListener dialogListener = (dialog, which) -> {
         if (which == DialogInterface.BUTTON_POSITIVE) {
@@ -97,9 +81,6 @@ public class MainPage extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 글짜 크기 조절
-        getStandardSize();
-        binding.mainpagetext.setTextSize((float) (standardSize_X / 23));
 
         // 회원 가입 후 최초 접속 시에 알람 설정 다이얼로그 띄워주기
         if (firsTime.getString("firstTime", "").equals("firstTime")) {
@@ -109,14 +90,7 @@ public class MainPage extends AppCompatActivity {
             builder.setNegativeButton("아니요", null);
             builder.setPositiveButton("예", dialogListener);
             AlertDialog alertDialog = builder.show();
-            // 메시지 크기 조절
-            TextView messageText = alertDialog.findViewById(android.R.id.message);
-            messageText.setTextSize((float) (standardSize_X / 24));
-            // 버튼 크기 조절
-            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
-            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextSize((float) (standardSize_X / 25));
             alertDialog.show();
-
             // 최초가 아니게 설정 - 다음부턴 안 뜸.
             firstTimeEdit.putString("firstTime", "");
             firstTimeEdit.commit();
