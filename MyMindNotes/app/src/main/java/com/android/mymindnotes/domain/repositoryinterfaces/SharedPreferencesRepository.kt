@@ -16,10 +16,13 @@ interface SharedPreferencesRepository {
 
     suspend fun saveUserIndextoUserSharedPreferences(index: Int)
 
+    suspend fun saveFirstTimetoFirstTimeSharedPreferences(boolean: Boolean)
+
     // AutoLoginCheck 값을 저장하는 변수
     val autoLoginCheck: SharedFlow<Boolean>
     val autoSaveCheck: SharedFlow<Boolean>
     val id: SharedFlow<String>
     val password: SharedFlow<String>
+
 
 }

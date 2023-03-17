@@ -83,7 +83,7 @@ public class MainPage extends AppCompatActivity {
 
 
         // 회원 가입 후 최초 접속 시에 알람 설정 다이얼로그 띄워주기
-        if (firsTime.getString("firstTime", "").equals("firstTime")) {
+        if (firsTime.getBoolean("firstTime", false)) {
             // 다이얼로그 띄우기
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("하루에 한 번 일기 쓰기를 위한 알람을 설정하시겠어요?");

@@ -93,4 +93,8 @@ class UseSharedPreferencesUseCase @Inject constructor(
         repository.saveUserIndextoUserSharedPreferences(index)
     }
 
+    suspend fun saveFirstTime(boolean: Boolean) {
+        repository.saveFirstTimetoFirstTimeSharedPreferences(boolean)
+    }
+
 }

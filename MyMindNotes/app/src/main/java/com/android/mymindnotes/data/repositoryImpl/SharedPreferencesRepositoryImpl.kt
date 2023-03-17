@@ -37,6 +37,9 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
     private val sharedPreferenceforUser = dataSource.sharedPreferenceforUser
     private val sharedPreferenceforUserEditor = sharedPreferenceforUser.edit()
 
+    private val sharedPreferenceforFirstTime = dataSource.sharedPreferenceforFirstTime
+    private val sharedPreferenceforFirstTimeEditor = sharedPreferenceforFirstTime.edit()
+
     // get methods
     override suspend fun getAutoLoginCheckfromAutoSaveSharedPreferences() {
         Log.e("확인", "Repository - 메서드 호출")
@@ -73,6 +76,10 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun saveUserIndextoUserSharedPreferences(index: Int) {
         sharedPreferenceforUserEditor.putInt("userindex", index).commit()
+    }
+
+    override suspend fun saveFirstTimetoFirstTimeSharedPreferences(boolean: Boolean) {
+        sharedPreferenceforFirstTimeEditor.putBoolean("firstTime", boolean).commit()
     }
 
 }

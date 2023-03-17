@@ -1,6 +1,6 @@
 package com.android.mymindnotes.domain.usecase
 
-import com.android.mymindnotes.domain.repositoryinterfaces.LogInandOutRepository
+import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LogInandOutUseCase @Inject constructor(
-    private val repository: LogInandOutRepository,
+    private val repository: MemberRepository,
     @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
 ) {
 
