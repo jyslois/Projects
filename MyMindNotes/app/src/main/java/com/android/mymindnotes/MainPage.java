@@ -92,7 +92,7 @@ public class MainPage extends AppCompatActivity {
             AlertDialog alertDialog = builder.show();
             alertDialog.show();
             // 최초가 아니게 설정 - 다음부턴 안 뜸.
-            firstTimeEdit.putString("firstTime", "");
+            firstTimeEdit.putBoolean("firstTime", true);
             firstTimeEdit.commit();
         }
 
