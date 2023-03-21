@@ -34,7 +34,7 @@ class MainPage : AppCompatActivity() {
         setContentView(binding.root)
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
+        Glide.with(this).load(R.drawable.mainpagebackground2).into(binding!!.background)
         // 메뉴 이미지
         binding.mainmenu.setColorFilter(Color.parseColor("#BCFFD7CE"))
 
@@ -76,6 +76,7 @@ class MainPage : AppCompatActivity() {
                     }
                 }
 
+
                 // 최초 접속 시에 알람 설정 다이얼로그 띄워주기
                 // 최초 값 구독
                 launch {
@@ -109,18 +110,20 @@ class MainPage : AppCompatActivity() {
 
     }
 
-    var initTime = 0L
     // 뒤로가기 버튼 클릭
+    var initTime = 0L
     override fun onBackPressed() {
-        if (System.currentTimeMillis() - initTime > 3000) {
-            // 메세지 띄우기
-            val toast = Toast.makeText(baseContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
-            toast.show()
-            // 현재 시간을 initTime에 지정
-            initTime = System.currentTimeMillis()
-        } else {
-            // 3초 이내에 BackButton이 두 번 눌린 경우 앱 종료
-            finishAffinity()
+        lifecycleScope.launch {
+            if (System.currentTimeMillis() - initTime > 3000) {
+                // 메세지 띄우기
+                val toast = Toast.makeText(baseContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
+                toast.show()
+                // 현재 시간을 initTime에 지정
+                initTime = System.currentTimeMillis()
+            } else {
+                // 3초 이내에 BackButton이 두 번 눌린 경우 앱 종료
+                finishAffinity()
+            }
         }
     }
 
