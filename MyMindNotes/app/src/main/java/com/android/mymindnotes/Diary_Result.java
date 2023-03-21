@@ -53,9 +53,6 @@ public class Diary_Result extends AppCompatActivity {
     SharedPreferences userindex;
     ArrayList<UserDiary> diarylist;
 
-    // 화면 크기에 따른 글자 크기 조절
-    int standardSize_X, standardSize_Y;
-    float density;
 
     // viewpager2, tablayout
     ViewPager2 viewPager2;
@@ -63,29 +60,11 @@ public class Diary_Result extends AppCompatActivity {
     private String[] tabs = new String[]{"상황", "생각", "감정", "회고"};
     ViewPager2Adapter adapter;
 
-    // 화면 크기에 따라서 글자 사이즈 조절하기
-    public Point getScreenSize(Activity activity) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
 
-        return size;
-    }
-    public void getStandardSize() {
-        Point ScreenSize = getScreenSize(this);
-        density  = getResources().getDisplayMetrics().density;
-
-        standardSize_X = (int) (ScreenSize.x / density);
-        standardSize_Y = (int) (ScreenSize.y / density);
-    }
-
-    private ActivityResultLauncher editResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),new ActivityResultCallback<ActivityResult>(){
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                // 서버를 요청해서 갱신 처리할수도 있고, 자체적으로 갱신처리도 가능.
-                refreshDiary();
-            }
+    private ActivityResultLauncher editResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            // 서버를 요청해서 갱신 처리할수도 있고, 자체적으로 갱신처리도 가능.
+            refreshDiary();
         }
     });
 
@@ -133,13 +112,6 @@ public class Diary_Result extends AppCompatActivity {
         // 오늘 날짜 뿌리기
         binding.date.setText(date + " ");
 
-        // 글짜 크기 조절
-        getStandardSize();
-        binding.type.setTextSize((float) (standardSize_X / 25));
-        binding.date.setTextSize((float) (standardSize_X / 25));
-        binding.deleteButton.setTextSize((float) (standardSize_X / 25));
-        binding.editButton.setTextSize((float) (standardSize_X / 25));
-        binding.backtoListButton.setTextSize((float) (standardSize_X / 25));
 
         // viewPager2와 tablayout 세팅
         tabLayout = binding.tabLayout;
