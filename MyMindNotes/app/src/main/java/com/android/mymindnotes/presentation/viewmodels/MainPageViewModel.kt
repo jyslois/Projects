@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.GetUserInfoUseCase
 import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
 import com.android.mymindnotes.hilt.module.IoDispatcher
-import com.bumptech.glide.Glide.init
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -55,12 +54,14 @@ class MainPageViewModel @Inject constructor(
                 // 회원정보 값 collect & emit
                 getUserInfoUseCase.userInfo.collect {
                     _userInfo.emit(it)
+                    Log.e("UserInfoCheck", "결과 emit - ViewModel, 결과: $it")
                 }
             }
 
             launch {
                 // (서버) 최초 접속 여부 불러오는 함수 호출
                 useSharedPreferencesUseCase.getFirstTime()
+                Log.e("FirstTimeCheck", "함수 호출 -> ViewModel")
             }
 
             launch {

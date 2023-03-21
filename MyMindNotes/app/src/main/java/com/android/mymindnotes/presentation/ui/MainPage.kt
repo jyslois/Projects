@@ -59,28 +59,6 @@ class MainPage : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 클릭 이벤트 감지
-                // 일기 쓰기 버튼 클릭 이벤트 감지
-                launch {
-                    viewModel.clickAddRecordButton.collect {
-                        if (it) {
-                            val intent = Intent(applicationContext, RecordMindChoice::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
-
-                // 메뉴 버튼 클릭 이벤트 감지
-                launch {
-                    viewModel.clickMainMenuButton.collect {
-                        if (it) {
-                            val intent = Intent(applicationContext, MainMenu::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
-
-
                 // 최초 접속 시에 알람 설정 다이얼로그 띄워주기
                 // 최초 값 구독
                 launch {
@@ -105,6 +83,27 @@ class MainPage : AppCompatActivity() {
                     }
                 }
 
+                // 클릭 이벤트 감지
+                // 일기 쓰기 버튼 클릭 이벤트 감지
+                launch {
+                    viewModel.clickAddRecordButton.collect {
+                        if (it) {
+                            val intent = Intent(applicationContext, RecordMindChoice::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
+
+                // 메뉴 버튼 클릭 이벤트 감지
+                launch {
+                    viewModel.clickMainMenuButton.collect {
+                        if (it) {
+                            val intent = Intent(applicationContext, MainMenu::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
+
             }
         }
 
@@ -116,7 +115,8 @@ class MainPage : AppCompatActivity() {
         lifecycleScope.launch {
             if (System.currentTimeMillis() - initTime > 3000) {
                 // 메세지 띄우기
-                val toast = Toast.makeText(applicationContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
+                val toast =
+                    Toast.makeText(applicationContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
                 toast.show()
                 // 현재 시간을 initTime에 지정
                 initTime = System.currentTimeMillis()

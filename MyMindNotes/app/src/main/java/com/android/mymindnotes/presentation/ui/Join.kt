@@ -173,7 +173,7 @@ class Join : AppCompatActivity() {
                         val emailInput = binding.emailInput.text.toString()
                         val passwordInput = binding.passwordInput.text.toString()
                         val passwordReTypeInput = binding.passwordRetypeInput.text.toString()
-                        val birthyearInput = binding.birthyearInput.text.toString().toInt()
+                        val birthyearInput = binding.birthyearInput.text.toString()
 
                         // 형식 체크
                         // 만약 이메일이나 페스워드를 적지 않았다면
@@ -189,10 +189,10 @@ class Join : AppCompatActivity() {
                         } else if (nickNameInput == "") {
                             dialog("닉네임을 입력해 주세요")
                             // 생년을 입력하지 않았다면
-                        } else if (birthyearInput.toString() == "") {
+                        } else if (birthyearInput == null || birthyearInput == "") {
                             dialog("태어난 년도를 력해 주세요")
                             // 생년의 형식이 잘못되었다면
-                        } else if (birthyearInput < 1901 || birthyearInput > 2155) {
+                        } else if (birthyearInput.toInt() < 1901 || birthyearInput.toInt() > 2155) {
                             dialog("생년은 1901~2155 사이여야 합니다")
                             // 이메일 중복확인을 하지 않았다면
                         } else if (!emailCheck) {
