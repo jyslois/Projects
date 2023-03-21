@@ -17,11 +17,11 @@ import android.view.Display;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.mymindnotes.data.retrofit.CheckNickNameApi;
 import com.android.mymindnotes.databinding.ActivityChangeNicknameBinding;
 import com.android.mymindnotes.model.ChangeUserNickname;
 import com.android.mymindnotes.model.retrofit.ChangeNicknameApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
+import com.android.mymindnotes.presentation.ui.MainPage;
 import com.bumptech.glide.Glide;
 
 import java.util.Map;

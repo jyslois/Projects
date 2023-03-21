@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.model.retrofit.DeleteUserApi;
-import com.android.mymindnotes.model.retrofit.GetUserInfoApi;
+import com.android.mymindnotes.data.retrofit.api.user.GetUserInfoApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.android.mymindnotes.presentation.ui.MainActivity;
 import com.bumptech.glide.Glide;
@@ -60,7 +60,7 @@ public class AccountInformation extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getUserInfo();
+//        getUserInfo();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AccountInformation extends AppCompatActivity {
         autoSaveEdit = auto.edit();
 
         userindex = getSharedPreferences("user", Activity.MODE_PRIVATE);
-        getUserInfo();
+//        getUserInfo();
         alarm = getSharedPreferences("alarm", Activity.MODE_PRIVATE);
         alarmEdit = alarm.edit();
         timeSave = getSharedPreferences("time", Activity.MODE_PRIVATE);
@@ -141,31 +141,31 @@ public class AccountInformation extends AppCompatActivity {
         }
     };
 
-    // 네트워크 통신: 회원 정보 가져오기
-    public void getUserInfo() {
-            // Retrofit 객체 생성
-            RetrofitService retrofitService = new RetrofitService();
-            // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
-            GetUserInfoApi getUserInfoApi = retrofitService.getRetrofit().create(GetUserInfoApi.class);
-            // Call 객체 획득
-            Call<Map<String, Object>> call = getUserInfoApi.getUserInfo(userindex.getInt("userindex", 0));
-            // 네트워킹 시도
-            call.enqueue(new Callback<Map<String, Object>>() {
-                @Override
-                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                    // 이메일, 닉네임, 생년 세팅
-                    binding.email.setText(String.valueOf(response.body().get("email")));
-                    binding.nickname.setText((String.valueOf(response.body().get("nickname"))));
-                    int birthyear = (int) Double.parseDouble(String.valueOf((response.body().get("birthyear"))));
-                    binding.birthyear.setText(String.valueOf(birthyear));
-                }
-                @Override
-                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-    }
+//    // 네트워크 통신: 회원 정보 가져오기
+//    public void getUserInfo() {
+//            // Retrofit 객체 생성
+//            RetrofitService retrofitService = new RetrofitService();
+//            // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
+//            GetUserInfoApi getUserInfoApi = retrofitService.getRetrofit().create(GetUserInfoApi.class);
+//            // Call 객체 획득
+//            Call<Map<String, Object>> call = getUserInfoApi.getUserInfo(userindex.getInt("userindex", 0));
+//            // 네트워킹 시도
+//            call.enqueue(new Callback<Map<String, Object>>() {
+//                @Override
+//                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+//                    // 이메일, 닉네임, 생년 세팅
+//                    binding.email.setText(String.valueOf(response.body().get("email")));
+//                    binding.nickname.setText((String.valueOf(response.body().get("nickname"))));
+//                    int birthyear = (int) Double.parseDouble(String.valueOf((response.body().get("birthyear"))));
+//                    binding.birthyear.setText(String.valueOf(birthyear));
+//                }
+//                @Override
+//                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+//                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//            });
+//    }
 
     // 네트워크 통신: 회원 탈퇴 처리
     public void deleteUser() {

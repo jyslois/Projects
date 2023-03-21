@@ -4,10 +4,7 @@ import android.util.Log
 import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +28,9 @@ class UseSharedPreferencesUseCase @Inject constructor(
     // Password 값을 저장하는 SharedFlow
     private val _password = MutableSharedFlow<String>()
     val password = _password.asSharedFlow()
+    // FirstTime 값 저장하는 SharedFlow
+    private val _firstTime = MutableSharedFlow<Boolean>()
+    val firstTime: SharedFlow<Boolean> get() = _firstTime.asSharedFlow()
 
     // get methods
     suspend fun getAutoLogin() {
@@ -44,6 +44,14 @@ class UseSharedPreferencesUseCase @Inject constructor(
 
     suspend fun getIdAndPassword() {
         repository.getIdAndPasswordfromAutoSaveSharedPreferences()
+    }
+
+    suspend fun getUserIndex() {
+        repository.getUserIndexfromUserSharedPreferences()
+    }
+
+    suspend fun getFirstTime() {
+        repository.getFirstTimefromFirstTimeSharedPreferences()
     }
 
     // emit values got from Sharedpreference
@@ -71,6 +79,12 @@ class UseSharedPreferencesUseCase @Inject constructor(
             launch {
                 repository.password.collect {
                     _password.emit(it)
+                }
+            }
+
+            launch {
+                repository.firstTime.collect {
+                    _firstTime.emit(it)
                 }
             }
         }

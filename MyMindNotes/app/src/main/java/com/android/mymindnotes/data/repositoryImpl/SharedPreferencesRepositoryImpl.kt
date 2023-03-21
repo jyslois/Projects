@@ -4,6 +4,7 @@ import android.util.Log
 import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,6 +30,14 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
     // Password 값을 저장하는 SharedFlow
     private val _password = MutableSharedFlow<String>()
     override val password = _password.asSharedFlow()
+
+    // UserIndex 값을 저장하는 SharedFlow
+    private val _userIndex = MutableSharedFlow<Int>()
+    override val userIndex: SharedFlow<Int> get() = _userIndex.asSharedFlow()
+
+    // FirstTime 값 저장하는 SharedFlow
+    private val _firstTime = MutableSharedFlow<Boolean>()
+    override val firstTime: SharedFlow<Boolean> get() = _firstTime.asSharedFlow()
 
     // dataSource의 SharedPreferences에 접근하는 변수
     private val sharedPreferencesforAutoSave = dataSource.sharedPreferencesforAutoSave
@@ -59,6 +68,15 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
         // dataSource의 SharedPreferences에 접근해서 id 값을 가져와 SharedFlow에 emit하기
         sharedPreferencesforAutoSave.getString("password", null)?.let { _password.emit(it) }
     }
+
+    override suspend fun getUserIndexfromUserSharedPreferences() {
+        sharedPreferenceforUser.getInt("userindex", 0).let {_userIndex.emit(it) }
+    }
+
+    override suspend fun getFirstTimefromFirstTimeSharedPreferences() {
+        sharedPreferenceforFirstTime.getBoolean("firstTime", false).let { _firstTime.emit(it) }
+    }
+
 
     // save methods
     override suspend fun saveAutoLoginChecktoAutoSaveSharedPreferences(state: Boolean) {

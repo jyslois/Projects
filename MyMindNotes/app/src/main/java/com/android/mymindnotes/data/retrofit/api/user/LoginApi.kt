@@ -1,4 +1,4 @@
-package com.android.mymindnotes.data.retrofit
+package com.android.mymindnotes.data.retrofit.api.user
 
 import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import retrofit2.http.Body

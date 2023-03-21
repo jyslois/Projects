@@ -15,7 +15,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.FindPassword
-import com.android.mymindnotes.MainPage
 import com.android.mymindnotes.databinding.ActivityLoginBinding
 import com.android.mymindnotes.presentation.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -12,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.MainPage
 import com.android.mymindnotes.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 

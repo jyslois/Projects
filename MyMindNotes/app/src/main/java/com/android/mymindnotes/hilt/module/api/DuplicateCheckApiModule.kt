@@ -1,7 +1,7 @@
 package com.android.mymindnotes.hilt.module.api
 
-import com.android.mymindnotes.data.retrofit.CheckEmailApi
-import com.android.mymindnotes.data.retrofit.CheckNickNameApi
+import com.android.mymindnotes.data.retrofit.api.user.CheckEmailApi
+import com.android.mymindnotes.data.retrofit.api.user.CheckNickNameApi
 import com.android.mymindnotes.data.retrofit.RetrofitService
 import dagger.Module
 import dagger.Provides

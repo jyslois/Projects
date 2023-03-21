@@ -13,6 +13,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.android.mymindnotes.presentation.ui.RecordMindChoice;
+
 public class NotificationHelper extends ContextWrapper {
 
     static final String channelId = "Alarm";

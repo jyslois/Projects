@@ -8,17 +8,11 @@ import com.android.mymindnotes.R
 import android.text.TextWatcher
 import android.text.Editable
 import android.graphics.Color
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.MainPage
-import com.android.mymindnotes.data.retrofit.CheckEmailApi
-import com.android.mymindnotes.data.retrofit.JoinApi
-import com.android.mymindnotes.data.retrofit.RetrofitService
-import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.databinding.ActivityJoinBinding
 import com.android.mymindnotes.presentation.viewmodels.JoinViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -122,7 +122,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".RecordMindChoice"
+            android:name=".presentation.ui.RecordMindChoice"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
@@ -134,7 +134,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".MainPage"
+            android:name=".presentation.ui.MainPage"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

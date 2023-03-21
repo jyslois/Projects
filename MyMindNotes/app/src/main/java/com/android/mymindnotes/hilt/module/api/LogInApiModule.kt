@@ -1,6 +1,6 @@
 package com.android.mymindnotes.hilt.module.api
 
-import com.android.mymindnotes.data.retrofit.LoginApi
+import com.android.mymindnotes.data.retrofit.api.user.LoginApi
 import com.android.mymindnotes.data.retrofit.RetrofitService
 import dagger.Module
 import dagger.Provides

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Display;
 
 import com.android.mymindnotes.databinding.ActivityMainMenuBinding;
+import com.android.mymindnotes.presentation.ui.RecordMindChoice;
 import com.bumptech.glide.Glide;
 
 
