@@ -33,11 +33,12 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 
     // UserIndex 값을 저장하는 SharedFlow
     private val _userIndex = MutableSharedFlow<Int>()
-    override val userIndex: SharedFlow<Int> get() = _userIndex.asSharedFlow()
+    override val userIndex = _userIndex.asSharedFlow()
+    //override val userIndex: SharedFlow<Int> get() = _userIndex.asSharedFlow()
 
     // FirstTime 값 저장하는 SharedFlow
     private val _firstTime = MutableSharedFlow<Boolean>()
-    override val firstTime: SharedFlow<Boolean> get() = _firstTime.asSharedFlow()
+    override val firstTime = _firstTime.asSharedFlow()
 
     // dataSource의 SharedPreferences에 접근하는 변수
     private val sharedPreferencesforAutoSave = dataSource.sharedPreferencesforAutoSave
@@ -51,10 +52,8 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 
     // get methods
     override suspend fun getAutoLoginCheckfromAutoSaveSharedPreferences() {
-        Log.e("확인", "Repository - 메서드 호출")
         // dataSource의 SharedPreferences에 접근해서 autoLoginCheck 값을 가져와 SharedFlow에 emit하기
         _autoLoginCheck.emit(sharedPreferencesforAutoSave.getBoolean("autoLoginCheck", false))
-        Log.e("확인", "Repository - 가져온 값 emit")
     }
 
     override suspend fun getAutoSaveCheckfromAutoSaveSharedPreferences() {
@@ -75,6 +74,7 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun getFirstTimefromFirstTimeSharedPreferences() {
         sharedPreferenceforFirstTime.getBoolean("firstTime", false).let { _firstTime.emit(it) }
+        Log.e("FirstTimeCheck", "결과 emit - Repository")
     }
 
 

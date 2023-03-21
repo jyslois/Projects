@@ -223,7 +223,7 @@
                 android:background="@drawable/rounded_border"
                 android:backgroundTint="#ABF8E6D8"
                 android:hint="태어난 년도"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:paddingLeft="15dp"
                 android:textSize="14.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/joinButton"

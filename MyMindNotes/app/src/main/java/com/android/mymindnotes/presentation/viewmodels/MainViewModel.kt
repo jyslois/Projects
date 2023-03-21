@@ -35,15 +35,12 @@ class MainViewModel @Inject constructor(
             launch {
                 // useCase의 SharedFlow에 저장된 값 관찰해서 viewModel의 SharedFlow에 방출하기.
                 useCase.autoLoginCheck.collect {
-                    Log.e("확인", "MainViewModel - emit 전")
                     _autoLoginCheck.emit(it)
-                    Log.e("확인", "MainViewModel - emit 됨")
                 }
             }
 
             launch {
                 // useCase의 메서드 자동 호출. - SharedPreference에 저장된 autoLoginCheck값을 가져오기 위한.
-                Log.e("확인", "MainViewModel - 메서드호출")
                 useCase.getAutoLogin()
             }
         }

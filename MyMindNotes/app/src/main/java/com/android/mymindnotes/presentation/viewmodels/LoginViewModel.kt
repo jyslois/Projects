@@ -98,11 +98,6 @@ class LoginViewModel @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             launch {
-                shared_useCase.getAutoLogin()
-                shared_useCase.getAutoSave()
-            }
-
-            launch {
                 // useCase의 SharedFlow에 저장된 값 관찰해서 viewModel의 SharedFlow에 방출하기.
                 shared_useCase.autoSaveCheck.collect {
                     _autoSaveCheck.emit(it)
@@ -113,6 +108,11 @@ class LoginViewModel @Inject constructor(
                 shared_useCase.autoLoginCheck.collect {
                     _autoLoginCheck.emit(it)
                 }
+            }
+
+            launch {
+                shared_useCase.getAutoLogin()
+                shared_useCase.getAutoSave()
             }
 
             launch {

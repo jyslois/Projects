@@ -15,7 +15,7 @@ class UseSharedPreferencesUseCase @Inject constructor(
 
     // autoLoginCheck 값을 저장하는 SharedFlow
     private val _autoLoginCheck = MutableSharedFlow<Boolean>()
-    val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
+    val autoLoginCheck = _autoLoginCheck.asSharedFlow()
     // autoSave 값을 저장하는 SharedFlow
     private val _autoSaveCheck = MutableSharedFlow<Boolean>()
     val autoSaveCheck = _autoSaveCheck.asSharedFlow()
@@ -30,11 +30,10 @@ class UseSharedPreferencesUseCase @Inject constructor(
     val password = _password.asSharedFlow()
     // FirstTime 값 저장하는 SharedFlow
     private val _firstTime = MutableSharedFlow<Boolean>()
-    val firstTime: SharedFlow<Boolean> get() = _firstTime.asSharedFlow()
+    val firstTime = _firstTime.asSharedFlow()
 
     // get methods
     suspend fun getAutoLogin() {
-        Log.e("확인", "UseCase - 메서드 호출")
         repository.getAutoLoginCheckfromAutoSaveSharedPreferences()
     }
 
@@ -60,7 +59,6 @@ class UseSharedPreferencesUseCase @Inject constructor(
             launch {
                 repository.autoLoginCheck.collect {
                     _autoLoginCheck.emit(it)
-                    Log.e("확인", "UseCase - emit 됨")
                 }
             }
 
@@ -85,6 +83,7 @@ class UseSharedPreferencesUseCase @Inject constructor(
             launch {
                 repository.firstTime.collect {
                     _firstTime.emit(it)
+                    Log.e("FirstTimeCheck", "결과 emit - UseCase, 결과: $it")
                 }
             }
         }

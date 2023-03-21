@@ -202,7 +202,7 @@ class Join : AppCompatActivity() {
                             dialog("닉네임 중복확인을 해주세요")
                             // 형식체크 통과
                         } else {
-                            viewModel.join(emailInput, nickNameInput, passwordInput, birthyearInput)
+                            viewModel.join(emailInput, nickNameInput, passwordInput, birthyearInput.toInt())
                         }
                     }
                 }

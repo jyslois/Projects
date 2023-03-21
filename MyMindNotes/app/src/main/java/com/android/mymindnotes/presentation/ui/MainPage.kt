@@ -6,6 +6,8 @@ import android.content.Intent
 import com.android.mymindnotes.AlarmSetting
 import android.os.Bundle
 import android.graphics.Color
+import android.os.Build.VERSION_CODES.P
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import com.android.mymindnotes.MainMenu
@@ -27,6 +29,8 @@ class MainPage : AppCompatActivity() {
     // viewModel 객체 주입
     private val viewModel: MainPageViewModel by viewModels()
 
+    // 다이얼로그 변수
+    lateinit var alertDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,7 @@ class MainPage : AppCompatActivity() {
         setContentView(binding.root)
 
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.mainpagebackground2).into(binding!!.background)
+        Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
         // 메뉴 이미지
         binding.mainmenu.setColorFilter(Color.parseColor("#BCFFD7CE"))
 
@@ -81,15 +85,11 @@ class MainPage : AppCompatActivity() {
                 // 최초 값 구독
                 launch {
                     viewModel.firstTime.collect {
+                        Log.e("FirstTimeCheck", "결과 최종으로 돌어옴 - 결과: $it")
                         if (it) {
+                            Log.e("FirstTimeCheck", "결과 최종 - true일 경우. 완료")
                             // 다이얼로그 띄우기
-                            val builder = AlertDialog.Builder(baseContext)
-                            builder.setMessage("하루에 한 번 일기 쓰기를 위한 알람을 설정하시겠어요?")
-                            builder.setNegativeButton("아니요", null)
-                            builder.setPositiveButton("예", dialogListener)
-                            val alertDialog = builder.show()
-                            alertDialog.show()
-                            // 최초 접속 값 false로 변경 (다음부터 안 뜨게)
+                            setAlarmDialog()
                             viewModel.saveFirstTime(false)
                         }
                     }
@@ -116,7 +116,7 @@ class MainPage : AppCompatActivity() {
         lifecycleScope.launch {
             if (System.currentTimeMillis() - initTime > 3000) {
                 // 메세지 띄우기
-                val toast = Toast.makeText(baseContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(applicationContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
                 toast.show()
                 // 현재 시간을 initTime에 지정
                 initTime = System.currentTimeMillis()
@@ -130,10 +130,19 @@ class MainPage : AppCompatActivity() {
     var dialogListener = DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // 알람 설정 페이지로 이동
-            val intent = Intent(applicationContext, AlarmSetting::class.java)
+            val intent = Intent(this, AlarmSetting::class.java)
             startActivity(intent)
         }
     }
 
+    // 알림 설정 dialoguee
+    fun setAlarmDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("하루에 한 번 일기 쓰기를 위한 알람을 설정하시겠어요?")
+        builder.setNegativeButton("아니요", null)
+        builder.setPositiveButton("예", dialogListener)
+        alertDialog = builder.show()
+        alertDialog.show()
+    }
 
 }
