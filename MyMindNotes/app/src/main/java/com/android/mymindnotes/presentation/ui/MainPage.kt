@@ -6,11 +6,9 @@ import android.content.Intent
 import com.android.mymindnotes.AlarmSetting
 import android.os.Bundle
 import android.graphics.Color
-import android.os.Build.VERSION_CODES.P
 import android.util.Log
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
-import com.android.mymindnotes.MainMenu
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -78,7 +76,7 @@ class MainPage : AppCompatActivity() {
                 launch {
                     viewModel.userInfo.collect {
                         // 닉네임 세팅
-                        val nick = it["nickname"] as String?
+                        val nick = it["nickname"] as String
                         binding.mainpagetext.text = "오늘 하루도 고생했어요, $nick 님."
                     }
                 }

@@ -8,6 +8,7 @@ import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import java.util.Objects
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
@@ -72,6 +73,17 @@ class MemberRepositoryImpl @Inject constructor(
         val user = UserInfo(email, nickname, password, birthyear)
         val result = memberDataSource.joinApi.addUser(user)
         _joinResult.emit(result)
+    }
+
+    // 회원탈퇴
+    // 회원탈퇴 결과 저장 플로우
+    private val _deleteUserResult = MutableSharedFlow<Map<String, Object>>()
+    override val deleteUserResult = _deleteUserResult.asSharedFlow()
+
+    // (서버) 회원탈퇴
+    override suspend fun deleteUser() {
+        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
+        memberDataSource.deleteUserApi.deleteUser(userIndex).let { _deleteUserResult.emit(it) }
     }
 
 

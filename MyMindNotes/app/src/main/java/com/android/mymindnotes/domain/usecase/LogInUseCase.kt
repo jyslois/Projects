@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LogInandOutUseCase @Inject constructor(
+class LogInUseCase @Inject constructor(
     private val repository: MemberRepository,
     @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
 ) {

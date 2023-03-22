@@ -39,7 +39,7 @@
             android:name=".AlarmSetting"
             android:exported="false"
             android:label="알림 설정"
-            android:parentActivityName=".MainMenu"
+            android:parentActivityName=".presentation.ui.MainMenu"
             android:theme="@style/Theme.changeScreen" />
         <activity
             android:name=".EmotionInstructionSortingPopup"
@@ -60,20 +60,20 @@
             android:name=".ChangeNickname"
             android:exported="false"
             android:label="닉네임 변경"
-            android:parentActivityName=".AccountInformation"
+            android:parentActivityName=".presentation.ui.AccountSetting"
             android:theme="@style/Theme.changeScreen" />
         <activity
             android:name=".ChangePassword"
             android:exported="false"
             android:label="비밀번호 변경"
-            android:parentActivityName=".AccountInformation"
+            android:parentActivityName=".presentation.ui.AccountSetting"
             android:theme="@style/Theme.changeScreen" />
         <activity
-            android:name=".AccountInformation"
+            android:name=".presentation.ui.AccountSetting"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".MainMenu"
+            android:name=".presentation.ui.MainMenu"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

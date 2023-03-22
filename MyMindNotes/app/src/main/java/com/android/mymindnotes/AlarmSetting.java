@@ -42,7 +42,7 @@ public class AlarmSetting extends AppCompatActivity {
     private static PendingIntent pendingIntent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAlarmSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -274,7 +274,7 @@ public class AlarmSetting extends AppCompatActivity {
     }
 
     // 알람 중지
-    static void stopAlarm(Context context) {
+    public static void stopAlarm(Context context) {
         // 알람 메니져 선언
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 

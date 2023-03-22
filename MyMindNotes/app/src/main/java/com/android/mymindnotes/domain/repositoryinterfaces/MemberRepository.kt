@@ -21,4 +21,8 @@ interface MemberRepository {
     // Join
     suspend fun join(email: String, nickname: String, password: String, birthyear: Int)
     val joinResult: SharedFlow<Map<String, Object>>
+
+    // Delete
+    suspend fun deleteUser()
+    val deleteUserResult: SharedFlow<Map<String, Object>>
 }

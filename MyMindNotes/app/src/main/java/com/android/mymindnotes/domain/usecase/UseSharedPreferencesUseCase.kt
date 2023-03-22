@@ -110,4 +110,9 @@ class UseSharedPreferencesUseCase @Inject constructor(
         repository.saveFirstTimetoFirstTimeSharedPreferences(boolean)
     }
 
+    // clear sharedpreferences
+    suspend fun clearAutoSaveSharedPreferences() {
+        repository.clearAutoSaveSharedPreferences()
+    }
+
 }

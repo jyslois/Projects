@@ -112,12 +112,12 @@
                 android:textColor="#ECCDB6"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/accountsettingButton"
+                app:layout_constraintBottom_toTopOf="@id/accountSettingButton"
                 app:layout_constraintHeight_percent="0.05"
                 app:layout_constraintTop_toBottomOf="@id/emotionInstructionButton" />
 
             <Button
-                android:id="@+id/accountsettingButton"
+                android:id="@+id/accountSettingButton"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
@@ -126,14 +126,14 @@
                 android:textAlignment="viewStart"
                 android:textColor="#ECCDB6"
                 android:textSize="15dp"
-                app:layout_constraintBottom_toTopOf="@+id/alarmsettingButton"
+                app:layout_constraintBottom_toTopOf="@+id/alarmSettingButton"
                 app:layout_constraintHeight_percent="0.08"
                 app:layout_constraintTop_toBottomOf="@+id/settingTitle"
                 app:layout_constraintVertical_bias="0.5" />
 
 
             <Button
-                android:id="@+id/alarmsettingButton"
+                android:id="@+id/alarmSettingButton"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="#00ff0000"
@@ -143,7 +143,7 @@
                 android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_percent="0.08"
-                app:layout_constraintTop_toBottomOf="@+id/accountsettingButton"
+                app:layout_constraintTop_toBottomOf="@+id/accountSettingButton"
                 app:layout_constraintVertical_bias="0.5" />
 
 

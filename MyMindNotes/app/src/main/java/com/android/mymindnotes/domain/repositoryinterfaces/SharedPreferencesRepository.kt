@@ -20,6 +20,9 @@ interface SharedPreferencesRepository {
 
     suspend fun saveFirstTimetoFirstTimeSharedPreferences(boolean: Boolean)
 
+    // clear SharedPreferences
+    suspend fun clearAutoSaveSharedPreferences()
+
     // get methods의 결과 값들을 저장하는 변수
     val autoLoginCheck: SharedFlow<Boolean>
     val autoSaveCheck: SharedFlow<Boolean>

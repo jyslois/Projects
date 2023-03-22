@@ -100,4 +100,10 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
         sharedPreferenceforFirstTimeEditor.putBoolean("firstTime", boolean).commit()
     }
 
+
+    // clear sharedpreferencs
+    override suspend fun clearAutoSaveSharedPreferences() {
+        sharedPreferencesforAutoSaveEditor.clear().commit()
+    }
+
 }
