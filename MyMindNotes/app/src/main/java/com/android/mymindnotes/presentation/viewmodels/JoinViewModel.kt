@@ -133,5 +133,21 @@ class JoinViewModel @Inject constructor(
         useSharedPreferencesUseCase.saveAutoSaveCheck(state)
     }
 
+    // textChange
+    // textChange 감지를 위한 SharedFlow
+    private val _emailInputTextChange = MutableSharedFlow<Boolean>()
+    val emailInputTextChange = _emailInputTextChange.asSharedFlow()
+
+    private val _nickNameInputTextChange = MutableSharedFlow<Boolean>()
+    val nickNameInputTextChange = _nickNameInputTextChange.asSharedFlow()
+
+    // textChange 감지 함수
+    suspend fun emailInputTextChange() {
+        _emailInputTextChange.emit(true)
+    }
+
+    suspend fun nickNameInputTextChange() {
+        _nickNameInputTextChange.emit(true)
+    }
 
 }

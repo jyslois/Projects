@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
 
 //     autoLoginCheck 값을 저장하는 SharedFlow
-    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
+    private val _autoLoginCheck = MutableSharedFlow<Boolean>(replay = 1)
     val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
 
     // 버튼 클릭 감지를 위한 SharedFlow
@@ -33,15 +33,11 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             launch {
-                // useCase의 SharedFlow에 저장된 값 관찰해서 viewModel의 SharedFlow에 방출하기.
-                useCase.autoLoginCheck.collect {
+                // useCase의 getAutoLogin() 함수에 return된 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
+                useCase.getAutoLogin().collect {
                     _autoLoginCheck.emit(it)
+                    Log.e("AutoLoginCheck", "MainViewModel - emit")
                 }
-            }
-
-            launch {
-                // useCase의 메서드 자동 호출. - SharedPreference에 저장된 autoLoginCheck값을 가져오기 위한.
-                useCase.getAutoLogin()
             }
         }
     }

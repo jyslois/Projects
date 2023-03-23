@@ -19,19 +19,19 @@ class LoginViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     // autoSaveCheck 값을 저장하는 SharedFlow
-    private val _autoSaveCheck = MutableSharedFlow<Boolean>()
+    private val _autoSaveCheck = MutableSharedFlow<Boolean>(replay = 1)
     val autoSaveCheck get() = _autoSaveCheck.asSharedFlow()
 
     // autoLoginCheck 값을 저장하는 SharedFlow
-    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
+    private val _autoLoginCheck = MutableSharedFlow<Boolean>(replay = 1)
     val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
 
     // Id 값을 저장하는 SharedFlow
-    private val _id = MutableSharedFlow<String>()
+    private val _id = MutableSharedFlow<String?>(replay = 1)
     val id = _id.asSharedFlow()
 
     // Password 값을 저장하는 SharedFlow
-    private val _password = MutableSharedFlow<String>()
+    private val _password = MutableSharedFlow<String?>(replay = 1)
     val password = _password.asSharedFlow()
 
     // 버튼 상태 저장하는 SharedFlow
@@ -72,9 +72,10 @@ class LoginViewModel @Inject constructor(
     }
 
     // get methods - sharedPreferneces
-    suspend fun getIdAndPassword() {
-        shared_useCase.getIdAndPassword()
-    }
+
+//    suspend fun getIdAndPassword() {
+//        shared_useCase.getIdAndPassword()
+//    }
 
     // save methods - SharedPreferneces
     suspend fun saveAutoLoginCheck(state: Boolean) {
@@ -97,31 +98,39 @@ class LoginViewModel @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             launch {
-                // useCase의 SharedFlow에 저장된 값 관찰해서 viewModel의 SharedFlow에 방출하기.
-                shared_useCase.autoSaveCheck.collect {
+                // useCase의 함수 리턴 값을 구독해서 viewModel의 SharedFlow에 방출하기.
+                shared_useCase.getAutoSave().collect {
                     _autoSaveCheck.emit(it)
                 }
             }
 
             launch {
-                shared_useCase.autoLoginCheck.collect {
+                shared_useCase.getAutoLogin().collect {
                     _autoLoginCheck.emit(it)
                 }
             }
 
-            launch {
-                shared_useCase.getAutoLogin()
-                shared_useCase.getAutoSave()
-            }
+
+//            launch {
+//                shared_useCase.id.collect {
+//                    _id.emit(it)
+//                }
+//            }
+//
+//            launch {
+//                shared_useCase.password.collect {
+//                    _password.emit(it)
+//                }
+//            }
 
             launch {
-                shared_useCase.id.collect {
+                shared_useCase.getId().collect {
                     _id.emit(it)
                 }
             }
 
             launch {
-                shared_useCase.password.collect {
+                shared_useCase.getPassword().collect {
                     _password.emit(it)
                 }
             }

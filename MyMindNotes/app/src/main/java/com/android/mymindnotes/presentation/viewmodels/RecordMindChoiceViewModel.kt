@@ -43,14 +43,9 @@ class RecordMindChoiceViewModel @Inject constructor (
         viewModelScope.launch(ioDispatcher) {
             // 회원정보 값 collect& emit
             launch {
-                getUserInfoUseCase.userInfo.collect {
+                getUserInfoUseCase.getUserInfo().collect {
                     _userInfo.emit(it)
                 }
-            }
-
-            // (서버) 닉네임 세팅을 위해 회원정보 불러오는 함수
-            launch {
-                getUserInfoUseCase.getUserInfo()
             }
         }
     }

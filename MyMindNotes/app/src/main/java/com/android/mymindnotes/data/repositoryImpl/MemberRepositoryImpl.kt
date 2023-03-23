@@ -5,10 +5,7 @@ import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
 import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import java.util.Objects
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
@@ -17,13 +14,14 @@ class MemberRepositoryImpl @Inject constructor(
 ): MemberRepository {
 
     // 회원 정보 가져오기
-    // 회원 정보 값 저장 플로우
-    val _userInfo = MutableSharedFlow<Map<String, Object>>()
-    override val userInfo = _userInfo.asSharedFlow()
+//    // 회원 정보 값 저장 플로우
+//    val _userInfo = MutableSharedFlow<Map<String, Object>>()
+//    override val userInfo = _userInfo.asSharedFlow()
     // (서버) 회원 정보 가져오기
-    override suspend fun getUserInfo() {
+    override suspend fun getUserInfo(): Flow<Map<String, Object>> = flow {
         val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-        memberDataSource.getUserInfoApi.getUserInfo(userIndex).let { _userInfo.emit(it) }
+        val result = memberDataSource.getUserInfoApi.getUserInfo(userIndex)
+        emit(result)
     }
 
     // 로그인, 로그아웃

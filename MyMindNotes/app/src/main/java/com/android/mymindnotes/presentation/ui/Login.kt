@@ -70,15 +70,7 @@ class Login : AppCompatActivity() {
                 // AutoSaveCheck 값 구독 (시작할 때)
                 launch {
                     viewModel.autoSaveCheck.collect {
-                        // 만약 autoSaveCheck 값이 true로 저장되어 있다면,
-                        if (it) {
-                            // 체크박스 상태도 체크로 표시하기
-                            autoSave.isChecked = true
-                            // SharedPreference에 저장된 아이디와 암호를 가져오기(아래에서 구독함)
-                            viewModel.getIdAndPassword()
-                        } else {
-                            autoSave.isChecked = false
-                        }
+                        autoSave.isChecked = it
                     }
                 }
 

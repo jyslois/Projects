@@ -31,15 +31,12 @@ class AccountSetting : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch {
-            viewModel.getUserInfo()
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAccountInformationBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+        setContentView(binding.root)
 
         // 임시
         val alarm = getSharedPreferences("alarm", MODE_PRIVATE)
@@ -47,13 +44,8 @@ class AccountSetting : AppCompatActivity() {
         val timeSave = getSharedPreferences("time", MODE_PRIVATE)
         val timeSaveEdit = timeSave.edit()
 
-        // 회원 정보 가져오기 위한 함수 콜
-        lifecycleScope.launch {
-            viewModel.getUserInfo()
-        }
-
         // gif 이미지를 이미지뷰에 띄우기
-        Glide.with(this).load(R.drawable.mainpagebackground2).into(binding!!.background)
+        Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
 
         // 버튼 클릭 이벤트 함수 콜
         // 비밀번호 변경 클릭

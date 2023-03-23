@@ -12,13 +12,13 @@ class UseSharedPreferencesUseCase @Inject constructor(
     private val repository: SharedPreferencesRepository,
     @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
 ) {
+//    // autoLoginCheck 값을 저장하는 SharedFlow
+//    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
+//    val autoLoginCheck = _autoLoginCheck.asSharedFlow()
+//    // autoSave 값을 저장하는 SharedFlow
+//    private val _autoSaveCheck = MutableSharedFlow<Boolean>()
+//    val autoSaveCheck = _autoSaveCheck.asSharedFlow()
 
-    // autoLoginCheck 값을 저장하는 SharedFlow
-    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
-    val autoLoginCheck = _autoLoginCheck.asSharedFlow()
-    // autoSave 값을 저장하는 SharedFlow
-    private val _autoSaveCheck = MutableSharedFlow<Boolean>()
-    val autoSaveCheck = _autoSaveCheck.asSharedFlow()
     // autoLoginState 값을 저장하는 SharedFlow
     private val _autoLoginState = MutableSharedFlow<Boolean>()
     val autoLoginState = _autoLoginState.asSharedFlow()
@@ -29,25 +29,37 @@ class UseSharedPreferencesUseCase @Inject constructor(
     private val _password = MutableSharedFlow<String>()
     val password = _password.asSharedFlow()
     // FirstTime 값 저장하는 SharedFlow
-    private val _firstTime = MutableSharedFlow<Boolean>()
+    private val _firstTime = MutableSharedFlow<Boolean>(replay = 1)
     val firstTime = _firstTime.asSharedFlow()
 
     // get methods
-    suspend fun getAutoLogin() {
-        repository.getAutoLoginCheckfromAutoSaveSharedPreferences()
+    suspend fun getAutoLogin(): Flow<Boolean> {
+        return repository.getAutoLoginCheckfromAutoSaveSharedPreferences()
     }
 
-    suspend fun getAutoSave() {
-        repository.getAutoSaveCheckfromAutoSaveSharedPreferences()
+    suspend fun getAutoSave(): Flow<Boolean> {
+        return repository.getAutoSaveCheckfromAutoSaveSharedPreferences()
     }
 
-    suspend fun getIdAndPassword() {
-        repository.getIdAndPasswordfromAutoSaveSharedPreferences()
+//    suspend fun getIdAndPassword() {
+//        repository.getIdAndPasswordfromAutoSaveSharedPreferences()
+//    }
+
+    suspend fun getId(): Flow<String?> {
+        return repository.getIdfromAutoSaveSharedPreferences()
+    }
+
+    suspend fun getPassword(): Flow<String?> {
+        return repository.getPasswordfromAutoSaveSharedPreferences()
     }
 
     suspend fun getUserIndex() {
         repository.getUserIndexfromUserSharedPreferences()
     }
+
+//    suspend fun getFirstTime(): Flow<Boolean> {
+//        return repository.getFirstTimefromFirstTimeSharedPreferences()
+//    }
 
     suspend fun getFirstTime() {
         repository.getFirstTimefromFirstTimeSharedPreferences()
@@ -56,29 +68,29 @@ class UseSharedPreferencesUseCase @Inject constructor(
     // emit values got from Sharedpreference
     init {
         ioDispatcherCoroutineScope.launch {
-            launch {
-                repository.autoLoginCheck.collect {
-                    _autoLoginCheck.emit(it)
-                }
-            }
+//            launch {
+//                repository.autoLoginCheck.collect {
+//                    _autoLoginCheck.emit(it)
+//                }
+//            }
 
-            launch {
-                repository.autoSaveCheck.collect {
-                    _autoSaveCheck.emit(it)
-                }
-            }
+//            launch {
+//                repository.autoSaveCheck.collect {
+//                    _autoSaveCheck.emit(it)
+//                }
+//            }
 
-            launch {
-                repository.id.collect {
-                    _id.emit(it)
-                }
-            }
-
-            launch {
-                repository.password.collect {
-                    _password.emit(it)
-                }
-            }
+//            launch {
+//                repository.id.collect {
+//                    _id.emit(it)
+//                }
+//            }
+//
+//            launch {
+//                repository.password.collect {
+//                    _password.emit(it)
+//                }
+//            }
 
             launch {
                 repository.firstTime.collect {

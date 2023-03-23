@@ -75,11 +75,10 @@ class Join : AppCompatActivity() {
         binding.emailInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                emailCheck = false
-                binding.emailCheckButton.text = "중복확인"
-                binding.emailCheckButton.setBackgroundColor(Color.parseColor("#C3BE9F98")) // String으로된 Color값을 Int로 바꾸기
+                lifecycleScope.launch {
+                    viewModel.emailInputTextChange()
+                }
             }
-
             override fun afterTextChanged(s: Editable) {}
         })
 
@@ -87,9 +86,9 @@ class Join : AppCompatActivity() {
         binding.nickNameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                nicknameCheck = false
-                binding.nickNameCheckButton.text = "중복확인"
-                binding.nickNameCheckButton.setBackgroundColor(Color.parseColor("#C3BE9F98")) // String으로된 Color값을 Int로 바꾸기
+                lifecycleScope.launch {
+                    viewModel.nickNameInputTextChange()
+                }
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -232,6 +231,27 @@ class Join : AppCompatActivity() {
                             // 메인 화면 전환
                             val intent = Intent(applicationContext, MainPage::class.java)
                             startActivity(intent)
+                        }
+                    }
+                }
+
+                // textChange 감지 플로우 구독
+                launch {
+                    viewModel.emailInputTextChange.collect {
+                        if (it) {
+                            emailCheck = false
+                            binding.emailCheckButton.text = "중복확인"
+                            binding.emailCheckButton.setBackgroundColor(Color.parseColor("#C3BE9F98")) // String으로된 Color값을 Int로 바꾸기
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.nickNameInputTextChange.collect {
+                        if (it) {
+                            nicknameCheck = false
+                            binding.nickNameCheckButton.text = "중복확인"
+                            binding.nickNameCheckButton.setBackgroundColor(Color.parseColor("#C3BE9F98")) // String으로된 Color값을 Int로 바꾸기
                         }
                     }
                 }

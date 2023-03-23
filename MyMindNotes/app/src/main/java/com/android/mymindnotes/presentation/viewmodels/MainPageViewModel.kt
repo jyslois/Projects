@@ -22,7 +22,7 @@ class MainPageViewModel @Inject constructor(
 
     // 최초 접속 알람 설정 다이얼로그
     // 최초 접속 값을 저장하는 플로우 (생성 시 자동 emit)
-    private val _firstTime = MutableSharedFlow<Boolean>()
+    private val _firstTime = MutableSharedFlow<Boolean>(replay = 1)
     val firstTime = _firstTime.asSharedFlow()
 
     // 닉네임 세팅
@@ -41,36 +41,43 @@ class MainPageViewModel @Inject constructor(
 
 
     init {
-        viewModelScope.launch(ioDispatcher) {
+
+        viewModelScope.launch {
             launch {
+                Log.e("FirstTimeCheck", "viewModel - launch 안에 들어옴")
+                Log.e("FirstTimeCheck", "firstTime - ${useSharedPreferencesUseCase.firstTime}")
                 // 최초 접속 여부 값 collect & emit
                 useSharedPreferencesUseCase.firstTime.collect {
                     _firstTime.emit(it)
-                    Log.e("FirstTimeCheck", "결과 emit - ViewModel, 결과: $it")
                 }
+
+//                useSharedPreferencesUseCase.getFirstTime().collect {
+//                    _firstTime.emit(it)
+//                    Log.e("FirstTimeCheck", "viewModel - emit")
+//                }
             }
 
             launch {
                 // 회원정보 값 collect & emit
-                getUserInfoUseCase.userInfo.collect {
+                getUserInfoUseCase.getUserInfo().collect {
                     _userInfo.emit(it)
-                    Log.e("UserInfoCheck", "결과 emit - ViewModel, 결과: $it")
                 }
             }
 
-            launch {
-                // (서버) 최초 접속 여부 불러오는 함수 호출
-                useSharedPreferencesUseCase.getFirstTime()
-                Log.e("FirstTimeCheck", "함수 호출 -> ViewModel")
-            }
-
-            launch {
-                // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
-                getUserInfoUseCase.getUserInfo()
-            }
+//            launch(ioDispatcher) {
+//                launch {
+//                    // (서버) 최초 접속 여부 불러오는 함수 호출
+//                    useSharedPreferencesUseCase.getFirstTime()
+//                    Log.e("FirstTimeCheck", "함수 호출 -> ViewModel")
+//                }
+//
+//                launch {
+//                    // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
+//                    getUserInfoUseCase.getUserInfo()
+//                }
+//            }
 
         }
-
     }
 
     // 최초 접속 값을 바꾸기 위한 함수 호출

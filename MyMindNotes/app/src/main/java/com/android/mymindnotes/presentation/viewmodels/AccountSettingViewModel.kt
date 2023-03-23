@@ -64,11 +64,6 @@ class AccountSettingViewModel @Inject constructor(
     private val _userInfo = MutableSharedFlow<Map<String, Object>>()
     val userInfo = _userInfo.asSharedFlow()
 
-    // (서버) 회원 정보 가져오기 위한 함수 콜
-    suspend fun getUserInfo() {
-        getUserInfoUseCase.getUserInfo()
-    }
-
     // 회원탈퇴
     // 회원 탈퇴 결과 플로우
     private val _deleteUserResult = MutableSharedFlow<Map<String, Object>>()
@@ -90,7 +85,7 @@ class AccountSettingViewModel @Inject constructor(
 
             // 회원 정보 collect & emit
             launch {
-                getUserInfoUseCase.userInfo.collect {
+                getUserInfoUseCase.getUserInfo().collect {
                     _userInfo.emit(it)
                 }
             }
