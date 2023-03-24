@@ -36,16 +36,16 @@ class LoginViewModel @Inject constructor(
 
     // 버튼 상태 저장하는 SharedFlow
     private val _autoSaveButton = MutableSharedFlow<Boolean>()
-    val autoSaveButton get() = _autoSaveButton.asSharedFlow()
+    val autoSaveButton = _autoSaveButton.asSharedFlow()
 
     private val _autoLoginButton = MutableSharedFlow<Boolean>()
-    val autoLoginButton get() = _autoLoginButton.asSharedFlow()
+    val autoLoginButton = _autoLoginButton.asSharedFlow()
 
     private val _findPasswordButton = MutableSharedFlow<Boolean>()
-    val findPasswordButton get() = _findPasswordButton.asSharedFlow()
+    val findPasswordButton = _findPasswordButton.asSharedFlow()
 
     private val _loginButton = MutableSharedFlow<Boolean>()
-    val loginButton get() = _loginButton.asSharedFlow()
+    val loginButton = _loginButton.asSharedFlow()
 
     // 로그인 결과 값을 저장하는 SharedFlow
     private val _logInResult = MutableSharedFlow<Map<String, Object>>()

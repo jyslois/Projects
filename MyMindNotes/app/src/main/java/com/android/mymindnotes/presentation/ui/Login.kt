@@ -44,7 +44,6 @@ class Login : AppCompatActivity() {
         alertDialog.show()
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -166,6 +165,7 @@ class Login : AppCompatActivity() {
                         } else if (binding.password.text.toString().length < 6) {
                             dialog("비밀번호가 틀렸습니다")
                         } else {
+                            // 형식 통과
                             // 아이디/비밀번호 저장 버튼이 체크되어 있다면
                             if (autoSave.isChecked) {
                                 // 체크박스 상태 저장
@@ -176,11 +176,9 @@ class Login : AppCompatActivity() {
                                 viewModel.saveAutoSaveCheck(false)
                                 viewModel.saveIdAndPassword(null, null)
                             }
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                                    viewModel.login(emailInput, passwordInput) // 로그인 결과 가져와 emit하기
-                                }
-                            }
+
+                            viewModel.login(emailInput, passwordInput) // 로그인 하기
+
                         }
                     }
                 }
