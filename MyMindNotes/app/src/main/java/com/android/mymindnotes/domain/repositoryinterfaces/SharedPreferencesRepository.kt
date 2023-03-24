@@ -12,8 +12,8 @@ interface SharedPreferencesRepository {
     suspend fun getIdfromAutoSaveSharedPreferences(): Flow<String?>
     suspend fun getPasswordfromAutoSaveSharedPreferences(): Flow<String?>
     suspend fun getUserIndexfromUserSharedPreferences()
-//    suspend fun getFirstTimefromFirstTimeSharedPreferences(): Flow<Boolean>
-    suspend fun getFirstTimefromFirstTimeSharedPreferences()
+    suspend fun getFirstTimefromFirstTimeSharedPreferences(): Flow<Boolean>
+//    suspend fun getFirstTimefromFirstTimeSharedPreferences()
 
     // 저장하는 메서드
     suspend fun saveAutoLoginChecktoAutoSaveSharedPreferences(state: Boolean)
@@ -28,11 +28,11 @@ interface SharedPreferencesRepository {
     suspend fun clearAutoSaveSharedPreferences()
 
     // get methods의 결과 값들을 저장하는 변수
+//    val firstTime: SharedFlow<Boolean>
 //    val autoLoginCheck: SharedFlow<Boolean>
 //    val autoSaveCheck: SharedFlow<Boolean>
 //    val id: SharedFlow<String>
 //    val password: SharedFlow<String>
     val userIndex: SharedFlow<Int>
-    val firstTime: SharedFlow<Boolean>
 
 }

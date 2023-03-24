@@ -19,29 +19,31 @@ class LoginViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     // autoSaveCheck 값을 저장하는 SharedFlow
-    private val _autoSaveCheck = MutableSharedFlow<Boolean>(replay = 1)
-    val autoSaveCheck get() = _autoSaveCheck.asSharedFlow()
+    private val _autoSaveCheck = MutableSharedFlow<Boolean>()
+    val autoSaveCheck = _autoSaveCheck.asSharedFlow()
 
     // autoLoginCheck 값을 저장하는 SharedFlow
-    private val _autoLoginCheck = MutableSharedFlow<Boolean>(replay = 1)
-    val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
+    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
+    val autoLoginCheck = _autoLoginCheck.asSharedFlow()
 
     // Id 값을 저장하는 SharedFlow
-    private val _id = MutableSharedFlow<String?>(replay = 1)
+    private val _id = MutableSharedFlow<String?>()
     val id = _id.asSharedFlow()
 
     // Password 값을 저장하는 SharedFlow
-    private val _password = MutableSharedFlow<String?>(replay = 1)
+    private val _password = MutableSharedFlow<String?>()
     val password = _password.asSharedFlow()
 
     // 버튼 상태 저장하는 SharedFlow
     private val _autoSaveButton = MutableSharedFlow<Boolean>()
     val autoSaveButton get() = _autoSaveButton.asSharedFlow()
+
     private val _autoLoginButton = MutableSharedFlow<Boolean>()
     val autoLoginButton get() = _autoLoginButton.asSharedFlow()
 
     private val _findPasswordButton = MutableSharedFlow<Boolean>()
     val findPasswordButton get() = _findPasswordButton.asSharedFlow()
+
     private val _loginButton = MutableSharedFlow<Boolean>()
     val loginButton get() = _loginButton.asSharedFlow()
 
@@ -72,7 +74,6 @@ class LoginViewModel @Inject constructor(
     }
 
     // get methods - sharedPreferneces
-
 //    suspend fun getIdAndPassword() {
 //        shared_useCase.getIdAndPassword()
 //    }
@@ -109,7 +110,6 @@ class LoginViewModel @Inject constructor(
                     _autoLoginCheck.emit(it)
                 }
             }
-
 
 //            launch {
 //                shared_useCase.id.collect {

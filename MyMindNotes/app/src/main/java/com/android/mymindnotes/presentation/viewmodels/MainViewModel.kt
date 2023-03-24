@@ -15,12 +15,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val useCase: UseSharedPreferencesUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val useCase: UseSharedPreferencesUseCase
 ): ViewModel() {
 
 //     autoLoginCheck 값을 저장하는 SharedFlow
-    private val _autoLoginCheck = MutableSharedFlow<Boolean>(replay = 1)
+    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
     val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
 
     // 버튼 클릭 감지를 위한 SharedFlow
@@ -31,12 +30,11 @@ class MainViewModel @Inject constructor(
 
     // ViewModel instance가 만들어질 때,
     init {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             launch {
-                // useCase의 getAutoLogin() 함수에 return된 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
+                // useCase의 getAutoLogin() 함수에 return된 Flow의 Boolean 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
                 useCase.getAutoLogin().collect {
                     _autoLoginCheck.emit(it)
-                    Log.e("AutoLoginCheck", "MainViewModel - emit")
                 }
             }
         }

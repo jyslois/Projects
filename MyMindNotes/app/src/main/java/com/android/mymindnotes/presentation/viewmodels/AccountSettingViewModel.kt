@@ -1,5 +1,6 @@
 package com.android.mymindnotes.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.DeleteUserUseCase
@@ -18,8 +19,7 @@ import javax.inject.Inject
 class AccountSettingViewModel @Inject constructor(
     private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val deleteUserUseCase: DeleteUserUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val deleteUserUseCase: DeleteUserUseCase
 ): ViewModel() {
 
     // 클릭 이벤트
@@ -81,7 +81,7 @@ class AccountSettingViewModel @Inject constructor(
 
     // collect & emit
     init {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
 
             // 회원 정보 collect & emit
             launch {
@@ -96,6 +96,19 @@ class AccountSettingViewModel @Inject constructor(
                     _deleteUserResult.emit(it)
                 }
             }
+
+//            launch {
+//                getUserInfoUseCase.userInfo.collect {
+//                    _userInfo.emit(it)
+//                }
+//            }
+//
+//            launch(ioDispatcher) {
+//                launch {
+//                    // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
+//                    getUserInfoUseCase.getUserInfo()
+//                }
+//            }
         }
     }
 

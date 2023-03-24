@@ -12,25 +12,27 @@ class UseSharedPreferencesUseCase @Inject constructor(
     private val repository: SharedPreferencesRepository,
     @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
 ) {
-//    // autoLoginCheck 값을 저장하는 SharedFlow
+
+    // Id 값을 저장하는 SharedFlow
+    private val _id = MutableSharedFlow<String>()
+    val id = _id.asSharedFlow()
+
+    // Password 값을 저장하는 SharedFlow
+    private val _password = MutableSharedFlow<String>()
+    val password = _password.asSharedFlow()
+
+    //    // autoLoginCheck 값을 저장하는 SharedFlow
 //    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
 //    val autoLoginCheck = _autoLoginCheck.asSharedFlow()
+//
 //    // autoSave 값을 저장하는 SharedFlow
 //    private val _autoSaveCheck = MutableSharedFlow<Boolean>()
 //    val autoSaveCheck = _autoSaveCheck.asSharedFlow()
 
-    // autoLoginState 값을 저장하는 SharedFlow
-    private val _autoLoginState = MutableSharedFlow<Boolean>()
-    val autoLoginState = _autoLoginState.asSharedFlow()
-    // Id 값을 저장하는 SharedFlow
-    private val _id = MutableSharedFlow<String>()
-    val id = _id.asSharedFlow()
-    // Password 값을 저장하는 SharedFlow
-    private val _password = MutableSharedFlow<String>()
-    val password = _password.asSharedFlow()
-    // FirstTime 값 저장하는 SharedFlow
-    private val _firstTime = MutableSharedFlow<Boolean>(replay = 1)
-    val firstTime = _firstTime.asSharedFlow()
+//    // FirstTime 값 저장하는 SharedFlow
+//    private val _firstTime = MutableSharedFlow<Boolean>()
+//    val firstTime = _firstTime.asSharedFlow()
+
 
     // get methods
     suspend fun getAutoLogin(): Flow<Boolean> {
@@ -57,49 +59,13 @@ class UseSharedPreferencesUseCase @Inject constructor(
         repository.getUserIndexfromUserSharedPreferences()
     }
 
-//    suspend fun getFirstTime(): Flow<Boolean> {
-//        return repository.getFirstTimefromFirstTimeSharedPreferences()
+    suspend fun getFirstTime(): Flow<Boolean> {
+        return repository.getFirstTimefromFirstTimeSharedPreferences()
+    }
+
+    //    suspend fun getFirstTime() {
+//        repository.getFirstTimefromFirstTimeSharedPreferences()
 //    }
-
-    suspend fun getFirstTime() {
-        repository.getFirstTimefromFirstTimeSharedPreferences()
-    }
-
-    // emit values got from Sharedpreference
-    init {
-        ioDispatcherCoroutineScope.launch {
-//            launch {
-//                repository.autoLoginCheck.collect {
-//                    _autoLoginCheck.emit(it)
-//                }
-//            }
-
-//            launch {
-//                repository.autoSaveCheck.collect {
-//                    _autoSaveCheck.emit(it)
-//                }
-//            }
-
-//            launch {
-//                repository.id.collect {
-//                    _id.emit(it)
-//                }
-//            }
-//
-//            launch {
-//                repository.password.collect {
-//                    _password.emit(it)
-//                }
-//            }
-
-            launch {
-                repository.firstTime.collect {
-                    _firstTime.emit(it)
-                    Log.e("FirstTimeCheck", "결과 emit - UseCase, 결과: $it")
-                }
-            }
-        }
-    }
 
     // save methods
     suspend fun saveAutoLoginCheck(state: Boolean) {
@@ -126,5 +92,42 @@ class UseSharedPreferencesUseCase @Inject constructor(
     suspend fun clearAutoSaveSharedPreferences() {
         repository.clearAutoSaveSharedPreferences()
     }
+
+
+    // emit values got from Sharedpreference
+//    init {
+//        ioDispatcherCoroutineScope.launch {
+//            launch {
+//                repository.autoLoginCheck.collect {
+//                    _autoLoginCheck.emit(it)
+//                }
+//            }
+//
+//            launch {
+//                repository.autoSaveCheck.collect {
+//                    _autoSaveCheck.emit(it)
+//                }
+//            }
+//
+//            launch {
+//                repository.id.collect {
+//                    _id.emit(it)
+//                }
+//            }
+//
+//            launch {
+//                repository.password.collect {
+//                    _password.emit(it)
+//                }
+//            }
+//
+//            launch {
+//                repository.firstTime.collect {
+//                    _firstTime.emit(it)
+//                    Log.e("FirstTimeCheck", "결과 emit - UseCase, 결과: $it")
+//                }
+//            }
+//        }
+//    }
 
 }

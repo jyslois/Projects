@@ -15,9 +15,14 @@ class MemberRepositoryImpl @Inject constructor(
 
     // 회원 정보 가져오기
 //    // 회원 정보 값 저장 플로우
-//    val _userInfo = MutableSharedFlow<Map<String, Object>>()
+//    private val _userInfo = MutableSharedFlow<Map<String, Object>>()
 //    override val userInfo = _userInfo.asSharedFlow()
+
     // (서버) 회원 정보 가져오기
+//    override suspend fun getUserInfo() {
+//        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
+//        memberDataSource.getUserInfoApi.getUserInfo(userIndex).let { _userInfo.emit(it) }
+//    }
     override suspend fun getUserInfo(): Flow<Map<String, Object>> = flow {
         val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
         val result = memberDataSource.getUserInfoApi.getUserInfo(userIndex)

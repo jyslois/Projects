@@ -15,14 +15,23 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 ) : SharedPreferencesRepository {
 
     // SharedFlows
-//    // autoLoginCheck 값을 저장하는 SharedFlow
+
+    // UserIndex 값을 저장하는 SharedFlow
+    private val _userIndex = MutableSharedFlow<Int>()
+    override val userIndex = _userIndex.asSharedFlow()
+
+//    // FirstTime 값 저장하는 SharedFlow
+//    private val _firstTime = MutableSharedFlow<Boolean>()
+//    override val firstTime = _firstTime.asSharedFlow()
+//
+    // autoLoginCheck 값을 저장하는 SharedFlow
 //    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
 //    override val autoLoginCheck = _autoLoginCheck.asSharedFlow()
-
+//
 //    // autoSave 값을 저장하는 SharedFlow
 //    private val _autoSaveCheck = MutableSharedFlow<Boolean>()
 //    override val autoSaveCheck = _autoSaveCheck.asSharedFlow()
-
+//
 //    // Id 값을 저장하는 SharedFlow
 //    private val _id = MutableSharedFlow<String>()
 //    override val id = _id.asSharedFlow()
@@ -30,14 +39,6 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 //    // Password 값을 저장하는 SharedFlow
 //    private val _password = MutableSharedFlow<String>()
 //    override val password = _password.asSharedFlow()
-
-    // UserIndex 값을 저장하는 SharedFlow
-    private val _userIndex = MutableSharedFlow<Int>()
-    override val userIndex = _userIndex.asSharedFlow()
-
-    // FirstTime 값 저장하는 SharedFlow
-    private val _firstTime = MutableSharedFlow<Boolean>(replay = 1)
-    override val firstTime = _firstTime.asSharedFlow()
 
     // dataSource의 SharedPreferences에 접근하는 변수
     private val sharedPreferencesforAutoSave = dataSource.sharedPreferencesforAutoSave
@@ -62,13 +63,6 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
         emit(autoSaveCheck)
     }
 
-//    override suspend fun getIdAndPasswordfromAutoSaveSharedPreferences() {
-//        // dataSource의 SharedPreferences에 접근해서 id 값을 가져와 SharedFlow에 emit하기
-//        sharedPreferencesforAutoSave.getString("id", null)?.let { _id.emit(it) }
-//        // dataSource의 SharedPreferences에 접근해서 id 값을 가져와 SharedFlow에 emit하기
-//        sharedPreferencesforAutoSave.getString("password", null)?.let { _password.emit(it) }
-//    }
-
     override  suspend fun getIdfromAutoSaveSharedPreferences(): Flow<String?> = flow {
         val id = sharedPreferencesforAutoSave.getString("id", null)
         emit(id)
@@ -79,18 +73,25 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
         emit(password)
     }
 
+    //    override suspend fun getIdAndPasswordfromAutoSaveSharedPreferences() {
+//        // dataSource의 SharedPreferences에 접근해서 id 값을 가져와 SharedFlow에 emit하기
+//        sharedPreferencesforAutoSave.getString("id", null)?.let { _id.emit(it) }
+//        // dataSource의 SharedPreferences에 접근해서 id 값을 가져와 SharedFlow에 emit하기
+//        sharedPreferencesforAutoSave.getString("password", null)?.let { _password.emit(it) }
+//    }
+
     override suspend fun getUserIndexfromUserSharedPreferences() {
         sharedPreferenceforUser.getInt("userindex", 0).let {_userIndex.emit(it) }
     }
 
-//    override suspend fun getFirstTimefromFirstTimeSharedPreferences(): Flow<Boolean> = flow {
-//        val firstTime = sharedPreferenceforFirstTime.getBoolean("firstTime", false)
-//        emit(firstTime)
-//    }
-
-    override suspend fun getFirstTimefromFirstTimeSharedPreferences() {
-        sharedPreferenceforFirstTime.getBoolean("firstTime", false).let { _firstTime.emit(it) }
+    override suspend fun getFirstTimefromFirstTimeSharedPreferences(): Flow<Boolean> = flow {
+        val firstTime = sharedPreferenceforFirstTime.getBoolean("firstTime", false)
+        emit(firstTime)
     }
+
+//    override suspend fun getFirstTimefromFirstTimeSharedPreferences() {
+//        sharedPreferenceforFirstTime.getBoolean("firstTime", false).let { _firstTime.emit(it) }
+//    }
 
     // save methods
     override suspend fun saveAutoLoginChecktoAutoSaveSharedPreferences(state: Boolean) {
