@@ -16,7 +16,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val shared_useCase: UseSharedPreferencesUseCase,
     private val login_useCase: LogInUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     // autoSaveCheck 값을 저장하는 SharedFlow
     private val _autoSaveCheck = MutableSharedFlow<Boolean>()

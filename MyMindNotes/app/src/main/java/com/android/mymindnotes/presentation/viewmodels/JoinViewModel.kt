@@ -19,7 +19,8 @@ import javax.inject.Inject
 class JoinViewModel @Inject constructor(
     private val duplicateCheckUseCase: DuplicateCheckUseCase,
     private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase,
-    private val joinUseCase: JoinUseCase
+    private val joinUseCase: JoinUseCase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     // 이메일
@@ -84,7 +85,7 @@ class JoinViewModel @Inject constructor(
 
     // collect & emit
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             launch {
                 // 이메일 중복 체크 결과 플로우 구독
                 duplicateCheckUseCase.emailCheckResult.collect {

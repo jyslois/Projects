@@ -19,7 +19,8 @@ import javax.inject.Inject
 class AccountSettingViewModel @Inject constructor(
     private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     // 클릭 이벤트
@@ -81,7 +82,7 @@ class AccountSettingViewModel @Inject constructor(
 
     // collect & emit
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
 
             // 회원 정보 collect & emit
             launch {

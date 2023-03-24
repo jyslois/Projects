@@ -11,9 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GetUserInfoUseCase @Inject constructor(
-    private val memberRepository: MemberRepository,
-    @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
-
+    private val memberRepository: MemberRepository
 ) {
 
     // 회원 정보 불러오기
