@@ -28,12 +28,7 @@ class MemberRepositoryImpl @Inject constructor(
 //        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
 //        memberDataSource.getUserInfoApi.getUserInfo(userIndex).let { _userInfo.emit(it) }
 //    }
-    override suspend fun getUserInfo(): Flow<Map<String, Object>> = flow {
-        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-        val result = memberDataSource.getUserInfoApi.getUserInfo(userIndex)
-        emit(result)
-        Log.e("UserInfo", "Repository - UserInfo emit됨")
-    }.flowOn(ioDispatcher)
+    override suspend fun getUserInfo(): Flow<Map<String, Object>> = memberDataSource.userInfoFlow
 
     // 로그인, 로그아웃
     // 로그인
