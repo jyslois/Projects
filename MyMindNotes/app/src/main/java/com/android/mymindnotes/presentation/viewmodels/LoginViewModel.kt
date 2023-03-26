@@ -15,8 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val shared_useCase: UseSharedPreferencesUseCase,
-    private val login_useCase: LogInUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val login_useCase: LogInUseCase
 ) : ViewModel() {
     // autoSaveCheck 값을 저장하는 SharedFlow
     private val _autoSaveCheck = MutableSharedFlow<Boolean>()
@@ -97,7 +96,7 @@ class LoginViewModel @Inject constructor(
 
     // ViewModel instance가 만들어질 때, autoSaveCheck/autoLoginCheck/id/password 값 불러오기
     init {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             launch {
                 // useCase의 함수 리턴 값을 구독해서 viewModel의 SharedFlow에 방출하기.
                 shared_useCase.getAutoSave().collect {

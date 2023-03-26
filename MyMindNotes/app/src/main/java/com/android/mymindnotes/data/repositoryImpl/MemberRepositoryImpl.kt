@@ -1,17 +1,22 @@
 package com.android.mymindnotes.data.repositoryImpl
 
+import android.util.Log
 import com.android.mymindnotes.data.datasources.MemberDataSource
 import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
 import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
+import com.android.mymindnotes.hilt.module.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
     private val memberDataSource: MemberDataSource,
-    private val sharedPreferencesDataSource: SharedPreferencesDataSource
-): MemberRepository {
+    private val sharedPreferencesDataSource: SharedPreferencesDataSource,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) : MemberRepository {
 
     // 회원 정보 가져오기
 //    // 회원 정보 값 저장 플로우
@@ -27,7 +32,8 @@ class MemberRepositoryImpl @Inject constructor(
         val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
         val result = memberDataSource.getUserInfoApi.getUserInfo(userIndex)
         emit(result)
-    }
+        Log.e("UserInfo", "Repository - UserInfo emit됨")
+    }.flowOn(ioDispatcher)
 
     // 로그인, 로그아웃
     // 로그인
@@ -38,8 +44,10 @@ class MemberRepositoryImpl @Inject constructor(
     // (서버) 로그인
     override suspend fun login(email: String, password: String) {
         val user = UserInfoLogin(email, password)
-        val result = memberDataSource.loginApi.login(user)
-        _logInResult.emit(result)
+        withContext(ioDispatcher) {
+            val result = memberDataSource.loginApi.login(user)
+            _logInResult.emit(result)
+        }
 
     }
 
@@ -51,8 +59,9 @@ class MemberRepositoryImpl @Inject constructor(
 
     // (서버) 이메일 중복 체크
     override suspend fun checkEmail(emailInput: String) {
-        val result = memberDataSource.checkEmailApi.checkEmail(emailInput)
-        _emailCheckResult.emit(result)
+        withContext(ioDispatcher) {
+            memberDataSource.checkEmailApi.checkEmail(emailInput).let { _emailCheckResult.emit(it) }
+        }
     }
 
     // 닉네임
@@ -62,8 +71,9 @@ class MemberRepositoryImpl @Inject constructor(
 
     // (서버) 닉네임 중복 체크
     override suspend fun checkNickName(nickNameInput: String) {
-        val result = memberDataSource.checkNickNameApi.checkNickname(nickNameInput)
-        _nickNameCheckResult.emit(result)
+        withContext(ioDispatcher) {
+            memberDataSource.checkNickNameApi.checkNickname(nickNameInput).let { _nickNameCheckResult.emit(it) }
+        }
     }
 
     // 회원가입
@@ -74,8 +84,9 @@ class MemberRepositoryImpl @Inject constructor(
     // (서버) 회원가입
     override suspend fun join(email: String, nickname: String, password: String, birthyear: Int) {
         val user = UserInfo(email, nickname, password, birthyear)
-        val result = memberDataSource.joinApi.addUser(user)
-        _joinResult.emit(result)
+        withContext(ioDispatcher) {
+            memberDataSource.joinApi.addUser(user).let { _joinResult.emit(it) }
+        }
     }
 
     // 회원탈퇴
@@ -85,8 +96,10 @@ class MemberRepositoryImpl @Inject constructor(
 
     // (서버) 회원탈퇴
     override suspend fun deleteUser() {
-        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-        memberDataSource.deleteUserApi.deleteUser(userIndex).let { _deleteUserResult.emit(it) }
+        withContext(ioDispatcher) {
+            val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
+            memberDataSource.deleteUserApi.deleteUser(userIndex).let { _deleteUserResult.emit(it) }
+        }
     }
 
 

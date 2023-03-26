@@ -2,6 +2,7 @@ package com.android.mymindnotes.domain.usecase
 
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
+import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,7 +12,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GetUserInfoUseCase @Inject constructor(
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
     // 회원 정보 불러오기
@@ -29,7 +31,7 @@ class GetUserInfoUseCase @Inject constructor(
 //    }
 //
 //    init {
-//        ioDispatcherCoroutineScope.launch {
+//        mainDispatcherCoroutineScope.launch {
 //            // 회원정보 값 collect & emit
 //            memberRepository.userInfo.collect {
 //                _userInfo.emit(it)

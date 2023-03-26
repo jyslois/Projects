@@ -2,6 +2,8 @@ package com.android.mymindnotes.domain.usecase
 
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
+import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -10,7 +12,7 @@ import javax.inject.Inject
 
 class DuplicateCheckUseCase @Inject constructor(
     private val repository: MemberRepository,
-    @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
+    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
     // 이메일
     // (서버) 이메일 중복 체크 함수 호출
@@ -33,7 +35,7 @@ class DuplicateCheckUseCase @Inject constructor(
     val nickNameCheckResult = _nickNameCheckResult.asSharedFlow()
 
     init {
-        ioDispatcherCoroutineScope.launch {
+        mainDispatcherCoroutineScope.launch {
             // 이메일 중복 체크 결과 플로우 구독
             launch {
                 repository.emailCheckResult.collect {

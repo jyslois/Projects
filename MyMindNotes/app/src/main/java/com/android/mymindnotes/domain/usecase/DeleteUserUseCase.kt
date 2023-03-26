@@ -2,6 +2,8 @@ package com.android.mymindnotes.domain.usecase
 
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
+import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
+import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -10,7 +12,7 @@ import javax.inject.Inject
 
 class DeleteUserUseCase @Inject constructor(
     private val memberRepository: MemberRepository,
-    @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
+    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
     // 회원탈퇴 함수 콜
@@ -24,7 +26,7 @@ class DeleteUserUseCase @Inject constructor(
 
     // 회원탈퇴 결과 collect & emit
     init {
-        ioDispatcherCoroutineScope.launch {
+        mainDispatcherCoroutineScope.launch {
             memberRepository.deleteUserResult.collect {
                 _deleteUserResult.emit(it)
             }

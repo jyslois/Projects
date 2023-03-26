@@ -5,13 +5,17 @@ import android.util.Log
 import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
 import com.android.mymindnotes.hilt.module.FirstTime
+import com.android.mymindnotes.hilt.module.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SharedPreferencesRepositoryImpl @Inject constructor(
-    private val dataSource: SharedPreferencesDataSource
+    private val dataSource: SharedPreferencesDataSource,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : SharedPreferencesRepository {
 
     // SharedFlows
@@ -55,23 +59,23 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
         // dataSource의 SharedPreferences에 접근해서 autoLoginCheck 값을 가져와 SharedFlow에 emit하기
         val autoLoginCheck = sharedPreferencesforAutoSave.getBoolean("autoLoginCheck", false)
         emit(autoLoginCheck)
-    }
+    }.flowOn(ioDispatcher)
 
     override suspend fun getAutoSaveCheckfromAutoSaveSharedPreferences(): Flow<Boolean> = flow {
         // dataSource의 SharedPreferences에 접근해서 autoSaveCheck 값을 가져와 SharedFlow에 emit하기
         val autoSaveCheck = sharedPreferencesforAutoSave.getBoolean("autoSaveCheck", false)
         emit(autoSaveCheck)
-    }
+    }.flowOn(ioDispatcher)
 
     override  suspend fun getIdfromAutoSaveSharedPreferences(): Flow<String?> = flow {
         val id = sharedPreferencesforAutoSave.getString("id", null)
         emit(id)
-    }
+    }.flowOn(ioDispatcher)
 
     override suspend fun getPasswordfromAutoSaveSharedPreferences(): Flow<String?> = flow {
         val password = sharedPreferencesforAutoSave.getString("password", null)
         emit(password)
-    }
+    }.flowOn(ioDispatcher)
 
     //    override suspend fun getIdAndPasswordfromAutoSaveSharedPreferences() {
 //        // dataSource의 SharedPreferences에 접근해서 id 값을 가져와 SharedFlow에 emit하기
@@ -81,13 +85,15 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 //    }
 
     override suspend fun getUserIndexfromUserSharedPreferences() {
-        sharedPreferenceforUser.getInt("userindex", 0).let {_userIndex.emit(it) }
+        withContext(ioDispatcher) {
+            sharedPreferenceforUser.getInt("userindex", 0).let {_userIndex.emit(it) }
+        }
     }
 
     override suspend fun getFirstTimefromFirstTimeSharedPreferences(): Flow<Boolean> = flow {
         val firstTime = sharedPreferenceforFirstTime.getBoolean("firstTime", false)
         emit(firstTime)
-    }
+    }.flowOn(ioDispatcher)
 
 //    override suspend fun getFirstTimefromFirstTimeSharedPreferences() {
 //        sharedPreferenceforFirstTime.getBoolean("firstTime", false).let { _firstTime.emit(it) }
@@ -95,30 +101,42 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
 
     // save methods
     override suspend fun saveAutoLoginChecktoAutoSaveSharedPreferences(state: Boolean) {
-        sharedPreferencesforAutoSaveEditor.putBoolean("autoLoginCheck", state).commit()
+        withContext(ioDispatcher) {
+            sharedPreferencesforAutoSaveEditor.putBoolean("autoLoginCheck", state).commit()
+        }
     }
 
     override suspend fun saveAutoSaveChecktoAutoSaveSharedPreferences(state: Boolean) {
-        sharedPreferencesforAutoSaveEditor.putBoolean("autoSaveCheck", state).commit()
+        withContext(ioDispatcher) {
+            sharedPreferencesforAutoSaveEditor.putBoolean("autoSaveCheck", state).commit()
+        }
     }
 
     override suspend fun saveIdAndPasswordtoAutoSaveSharedPreferences(id: String?, password: String?) {
-        sharedPreferencesforAutoSaveEditor.putString("id", id).commit()
-        sharedPreferencesforAutoSaveEditor.putString("password", password).commit()
+        withContext(ioDispatcher) {
+            sharedPreferencesforAutoSaveEditor.putString("id", id).commit()
+            sharedPreferencesforAutoSaveEditor.putString("password", password).commit()
+        }
     }
 
     override suspend fun saveUserIndextoUserSharedPreferences(index: Int) {
-        sharedPreferenceforUserEditor.putInt("userindex", index).commit()
+        withContext(ioDispatcher) {
+            sharedPreferenceforUserEditor.putInt("userindex", index).commit()
+        }
     }
 
     override suspend fun saveFirstTimetoFirstTimeSharedPreferences(boolean: Boolean) {
-        sharedPreferenceforFirstTimeEditor.putBoolean("firstTime", boolean).commit()
+        withContext(ioDispatcher) {
+            sharedPreferenceforFirstTimeEditor.putBoolean("firstTime", boolean).commit()
+        }
     }
 
 
     // clear sharedpreferencs
     override suspend fun clearAutoSaveSharedPreferences() {
-        sharedPreferencesforAutoSaveEditor.clear().commit()
+        withContext(ioDispatcher) {
+            sharedPreferencesforAutoSaveEditor.clear().commit()
+        }
     }
 
 }

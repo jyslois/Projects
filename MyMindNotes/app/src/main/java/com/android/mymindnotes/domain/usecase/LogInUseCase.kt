@@ -2,6 +2,7 @@ package com.android.mymindnotes.domain.usecase
 
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
+import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 class LogInUseCase @Inject constructor(
     private val repository: MemberRepository,
-    @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
+    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
     private val _logInResult = MutableSharedFlow<Map<String, Object>>()
@@ -21,7 +22,7 @@ class LogInUseCase @Inject constructor(
     }
 
     init {
-        ioDispatcherCoroutineScope.launch {
+        mainDispatcherCoroutineScope.launch {
             repository.logInResult.collect {
                 _logInResult.emit(it)
             }

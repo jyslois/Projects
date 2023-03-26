@@ -3,6 +3,7 @@ package com.android.mymindnotes.domain.usecase
 import android.util.Log
 import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
+import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 class UseSharedPreferencesUseCase @Inject constructor(
     private val repository: SharedPreferencesRepository,
-    @IoDispatcherCoroutineScope private val ioDispatcherCoroutineScope: CoroutineScope
+    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
     // Id 값을 저장하는 SharedFlow
@@ -96,7 +97,7 @@ class UseSharedPreferencesUseCase @Inject constructor(
 
     // emit values got from Sharedpreference
 //    init {
-//        ioDispatcherCoroutineScope.launch {
+//        mainDispatcherCoroutineScope.launch {
 //            launch {
 //                repository.autoLoginCheck.collect {
 //                    _autoLoginCheck.emit(it)

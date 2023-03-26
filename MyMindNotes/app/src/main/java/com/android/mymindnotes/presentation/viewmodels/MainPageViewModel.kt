@@ -16,8 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainPageViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase
 ) : ViewModel() {
 
     // 최초 접속 알람 설정 다이얼로그
@@ -42,7 +41,7 @@ class MainPageViewModel @Inject constructor(
 
     init {
 
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
 
             launch {
                 useSharedPreferencesUseCase.getFirstTime().collect {

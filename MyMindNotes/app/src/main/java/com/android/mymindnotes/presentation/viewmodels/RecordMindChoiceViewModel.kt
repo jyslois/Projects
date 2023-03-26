@@ -13,8 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordMindChoiceViewModel @Inject constructor (
-    private val getUserInfoUseCase: GetUserInfoUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ): ViewModel() {
 
     // 버튼 클릭 이벤트
@@ -40,7 +39,7 @@ class RecordMindChoiceViewModel @Inject constructor (
     }
 
     init {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             // 회원정보 값 collect& emit
 
             launch {
