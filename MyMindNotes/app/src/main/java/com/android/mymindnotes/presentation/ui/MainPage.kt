@@ -60,6 +60,7 @@ class MainPage : AppCompatActivity() {
                 // 최초 접속 시에 알람 설정 다이얼로그 띄워주기
                 // 최초 값 구독
                 launch {
+                    Log.e("FirstTimeCheck", "Activity - launch 안에 들어옴")
                     viewModel.firstTime.collect {
                         Log.e("FirstTimeCheck", "결과 최종으로 돌어옴 - 결과: $it")
                         if (it) {
