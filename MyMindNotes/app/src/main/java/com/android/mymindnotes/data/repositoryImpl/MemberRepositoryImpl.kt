@@ -7,28 +7,45 @@ import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcher
+import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
     private val memberDataSource: MemberDataSource,
     private val sharedPreferencesDataSource: SharedPreferencesDataSource,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) : MemberRepository {
 
     // 회원 정보 가져오기
-//    // 회원 정보 값 저장 플로우
-//    private val _userInfo = MutableSharedFlow<Map<String, Object>>()
-//    override val userInfo = _userInfo.asSharedFlow()
+    // 받은 회원 정보 저장하는 플로우
+    private val _userInfo = MutableStateFlow<Map<String, Object>>(emptyMap())
+    override val userInfo = _userInfo.asStateFlow()
 
     // (서버) 회원 정보 가져오기
-//    override suspend fun getUserInfo() {
-//        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-//        memberDataSource.getUserInfoApi.getUserInfo(userIndex).let { _userInfo.emit(it) }
-//    }
-    override suspend fun getUserInfo(): Flow<Map<String, Object>> = memberDataSource.userInfoFlow
+    override suspend fun getUserInfo() {
+       memberDataSource.getUserInfo()
+        Log.e("UserInfoCheck", "Repository - 함수콜")
+    }
+
+    init {
+        mainDispatcherCoroutineScope.launch {
+            launch {
+                // 회원정보 값 collect & emit
+                memberDataSource.userInfo.collect {
+                    _userInfo.value = it
+                    Log.e("UserInfoCheck", "Repository - emit $it")
+                }
+            }
+        }
+    }
+
+//    override suspend fun getUserInfo(): Flow<Map<String, Object>> = memberDataSource.userInfoFlow
 
     // 로그인, 로그아웃
     // 로그인

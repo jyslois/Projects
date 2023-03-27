@@ -51,7 +51,7 @@ class RecordMindChoice : AppCompatActivity() {
                 // 닉네임 세팅 ㅡ 회원정보 값 구독
                 launch {
                     viewModel.userInfo.collect {
-                        val nick = it["nickname"] as String
+                        val nick = it["nickname"] as String?
                         binding.nickNameText.text = "$nick 님,"
                     }
                 }

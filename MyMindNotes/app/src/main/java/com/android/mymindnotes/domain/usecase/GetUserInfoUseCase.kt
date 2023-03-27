@@ -1,13 +1,11 @@
 package com.android.mymindnotes.domain.usecase
 
+import android.util.Log
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,27 +14,24 @@ class GetUserInfoUseCase @Inject constructor(
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
+    // 회원 정보 값 저장 플로우
+    private val _userInfo = MutableStateFlow<Map<String, Object>>(emptyMap())
+    val userInfo = _userInfo.asStateFlow()
+
     // 회원 정보 불러오기
-    suspend fun getUserInfo(): Flow<Map<String, Object>> {
-        return memberRepository.getUserInfo()
+    suspend fun getUserInfo() {
+        memberRepository.getUserInfo()
+        Log.e("UserInfoCheck", "UseCase - 함수콜")
     }
 
-//    // 회원 정보 값 저장 플로우
-//    private val _userInfo = MutableSharedFlow<Map<String, Object>>()
-//    val userInfo: SharedFlow<Map<String, Object>> get() = _userInfo.asSharedFlow()
-//
-//    // 회원 정보 불러오기
-//    suspend fun getUserInfo() {
-//        memberRepository.getUserInfo()
-//    }
-//
-//    init {
-//        mainDispatcherCoroutineScope.launch {
-//            // 회원정보 값 collect & emit
-//            memberRepository.userInfo.collect {
-//                _userInfo.emit(it)
-//            }
-//        }
-//    }
+    init {
+        mainDispatcherCoroutineScope.launch {
+            // 회원정보 값 collect & emit
+            memberRepository.userInfo.collect {
+                _userInfo.value = it
+                Log.e("UserInfoCheck", "UseCase - emit $it")
+            }
+        }
+    }
 
 }

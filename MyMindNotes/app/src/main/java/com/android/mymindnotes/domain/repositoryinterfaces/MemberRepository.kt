@@ -1,13 +1,14 @@
 package com.android.mymindnotes.domain.repositoryinterfaces
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 interface MemberRepository {
     // Get User Info
-//    suspend fun getUserInfo()
-//    val userInfo: SharedFlow<Map<String, Object>>
-    suspend fun getUserInfo(): Flow<Map<String, Object>>
+    val userInfo: StateFlow<Map<String, Object>>
+    suspend fun getUserInfo()
 
     // Log in & Log out
     suspend fun login(email: String, password: String)

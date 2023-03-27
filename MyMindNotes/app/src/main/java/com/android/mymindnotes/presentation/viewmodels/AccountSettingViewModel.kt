@@ -20,7 +20,7 @@ class AccountSettingViewModel @Inject constructor(
     private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deleteUserUseCase: DeleteUserUseCase
-): ViewModel() {
+) : ViewModel() {
 
     // 클릭 이벤트
     // 클릭 이벤트 감지 플로우
@@ -85,8 +85,9 @@ class AccountSettingViewModel @Inject constructor(
 
             // 회원 정보 collect & emit
             launch {
-                getUserInfoUseCase.getUserInfo().collect {
+                getUserInfoUseCase.userInfo.collect {
                     _userInfo.emit(it)
+                    Log.e("UserInfoCheck", "viewModel - emit $it")
                 }
             }
 
@@ -97,21 +98,8 @@ class AccountSettingViewModel @Inject constructor(
                 }
             }
 
-//            launch {
-//                getUserInfoUseCase.userInfo.collect {
-//                    _userInfo.emit(it)
-//                }
-//            }
-//
-//            launch(ioDispatcher) {
-//                launch {
-//                    // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
-//                    getUserInfoUseCase.getUserInfo()
-//                }
-//            }
         }
     }
-
 
 
 }

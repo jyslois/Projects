@@ -77,7 +77,8 @@ class MainPage : AppCompatActivity() {
                 launch {
                     viewModel.userInfo.collect {
                         // 닉네임 세팅
-                        val nick = it["nickname"] as String
+                        Log.e("UserInfoCheck", "결과 최종으로 돌어옴 - 결과: $it")
+                        val nick = it["nickname"] as String?
                         binding.mainpagetext.text = "오늘 하루도 고생했어요, $nick 님."
                     }
                 }

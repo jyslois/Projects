@@ -9,7 +9,9 @@ import com.android.mymindnotes.hilt.module.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,13 +50,15 @@ class MainPageViewModel @Inject constructor(
                     _firstTime.emit(it)
                     Log.e("FirstTimeCheck", "viewModel - emit")
                 }
+            }
 
-                launch {
-                    // 회원정보 값 collect & emit
-                    getUserInfoUseCase.getUserInfo().collect {
-                        _userInfo.emit(it)
-                    }
+            launch {
+                // 회원정보 값 collect & emit
+                getUserInfoUseCase.userInfo.collect {
+                    _userInfo.emit(it)
+                    Log.e("UserInfoCheck", "viewModel - emit $it")
                 }
+            }
 
 //                launch {
 //                    Log.e("FirstTimeCheck", "viewModel - launch 안에 들어옴")
@@ -78,15 +82,15 @@ class MainPageViewModel @Inject constructor(
 //                        Log.e("FirstTimeCheck", "함수 호출 -> ViewModel")
 //                    }
 //
-//                    launch {
-//                        // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
-//                        getUserInfoUseCase.getUserInfo()
-//                    }
-//                }
-
+            launch {
+                // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
+                getUserInfoUseCase.getUserInfo()
+                Log.e("UserInfoCheck", "viewModel - 함수콜")
             }
+
         }
     }
+
 
     // 최초 접속 값을 바꾸기 위한 함수 호출
     suspend fun saveFirstTime(boolean: Boolean) {

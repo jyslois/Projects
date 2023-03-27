@@ -1,5 +1,6 @@
 package com.android.mymindnotes.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.GetUserInfoUseCase
@@ -41,23 +42,12 @@ class RecordMindChoiceViewModel @Inject constructor (
     init {
         viewModelScope.launch {
             // 회원정보 값 collect& emit
-
             launch {
-                getUserInfoUseCase.getUserInfo().collect {
+                getUserInfoUseCase.userInfo.collect {
                     _userInfo.emit(it)
+                    Log.e("UserInfoCheck", "viewModel - emit $it")
                 }
             }
-
-//            launch {
-//                getUserInfoUseCase.userInfo.collect {
-//                    _userInfo.emit(it)
-//                }
-//            }
-//
-//            // (서버) 닉네임 세팅을 위해 회원정보 불러오는 함수
-//            launch(ioDispatcher) {
-//                getUserInfoUseCase.getUserInfo()
-//            }
 
         }
     }

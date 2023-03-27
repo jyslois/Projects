@@ -84,9 +84,9 @@ class AccountSetting : AppCompatActivity() {
                 launch {
                     viewModel.userInfo.collect {
                         // 이메일, 닉네임, 생년 세팅
-                        binding.email.text = it["email"] as String
-                        binding.nickname.text = it["nickname"] as String
-                        binding.birthyear.text = it["birthyear"].toString().toDouble().toInt().toString()
+                        binding.email.text = it["email"] as String?
+                        binding.nickname.text = it["nickname"] as String?
+                        binding.birthyear.text = it["birthyear"]?.toString()?.toDouble()?.toInt()?.toString()
                     }
                 }
 
