@@ -28,8 +28,8 @@ class MainPageViewModel @Inject constructor(
 
     // 닉네임 세팅
     // 회원 정보를 저장하는 플로우 (생성 시 자동 emit)
-    private val _userInfo = MutableSharedFlow<Map<String, Object>>()
-    val userInfo = _userInfo.asSharedFlow()
+    private val _userInfo = MutableStateFlow<Map<String, Object>>(emptyMap())
+    val userInfo = _userInfo.asStateFlow()
 
     // 클릭 이벤트 반응 플로우
     // 일기 쓰기 버튼

@@ -52,7 +52,9 @@ class RecordMindChoice : AppCompatActivity() {
                 launch {
                     viewModel.userInfo.collect {
                         val nick = it["nickname"] as String?
-                        binding.nickNameText.text = "$nick 님,"
+                        if (nick != null) {
+                            binding.nickNameText.text = "$nick 님,"
+                        }
                     }
                 }
 
