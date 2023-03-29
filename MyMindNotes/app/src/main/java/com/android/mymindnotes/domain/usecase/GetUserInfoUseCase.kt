@@ -14,6 +14,10 @@ class GetUserInfoUseCase @Inject constructor(
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
+    // 에러 메시지
+    private val _error = MutableStateFlow(false)
+    val error = _error.asStateFlow()
+
     // 회원 정보 값 저장 플로우
     private val _userInfo = MutableStateFlow<Map<String, Object>>(emptyMap())
     val userInfo = _userInfo.asStateFlow()
@@ -26,10 +30,19 @@ class GetUserInfoUseCase @Inject constructor(
 
     init {
         mainDispatcherCoroutineScope.launch {
-            // 회원정보 값 collect & emit
-            memberRepository.userInfo.collect {
-                _userInfo.value = it
-                Log.e("UserInfoCheck", "UseCase - emit $it")
+            launch {
+                // 회원정보 값 collect & emit
+                memberRepository.userInfo.collect {
+                    _userInfo.value = it
+                    Log.e("UserInfoCheck", "UseCase - emit $it")
+                }
+            }
+
+            launch {
+                // error collect & emit
+                memberRepository.error.collect {
+                    _error.value = it
+                }
             }
         }
     }

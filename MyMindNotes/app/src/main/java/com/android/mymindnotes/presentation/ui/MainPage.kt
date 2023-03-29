@@ -85,6 +85,16 @@ class MainPage : AppCompatActivity() {
                     }
                 }
 
+                // 에러 감지
+                // 에러 값 구독
+                launch {
+                    viewModel.error.collect {
+                        if (it) {
+                            dialog("서버와의 통신에 실패했습니다. 다시 시도해 주세요.")
+                        }
+                    }
+                }
+
                 // 클릭 이벤트 감지
                 // 일기 쓰기 버튼 클릭 이벤트 감지
                 launch {
@@ -142,6 +152,15 @@ class MainPage : AppCompatActivity() {
         builder.setMessage("하루에 한 번 일기 쓰기를 위한 알람을 설정하시겠어요?")
         builder.setNegativeButton("아니요", null)
         builder.setPositiveButton("예", dialogListener)
+        alertDialog = builder.show()
+        alertDialog.show()
+    }
+
+    // error dialoguee
+    fun dialog(msg: String?) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(msg)
+        builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()
     }

@@ -21,6 +21,10 @@ class MainPageViewModel @Inject constructor(
     private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase
 ) : ViewModel() {
 
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
+
     // 최초 접속 알람 설정 다이얼로그
     // 최초 접속 값을 저장하는 플로우 (생성 시 자동 emit)
     private val _firstTime = MutableSharedFlow<Boolean>()
@@ -46,6 +50,7 @@ class MainPageViewModel @Inject constructor(
         viewModelScope.launch {
 
             launch {
+                // 최초 접속 여부 collect & emit
                 useSharedPreferencesUseCase.getFirstTime().collect {
                     _firstTime.emit(it)
                     Log.e("FirstTimeCheck", "viewModel - emit")
@@ -60,28 +65,13 @@ class MainPageViewModel @Inject constructor(
                 }
             }
 
-//                launch {
-//                    Log.e("FirstTimeCheck", "viewModel - launch 안에 들어옴")
-//                    Log.e("FirstTimeCheck", "firstTime - ${useSharedPreferencesUseCase.firstTime}")
-//                    // 최초 접속 여부 값 collect & emit
-//                    useSharedPreferencesUseCase.firstTime.collect {
-//                        _firstTime.emit(it)
-//                    }
-//                }
-//
-//                launch {
-//                    getUserInfoUseCase.userInfo.collect {
-//                        _userInfo.emit(it)
-//                    }
-//                }
-//
-//                launch(ioDispatcher) {
-//                    launch {
-//                        // (서버) 최초 접속 여부 불러오는 함수 호출
-//                        useSharedPreferencesUseCase.getFirstTime()
-//                        Log.e("FirstTimeCheck", "함수 호출 -> ViewModel")
-//                    }
-//
+            launch {
+                // error collect & emit
+                getUserInfoUseCase.error.collect {
+                    _error.emit(it)
+                }
+            }
+
             launch {
                 // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
                 getUserInfoUseCase.getUserInfo()

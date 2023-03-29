@@ -26,6 +26,9 @@ class MemberDataSource @Inject constructor(
 //        Log.e("UserInfo", "DataSource - UserInfo emit됨")
 //    }.flowOn(ioDispatcher)
 
+    // 에러 메시지
+    private val _error = MutableStateFlow(false)
+    val error = _error.asStateFlow()
 
     // 회원 정보 가져오기
     // 받은 회원정보 저장하는 플로우
@@ -35,10 +38,14 @@ class MemberDataSource @Inject constructor(
     // (서버) 회원 정보 가져오기
     suspend fun getUserInfo() {
         withContext(ioDispatcher) {
-            val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-            val result = getUserInfoApi.getUserInfo(userIndex)
-            _userInfo.value = result
-            Log.e("UserInfoCheck", "DataSource - UserInfo emit됨 $result")
+            try {
+                val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
+                val result = getUserInfoApi.getUserInfo(userIndex)
+                _userInfo.value = result
+                Log.e("UserInfoCheck", "DataSource - UserInfo emit됨 $result")
+            } catch (e: Exception) {
+                _error.value = true
+            }
         }
     }
 

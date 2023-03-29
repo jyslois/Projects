@@ -42,6 +42,13 @@ class MemberRepositoryImpl @Inject constructor(
                     Log.e("UserInfoCheck", "Repository - emit $it")
                 }
             }
+
+            launch {
+                // 에러 메시지 collect & emit
+                memberDataSource.error.collect {
+                    _error.value = it
+                }
+            }
         }
     }
 
@@ -114,5 +121,9 @@ class MemberRepositoryImpl @Inject constructor(
         }
     }
 
+    // 에러
+    // 에러 메시지
+    private val _error = MutableStateFlow(false)
+    override val error = _error.asStateFlow()
 
 }

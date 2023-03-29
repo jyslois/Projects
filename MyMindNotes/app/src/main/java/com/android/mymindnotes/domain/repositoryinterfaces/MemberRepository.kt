@@ -1,9 +1,6 @@
 package com.android.mymindnotes.domain.repositoryinterfaces
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 
 interface MemberRepository {
     // Get User Info
@@ -28,4 +25,7 @@ interface MemberRepository {
     // Delete
     suspend fun deleteUser()
     val deleteUserResult: SharedFlow<Map<String, Object>>
+
+    // 에러 메시지
+    val error: StateFlow<Boolean>
 }
