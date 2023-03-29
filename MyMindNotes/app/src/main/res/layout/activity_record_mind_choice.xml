@@ -45,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="닉네임 님,"
                 android:textColor="#E8C3BA"
                 android:textSize="18dp"
                 android:textStyle="bold"

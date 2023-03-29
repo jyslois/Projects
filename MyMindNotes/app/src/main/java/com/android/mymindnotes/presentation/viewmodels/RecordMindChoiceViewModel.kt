@@ -39,13 +39,24 @@ class RecordMindChoiceViewModel @Inject constructor (
         _clickTraumaButton.emit(true)
     }
 
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
+
     init {
         viewModelScope.launch {
-            // 회원정보 값 collect& emit
             launch {
+                // 회원정보 값 collect& emit
                 getUserInfoUseCase.userInfo.collect {
                     _userInfo.emit(it)
                     Log.e("UserInfoCheck", "viewModel - emit $it")
+                }
+            }
+
+            launch {
+                // error collect & emit
+                getUserInfoUseCase.error.collect {
+                    _error.emit(it)
                 }
             }
 

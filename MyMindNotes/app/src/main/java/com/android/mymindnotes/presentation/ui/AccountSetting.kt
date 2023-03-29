@@ -147,6 +147,16 @@ class AccountSetting : AppCompatActivity() {
                         }
                     }
                 }
+
+                // 에러 감지
+                // 에러 값 구독
+                launch {
+                    viewModel.error.collect {
+                        if (it) {
+                          dialog("서버와의 연결에 실패했습니다. 다시 시도해 주세요.")
+                        }
+                    }
+               }
             }
         }
 
@@ -169,6 +179,15 @@ class AccountSetting : AppCompatActivity() {
         builder.setMessage("정말 탈퇴하시겠습니까?")
         builder.setNegativeButton("탈퇴", dialogListener)
         builder.setPositiveButton("취소", null)
+        alertDialog = builder.show()
+        alertDialog.show()
+    }
+
+    // error dialoguee
+    fun dialog(msg: String?) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(msg)
+        builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()
     }

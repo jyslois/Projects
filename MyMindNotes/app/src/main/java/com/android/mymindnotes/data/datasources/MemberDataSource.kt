@@ -27,8 +27,8 @@ class MemberDataSource @Inject constructor(
 //    }.flowOn(ioDispatcher)
 
     // 에러 메시지
-    private val _error = MutableStateFlow(false)
-    val error = _error.asStateFlow()
+    private val _error = MutableSharedFlow<Boolean>(replay = 1)
+    val error = _error.asSharedFlow()
 
     // 회원 정보 가져오기
     // 받은 회원정보 저장하는 플로우
@@ -44,7 +44,7 @@ class MemberDataSource @Inject constructor(
                 _userInfo.value = result
                 Log.e("UserInfoCheck", "DataSource - UserInfo emit됨 $result")
             } catch (e: Exception) {
-                _error.value = true
+                _error.emit(true)
             }
         }
     }

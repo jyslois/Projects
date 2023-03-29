@@ -22,6 +22,10 @@ class AccountSettingViewModel @Inject constructor(
     private val deleteUserUseCase: DeleteUserUseCase
 ) : ViewModel() {
 
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
+
     // 클릭 이벤트
     // 클릭 이벤트 감지 플로우
     private val _changePasswordButton = MutableSharedFlow<Boolean>()
@@ -88,6 +92,13 @@ class AccountSettingViewModel @Inject constructor(
                 getUserInfoUseCase.userInfo.collect {
                     _userInfo.emit(it)
                     Log.e("UserInfoCheck", "viewModel - emit $it")
+                }
+            }
+
+            launch {
+                // error collect & emit
+                getUserInfoUseCase.error.collect {
+                    _error.emit(it)
                 }
             }
 

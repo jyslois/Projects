@@ -27,5 +27,5 @@ interface MemberRepository {
     val deleteUserResult: SharedFlow<Map<String, Object>>
 
     // 에러 메시지
-    val error: StateFlow<Boolean>
+    val error: SharedFlow<Boolean>
 }

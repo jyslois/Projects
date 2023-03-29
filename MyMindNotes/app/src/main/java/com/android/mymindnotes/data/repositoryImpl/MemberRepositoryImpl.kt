@@ -46,7 +46,7 @@ class MemberRepositoryImpl @Inject constructor(
             launch {
                 // 에러 메시지 collect & emit
                 memberDataSource.error.collect {
-                    _error.value = it
+                    _error.emit(it)
                 }
             }
         }
@@ -123,7 +123,7 @@ class MemberRepositoryImpl @Inject constructor(
 
     // 에러
     // 에러 메시지
-    private val _error = MutableStateFlow(false)
-    override val error = _error.asStateFlow()
+    private val _error = MutableSharedFlow<Boolean>(replay = 1)
+    override val error = _error.asSharedFlow()
 
 }

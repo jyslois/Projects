@@ -66,16 +66,16 @@ class MainPageViewModel @Inject constructor(
             }
 
             launch {
+                // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
+                getUserInfoUseCase.getUserInfo()
+                Log.e("UserInfoCheck", "viewModel - 함수콜")
+            }
+
+            launch {
                 // error collect & emit
                 getUserInfoUseCase.error.collect {
                     _error.emit(it)
                 }
-            }
-
-            launch {
-                // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
-                getUserInfoUseCase.getUserInfo()
-                Log.e("UserInfoCheck", "viewModel - 함수콜")
             }
 
         }

@@ -8,6 +8,7 @@ import android.content.Intent
 import com.android.mymindnotes.New_Emotion
 import com.android.mymindnotes.Old_Situation
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -21,6 +22,9 @@ class RecordMindChoice : AppCompatActivity() {
     private lateinit var binding: ActivityRecordMindChoiceBinding
     // 뷰모델 객체 주입
     private val viewModel: RecordMindChoiceViewModel by viewModels()
+
+    // 다이얼로그 변수
+    lateinit var alertDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityRecordMindChoiceBinding.inflate(layoutInflater)
@@ -78,8 +82,27 @@ class RecordMindChoice : AppCompatActivity() {
                         }
                     }
                 }
+
+                // 에러 감지
+                // 에러 값 구독
+                launch {
+                    viewModel.error.collect {
+                        if (it) {
+                            dialog("서버와의 연결에 실패했습니다. 다시 시도해 주세요.")
+                        }
+                    }
+                }
             }
         }
 
+    }
+
+    // error dialoguee
+    fun dialog(msg: String?) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(msg)
+        builder.setPositiveButton("확인", null)
+        alertDialog = builder.show()
+        alertDialog.show()
     }
 }
