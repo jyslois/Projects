@@ -8,8 +8,7 @@ interface MemberRepository {
     suspend fun getUserInfo()
 
     // Log in & Log out
-    suspend fun login(email: String, password: String)
-    val logInResult: SharedFlow<Map<String, Object>>
+    suspend fun login(email: String, password: String): Flow<Map<String, Object>>
 
     // Email & Nickname Duplicate Check
     suspend fun checkEmail(emailInput: String)

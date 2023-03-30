@@ -4,8 +4,7 @@ import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,17 +13,22 @@ class LogInUseCase @Inject constructor(
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
-    private val _logInResult = MutableSharedFlow<Map<String, Object>>()
-    val logInResult = _logInResult.asSharedFlow()
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
 
-    suspend fun login(email: String, password: String) {
-        repository.login(email, password)
+
+    suspend fun login(email: String, password: String): Flow<Map<String, Object>> {
+        return repository.login(email, password)
     }
 
     init {
         mainDispatcherCoroutineScope.launch {
-            repository.logInResult.collect {
-                _logInResult.emit(it)
+            launch {
+                // error collect & emit
+                repository.error.collect {
+                    _error.emit(it)
+                }
             }
         }
     }

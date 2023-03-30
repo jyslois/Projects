@@ -54,21 +54,8 @@ class MemberRepositoryImpl @Inject constructor(
 
 //    override suspend fun getUserInfo(): Flow<Map<String, Object>> = memberDataSource.userInfoFlow
 
-    // 로그인, 로그아웃
     // 로그인
-    // 로그인 결과 저장 플로우
-    private val _logInResult = MutableSharedFlow<Map<String, Object>>()
-    override val logInResult = _logInResult.asSharedFlow()
-
-    // (서버) 로그인
-    override suspend fun login(email: String, password: String) {
-        val user = UserInfoLogin(email, password)
-        withContext(ioDispatcher) {
-            val result = memberDataSource.loginApi.login(user)
-            _logInResult.emit(result)
-        }
-
-    }
+    override suspend fun login(email: String, password: String): Flow<Map<String, Object>> = memberDataSource.loginFlow(email, password)
 
     // 아이디, 비밀번호 중복 체크
     // 이메일

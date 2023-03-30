@@ -15,8 +15,8 @@ class GetUserInfoUseCase @Inject constructor(
 ) {
 
     // 에러 메시지
-    private val _error = MutableStateFlow(false)
-    val error = _error.asStateFlow()
+    private val _error = MutableSharedFlow<Boolean>(replay = 1)
+    val error = _error.asSharedFlow()
 
     // 회원 정보 값 저장 플로우
     private val _userInfo = MutableStateFlow<Map<String, Object>>(emptyMap())
@@ -41,7 +41,7 @@ class GetUserInfoUseCase @Inject constructor(
             launch {
                 // error collect & emit
                 memberRepository.error.collect {
-                    _error.value = it
+                    _error.emit(it)
                 }
             }
         }

@@ -7,6 +7,7 @@ import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
 import com.android.mymindnotes.hilt.module.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -50,9 +51,15 @@ class LoginViewModel @Inject constructor(
     private val _logInResult = MutableSharedFlow<Map<String, Object>>()
     val logInResult = _logInResult.asSharedFlow()
 
-    // 로그인 메서드
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
+
+    // 로그인
     suspend fun login(email: String, password: String) {
-        login_useCase.login(email, password)
+        login_useCase.login(email, password).collect {
+            _logInResult.emit(it)
+        }
     }
 
     // 버튼 클릭 메서드
@@ -135,8 +142,9 @@ class LoginViewModel @Inject constructor(
             }
 
             launch {
-                login_useCase.logInResult.collect {
-                    _logInResult.emit(it)
+                // error collect & emit
+                login_useCase.error.collect {
+                    _error.emit(it)
                 }
             }
 

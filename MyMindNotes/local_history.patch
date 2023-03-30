@@ -1,0 +1,18 @@
+Index: app/src/main/java/com/android/mymindnotes/domain/repositoryinterfaces/MemberRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/android/mymindnotes/domain/repositoryinterfaces/MemberRepository.kt b/app/src/main/java/com/android/mymindnotes/domain/repositoryinterfaces/MemberRepository.kt
+--- a/app/src/main/java/com/android/mymindnotes/domain/repositoryinterfaces/MemberRepository.kt	
++++ b/app/src/main/java/com/android/mymindnotes/domain/repositoryinterfaces/MemberRepository.kt	(date 1680150207408)
+@@ -8,8 +8,7 @@
+     suspend fun getUserInfo()
+ 
+     // Log in & Log out
+-    suspend fun login(email: String, password: String)
+-    val logInResult: SharedFlow<Map<String, Object>>
++    suspend fun login(email: String, password: String): Flow<Map<String, Object>>
+ 
+     // Email & Nickname Duplicate Check
+     suspend fun checkEmail(emailInput: String)
