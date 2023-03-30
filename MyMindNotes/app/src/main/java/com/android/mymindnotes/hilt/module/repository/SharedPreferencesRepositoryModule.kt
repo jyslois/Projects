@@ -1,7 +1,7 @@
 package com.android.mymindnotes.hilt.module.repository
 
-import com.android.mymindnotes.data.repositoryImpl.SharedPreferencesRepositoryImpl
-import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
+import com.android.mymindnotes.data.repositoryImpl.MemberSharedPreferencesRepositoryImpl
+import com.android.mymindnotes.domain.repositoryinterfaces.MemberSharedPreferencesRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ abstract class SharedPreferencesRepositoryModule {
     @Singleton // Repository 인스턴스를 생성할 때 같은 주소를 가르키도록 설정하여 중복 생성을 막기 위해서 사용
     @Binds
     abstract fun bindDiaryRepository(
-        sharedPreferencesRepositoryImpl: SharedPreferencesRepositoryImpl
-    ): SharedPreferencesRepository
+        sharedPreferencesRepositoryImpl: MemberSharedPreferencesRepositoryImpl
+    ): MemberSharedPreferencesRepository
 }

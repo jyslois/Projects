@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class SharedPreferencesDataSource @Inject constructor(
+class MemberSharedPreferencesDataSource @Inject constructor(
     @AutoSave private val autoSave_sharedPreference: SharedPreferences,
     @User private val user_sharedPreference: SharedPreferences,
     @FirstTime private val firstTime_sharedPreference: SharedPreferences,

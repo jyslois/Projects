@@ -44,32 +44,9 @@ public class New_Emotion extends AppCompatActivity {
         builder.setMessage(msg);
         builder.setPositiveButton("확인", null);
         alertDialog = builder.show();
-        // 메시지 크기 조절
-        TextView messageText = alertDialog.findViewById(android.R.id.message);
-        messageText.setTextSize((float) (standardSize_X / 24));
-        // 버튼 크기 조절
-        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
         alertDialog.show();
     }
 
-    // 화면 크기에 따른 글자 크기 조절
-    int standardSize_X, standardSize_Y;
-    float density;
-
-    public Point getScreenSize(Activity activity) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        return size;
-    }
-    public void getStandardSize() {
-        Point ScreenSize = getScreenSize(this);
-        density  = getResources().getDisplayMetrics().density;
-
-        standardSize_X = (int) (ScreenSize.x / density);
-        standardSize_Y = (int) (ScreenSize.y / density);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,26 +77,6 @@ public class New_Emotion extends AppCompatActivity {
         typeEdit = type.edit();
         emotionColor = getSharedPreferences("emotionColor", MODE_PRIVATE);
         emotionColorEdit = emotionColor.edit();
-
-
-        // 글짜 크기 조절
-        getStandardSize();
-        binding.title.setTextSize((float) (standardSize_X / 21));
-        binding.angerButton.setTextSize((float) (standardSize_X / 23));
-        binding.anticipationButton.setTextSize((float) (standardSize_X / 23));
-        binding.disgustButton.setTextSize((float) (standardSize_X / 23));
-        binding.fearButton.setTextSize((float) (standardSize_X / 23));
-        binding.happinessButton.setTextSize((float) (standardSize_X / 23));
-        binding.sadnessButton.setTextSize((float) (standardSize_X / 23));
-        binding.surpriseButton.setTextSize((float) (standardSize_X / 23));
-        binding.trustButton.setTextSize((float) (standardSize_X / 23));
-
-        binding.RecordEmotionTips.setTextSize((float) (standardSize_X / 25));
-        binding.RecordEmotionUserInput.setTextSize((float) (standardSize_X / 23));
-        binding.RecordEmotionHelpButton.setTextSize((float) (standardSize_X / 25));
-        binding.RecordEmotionInstruction2.setTextSize((float) (standardSize_X / 25));
-        binding.RecordNextButton.setTextSize((float) (standardSize_X / 23));
-
 
         // 다음 버튼 클릭, emotion 저장
         binding.RecordNextButton.setOnClickListener(view -> {
@@ -197,11 +154,6 @@ public class New_Emotion extends AppCompatActivity {
         // Tips 버튼 누르면 다이얼로그 띄우기
         binding.RecordEmotionTips.setOnClickListener(view -> {
             AlertDialog alertDialog = builder.show();
-            // 메시지 크기 조절
-            TextView messageText = alertDialog.findViewById(android.R.id.message);
-            messageText.setTextSize((float) (standardSize_X / 24));
-            // 버튼 크기 조절
-            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
             alertDialog.show();
         });
 
@@ -296,12 +248,6 @@ public class New_Emotion extends AppCompatActivity {
         builder.setNegativeButton("종료", dialogListener);
         builder.setPositiveButton("계속 작성", null);
         AlertDialog alertDialog = builder.show();
-        // 메시지 크기 조절
-        TextView messageText = alertDialog.findViewById(android.R.id.message);
-        messageText.setTextSize((float) (standardSize_X / 24));
-        // 버튼 크기 조절
-        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize((float) (standardSize_X / 25));
-        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextSize((float) (standardSize_X / 25));
         alertDialog.show();
     }
 

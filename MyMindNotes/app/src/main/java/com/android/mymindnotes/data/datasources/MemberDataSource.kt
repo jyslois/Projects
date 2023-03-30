@@ -23,7 +23,7 @@ class MemberDataSource @Inject constructor(
     private val changeNicknameApi: ChangeNicknameApi,
     private val changePasswordApi: ChangePasswordApi,
     private val changeToTempPasswordApi: ChangeToTempPasswordApi,
-    private val sharedPreferencesDataSource: SharedPreferencesDataSource,
+    private val sharedPreferencesDataSource: MemberSharedPreferencesDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 

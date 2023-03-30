@@ -2,7 +2,7 @@ package com.android.mymindnotes.domain.repositoryinterfaces
 
 import kotlinx.coroutines.flow.*
 
-interface SharedPreferencesRepository {
+interface MemberSharedPreferencesRepository {
 
     // get Methods
     suspend fun getAutoLoginCheck(): Flow<Boolean>

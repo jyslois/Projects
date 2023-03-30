@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecase
 
-import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
+import com.android.mymindnotes.domain.repositoryinterfaces.MemberSharedPreferencesRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class UseSharedPreferencesUseCase @Inject constructor(
-    private val repository: SharedPreferencesRepository
+    private val repository: MemberSharedPreferencesRepository
 ) {
     // get methods
     suspend fun getAutoLogin(): Flow<Boolean> {

@@ -1,15 +1,15 @@
 package com.android.mymindnotes.data.repositoryImpl
 
-import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
-import com.android.mymindnotes.domain.repositoryinterfaces.SharedPreferencesRepository
+import com.android.mymindnotes.data.datasources.MemberSharedPreferencesDataSource
+import com.android.mymindnotes.domain.repositoryinterfaces.MemberSharedPreferencesRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SharedPreferencesRepositoryImpl @Inject constructor(
-    private val dataSource: SharedPreferencesDataSource
-) : SharedPreferencesRepository {
+class MemberSharedPreferencesRepositoryImpl @Inject constructor(
+    private val dataSource: MemberSharedPreferencesDataSource
+) : MemberSharedPreferencesRepository {
 
     // UserIndex
     // UserIndex 저장하기
