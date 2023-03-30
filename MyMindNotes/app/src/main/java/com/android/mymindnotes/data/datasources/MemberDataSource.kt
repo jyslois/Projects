@@ -3,6 +3,7 @@ package com.android.mymindnotes.data.datasources
 import android.util.Log
 import com.android.mymindnotes.data.retrofit.api.user.*
 import com.android.mymindnotes.data.retrofit.model.ChangeUserNickname
+import com.android.mymindnotes.data.retrofit.model.ChangeUserPassword
 import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import com.android.mymindnotes.hilt.module.IoDispatcher
@@ -19,6 +20,7 @@ class MemberDataSource @Inject constructor(
     private val getUserInfoApi: GetUserInfoApi,
     private val deleteUserApi: DeleteUserApi,
     private val changeNicknameApi: ChangeNicknameApi,
+    private val changePasswordApi: ChangePasswordApi,
     private val sharedPreferencesDataSource: SharedPreferencesDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -107,11 +109,25 @@ class MemberDataSource @Inject constructor(
 
     // 회원 정보 수정
     // 닉네임 수정
-    suspend fun changeNickNameFlow(nickName: String): Flow<Map<String, Object>> = flow<Map<String, Object>> {
+    suspend fun changeNickNameFlow(nickName: String): Flow<Map<String, Object>> = flow {
         sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
             val userIndex = it
             val user = ChangeUserNickname(userIndex, nickName)
             val result = changeNicknameApi.updateUserNickname(user)
+            emit(result)
+        }
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
+        }
+
+    // 비밀번호 수정
+    suspend fun changePasswordFlow(password: String, originalPassword: String): Flow<Map<String,Object>> = flow {
+        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
+            val userIndex = it
+            val user = ChangeUserPassword(userIndex, password, originalPassword)
+            val result = changePasswordApi.updateUserPassword(user)
             emit(result)
         }
     }.flowOn(ioDispatcher)

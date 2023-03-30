@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.AlarmSetting
-import com.android.mymindnotes.ChangePassword
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityAccountInformationBinding
 import com.android.mymindnotes.presentation.viewmodels.AccountSettingViewModel

@@ -47,6 +47,11 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveIdAndPasswordtoAutoSaveSharedPreferences(id, password)
     }
 
+    // Password 저장하기
+    override suspend fun savePassword(password: String?) {
+        dataSource.savePasswordtoAutoSaveSharedPreferences(password)
+    }
+
     // FirstTime - 최초 로그인 여부
     // FirstTime 가져오기
     override suspend fun getFirstTime(): Flow<Boolean> = dataSource.getFirstTimefromFirstTimeSharedPreferences

@@ -51,6 +51,9 @@ class MemberRepositoryImpl @Inject constructor(
     // 닉네임 수정
     override suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> = memberDataSource.changeNickNameFlow(nickName)
 
+    // 비밀번호 수정
+    override suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>> = memberDataSource.changePasswordFlow(password, originalPassword)
+
     init {
         mainDispatcherCoroutineScope.launch {
             launch {

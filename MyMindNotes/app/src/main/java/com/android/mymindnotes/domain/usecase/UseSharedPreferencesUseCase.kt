@@ -42,6 +42,10 @@ class UseSharedPreferencesUseCase @Inject constructor(
         repository.saveIdAndPassword(id, password)
     }
 
+    suspend fun savePassword(password: String?) {
+        repository.savePassword(password)
+    }
+
     suspend fun saveUserIndex(index: Int) {
         repository.saveUserIndex(index)
     }

@@ -23,6 +23,11 @@ class ChangeUserInfoUseCase @Inject constructor(
         return repository.changeNickName(nickName)
     }
 
+    // 비밀번호 바꾸기
+    suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>> {
+        return repository.changePassword(password, originalPassword)
+    }
+
     init {
         mainDispatcherCoroutineScope.launch {
             repository.error.collect {

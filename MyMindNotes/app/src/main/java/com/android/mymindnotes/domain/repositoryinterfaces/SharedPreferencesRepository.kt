@@ -16,6 +16,7 @@ interface SharedPreferencesRepository {
     suspend fun saveAutoLoginCheck(state: Boolean)
     suspend fun saveAutoSaveCheck(state: Boolean)
     suspend fun saveIdAndPassword(id: String?, password: String?)
+    suspend fun savePassword(password: String?)
     suspend fun saveUserIndex(index: Int)
     suspend fun saveFirstTime(boolean: Boolean)
 

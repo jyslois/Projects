@@ -80,6 +80,13 @@ class SharedPreferencesDataSource @Inject constructor(
         }
     }
 
+    // Password 저장하기
+    suspend fun savePasswordtoAutoSaveSharedPreferences(password: String?) {
+        withContext(ioDispatcher) {
+            autoSave_sharedPreference.edit().putString("password", password).commit()
+        }
+    }
+
     // FirstTime - 최초 로그인 여부
     // FirstTime 가져오기
     val getFirstTimefromFirstTimeSharedPreferences: Flow<Boolean> = flow {

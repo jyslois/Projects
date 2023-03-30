@@ -23,6 +23,9 @@ interface MemberRepository {
     // change NickName
     suspend fun changeNickName(nickName: String): Flow<Map<String, Object>>
 
+    // change Password
+    suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>>
+
     // 에러 메시지
     val error: SharedFlow<Boolean>
 }

@@ -63,7 +63,7 @@
             android:parentActivityName=".presentation.ui.AccountSetting"
             android:theme="@style/Theme.changeScreen" />
         <activity
-            android:name=".ChangePassword"
+            android:name=".presentation.ui.ChangePassword"
             android:exported="false"
             android:label="비밀번호 변경"
             android:parentActivityName=".presentation.ui.AccountSetting"
