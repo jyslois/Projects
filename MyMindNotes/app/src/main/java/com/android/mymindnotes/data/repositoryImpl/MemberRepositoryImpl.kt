@@ -45,7 +45,7 @@ class MemberRepositoryImpl @Inject constructor(
         memberDataSource.getUserInfo()
         Log.e("UserInfoCheck", "Repository - 함수콜")
     }
-    
+
     // 에러
     // 에러 메시지
     private val _error = MutableSharedFlow<Boolean>(replay = 1)
