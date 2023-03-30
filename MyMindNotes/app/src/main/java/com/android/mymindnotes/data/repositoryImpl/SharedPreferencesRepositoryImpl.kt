@@ -56,9 +56,20 @@ class SharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveFirstTimetoFirstTimeSharedPreferences(state)
     }
 
+    // Clear Preferences
     // Clear autoSave SharedPreference
     override suspend fun clearAutoSaveSharedPreferences() {
         dataSource.clearAutoSaveSharedPreferences()
+    }
+
+    // Clear Alarm SharedPreferences
+    override suspend fun clearAlarmSharedPreferences() {
+        dataSource.clearAlarmSharedPreferences()
+    }
+
+    // Clear Time SharedPreferences
+    override suspend fun clearTimeSharedPreferences() {
+        dataSource.clearTimeSharedPreferences()
     }
 
 }

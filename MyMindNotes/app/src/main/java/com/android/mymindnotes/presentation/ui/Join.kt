@@ -90,7 +90,6 @@ class Join : AppCompatActivity() {
                     viewModel.nickNameInputTextChange()
                 }
             }
-
             override fun afterTextChanged(s: Editable) {}
         })
 

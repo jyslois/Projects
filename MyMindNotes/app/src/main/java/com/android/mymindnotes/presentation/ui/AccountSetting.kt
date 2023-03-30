@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.AlarmSetting
-import com.android.mymindnotes.ChangeNickname
 import com.android.mymindnotes.ChangePassword
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityAccountInformationBinding
@@ -28,21 +27,10 @@ class AccountSetting : AppCompatActivity() {
     // 다이얼로그 변수
     lateinit var alertDialog: AlertDialog
 
-
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAccountInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // 임시
-        val alarm = getSharedPreferences("alarm", MODE_PRIVATE)
-        val alarmEdit = alarm.edit()
-        val timeSave = getSharedPreferences("time", MODE_PRIVATE)
-        val timeSaveEdit = timeSave.edit()
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
@@ -134,11 +122,9 @@ class AccountSetting : AppCompatActivity() {
                             AlarmSetting.stopAlarm(applicationContext)
                             // 모든 상태저장 삭제
                             // 알람 설정 해제 (임시)
-                            alarmEdit!!.clear()
-                            alarmEdit!!.commit()
+                            viewModel.clearAlarmSharedPreferences()
                             // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기 (임시)
-                            timeSaveEdit!!.clear()
-                            timeSaveEdit!!.commit()
+                            viewModel.clearTimeSharedPreferences()
                             // 저장 설정 지우기
                             viewModel.clearAutoSaveSharedPreferences()
                             // 화면 전환

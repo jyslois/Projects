@@ -27,6 +27,16 @@ object SharedPreferencesModule {
     @Provides
     fun provideSharedPreferencesforFirstTime(application: Application): SharedPreferences
     = application.getSharedPreferences("firstTime", Activity.MODE_PRIVATE)
+
+    @Alarm
+    @Provides
+    fun provideSharedPreferencesforAlarm(application: Application): SharedPreferences
+    = application.getSharedPreferences("alarm", Activity.MODE_PRIVATE)
+
+    @Time
+    @Provides
+    fun provideSharedPreferencesforTime(application: Application): SharedPreferences
+    = application.getSharedPreferences("time", Activity.MODE_PRIVATE)
 }
 
 
@@ -41,3 +51,11 @@ annotation class User
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class FirstTime
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Alarm
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Time

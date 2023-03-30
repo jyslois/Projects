@@ -80,9 +80,20 @@ class AccountSettingViewModel @Inject constructor(
         }
     }
 
-    // 회원탈퇴 시 autoSave Sharedpreference clear하는 함수 콜
+    // 회원탈퇴 시 SharedPreference clear하는 함수
+    // autoSave SharedPreference clear하는 함수 콜
     suspend fun clearAutoSaveSharedPreferences() {
         useSharedPreferencesUseCase.clearAutoSaveSharedPreferences()
+    }
+
+    // 알람 설정 SharedPreference clear하는 함수 콜
+    suspend fun clearAlarmSharedPreferences() {
+        useSharedPreferencesUseCase.clearAlarmSharedPreferences()
+    }
+
+    // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
+    suspend fun clearTimeSharedPreferences() {
+        useSharedPreferencesUseCase.clearTimeSharedPreferences()
     }
 
     // collect & emit

@@ -20,6 +20,9 @@ interface MemberRepository {
     // Delete
     suspend fun deleteUser(): Flow<Map<String, Object>>
 
+    // change NickName
+    suspend fun changeNickName(nickName: String): Flow<Map<String, Object>>
+
     // 에러 메시지
     val error: SharedFlow<Boolean>
 }

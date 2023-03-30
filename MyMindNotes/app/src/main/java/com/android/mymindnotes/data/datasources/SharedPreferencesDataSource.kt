@@ -1,10 +1,7 @@
 package com.android.mymindnotes.data.datasources
 
 import android.content.SharedPreferences
-import com.android.mymindnotes.hilt.module.AutoSave
-import com.android.mymindnotes.hilt.module.FirstTime
-import com.android.mymindnotes.hilt.module.IoDispatcher
-import com.android.mymindnotes.hilt.module.User
+import com.android.mymindnotes.hilt.module.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -14,6 +11,8 @@ class SharedPreferencesDataSource @Inject constructor(
     @AutoSave private val autoSave_sharedPreference: SharedPreferences,
     @User private val user_sharedPreference: SharedPreferences,
     @FirstTime private val firstTime_sharedPreference: SharedPreferences,
+    @Alarm private val alarm_sharedPreferences: SharedPreferences,
+    @Time private val time_sharedPreferences: SharedPreferences,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
@@ -81,13 +80,6 @@ class SharedPreferencesDataSource @Inject constructor(
         }
     }
 
-    // Clear autoSave SharedPreference
-    suspend fun clearAutoSaveSharedPreferences() {
-        withContext(ioDispatcher) {
-            autoSave_sharedPreference.edit().clear().commit()
-        }
-    }
-
     // FirstTime - 최초 로그인 여부
     // FirstTime 가져오기
     val getFirstTimefromFirstTimeSharedPreferences: Flow<Boolean> = flow {
@@ -102,5 +94,26 @@ class SharedPreferencesDataSource @Inject constructor(
         }
     }
 
+    // Clear Preferences
+    // Clear autoSave SharedPreference
+    suspend fun clearAutoSaveSharedPreferences() {
+        withContext(ioDispatcher) {
+            autoSave_sharedPreference.edit().clear().commit()
+        }
+    }
+
+    // Clear Alarm SharedPreferences
+    suspend fun clearAlarmSharedPreferences() {
+        withContext(ioDispatcher) {
+            alarm_sharedPreferences.edit().clear().commit()
+        }
+    }
+
+    // Clear Time SharedPreferences
+    suspend fun clearTimeSharedPreferences() {
+        withContext(ioDispatcher) {
+            time_sharedPreferences.edit().clear().commit()
+        }
+    }
 
 }

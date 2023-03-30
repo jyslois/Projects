@@ -21,4 +21,6 @@ interface SharedPreferencesRepository {
 
     // clear SharedPreferences
     suspend fun clearAutoSaveSharedPreferences()
+    suspend fun clearAlarmSharedPreferences()
+    suspend fun clearTimeSharedPreferences()
 }

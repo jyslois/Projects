@@ -55,4 +55,12 @@ class UseSharedPreferencesUseCase @Inject constructor(
         repository.clearAutoSaveSharedPreferences()
     }
 
+    suspend fun clearAlarmSharedPreferences() {
+        repository.clearAlarmSharedPreferences()
+    }
+
+    suspend fun clearTimeSharedPreferences() {
+        repository.clearTimeSharedPreferences()
+    }
+
 }

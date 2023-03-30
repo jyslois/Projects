@@ -1,4 +1,4 @@
-package com.android.mymindnotes.model;
+package com.android.mymindnotes.data.retrofit.model;
 
 public class ChangeUserNickname {
     public int user_index;

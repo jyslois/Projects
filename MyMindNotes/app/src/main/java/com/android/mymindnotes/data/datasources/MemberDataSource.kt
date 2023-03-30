@@ -2,6 +2,7 @@ package com.android.mymindnotes.data.datasources
 
 import android.util.Log
 import com.android.mymindnotes.data.retrofit.api.user.*
+import com.android.mymindnotes.data.retrofit.model.ChangeUserNickname
 import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import com.android.mymindnotes.hilt.module.IoDispatcher
@@ -17,6 +18,7 @@ class MemberDataSource @Inject constructor(
     private val joinApi: JoinApi,
     private val getUserInfoApi: GetUserInfoApi,
     private val deleteUserApi: DeleteUserApi,
+    private val changeNicknameApi: ChangeNicknameApi,
     private val sharedPreferencesDataSource: SharedPreferencesDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -95,6 +97,21 @@ class MemberDataSource @Inject constructor(
         sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
             val userIndex = it
             val result = deleteUserApi.deleteUser(userIndex)
+            emit(result)
+        }
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
+        }
+
+    // 회원 정보 수정
+    // 닉네임 수정
+    suspend fun changeNickNameFlow(nickName: String): Flow<Map<String, Object>> = flow<Map<String, Object>> {
+        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
+            val userIndex = it
+            val user = ChangeUserNickname(userIndex, nickName)
+            val result = changeNicknameApi.updateUserNickname(user)
             emit(result)
         }
     }.flowOn(ioDispatcher)

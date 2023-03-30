@@ -4,6 +4,7 @@ import android.util.Log
 import com.android.mymindnotes.data.datasources.MemberDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
+import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -45,6 +46,10 @@ class MemberRepositoryImpl @Inject constructor(
     // 에러 메시지
     private val _error = MutableSharedFlow<Boolean>(replay = 1)
     override val error = _error.asSharedFlow()
+
+    // 회원 정보 수정
+    // 닉네임 수정
+    override suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> = memberDataSource.changeNickNameFlow(nickName)
 
     init {
         mainDispatcherCoroutineScope.launch {

@@ -57,7 +57,7 @@
             android:parentActivityName=".presentation.ui.Login"
             android:theme="@style/Theme.changeScreen" />
         <activity
-            android:name=".ChangeNickname"
+            android:name=".presentation.ui.ChangeNickname"
             android:exported="false"
             android:label="닉네임 변경"
             android:parentActivityName=".presentation.ui.AccountSetting"
