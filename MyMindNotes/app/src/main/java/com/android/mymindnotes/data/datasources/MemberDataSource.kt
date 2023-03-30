@@ -2,6 +2,7 @@ package com.android.mymindnotes.data.datasources
 
 import android.util.Log
 import com.android.mymindnotes.data.retrofit.api.user.*
+import com.android.mymindnotes.data.retrofit.model.ChangeToTemporaryPassword
 import com.android.mymindnotes.data.retrofit.model.ChangeUserNickname
 import com.android.mymindnotes.data.retrofit.model.ChangeUserPassword
 import com.android.mymindnotes.data.retrofit.model.UserInfo
@@ -21,6 +22,7 @@ class MemberDataSource @Inject constructor(
     private val deleteUserApi: DeleteUserApi,
     private val changeNicknameApi: ChangeNicknameApi,
     private val changePasswordApi: ChangePasswordApi,
+    private val changeToTempPasswordApi: ChangeToTempPasswordApi,
     private val sharedPreferencesDataSource: SharedPreferencesDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -123,13 +125,25 @@ class MemberDataSource @Inject constructor(
         }
 
     // 비밀번호 수정
-    suspend fun changePasswordFlow(password: String, originalPassword: String): Flow<Map<String,Object>> = flow {
+    suspend fun changePasswordFlow(password: String, originalPassword: String): Flow<Map<String, Object>> = flow {
         sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
             val userIndex = it
             val user = ChangeUserPassword(userIndex, password, originalPassword)
             val result = changePasswordApi.updateUserPassword(user)
             emit(result)
         }
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
+        }
+
+
+    // 임시 비밀번호로 비밀번호 수정
+    suspend fun changeToTemporaryPasswordFlow(email: String, randomPassword: String): Flow<Map<String, Object>> = flow<Map<String, Object>> {
+        val user = ChangeToTemporaryPassword(email, randomPassword)
+        val result = changeToTempPasswordApi.toTemPassword(user)
+        emit(result)
     }.flowOn(ioDispatcher)
         .catch {
             _error.emit(true)

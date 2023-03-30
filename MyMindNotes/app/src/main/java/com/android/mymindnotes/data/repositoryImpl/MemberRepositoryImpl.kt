@@ -54,6 +54,9 @@ class MemberRepositoryImpl @Inject constructor(
     // 비밀번호 수정
     override suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>> = memberDataSource.changePasswordFlow(password, originalPassword)
 
+    // 임시 비밀번호로 비밀번호 수정
+    override suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>> = memberDataSource.changeToTemporaryPasswordFlow(email, randomPassword)
+
     init {
         mainDispatcherCoroutineScope.launch {
             launch {

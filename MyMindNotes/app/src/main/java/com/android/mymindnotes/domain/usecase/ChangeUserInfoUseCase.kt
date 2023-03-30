@@ -28,6 +28,11 @@ class ChangeUserInfoUseCase @Inject constructor(
         return repository.changePassword(password, originalPassword)
     }
 
+    // 임시 비밀번호로 비밀번호 변경하기
+    suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>> {
+        return repository.changeToTemporaryPassword(email, randomPassword)
+    }
+
     init {
         mainDispatcherCoroutineScope.launch {
             repository.error.collect {

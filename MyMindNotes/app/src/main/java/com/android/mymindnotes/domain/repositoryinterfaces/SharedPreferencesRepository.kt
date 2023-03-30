@@ -1,7 +1,6 @@
 package com.android.mymindnotes.domain.repositoryinterfaces
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.*
 
 interface SharedPreferencesRepository {
 

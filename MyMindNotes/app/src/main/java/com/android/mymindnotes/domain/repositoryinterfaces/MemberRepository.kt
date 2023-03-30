@@ -26,6 +26,9 @@ interface MemberRepository {
     // change Password
     suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>>
 
+    // change to TemporaryPassword
+    suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>>
+
     // 에러 메시지
     val error: SharedFlow<Boolean>
 }

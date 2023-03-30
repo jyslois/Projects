@@ -52,7 +52,7 @@
             android:label="감정 선택"
             android:theme="@style/Theme.dialogue" />
         <activity
-            android:name=".FindPassword"
+            android:name=".presentation.ui.FindPassword"
             android:exported="false"
             android:parentActivityName=".presentation.ui.Login"
             android:theme="@style/Theme.changeScreen" />
