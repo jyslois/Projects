@@ -11,12 +11,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MemberDataSource @Inject constructor(
-    val loginApi: LoginApi,
-    val checkEmailApi: CheckEmailApi,
-    val checkNickNameApi: CheckNickNameApi,
-    val joinApi: JoinApi,
+    private val loginApi: LoginApi,
+    private val checkEmailApi: CheckEmailApi,
+    private val checkNickNameApi: CheckNickNameApi,
+    private val joinApi: JoinApi,
     private val getUserInfoApi: GetUserInfoApi,
-    val deleteUserApi: DeleteUserApi,
+    private val deleteUserApi: DeleteUserApi,
     private val sharedPreferencesDataSource: SharedPreferencesDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -34,11 +34,12 @@ class MemberDataSource @Inject constructor(
     suspend fun getUserInfo() {
         withContext(ioDispatcher) {
             try {
-                val userIndex =
-                    sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-                val result = getUserInfoApi.getUserInfo(userIndex)
-                _userInfo.value = result
-                Log.e("UserInfoCheck", "DataSource - UserInfo emit됨 $result")
+                sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
+                    val userIndex = it
+                    val result = getUserInfoApi.getUserInfo(userIndex)
+                    _userInfo.value = result
+                    Log.e("UserInfoCheck", "DataSource - UserInfo emit됨 $result")
+                }
             } catch (e: Exception) {
                 _error.emit(true)
             }
@@ -91,9 +92,11 @@ class MemberDataSource @Inject constructor(
 
     // 회원탈퇴
     val deleteUserResultFlow: Flow<Map<String, Object>> = flow {
-        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-        val result = deleteUserApi.deleteUser(userIndex)
-        emit(result)
+        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
+            val userIndex = it
+            val result = deleteUserApi.deleteUser(userIndex)
+            emit(result)
+        }
     }.flowOn(ioDispatcher)
         .catch {
             _error.emit(true)

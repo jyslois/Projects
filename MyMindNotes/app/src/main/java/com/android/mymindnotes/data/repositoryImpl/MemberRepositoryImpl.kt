@@ -2,11 +2,8 @@ package com.android.mymindnotes.data.repositoryImpl
 
 import android.util.Log
 import com.android.mymindnotes.data.datasources.MemberDataSource
-import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
-import com.android.mymindnotes.hilt.module.IoDispatcher
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -14,8 +11,6 @@ import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
     private val memberDataSource: MemberDataSource,
-    private val sharedPreferencesDataSource: SharedPreferencesDataSource,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) : MemberRepository {
 

@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.LogInUseCase
 import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
-import com.android.mymindnotes.hilt.module.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -79,11 +76,6 @@ class LoginViewModel @Inject constructor(
         _loginButton.emit(true)
     }
 
-    // get methods - sharedPreferneces
-//    suspend fun getIdAndPassword() {
-//        shared_useCase.getIdAndPassword()
-//    }
-
     // save methods - SharedPreferneces
     suspend fun saveAutoLoginCheck(state: Boolean) {
         shared_useCase.saveAutoLoginCheck(state)
@@ -116,18 +108,6 @@ class LoginViewModel @Inject constructor(
                     _autoLoginCheck.emit(it)
                 }
             }
-
-//            launch {
-//                shared_useCase.id.collect {
-//                    _id.emit(it)
-//                }
-//            }
-//
-//            launch {
-//                shared_useCase.password.collect {
-//                    _password.emit(it)
-//                }
-//            }
 
             launch {
                 shared_useCase.getId().collect {
