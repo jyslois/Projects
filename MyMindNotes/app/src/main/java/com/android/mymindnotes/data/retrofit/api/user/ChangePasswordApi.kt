@@ -1,7 +1,7 @@
 package com.android.mymindnotes.data.retrofit.api.user
 
 import retrofit2.http.PUT
-import com.android.mymindnotes.data.retrofit.model.ChangeUserPassword
+import com.android.mymindnotes.data.retrofit.model.user.ChangeUserPassword
 import retrofit2.http.Body
 
 interface ChangePasswordApi {

@@ -2,11 +2,11 @@ package com.android.mymindnotes.data.datasources
 
 import android.util.Log
 import com.android.mymindnotes.data.retrofit.api.user.*
-import com.android.mymindnotes.data.retrofit.model.ChangeToTemporaryPassword
-import com.android.mymindnotes.data.retrofit.model.ChangeUserNickname
-import com.android.mymindnotes.data.retrofit.model.ChangeUserPassword
-import com.android.mymindnotes.data.retrofit.model.UserInfo
-import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
+import com.android.mymindnotes.data.retrofit.model.user.ChangeToTemporaryPassword
+import com.android.mymindnotes.data.retrofit.model.user.ChangeUserNickname
+import com.android.mymindnotes.data.retrofit.model.user.ChangeUserPassword
+import com.android.mymindnotes.data.retrofit.model.user.UserInfo
+import com.android.mymindnotes.data.retrofit.model.user.UserInfoLogin
 import com.android.mymindnotes.hilt.module.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
@@ -87,7 +87,12 @@ class MemberDataSource @Inject constructor(
 
     // 회원가입
     suspend fun joinResultFlow(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>> = flow {
-        val user = UserInfo(email, nickname, password, birthyear)
+        val user = UserInfo(
+            email,
+            nickname,
+            password,
+            birthyear
+        )
         val result = joinApi.addUser(user)
         emit(result)
     }.flowOn(ioDispatcher)
@@ -114,7 +119,11 @@ class MemberDataSource @Inject constructor(
     suspend fun changeNickNameFlow(nickName: String): Flow<Map<String, Object>> = flow {
         sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
             val userIndex = it
-            val user = ChangeUserNickname(userIndex, nickName)
+            val user =
+                ChangeUserNickname(
+                    userIndex,
+                    nickName
+                )
             val result = changeNicknameApi.updateUserNickname(user)
             emit(result)
         }
@@ -141,7 +150,11 @@ class MemberDataSource @Inject constructor(
 
     // 임시 비밀번호로 비밀번호 수정
     suspend fun changeToTemporaryPasswordFlow(email: String, randomPassword: String): Flow<Map<String, Object>> = flow<Map<String, Object>> {
-        val user = ChangeToTemporaryPassword(email, randomPassword)
+        val user =
+            ChangeToTemporaryPassword(
+                email,
+                randomPassword
+            )
         val result = changeToTempPasswordApi.toTemPassword(user)
         emit(result)
     }.flowOn(ioDispatcher)

@@ -11,16 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
-import com.android.mymindnotes.data.retrofit.RetrofitService
 import com.android.mymindnotes.databinding.ActivityFindPasswordBinding
-import com.android.mymindnotes.data.retrofit.api.user.ChangeToTempPasswordApi
-import com.android.mymindnotes.data.retrofit.model.ChangeToTemporaryPassword
 import com.android.mymindnotes.presentation.viewmodels.FindPasswordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 @AndroidEntryPoint

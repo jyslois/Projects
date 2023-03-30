@@ -6,9 +6,6 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import android.text.TextWatcher
 import android.text.Editable
-import com.android.mymindnotes.data.retrofit.RetrofitService
-import com.android.mymindnotes.data.retrofit.api.user.ChangeNicknameApi
-import com.android.mymindnotes.data.retrofit.model.ChangeUserNickname
 import android.widget.Toast
 import android.content.Intent
 import android.graphics.Color
@@ -23,9 +20,6 @@ import com.android.mymindnotes.databinding.ActivityChangeNicknameBinding
 import com.android.mymindnotes.presentation.viewmodels.ChangeNickNameViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.regex.Pattern
 
 @AndroidEntryPoint

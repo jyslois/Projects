@@ -1,4 +1,4 @@
-package com.android.mymindnotes.data.retrofit.model;
+package com.android.mymindnotes.data.retrofit.model.user;
 
 public class ChangeUserPassword {
     public int user_index;
