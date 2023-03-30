@@ -61,7 +61,27 @@ class MemberDataSource @Inject constructor(
             _error.emit(true)
             _error.emit(false)
             // 이렇게 설정해 주어야 로그인을 시도할 때마다 반응하면서도, 화면 재진입 시에 자동으로 다이얼로그가 뜨지 않고(true를 replay해주지 않고), 인터넷이 갑자기 됐을 때 로그인 성공이 돼어 다른 화면으로 넘어가도
-            // error가 false로 마지막으로 emit되기 때문에 다른 화면에 영향을 미치지 않는다. (flow는 차례대로 하나 하나 다 emit함)
+            // error가 false로 마지막으로 emit되기 때문에 다른 화면에 영향을 미치지 않는다. (flow는 collect될 때마다 처음부터 차례대로 하나 하나 다 emit함)
+        }
+
+    // 이메일 중복 체크
+    suspend fun emailCheckFlow(emailInput: String): Flow<Map<String, Object>> = flow {
+        val result = checkEmailApi.checkEmail(emailInput)
+        emit(result)
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
+        }
+
+    // 닉네임 중복 체크
+    suspend fun nickNameCheckFlow(nickNameInput: String): Flow<Map<String, Object>> = flow {
+        val result = checkNickNameApi.checkNickname(nickNameInput)
+        emit(result)
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
         }
 
 

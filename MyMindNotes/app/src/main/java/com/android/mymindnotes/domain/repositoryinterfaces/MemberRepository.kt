@@ -11,11 +11,8 @@ interface MemberRepository {
     suspend fun login(email: String, password: String): Flow<Map<String, Object>>
 
     // Email & Nickname Duplicate Check
-    suspend fun checkEmail(emailInput: String)
-    val emailCheckResult: SharedFlow<Map<String, Object>>
-
-    suspend fun checkNickName(nickNameInput: String)
-    val nickNameCheckResult: SharedFlow<Map<String, Object>>
+    suspend fun checkEmail(emailInput: String): Flow<Map<String, Object>>
+    suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>>
 
     // Join
     suspend fun join(email: String, nickname: String, password: String, birthyear: Int)

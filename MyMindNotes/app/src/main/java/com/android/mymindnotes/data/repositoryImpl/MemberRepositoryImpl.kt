@@ -4,7 +4,6 @@ import android.util.Log
 import com.android.mymindnotes.data.datasources.MemberDataSource
 import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
 import com.android.mymindnotes.data.retrofit.model.UserInfo
-import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcher
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
@@ -58,29 +57,11 @@ class MemberRepositoryImpl @Inject constructor(
     override suspend fun login(email: String, password: String): Flow<Map<String, Object>> = memberDataSource.loginFlow(email, password)
 
     // 아이디, 비밀번호 중복 체크
-    // 이메일
-    // 이메일 중복 체크 결과 저장 플로우
-    private val _emailCheckResult = MutableSharedFlow<Map<String, Object>>()
-    override val emailCheckResult = _emailCheckResult.asSharedFlow()
+    // 이메일 중복 체크
+    override suspend fun checkEmail(emailInput: String): Flow<Map<String, Object>> = memberDataSource.emailCheckFlow(emailInput)
 
-    // (서버) 이메일 중복 체크
-    override suspend fun checkEmail(emailInput: String) {
-        withContext(ioDispatcher) {
-            memberDataSource.checkEmailApi.checkEmail(emailInput).let { _emailCheckResult.emit(it) }
-        }
-    }
-
-    // 닉네임
-    // 닉네임 중복 체크 결과 저장 플로우
-    private val _nickNameCheckResult = MutableSharedFlow<Map<String, Object>>()
-    override val nickNameCheckResult = _nickNameCheckResult.asSharedFlow()
-
-    // (서버) 닉네임 중복 체크
-    override suspend fun checkNickName(nickNameInput: String) {
-        withContext(ioDispatcher) {
-            memberDataSource.checkNickNameApi.checkNickname(nickNameInput).let { _nickNameCheckResult.emit(it) }
-        }
-    }
+    // 닉네임 중복 체크
+    override suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>> = memberDataSource.nickNameCheckFlow(nickNameInput)
 
     // 회원가입
     // 회원가입 결과 저장 플로우

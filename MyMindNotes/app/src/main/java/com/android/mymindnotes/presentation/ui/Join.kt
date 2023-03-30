@@ -255,6 +255,16 @@ class Join : AppCompatActivity() {
                         }
                     }
                 }
+
+                // 에러 감지
+                // 에러 값 구독
+                launch {
+                    viewModel.error.collect {
+                        if (it) {
+                            dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                        }
+                    }
+                }
             }
         }
     }

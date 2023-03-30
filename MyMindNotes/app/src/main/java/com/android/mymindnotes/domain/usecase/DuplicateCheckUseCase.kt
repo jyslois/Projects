@@ -5,6 +5,7 @@ import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -14,40 +15,26 @@ class DuplicateCheckUseCase @Inject constructor(
     private val repository: MemberRepository,
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>(replay = 1)
+    val error = _error.asSharedFlow()
+
     // 이메일
     // (서버) 이메일 중복 체크 함수 호출
-    suspend fun checkEmail(emailInput: String) {
-        repository.checkEmail(emailInput)
+    suspend fun checkEmail(emailInput: String): Flow<Map<String, Object>> {
+        return repository.checkEmail(emailInput)
     }
-
-    // 이메일 중복 체크 결과 저장 플로우
-    private val _emailCheckResult = MutableSharedFlow<Map<String, Object>>()
-    val emailCheckResult = _emailCheckResult.asSharedFlow()
 
     // 닉네임
     // (서버) 닉네임 중복 체크 함수 호출
-    suspend fun checkNickName(nickNameInput: String) {
-        repository.checkNickName(nickNameInput)
+    suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>> {
+        return repository.checkNickName(nickNameInput)
     }
-
-    // 닉네임 중복 체크 결과 저장 플로우
-    private val _nickNameCheckResult = MutableSharedFlow<Map<String, Object>>()
-    val nickNameCheckResult = _nickNameCheckResult.asSharedFlow()
 
     init {
         mainDispatcherCoroutineScope.launch {
-            // 이메일 중복 체크 결과 플로우 구독
-            launch {
-                repository.emailCheckResult.collect {
-                    _emailCheckResult.emit(it)
-                }
-            }
-
-            // 닉네임 중복 체크 결과 플로우 구독
-            launch {
-                repository.nickNameCheckResult.collect {
-                    _nickNameCheckResult.emit(it)
-                }
+            repository.error.collect {
+                _error.emit(it)
             }
         }
     }

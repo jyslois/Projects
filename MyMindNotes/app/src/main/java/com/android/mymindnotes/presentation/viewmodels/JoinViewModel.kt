@@ -22,6 +22,10 @@ class JoinViewModel @Inject constructor(
     private val joinUseCase: JoinUseCase
 ) : ViewModel() {
 
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
+
     // 이메일
     // 이메일 중복 체크 버튼 클릭 감지 플로우
     private val _clickEmailCheck = MutableSharedFlow<Boolean>()
@@ -32,16 +36,18 @@ class JoinViewModel @Inject constructor(
         _clickEmailCheck.emit(true)
     }
 
-    // 이메일 중복 체크 함수 호출
-    suspend fun checkEmail(emailInput: String) {
-      duplicateCheckUseCase.checkEmail(emailInput)
-    }
-
     // SharedFlow
     // (서버) 이메일 중복 체크 결과 저장 플로우
     private val _emailCheckResult = MutableSharedFlow<Map<String, Object>>()
     val emailCheckResult = _emailCheckResult.asSharedFlow()
 
+
+    // 이메일 중복 체크 함수 호출
+    suspend fun checkEmail(emailInput: String) {
+      duplicateCheckUseCase.checkEmail(emailInput).collect {
+          _emailCheckResult.emit(it)
+      }
+    }
 
     // 닉네임
     // 닉네임 중복 체크 버튼 클릭 감지 플로우
@@ -53,14 +59,18 @@ class JoinViewModel @Inject constructor(
         _clickNickNameCheck.emit(true)
     }
 
-    // (서버) 닉네임 중복 체크 함수 호출
-    suspend fun checkNickName(nickNameInput: String) {
-        duplicateCheckUseCase.checkNickName(nickNameInput)
-    }
-
     // 닉네임 중복 체크 결과 저장 플로우
     private val _nickNameCheckResult = MutableSharedFlow<Map<String, Object>>()
     val nickNameCheckResult = _nickNameCheckResult.asSharedFlow()
+
+
+    // (서버) 닉네임 중복 체크 함수 호출
+    suspend fun checkNickName(nickNameInput: String) {
+        duplicateCheckUseCase.checkNickName(nickNameInput).collect {
+            _nickNameCheckResult.emit(it)
+        }
+    }
+
 
     // 회원가입
     // 회원가입 버튼 클릭 감지 플로우
@@ -85,24 +95,17 @@ class JoinViewModel @Inject constructor(
     // collect & emit
     init {
         viewModelScope.launch {
-            launch {
-                // 이메일 중복 체크 결과 플로우 구독
-                duplicateCheckUseCase.emailCheckResult.collect {
-                    _emailCheckResult.emit(it)
-                }
-            }
-
-            launch {
-                // 닉네임 중복 체크 결과 플로우 구독
-                duplicateCheckUseCase.nickNameCheckResult.collect {
-                    _nickNameCheckResult.emit(it)
-                }
-            }
-
             // 회원가입 결과 플로우 구독
             launch {
                 joinUseCase.joinResult.collect {
                     _joinResult.emit(it)
+                }
+            }
+
+            // duplicateCheck 에러 값 구독
+            launch {
+                duplicateCheckUseCase.error.collect {
+                    _error.emit(it)
                 }
             }
         }
