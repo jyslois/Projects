@@ -3,7 +3,6 @@ package com.android.mymindnotes.data.repositoryImpl
 import android.util.Log
 import com.android.mymindnotes.data.datasources.MemberDataSource
 import com.android.mymindnotes.data.datasources.SharedPreferencesDataSource
-import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.IoDispatcher
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
@@ -11,7 +10,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
@@ -51,10 +49,8 @@ class MemberRepositoryImpl @Inject constructor(
         }
     }
 
-//    override suspend fun getUserInfo(): Flow<Map<String, Object>> = memberDataSource.userInfoFlow
-
     // 로그인
-    override suspend fun login(email: String, password: String): Flow<Map<String, Object>> = memberDataSource.loginFlow(email, password)
+    override suspend fun login(email: String, password: String): Flow<Map<String, Object>> = memberDataSource.loginResultFlow(email, password)
 
     // 아이디, 비밀번호 중복 체크
     // 이메일 중복 체크
@@ -64,30 +60,10 @@ class MemberRepositoryImpl @Inject constructor(
     override suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>> = memberDataSource.nickNameCheckFlow(nickNameInput)
 
     // 회원가입
-    // 회원가입 결과 저장 플로우
-    private val _joinResult = MutableSharedFlow<Map<String, Object>>()
-    override val joinResult = _joinResult.asSharedFlow()
-
-    // (서버) 회원가입
-    override suspend fun join(email: String, nickname: String, password: String, birthyear: Int) {
-        val user = UserInfo(email, nickname, password, birthyear)
-        withContext(ioDispatcher) {
-            memberDataSource.joinApi.addUser(user).let { _joinResult.emit(it) }
-        }
-    }
+    override suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>> = memberDataSource.joinResultFlow(email, nickname, password, birthyear)
 
     // 회원탈퇴
-    // 회원탈퇴 결과 저장 플로우
-    private val _deleteUserResult = MutableSharedFlow<Map<String, Object>>()
-    override val deleteUserResult = _deleteUserResult.asSharedFlow()
-
-    // (서버) 회원탈퇴
-    override suspend fun deleteUser() {
-        withContext(ioDispatcher) {
-            val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-            memberDataSource.deleteUserApi.deleteUser(userIndex).let { _deleteUserResult.emit(it) }
-        }
-    }
+    override suspend fun deleteUser(): Flow<Map<String, Object>> = memberDataSource.deleteUserResultFlow
 
     // 에러
     // 에러 메시지

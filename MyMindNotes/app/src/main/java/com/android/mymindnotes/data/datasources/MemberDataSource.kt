@@ -2,6 +2,7 @@ package com.android.mymindnotes.data.datasources
 
 import android.util.Log
 import com.android.mymindnotes.data.retrofit.api.user.*
+import com.android.mymindnotes.data.retrofit.model.UserInfo
 import com.android.mymindnotes.data.retrofit.model.UserInfoLogin
 import com.android.mymindnotes.hilt.module.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,13 +20,6 @@ class MemberDataSource @Inject constructor(
     private val sharedPreferencesDataSource: SharedPreferencesDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-
-//    val userInfoFlow: Flow<Map<String, Object>> = flow {
-//        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
-//        val result = getUserInfoApi.getUserInfo(userIndex)
-//        emit(result)
-//        Log.e("UserInfo", "DataSource - UserInfo emit됨")
-//    }.flowOn(ioDispatcher)
 
     // 에러 메시지
     private val _error = MutableSharedFlow<Boolean>(replay = 1)
@@ -52,7 +46,7 @@ class MemberDataSource @Inject constructor(
     }
 
     // 로그인
-    suspend fun loginFlow(email: String, password: String): Flow<Map<String, Object>> = flow {
+    suspend fun loginResultFlow(email: String, password: String): Flow<Map<String, Object>> = flow {
         val user = UserInfoLogin(email, password)
         val result = loginApi.login(user)
         emit(result)
@@ -84,5 +78,26 @@ class MemberDataSource @Inject constructor(
             _error.emit(false)
         }
 
+    // 회원가입
+    suspend fun joinResultFlow(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>> = flow {
+        val user = UserInfo(email, nickname, password, birthyear)
+        val result = joinApi.addUser(user)
+        emit(result)
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
+        }
+
+    // 회원탈퇴
+    val deleteUserResultFlow: Flow<Map<String, Object>> = flow {
+        val userIndex = sharedPreferencesDataSource.sharedPreferenceforUser.getInt("userindex", 0)
+        val result = deleteUserApi.deleteUser(userIndex)
+        emit(result)
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
+        }
 
 }

@@ -5,6 +5,7 @@ import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -16,19 +17,19 @@ class DeleteUserUseCase @Inject constructor(
 ) {
 
     // 회원탈퇴 함수 콜
-    suspend fun deleteUser() {
-        memberRepository.deleteUser()
+    suspend fun deleteUser(): Flow<Map<String, Object>> {
+        return memberRepository.deleteUser()
     }
 
-    // 회원탈퇴 결과 저장 플로우
-    private val _deleteUserResult = MutableSharedFlow<Map<String, Object>>()
-    val deleteUserResult = _deleteUserResult.asSharedFlow()
+    // 에러 메시지
+    private val _error = MutableSharedFlow<Boolean>(replay = 1)
+    val error = _error.asSharedFlow()
 
-    // 회원탈퇴 결과 collect & emit
     init {
         mainDispatcherCoroutineScope.launch {
-            memberRepository.deleteUserResult.collect {
-                _deleteUserResult.emit(it)
+            // 에러 감지
+            memberRepository.error.collect {
+                _error.emit(it)
             }
         }
     }

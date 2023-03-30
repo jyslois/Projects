@@ -84,7 +84,9 @@ class JoinViewModel @Inject constructor(
 
     // (서버) 회원가입 함수 호출
     suspend fun join(email: String, nickname: String, password: String, birthyear: Int) {
-        joinUseCase.join(email, nickname, password, birthyear)
+        joinUseCase.join(email, nickname, password, birthyear).collect {
+            _joinResult.emit(it)
+        }
     }
 
     // 회원가입 결과 저장 플로우
@@ -95,10 +97,10 @@ class JoinViewModel @Inject constructor(
     // collect & emit
     init {
         viewModelScope.launch {
-            // 회원가입 결과 플로우 구독
+            // 회원가입 에러 값 구독
             launch {
-                joinUseCase.joinResult.collect {
-                    _joinResult.emit(it)
+                joinUseCase.error.collect {
+                    _error.emit(it)
                 }
             }
 

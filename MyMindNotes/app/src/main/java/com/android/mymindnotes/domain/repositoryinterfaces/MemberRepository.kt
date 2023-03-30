@@ -15,12 +15,10 @@ interface MemberRepository {
     suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>>
 
     // Join
-    suspend fun join(email: String, nickname: String, password: String, birthyear: Int)
-    val joinResult: SharedFlow<Map<String, Object>>
+    suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>>
 
     // Delete
-    suspend fun deleteUser()
-    val deleteUserResult: SharedFlow<Map<String, Object>>
+    suspend fun deleteUser(): Flow<Map<String, Object>>
 
     // 에러 메시지
     val error: SharedFlow<Boolean>

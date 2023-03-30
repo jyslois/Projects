@@ -75,7 +75,9 @@ class AccountSettingViewModel @Inject constructor(
 
     // (서버) 회원 탈퇴를 위한 함수 콜
     suspend fun deleteUser() {
-        deleteUserUseCase.deleteUser()
+        deleteUserUseCase.deleteUser().collect {
+            _deleteUserResult.emit(it)
+        }
     }
 
     // 회원탈퇴 시 autoSave Sharedpreference clear하는 함수 콜
@@ -96,7 +98,7 @@ class AccountSettingViewModel @Inject constructor(
             }
 
             launch {
-                // error collect & emit
+                // 회원정보 error collect & emit
                 getUserInfoUseCase.error.collect {
                     _error.emit(it)
                 }
@@ -104,8 +106,9 @@ class AccountSettingViewModel @Inject constructor(
 
             // 회원 탈퇴 결과 collect & emit
             launch {
-                deleteUserUseCase.deleteUserResult.collect {
-                    _deleteUserResult.emit(it)
+                // 회원탈퇴 error collect & emit
+                deleteUserUseCase.error.collect {
+                    _error.emit(it)
                 }
             }
 
