@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import android.content.Intent
-import com.android.mymindnotes.New_Emotion
 import com.android.mymindnotes.Old_Situation
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -67,7 +66,7 @@ class RecordMindChoice : AppCompatActivity() {
                 launch {
                     viewModel.clickTodayEmotionButton.collect {
                         if (it) {
-                            val intent = Intent(applicationContext, New_Emotion::class.java)
+                            val intent = Intent(applicationContext, TodayDiaryEmotion::class.java)
                             startActivity(intent)
                         }
                     }

@@ -4,7 +4,7 @@ import com.android.mymindnotes.domain.repositoryinterfaces.MemberSharedPreferenc
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class UseSharedPreferencesUseCase @Inject constructor(
+class UseMemberSharedPreferencesUseCase @Inject constructor(
     private val repository: MemberSharedPreferencesRepository
 ) {
     // get methods

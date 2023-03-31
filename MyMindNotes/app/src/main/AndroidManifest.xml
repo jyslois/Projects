@@ -118,7 +118,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".New_Emotion"
+            android:name=".presentation.ui.TodayDiaryEmotion"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

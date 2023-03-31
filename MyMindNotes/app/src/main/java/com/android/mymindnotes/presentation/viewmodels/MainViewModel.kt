@@ -1,13 +1,9 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
-import com.android.mymindnotes.hilt.module.IoDispatcher
-import com.android.mymindnotes.hilt.module.MainDispatcher
+import com.android.mymindnotes.domain.usecase.UseMemberSharedPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -15,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val useCase: UseSharedPreferencesUseCase
+    private val useCase: UseMemberSharedPreferencesUseCase
 ): ViewModel() {
 
 //     autoLoginCheck 값을 저장하는 SharedFlow

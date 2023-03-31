@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.GetUserInfoUseCase
-import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
-import com.android.mymindnotes.hilt.module.IoDispatcher
+import com.android.mymindnotes.domain.usecase.UseMemberSharedPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -18,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainPageViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase
+    private val useSharedPreferencesUseCase: UseMemberSharedPreferencesUseCase
 ) : ViewModel() {
 
     // 에러 메시지

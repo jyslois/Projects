@@ -5,11 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.DeleteUserUseCase
 import com.android.mymindnotes.domain.usecase.GetUserInfoUseCase
-import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
-import com.android.mymindnotes.hilt.module.IoDispatcher
-import com.bumptech.glide.Glide.init
+import com.android.mymindnotes.domain.usecase.UseMemberSharedPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -17,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingViewModel @Inject constructor(
-    private val useSharedPreferencesUseCase: UseSharedPreferencesUseCase,
+    private val useSharedPreferencesUseCase: UseMemberSharedPreferencesUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deleteUserUseCase: DeleteUserUseCase
 ) : ViewModel() {

@@ -3,7 +3,7 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.LogInUseCase
-import com.android.mymindnotes.domain.usecase.UseSharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecase.UseMemberSharedPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val shared_useCase: UseSharedPreferencesUseCase,
+    private val shared_useCase: UseMemberSharedPreferencesUseCase,
     private val login_useCase: LogInUseCase
 ) : ViewModel() {
     // autoSaveCheck 값을 저장하는 SharedFlow

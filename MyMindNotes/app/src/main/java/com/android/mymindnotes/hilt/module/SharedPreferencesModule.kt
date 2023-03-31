@@ -13,30 +13,71 @@ import javax.inject.Qualifier
 @InstallIn(SingletonComponent::class)
 @Module
 object SharedPreferencesModule {
+
+    // Member
+
     @AutoSave
     @Provides
-    fun provideSharedPreferencesforAutoSave(application: Application): SharedPreferences
+    fun provideSharedPreferencesForAutoSave(application: Application): SharedPreferences
     = application.getSharedPreferences("autoSave", Activity.MODE_PRIVATE)
 
     @User
     @Provides
-    fun provideSharedPreferencesforUser(application: Application): SharedPreferences
+    fun provideSharedPreferencesForUser(application: Application): SharedPreferences
     = application.getSharedPreferences("user", Activity.MODE_PRIVATE)
 
     @FirstTime
     @Provides
-    fun provideSharedPreferencesforFirstTime(application: Application): SharedPreferences
+    fun provideSharedPreferencesForFirstTime(application: Application): SharedPreferences
     = application.getSharedPreferences("firstTime", Activity.MODE_PRIVATE)
 
     @Alarm
     @Provides
-    fun provideSharedPreferencesforAlarm(application: Application): SharedPreferences
+    fun provideSharedPreferencesForAlarm(application: Application): SharedPreferences
     = application.getSharedPreferences("alarm", Activity.MODE_PRIVATE)
 
     @Time
     @Provides
-    fun provideSharedPreferencesforTime(application: Application): SharedPreferences
+    fun provideSharedPreferencesForTime(application: Application): SharedPreferences
     = application.getSharedPreferences("time", Activity.MODE_PRIVATE)
+
+    // Diary
+
+    @Emotion
+    @Provides
+    fun provideSharedPreferencesForEmotion(application: Application): SharedPreferences
+    = application.getSharedPreferences("emotion", Activity.MODE_PRIVATE)
+
+    @EmotionText
+    @Provides
+    fun provideSharedPreferencesForEmotionText(application: Application): SharedPreferences
+    = application.getSharedPreferences("emotionText", Activity.MODE_PRIVATE)
+
+    @Situation
+    @Provides
+    fun provideSharedPreferencesForSituation(application: Application): SharedPreferences
+    = application.getSharedPreferences("situation", Activity.MODE_PRIVATE)
+
+    @Thought
+    @Provides
+    fun provideSharedPreferencesForThought(application: Application): SharedPreferences
+    = application.getSharedPreferences("thought", Activity.MODE_PRIVATE)
+
+    @Reflection
+    @Provides
+    fun provideSharedPreferencesForReflection(application: Application): SharedPreferences
+     = application.getSharedPreferences("reflection", Activity.MODE_PRIVATE)
+
+    @Type
+    @Provides
+    fun provideSharedPreferencesForType(application: Application): SharedPreferences
+    = application.getSharedPreferences("type", Activity.MODE_PRIVATE)
+
+    @EmotionColor
+    @Provides
+    fun provideSharedPreferencesForEmotionColor(application: Application): SharedPreferences
+    = application.getSharedPreferences("emotionColor", Activity.MODE_PRIVATE)
+
 }
 
 
@@ -59,3 +100,31 @@ annotation class Alarm
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class Time
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Emotion
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class EmotionText
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Situation
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Thought
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Reflection
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Type
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class EmotionColor
