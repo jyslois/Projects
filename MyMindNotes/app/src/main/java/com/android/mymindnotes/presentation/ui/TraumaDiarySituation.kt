@@ -56,7 +56,7 @@ class TraumaDiarySituation : AppCompatActivity() {
 
                 // 만약 상황이 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
                 launch {
-                    // getEmotion Result 구독
+                    // getSituation() Result 구독
                     viewModel.situation.collect {
                         if (it != "") {
                             binding.RecordSituationUserInput.setText(it)

@@ -14,7 +14,7 @@ class TodayDiarySharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveEmotionColor(color)
     }
 
-    override suspend fun saveEmotion(emotion: String) {
+    override suspend fun saveEmotion(emotion: String?) {
         dataSource.saveEmotion(emotion)
     }
 

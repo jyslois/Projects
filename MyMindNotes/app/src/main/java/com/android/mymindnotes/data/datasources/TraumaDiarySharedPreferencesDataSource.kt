@@ -121,6 +121,24 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
         emit(reflection)
     }.flowOn(ioDispatcher)
 
+    // Type
+    // Reflection
+    val getType: Flow<String?> = flow {
+        val type = type_sharedPreferences.getString("type", "")
+        emit(type)
+    }.flowOn(ioDispatcher)
+
+    // Date
+    val getDate: Flow<String?> = flow {
+        val date = date_sharedPreferences.getString("date", "")
+        emit(date)
+    }.flowOn(ioDispatcher)
+
+    // Day
+    val getDay: Flow<String?> = flow {
+        val day = day_sharedPreferences.getString("day", "")
+        emit(day)
+    }.flowOn(ioDispatcher)
 
 
     // Clear methods

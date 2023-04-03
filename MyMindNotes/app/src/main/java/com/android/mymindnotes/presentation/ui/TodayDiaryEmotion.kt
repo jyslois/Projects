@@ -94,7 +94,7 @@ class TodayDiaryEmotion : AppCompatActivity() {
 
                 // 만약 감정이 저장된 상태라면, 화면으로 다시 돌아왔을 때 체크 표시가 돼 있게 뿌리기
                 launch {
-                    // getEmotion Result 구독
+                    // getEmotion() Result 구독
                     viewModel.emotion.collect {
                         when (it) {
                             "기쁨" -> binding.happinessButton.isChecked = true

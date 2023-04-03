@@ -86,7 +86,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".Old_Reflection"
+            android:name=".presentation.ui.TraumaDiaryReflection"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

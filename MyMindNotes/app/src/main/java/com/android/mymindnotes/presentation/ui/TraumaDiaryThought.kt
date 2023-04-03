@@ -57,9 +57,9 @@ class TraumaDiaryThought : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // 만약 상황이 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
+                // 만약 생각이 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
                 launch {
-                    // getEmotion Result 구독
+                    // getThought() Result 구독
                     viewModel.thought.collect {
                         if (it != "") {
                             binding.RecordThoughtUserInput.setText(it)

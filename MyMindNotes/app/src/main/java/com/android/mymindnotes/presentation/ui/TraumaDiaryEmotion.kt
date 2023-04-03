@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import android.content.Intent
 import com.android.mymindnotes.EmotionInstructions
-import com.android.mymindnotes.Old_Reflection
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
@@ -103,7 +102,7 @@ class TraumaDiaryEmotion : AppCompatActivity() {
 
                 // 만약 감정이 저장된 상태라면, 화면으로 다시 돌아왔을 때 체크 표시가 돼 있게 뿌리기
                 launch {
-                    // getEmotion Result 구독
+                    // getEmotion() Result 구독
                     viewModel.emotion.collect {
                         when (it) {
                             "기쁨" -> binding.happinessButton.isChecked = true
@@ -198,7 +197,7 @@ class TraumaDiaryEmotion : AppCompatActivity() {
                             viewModel.saveEmotionText(emotionText)
 
                             // 다음 화면으로 이동
-                            val intent = Intent(applicationContext, Old_Reflection::class.java)
+                            val intent = Intent(applicationContext, TraumaDiaryReflection::class.java)
                             startActivity(intent)
                         }
                     }

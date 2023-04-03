@@ -5,44 +5,38 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import android.content.Intent
-import com.android.mymindnotes.EmotionInstructions
-import com.android.mymindnotes.data.retrofit.RetrofitService
-import com.android.mymindnotes.data.retrofit.api.diary.SaveDiaryApi
-import com.android.mymindnotes.data.retrofit.model.diary.UserDiary
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.databinding.ActivityTodayDiaryReflectionBinding
-import com.android.mymindnotes.presentation.viewmodels.TodayDiaryReflectionViewModel
+import com.android.mymindnotes.EmotionInstructions
+import com.android.mymindnotes.databinding.ActivityTraumaDiaryReflectionBinding
+import com.android.mymindnotes.presentation.viewmodels.TraumaDiaryReflectionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class TodayDiaryReflection : AppCompatActivity() {
-    private lateinit var binding: ActivityTodayDiaryReflectionBinding
+class TraumaDiaryReflection : AppCompatActivity() {
+    private lateinit var binding: ActivityTraumaDiaryReflectionBinding
 
     // 뷰모델 객체 주입
-    private val viewModel: TodayDiaryReflectionViewModel by viewModels()
+    private val viewModel: TraumaDiaryReflectionViewModel by viewModels()
 
     // 다이얼로그 변수
     lateinit var alertDialog: AlertDialog
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTodayDiaryReflectionBinding.inflate(layoutInflater)
+        binding = ActivityTraumaDiaryReflectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground1).into(binding.recordbackground)
+
 
         // 버튼 클릭
         // 감정 설명서 보기 버튼 클릭
@@ -126,25 +120,31 @@ class TodayDiaryReflection : AppCompatActivity() {
                 launch {
                     // 일기 저장 버튼 클릭 감지
                     viewModel.recordSaveButton.collect {
-                        // 회고 저장
                         val reflection = binding.RecordReflectionUserInput.text.toString()
-                        viewModel.saveReflection(reflection)
-                        // 타입 저장
-                        viewModel.saveType("오늘의 마음 일기")
-                        // 날짜 저장
-                        val now = System.currentTimeMillis()
-                        val getDate = Date(now)
-                        val mFormat = SimpleDateFormat("yyyy-MM-dd")
-                        val date = mFormat.format(getDate)
-                        viewModel.saveDate(date)
-                        // 요일 저장
-                        val DAY = arrayOf("", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일")
-                        val today = Calendar.getInstance()
-                        val day = DAY[today[Calendar.DAY_OF_WEEK]]
-                        viewModel.saveDay(day)
 
-                        // 서버에 일기 저장
-                        viewModel.saveDiary()
+                        if (reflection == "") {
+                            dialog("회고를 작성해 주세요.")
+                        } else {
+                            // 회고 저장
+                            viewModel.saveReflection(reflection)
+                            // 타입 저장
+                            viewModel.saveType("트라우마 일기")
+                            // 날짜 저장
+                            val now = System.currentTimeMillis()
+                            val getDate = Date(now)
+                            val mFormat = SimpleDateFormat("yyyy-MM-dd")
+                            val date = mFormat.format(getDate)
+                            viewModel.saveDate(date)
+                            // 요일 저장
+                            val DAY = arrayOf("", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일")
+                            val today = Calendar.getInstance()
+                            val day = DAY[today[Calendar.DAY_OF_WEEK]]
+                            viewModel.saveDay(day)
+
+                            // 서버에 일기 저장
+                            viewModel.saveDiary()
+                        }
+
                     }
                 }
 
@@ -197,6 +197,7 @@ class TodayDiaryReflection : AppCompatActivity() {
 
     }
 
+
     // 알림 dialogue
     fun dialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
@@ -212,7 +213,7 @@ class TodayDiaryReflection : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setIcon(R.drawable.tips)
         builder.setTitle("회고 작성 Tips")
-        builder.setMessage(R.string.reflectionTips)
+        builder.setMessage(R.string.traumaReflectionTips)
         builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()

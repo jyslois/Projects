@@ -10,10 +10,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DiaryRepositoryModule {
+abstract class TodayDiaryRepositoryModule {
     @Singleton
     @Binds
-    abstract fun bindDiaryRepository (
-        diaryRepositoryImpl: TodayDiaryRepositoryImpl
+    abstract fun bindTodayDiaryRepository (
+        todayDiaryRepositoryImpl: TodayDiaryRepositoryImpl
     ): TodayDiaryRepository
 }

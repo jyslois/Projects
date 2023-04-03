@@ -6,7 +6,7 @@ interface TodayDiarySharedPreferencesRepository {
 
     // save methods
     suspend fun saveEmotionColor(color: Int)
-    suspend fun saveEmotion(emotion: String)
+    suspend fun saveEmotion(emotion: String?)
     suspend fun saveEmotionText(emotionText: String?)
     suspend fun saveSituation(situation: String)
     suspend fun saveThought(thought: String)

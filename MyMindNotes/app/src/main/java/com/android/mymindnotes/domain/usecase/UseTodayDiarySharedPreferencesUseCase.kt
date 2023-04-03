@@ -13,7 +13,7 @@ class UseTodayDiarySharedPreferencesUseCase @Inject constructor(
         repository.saveEmotionColor(color)
     }
 
-    suspend fun saveEmotion(emotion: String) {
+    suspend fun saveEmotion(emotion: String?) {
         repository.saveEmotion(emotion)
     }
 

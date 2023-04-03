@@ -29,7 +29,7 @@ class UseTraumaDiarySharedPreferencesUseCase @Inject constructor(
         repository.saveThought(thought)
     }
 
-    suspend fun saveReflection(reflection: String) {
+    suspend fun saveReflection(reflection: String?) {
         repository.saveReflection(reflection)
     }
 

@@ -1,7 +1,7 @@
 package com.android.mymindnotes.data.repositoryImpl
 
-import com.android.mymindnotes.data.datasources.TodayDiaryDataSource
-import com.android.mymindnotes.domain.repositoryinterfaces.TodayDiaryRepository
+import com.android.mymindnotes.data.datasources.TraumaDiaryDataSource
+import com.android.mymindnotes.domain.repositoryinterfaces.TraumaDiaryRepository
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -11,11 +11,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TodayDiaryRepositoryImpl @Inject constructor(
-    private val diaryDataSource: TodayDiaryDataSource,
+class TraumaDiaryRepositoryImpl @Inject constructor(
+    private val diaryDataSource: TraumaDiaryDataSource,
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
-): TodayDiaryRepository {
-
+): TraumaDiaryRepository {
     // (서버) 일기 저장하기
     override suspend fun saveDiary(): Flow<Map<String, Object>> = diaryDataSource.saveDiary
 
@@ -32,5 +31,4 @@ class TodayDiaryRepositoryImpl @Inject constructor(
             }
         }
     }
-
 }
