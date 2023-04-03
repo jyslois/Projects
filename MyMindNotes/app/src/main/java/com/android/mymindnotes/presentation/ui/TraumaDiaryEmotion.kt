@@ -264,7 +264,7 @@ class TraumaDiaryEmotion : AppCompatActivity() {
                         }
                     }
                 }
-                
+
             }
         }
     }
