@@ -61,7 +61,7 @@ class TodayDiaryEmotionViewModel @Inject constructor(
         useCase.saveEmotionColor(color)
     }
 
-    suspend fun saveEmotion(emotion: String?) {
+    suspend fun saveEmotion(emotion: String) {
         useCase.saveEmotion(emotion)
     }
 

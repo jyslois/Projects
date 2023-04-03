@@ -1,7 +1,5 @@
 package com.android.mymindnotes;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -14,13 +12,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryResultBinding;
-import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
 import com.android.mymindnotes.model.retrofit.DeleteDiaryApi;
 import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
@@ -82,7 +78,7 @@ public class Diary_Result extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // 회원 번호 저장
-        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        userindex = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background);

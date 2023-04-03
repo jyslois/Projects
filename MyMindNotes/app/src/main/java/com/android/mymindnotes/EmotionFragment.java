@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.mymindnotes.databinding.ActivityEmotionFragmentBinding;
-import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
 
 public class EmotionFragment extends Fragment {
     ActivityEmotionFragmentBinding binding;

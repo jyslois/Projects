@@ -13,7 +13,7 @@ class UseTodayDiarySharedPreferencesUseCase @Inject constructor(
         repository.saveEmotionColor(color)
     }
 
-    suspend fun saveEmotion(emotion: String?) {
+    suspend fun saveEmotion(emotion: String) {
         repository.saveEmotion(emotion)
     }
 
@@ -29,8 +29,20 @@ class UseTodayDiarySharedPreferencesUseCase @Inject constructor(
         repository.saveThought(thought)
     }
 
-    suspend fun saveReflection(reflection: String) {
+    suspend fun saveReflection(reflection: String?) {
         repository.saveReflection(reflection)
+    }
+
+    suspend fun saveType(type: String) {
+        repository.saveType(type)
+    }
+
+    suspend fun saveDate(date: String) {
+       repository.saveDate(date)
+    }
+
+    suspend fun saveDay(day: String) {
+        repository.saveDay(day)
     }
 
     // Get Methods
@@ -81,6 +93,14 @@ class UseTodayDiarySharedPreferencesUseCase @Inject constructor(
 
     suspend fun clearTypeSharedPreferences() {
         repository.clearTypeSharedPreferences()
+    }
+
+    suspend fun clearDateSharedPreferences() {
+        repository.clearDateSharedPreferences()
+    }
+
+    suspend fun clearDaySharedPreferences() {
+        repository.clearDaySharedPreferences()
     }
 
 }

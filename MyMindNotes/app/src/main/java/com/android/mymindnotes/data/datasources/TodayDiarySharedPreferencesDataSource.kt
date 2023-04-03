@@ -17,6 +17,8 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
     @Reflection private val reflection_sharedPreferences: SharedPreferences,
     @Type private val type_sharedPreferences: SharedPreferences,
     @EmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
+    @Date private val date_sharedPreferences: SharedPreferences,
+    @Day private val day_sharedPreferences: SharedPreferences,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
     ) {
 
@@ -67,6 +69,27 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
         }
     }
 
+    // Type
+    suspend fun saveType(type: String) {
+        withContext(ioDispatcher) {
+            type_sharedPreferences.edit().putString("type", type).commit()
+        }
+    }
+
+    // Date
+    suspend fun saveDate(date: String) {
+        withContext(ioDispatcher) {
+            date_sharedPreferences.edit().putString("date", date).commit()
+        }
+    }
+
+    // Day
+    suspend fun saveDay(day: String) {
+        withContext(ioDispatcher) {
+            day_sharedPreferences.edit().putString("day", day).commit()
+        }
+    }
+
     // Get methods
     // Emotion
     val getEmotion: Flow<String?> = flow {
@@ -96,6 +119,25 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
     val getReflection: Flow<String?> = flow {
         val reflection = reflection_sharedPreferences.getString("reflection", "")
         emit(reflection)
+    }.flowOn(ioDispatcher)
+
+    // Type
+    // Reflection
+    val getType: Flow<String?> = flow {
+        val type = type_sharedPreferences.getString("type", "")
+        emit(type)
+    }.flowOn(ioDispatcher)
+
+    // Date
+    val getDate: Flow<String?> = flow {
+        val date = date_sharedPreferences.getString("date", "")
+        emit(date)
+    }.flowOn(ioDispatcher)
+
+    // Day
+    val getDay: Flow<String?> = flow {
+        val day = day_sharedPreferences.getString("day", "")
+        emit(day)
     }.flowOn(ioDispatcher)
 
 
@@ -146,6 +188,20 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
     suspend fun clearTypeSharedPreferences() {
         withContext(ioDispatcher) {
             type_sharedPreferences.edit().clear().commit()
+        }
+    }
+
+    // Date
+    suspend fun clearDateSharedPreferences() {
+        withContext(ioDispatcher) {
+            date_sharedPreferences.edit().clear().commit()
+        }
+    }
+
+    // Day
+    suspend fun clearDaySharedPreferences() {
+        withContext(ioDispatcher) {
+            day_sharedPreferences.edit().clear().commit()
         }
     }
 

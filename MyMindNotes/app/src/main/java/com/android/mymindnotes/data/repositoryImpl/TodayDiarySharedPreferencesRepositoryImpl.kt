@@ -14,7 +14,7 @@ class TodayDiarySharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveEmotionColor(color)
     }
 
-    override suspend fun saveEmotion(emotion: String?) {
+    override suspend fun saveEmotion(emotion: String) {
         dataSource.saveEmotion(emotion)
     }
 
@@ -26,13 +26,26 @@ class TodayDiarySharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveSituation(situation)
     }
 
-    override suspend fun saveThought(thought: String?) {
+    override suspend fun saveThought(thought: String) {
         dataSource.saveThought(thought)
     }
 
     override suspend fun saveReflection(reflection: String?) {
         dataSource.saveReflection(reflection)
     }
+
+    override suspend fun saveType(type: String) {
+        dataSource.saveType(type)
+    }
+
+    override suspend fun saveDate(date: String) {
+        dataSource.saveDate(date)
+    }
+
+    override suspend fun saveDay(day: String) {
+        dataSource.saveDay(day)
+    }
+
 
     // Get Methods
     override suspend fun getEmotion(): Flow<String?> = dataSource.getEmotion
@@ -72,5 +85,13 @@ class TodayDiarySharedPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun clearTypeSharedPreferences() {
         dataSource.clearTypeSharedPreferences()
+    }
+
+    override suspend fun clearDateSharedPreferences() {
+        dataSource.clearDateSharedPreferences()
+    }
+
+    override suspend fun clearDaySharedPreferences() {
+        dataSource.clearDaySharedPreferences()
     }
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class TraumaDiarySharedPreferencesRepositoryImpl @Inject constructor(
     private val dataSource: TraumaDiarySharedPreferencesDataSource
-): TraumaDiarySharedPreferencesRepository {
+) : TraumaDiarySharedPreferencesRepository {
     // Save Methods
     override suspend fun saveEmotionColor(color: Int) {
         dataSource.saveEmotionColor(color)
@@ -31,6 +31,18 @@ class TraumaDiarySharedPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun saveReflection(reflection: String?) {
         dataSource.saveReflection(reflection)
+    }
+
+    override suspend fun saveType(type: String) {
+        dataSource.saveType(type)
+    }
+
+    override suspend fun saveDate(date: String) {
+        dataSource.saveDate(date)
+    }
+
+    override suspend fun saveDay(day: String) {
+        dataSource.saveDay(day)
     }
 
     // Get Methods
@@ -72,5 +84,13 @@ class TraumaDiarySharedPreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun clearTypeSharedPreferences() {
         dataSource.clearTypeSharedPreferences()
+    }
+
+    override suspend fun clearDateSharedPreferences() {
+        dataSource.clearDateSharedPreferences()
+    }
+
+    override suspend fun clearDaySharedPreferences() {
+        dataSource.clearDaySharedPreferences()
     }
 }

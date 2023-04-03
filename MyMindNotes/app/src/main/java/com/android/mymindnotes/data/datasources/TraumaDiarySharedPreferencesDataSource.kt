@@ -18,6 +18,8 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
     @TraumaReflection private val reflection_sharedPreferences: SharedPreferences,
     @TraumaType private val type_sharedPreferences: SharedPreferences,
     @TraumaEmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
+    @TraumaDate private val date_sharedPreferences: SharedPreferences,
+    @TraumaDay private val day_sharedPreferences: SharedPreferences,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
     // Save methods
@@ -64,6 +66,27 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
     suspend fun saveReflection(reflection: String?) {
         withContext(ioDispatcher) {
             reflection_sharedPreferences.edit().putString("reflection", reflection).commit()
+        }
+    }
+
+    // Type
+    suspend fun saveType(type: String) {
+        withContext(ioDispatcher) {
+            type_sharedPreferences.edit().putString("type", type).commit()
+        }
+    }
+
+    // Date
+    suspend fun saveDate(date: String) {
+        withContext(ioDispatcher) {
+            date_sharedPreferences.edit().putString("date", date).commit()
+        }
+    }
+
+    // Day
+    suspend fun saveDay(day: String) {
+        withContext(ioDispatcher) {
+            day_sharedPreferences.edit().putString("day", day).commit()
         }
     }
 
@@ -147,6 +170,20 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
     suspend fun clearTypeSharedPreferences() {
         withContext(ioDispatcher) {
             type_sharedPreferences.edit().clear().commit()
+        }
+    }
+
+    // Date
+    suspend fun clearDateSharedPreferences() {
+        withContext(ioDispatcher) {
+            date_sharedPreferences.edit().clear().commit()
+        }
+    }
+
+    // Day
+    suspend fun clearDaySharedPreferences() {
+        withContext(ioDispatcher) {
+            day_sharedPreferences.edit().clear().commit()
         }
     }
 }

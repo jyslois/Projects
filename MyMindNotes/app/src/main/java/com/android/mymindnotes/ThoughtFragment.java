@@ -2,7 +2,6 @@ package com.android.mymindnotes;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
@@ -13,9 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.mymindnotes.databinding.ActivitySituationFragmentBinding;
 import com.android.mymindnotes.databinding.ActivityThoughtFragmentBinding;
-import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
 
 public class ThoughtFragment extends Fragment {
     ActivityThoughtFragmentBinding binding;

@@ -13,6 +13,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityDiaryBinding;
 import com.android.mymindnotes.databinding.DiaryitemBinding;
-import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
 import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
@@ -134,7 +135,7 @@ public class Diary extends AppCompatActivity {
 
         emotionArray = getResources().getStringArray(R.array.emotions_array);
 
-        userindex = getSharedPreferences("userindex", Activity.MODE_PRIVATE);
+        userindex = getSharedPreferences("user", Activity.MODE_PRIVATE);
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background);
@@ -441,6 +442,7 @@ public class Diary extends AppCompatActivity {
             RetrofitService retrofitService = new RetrofitService();
             GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
             Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
+
             call.enqueue(new Callback<Map<String, Object>>() {
                 @Override
                 public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
@@ -452,6 +454,7 @@ public class Diary extends AppCompatActivity {
                         }.getType();
                         String jsonResult = gson.toJson(response.body().get("diaryList"));
                         recordList = gson.fromJson(jsonResult, type);
+                        Log.e("일기리스트", recordList.toString());
                         // 어레이리스트를 매개변수로 넘겨주어서 어뎁터 객체를 생성
                         adaptor = new DiaryAdaptor(recordList);
                         // 생성한 어뎁터 객체를 RecyclerView에 적용

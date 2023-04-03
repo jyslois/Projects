@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.New_Reflection
 import com.android.mymindnotes.databinding.ActivityTodayDiaryThoughtBinding
 import com.android.mymindnotes.presentation.viewmodels.TodayDiaryThoughtViewModel
 import com.bumptech.glide.Glide
@@ -90,7 +89,7 @@ class TodayDiaryThought : AppCompatActivity() {
                             // 상황 저장
                             viewModel.saveThought(thought)
                             // 다음 화면으로 이동
-                            val intent = Intent(applicationContext, New_Reflection::class.java)
+                            val intent = Intent(applicationContext, TodayDiaryReflection::class.java)
                             startActivity(intent)
                         }
                     }

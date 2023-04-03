@@ -106,7 +106,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".New_Reflection"
+            android:name=".presentation.ui.TodayDiaryReflection"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

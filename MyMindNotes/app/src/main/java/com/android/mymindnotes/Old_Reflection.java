@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldReflectionBinding;
-import com.android.mymindnotes.model.UserDiary;
-import com.android.mymindnotes.model.retrofit.RecordDiaryApi;
+import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
+import com.android.mymindnotes.data.retrofit.api.diary.SaveDiaryApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.android.mymindnotes.presentation.ui.MainPage;
 import com.bumptech.glide.Glide;
@@ -176,7 +176,7 @@ public class Old_Reflection extends AppCompatActivity {
                 day = DAY[today.get(Calendar.DAY_OF_WEEK)];
 
                 // 서버에 데이터 저장
-                recordDiary();
+//                recordDiary();
             }
         });
 
@@ -188,49 +188,49 @@ public class Old_Reflection extends AppCompatActivity {
     }
 
 
-    // 네트워크 통신: 일기 저장
-    public void recordDiary() {
-            // Retrofit 객체 생성
-            RetrofitService retrofitService = new RetrofitService();
-            // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
-            RecordDiaryApi recordDiaryApi = retrofitService.getRetrofit().create(RecordDiaryApi.class);
-            // Call 객체 획득
-            UserDiary userDiary = new UserDiary(userindex.getInt("userindex", 0), type.getString("type", ""), date, day, situation.getString("situation", ""),
-                    thought.getString("thought", ""), emotion.getString("emotion", ""), emotionText.getString("emotionText", ""), reflection.getString("reflection", "회고"));
-            Call<Map<String, Object>> call = recordDiaryApi.addDiary(userDiary);
-            // 네트워킹 시도
-            call.enqueue(new Callback<Map<String, Object>>() {
-                @Override
-                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6001) {
-                        dialog((String) response.body().get("msg"));
-                    } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6000) {
-                        // 저장한 것 삭제
-                        reflectionEdit.clear();
-                        reflectionEdit.commit();
-                        emotionColorEdit.clear();
-                        emotionColorEdit.commit();
-                        emotionEdit.clear();
-                        emotionEdit.commit();
-                        emotionTextEdit.clear();
-                        emotionTextEdit.commit();
-                        situationEdit.clear();
-                        situationEdit.commit();
-                        thoughtEdit.clear();
-                        thoughtEdit.commit();
-                        typeEdit.clear();
-                        typeEdit.commit();
-                        Toast.makeText(getApplicationContext(), R.string.successfulRecord, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainPage.class);
-                        startActivity(intent);
-                    }
-                }
-                @Override
-                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                    dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
-                }
-            });
-    }
+//    // 네트워크 통신: 일기 저장
+//    public void recordDiary() {
+//            // Retrofit 객체 생성
+//            RetrofitService retrofitService = new RetrofitService();
+//            // Retrofit 객체에 인터페이스(Api) 등록, Call 객체 반환하는 Service 객체 생성
+//            SaveDiaryApi recordDiaryApi = retrofitService.getRetrofit().create(SaveDiaryApi.class);
+//            // Call 객체 획득
+//            UserDiary userDiary = new UserDiary(userindex.getInt("userindex", 0), type.getString("type", ""), date, day, situation.getString("situation", ""),
+//                    thought.getString("thought", ""), emotion.getString("emotion", ""), emotionText.getString("emotionText", ""), reflection.getString("reflection", "회고"));
+//            Call<Map<String, Object>> call = recordDiaryApi.addDiary(userDiary);
+//            // 네트워킹 시도
+//            call.enqueue(new Callback<Map<String, Object>>() {
+//                @Override
+//                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+//                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6001) {
+//                        dialog((String) response.body().get("msg"));
+//                    } else if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 6000) {
+//                        // 저장한 것 삭제
+//                        reflectionEdit.clear();
+//                        reflectionEdit.commit();
+//                        emotionColorEdit.clear();
+//                        emotionColorEdit.commit();
+//                        emotionEdit.clear();
+//                        emotionEdit.commit();
+//                        emotionTextEdit.clear();
+//                        emotionTextEdit.commit();
+//                        situationEdit.clear();
+//                        situationEdit.commit();
+//                        thoughtEdit.clear();
+//                        thoughtEdit.commit();
+//                        typeEdit.clear();
+//                        typeEdit.commit();
+//                        Toast.makeText(getApplicationContext(), R.string.successfulRecord, Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(getApplicationContext(), MainPage.class);
+//                        startActivity(intent);
+//                    }
+//                }
+//                @Override
+//                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+//                    dialog("네트워크 연결에 실패했습니다. 다시 시도해 주세요.");
+//                }
+//            });
+//    }
 
     // backprssed 시 회고 저장 후 뒤로가기
     @Override

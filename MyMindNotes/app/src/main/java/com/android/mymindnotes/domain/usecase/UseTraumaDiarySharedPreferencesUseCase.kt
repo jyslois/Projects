@@ -33,6 +33,18 @@ class UseTraumaDiarySharedPreferencesUseCase @Inject constructor(
         repository.saveReflection(reflection)
     }
 
+    suspend fun saveType(type: String) {
+        repository.saveType(type)
+    }
+
+    suspend fun saveDate(date: String) {
+        repository.saveDate(date)
+    }
+
+    suspend fun saveDay(day: String) {
+        repository.saveDay(day)
+    }
+
     // Get Methods
     suspend fun getEmotion(): Flow<String?> {
         return repository.getEmotion()
@@ -81,6 +93,14 @@ class UseTraumaDiarySharedPreferencesUseCase @Inject constructor(
 
     suspend fun clearTypeSharedPreferences() {
         repository.clearTypeSharedPreferences()
+    }
+
+    suspend fun clearDateSharedPreferences() {
+        repository.clearDateSharedPreferences()
+    }
+
+    suspend fun clearDaySharedPreferences() {
+        repository.clearDaySharedPreferences()
     }
 
 }

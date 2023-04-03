@@ -1,9 +1,5 @@
 package com.android.mymindnotes;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.mymindnotes.databinding.ActivitySituationFragmentBinding;
-import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
 
 public class SituationFragment extends Fragment {
     ActivitySituationFragmentBinding binding;

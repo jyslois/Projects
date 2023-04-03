@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityRecordResultBinding;
-import com.android.mymindnotes.model.UserDiary;
+import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
 import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.android.mymindnotes.presentation.ui.MainPage;

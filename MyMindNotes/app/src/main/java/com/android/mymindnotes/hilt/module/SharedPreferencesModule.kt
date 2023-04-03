@@ -76,41 +76,63 @@ object SharedPreferencesModule {
     fun provideSharedPreferencesForEmotionColor(application: Application): SharedPreferences
     = application.getSharedPreferences("emotionColor", Activity.MODE_PRIVATE)
 
+
+    @Date
+    @Provides
+    fun provideSharedPreferencesForDate(application: Application): SharedPreferences
+    = application.getSharedPreferences("date", Activity.MODE_PRIVATE)
+
+    @Day
+    @Provides
+    fun provideSharedPreferencesForDay(application: Application): SharedPreferences
+    = application.getSharedPreferences("day", Activity.MODE_PRIVATE)
+
+
     // Trauma Diary
     @TraumaEmotion
     @Provides
     fun provideSharedPreferencesForTraumaEmotion(application: Application): SharedPreferences
-            = application.getSharedPreferences("trauma_emotion", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("trauma_emotion", Activity.MODE_PRIVATE)
 
     @TraumaEmotionText
     @Provides
     fun provideSharedPreferencesForTraumaEmotionText(application: Application): SharedPreferences
-            = application.getSharedPreferences("trauma_emotionText", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("trauma_emotionText", Activity.MODE_PRIVATE)
 
     @TraumaSituation
     @Provides
     fun provideSharedPreferencesForTraumaSituation(application: Application): SharedPreferences
-            = application.getSharedPreferences("trauma_situation", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("trauma_situation", Activity.MODE_PRIVATE)
 
     @TraumaThought
     @Provides
     fun provideSharedPreferencesForTraumaThought(application: Application): SharedPreferences
-            = application.getSharedPreferences("trauma_thought", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("trauma_thought", Activity.MODE_PRIVATE)
 
     @TraumaReflection
     @Provides
     fun provideSharedPreferencesForTraumaReflection(application: Application): SharedPreferences
-            = application.getSharedPreferences("trauma_reflection", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("trauma_reflection", Activity.MODE_PRIVATE)
 
     @TraumaType
     @Provides
     fun provideSharedPreferencesForTraumaType(application: Application): SharedPreferences
-            = application.getSharedPreferences("trauma_type", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("trauma_type", Activity.MODE_PRIVATE)
 
     @TraumaEmotionColor
     @Provides
     fun provideSharedPreferencesForTraumaEmotionColor(application: Application): SharedPreferences
-            = application.getSharedPreferences("trauma_emotionColor", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("trauma_emotionColor", Activity.MODE_PRIVATE)
+
+    @TraumaDate
+    @Provides
+    fun provideSharedPreferencesForTraumaDate(application: Application): SharedPreferences
+    = application.getSharedPreferences("trauma_date", Activity.MODE_PRIVATE)
+
+    @TraumaDay
+    @Provides
+    fun provideSharedPreferencesForTraumaDay(application: Application): SharedPreferences
+    = application.getSharedPreferences("trauma_day", Activity.MODE_PRIVATE)
 
 }
 
@@ -167,6 +189,14 @@ annotation class Type
 @Qualifier
 annotation class EmotionColor
 
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Date
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class Day
+
 // Trauma Diary
 
 @Retention(AnnotationRetention.RUNTIME)
@@ -196,3 +226,11 @@ annotation class TraumaType
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class TraumaEmotionColor
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class TraumaDate
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class TraumaDay
