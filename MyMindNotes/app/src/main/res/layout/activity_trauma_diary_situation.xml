@@ -7,7 +7,7 @@
     tools:context=".presentation.ui.MainPage">
 
     <ImageView
-        android:id="@+id/newsituationbackground"
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY" />

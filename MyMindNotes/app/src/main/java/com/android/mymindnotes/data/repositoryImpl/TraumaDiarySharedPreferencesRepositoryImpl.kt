@@ -21,10 +21,16 @@ class TraumaDiarySharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveEmotionText(emotionText)
     }
 
+    override suspend fun saveSituation(situation: String) {
+        dataSource.saveSituation(situation)
+    }
+
     // Get Methods
     override suspend fun getEmotion(): Flow<String?> = dataSource.getEmotion
 
     override suspend fun getEmotionText(): Flow<String?> = dataSource.getEmotionText
+
+    override suspend fun getSituation(): Flow<String?> = dataSource.getSituation
 
     // Clear Methods
     override suspend fun clearEmotionColorSharedPreferences() {

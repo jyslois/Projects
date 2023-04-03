@@ -77,37 +77,37 @@ object SharedPreferencesModule {
     = application.getSharedPreferences("emotionColor", Activity.MODE_PRIVATE)
 
     // Trauma Diary
-    @Trauma_Emotion
+    @TraumaEmotion
     @Provides
     fun provideSharedPreferencesForTraumaEmotion(application: Application): SharedPreferences
             = application.getSharedPreferences("trauma_emotion", Activity.MODE_PRIVATE)
 
-    @Trauma_EmotionText
+    @TraumaEmotionText
     @Provides
     fun provideSharedPreferencesForTraumaEmotionText(application: Application): SharedPreferences
             = application.getSharedPreferences("trauma_emotionText", Activity.MODE_PRIVATE)
 
-    @Trauma_Situation
+    @TraumaSituation
     @Provides
     fun provideSharedPreferencesForTraumaSituation(application: Application): SharedPreferences
             = application.getSharedPreferences("trauma_situation", Activity.MODE_PRIVATE)
 
-    @Trauma_Thought
+    @TraumaThought
     @Provides
     fun provideSharedPreferencesForTraumaThought(application: Application): SharedPreferences
             = application.getSharedPreferences("trauma_thought", Activity.MODE_PRIVATE)
 
-    @Trauma_Reflection
+    @TraumaReflection
     @Provides
     fun provideSharedPreferencesForTraumaReflection(application: Application): SharedPreferences
             = application.getSharedPreferences("trauma_reflection", Activity.MODE_PRIVATE)
 
-    @Trauma_Type
+    @TraumaType
     @Provides
     fun provideSharedPreferencesForTraumaType(application: Application): SharedPreferences
             = application.getSharedPreferences("trauma_type", Activity.MODE_PRIVATE)
 
-    @Trauma_EmotionColor
+    @TraumaEmotionColor
     @Provides
     fun provideSharedPreferencesForTraumaEmotionColor(application: Application): SharedPreferences
             = application.getSharedPreferences("trauma_emotionColor", Activity.MODE_PRIVATE)
@@ -171,28 +171,28 @@ annotation class EmotionColor
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class Trauma_Emotion
+annotation class TraumaEmotion
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class Trauma_EmotionText
+annotation class TraumaEmotionText
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class Trauma_Situation
+annotation class TraumaSituation
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class Trauma_Thought
+annotation class TraumaThought
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class Trauma_Reflection
+annotation class TraumaReflection
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class Trauma_Type
+annotation class TraumaType
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class Trauma_EmotionColor
+annotation class TraumaEmotionColor

@@ -1,6 +1,7 @@
 package com.android.mymindnotes.data.datasources
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.android.mymindnotes.hilt.module.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -10,13 +11,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TraumaDiarySharedPreferencesDataSource @Inject constructor(
-    @Trauma_Emotion private val emotion_sharedPreferences: SharedPreferences,
-    @Trauma_EmotionText private val emotionText_sharedPreferences: SharedPreferences,
-    @Trauma_Situation private val situation_sharedPreferences: SharedPreferences,
-    @Trauma_Thought private val thought_sharedPreferences: SharedPreferences,
-    @Trauma_Reflection private val reflection_sharedPreferences: SharedPreferences,
-    @Trauma_Type private val type_sharedPreferences: SharedPreferences,
-    @Trauma_EmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
+    @TraumaEmotion private val emotion_sharedPreferences: SharedPreferences,
+    @TraumaEmotionText private val emotionText_sharedPreferences: SharedPreferences,
+    @TraumaSituation private val situation_sharedPreferences: SharedPreferences,
+    @TraumaThought private val thought_sharedPreferences: SharedPreferences,
+    @TraumaReflection private val reflection_sharedPreferences: SharedPreferences,
+    @TraumaType private val type_sharedPreferences: SharedPreferences,
+    @TraumaEmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
     // Save methods
@@ -45,6 +46,13 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
         }
     }
 
+    // Situation
+    suspend fun saveSituation(situation: String) {
+        withContext(ioDispatcher) {
+            situation_sharedPreferences.edit().putString("situation", situation).commit()
+        }
+    }
+
     // Get methods
     // Emotion
     val getEmotion: Flow<String?> = flow {
@@ -53,9 +61,15 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
     }.flowOn(ioDispatcher)
 
     // EmotionText
-    val getEmotionText: Flow<String?> = flow<String?> {
+    val getEmotionText: Flow<String?> = flow {
         val emotionText = emotionText_sharedPreferences.getString("emotionText", "")
         emit(emotionText)
+    }.flowOn(ioDispatcher)
+
+    // Situation
+    val getSituation: Flow<String?> = flow {
+        val situation = situation_sharedPreferences.getString("situation", "")
+        emit(situation)
     }.flowOn(ioDispatcher)
 
 

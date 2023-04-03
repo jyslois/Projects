@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import android.content.Intent
-import com.android.mymindnotes.Old_Situation
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
@@ -76,7 +75,7 @@ class RecordMindChoice : AppCompatActivity() {
                 launch {
                     viewModel.clickTraumaButton.collect {
                         if (it) {
-                            val intent = Intent(applicationContext, Old_Situation::class.java)
+                            val intent = Intent(applicationContext, TraumaDiarySituation::class.java)
                             startActivity(intent)
                         }
                     }

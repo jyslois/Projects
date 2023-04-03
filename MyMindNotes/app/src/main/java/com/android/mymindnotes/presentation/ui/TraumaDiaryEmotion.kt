@@ -106,6 +106,42 @@ class TraumaDiaryEmotion : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
+
+                // 만약 감정이 저장된 상태라면, 화면으로 다시 돌아왔을 때 체크 표시가 돼 있게 뿌리기
+                launch {
+                    // getEmotion Result 구독
+                    viewModel.emotion.collect {
+                        when (it) {
+                            "기쁨" -> binding.happinessButton.isChecked = true
+                            "기대" -> binding.anticipationButton.isChecked = true
+                            "신뢰" -> binding.trustButton.isChecked = true
+                            "놀람" -> binding.surpriseButton.isChecked = true
+                            "슬픔" -> binding.sadnessButton.isChecked = true
+                            "혐오" -> binding.disgustButton.isChecked = true
+                            "공포" -> binding.fearButton.isChecked = true
+                            "분노" -> binding.angerButton.isChecked = true
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.getEmotion()
+                }
+
+                // 만약 감정 text가 저장된 상태라면, 화면으로 다시 돌아왔을 때 그대로 뿌리기
+                launch {
+                    // getEmotionText Result 구독
+                    viewModel.emotionText.collect {
+                        if (it != "") {
+                            binding.RecordEmotionUserInput.setText(it)
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.getEmotionText()
+                }
+
                 // 버튼 클릭 감지
                 launch {
                     // 감정 설명서 보기 버튼 클릭 감지
@@ -218,41 +254,6 @@ class TraumaDiaryEmotion : AppCompatActivity() {
 
                         // 이전 화면으로 이동
                         finish()
-                    }
-                }
-
-                // 만약 감정이 저장된 상태라면, 화면으로 다시 돌아왔을 때 체크 표시가 돼 있게 뿌리기
-                launch {
-                    viewModel.getEmotion()
-                }
-
-                launch {
-                    // getEmotion Result 구독
-                    viewModel.emotion.collect {
-                        when (it) {
-                            "기쁨" -> binding.happinessButton.isChecked = true
-                            "기대" -> binding.anticipationButton.isChecked = true
-                            "신뢰" -> binding.trustButton.isChecked = true
-                            "놀람" -> binding.surpriseButton.isChecked = true
-                            "슬픔" -> binding.sadnessButton.isChecked = true
-                            "혐오" -> binding.disgustButton.isChecked = true
-                            "공포" -> binding.fearButton.isChecked = true
-                            "분노" -> binding.angerButton.isChecked = true
-                        }
-                    }
-                }
-
-                // 만약 감정 text가 저장된 상태라면, 화면으로 다시 돌아왔을 때 그대로 뿌리기
-                launch {
-                    viewModel.getEmotionText()
-                }
-
-                launch {
-                    // getEmotionText Result 구독
-                    viewModel.emotionText.collect {
-                        if (it != "") {
-                            binding.RecordEmotionUserInput.setText(it)
-                        }
                     }
                 }
 

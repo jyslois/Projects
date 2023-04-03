@@ -98,7 +98,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".Old_Situation"
+            android:name=".presentation.ui.TraumaDiarySituation"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

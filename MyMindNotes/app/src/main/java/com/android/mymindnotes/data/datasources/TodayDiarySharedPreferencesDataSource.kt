@@ -54,7 +54,7 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
     }.flowOn(ioDispatcher)
 
     // EmotionText
-    val getEmotionText: Flow<String?> = flow<String?> {
+    val getEmotionText: Flow<String?> = flow {
         val emotionText = emotionText_sharedPreferences.getString("emotionText", "")
         emit(emotionText)
     }.flowOn(ioDispatcher)

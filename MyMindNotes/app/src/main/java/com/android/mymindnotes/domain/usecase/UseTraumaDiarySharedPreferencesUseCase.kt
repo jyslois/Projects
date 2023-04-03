@@ -21,6 +21,10 @@ class UseTraumaDiarySharedPreferencesUseCase @Inject constructor(
         repository.saveEmotionText(emotionText)
     }
 
+    suspend fun saveSituation(situation: String) {
+        repository.saveSituation(situation)
+    }
+
     // Get Methods
     suspend fun getEmotion(): Flow<String?> {
         return repository.getEmotion()
@@ -28,6 +32,10 @@ class UseTraumaDiarySharedPreferencesUseCase @Inject constructor(
 
     suspend fun getEmotionText(): Flow<String?> {
         return repository.getEmotionText()
+    }
+
+    suspend fun getSituation(): Flow<String?> {
+        return repository.getSituation()
     }
 
     // Clear Methods
