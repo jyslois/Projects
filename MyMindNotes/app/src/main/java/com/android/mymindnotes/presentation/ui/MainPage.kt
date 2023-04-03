@@ -146,8 +146,8 @@ class MainPage : AppCompatActivity() {
         }
     }
 
-    // 알림 설정 dialoguee
-    fun setAlarmDialog() {
+    // 알림 설정 dialogue
+    private fun setAlarmDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("하루에 한 번 일기 쓰기를 위한 알람을 설정하시겠어요?")
         builder.setNegativeButton("아니요", null)
@@ -156,7 +156,7 @@ class MainPage : AppCompatActivity() {
         alertDialog.show()
     }
 
-    // error dialoguee
+    // error dialogue
     fun dialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(msg)

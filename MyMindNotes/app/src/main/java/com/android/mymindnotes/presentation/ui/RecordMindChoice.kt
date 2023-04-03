@@ -95,7 +95,7 @@ class RecordMindChoice : AppCompatActivity() {
 
     }
 
-    // error dialoguee
+    // error dialogue
     fun dialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(msg)

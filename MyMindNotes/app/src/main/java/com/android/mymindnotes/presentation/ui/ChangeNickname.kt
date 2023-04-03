@@ -171,7 +171,7 @@ class ChangeNickname : AppCompatActivity() {
         }
     }
 
-    // 알림 dialoguee
+    // 알림 dialogue
     fun dialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(msg)
@@ -181,7 +181,7 @@ class ChangeNickname : AppCompatActivity() {
     }
 
     // 닉네임 중복 체크 확인완료 dialogue
-    fun confirmNicknameDialog() {
+    private fun confirmNicknameDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("사용 가능한 닉네임입니다.")
         builder.setPositiveButton("확인", null)

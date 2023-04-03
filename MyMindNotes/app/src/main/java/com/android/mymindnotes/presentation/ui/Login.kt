@@ -27,8 +27,6 @@ class Login : AppCompatActivity() {
     lateinit var autoLogin: CheckBox
     lateinit var email: EditText
     lateinit var password: EditText
-    lateinit var userindex: SharedPreferences
-    lateinit var userindexEdit: Editor
 
     // 뷰모델 객체 주입
     private val viewModel: LoginViewModel by viewModels()
@@ -58,8 +56,6 @@ class Login : AppCompatActivity() {
         email = binding.email
         password = binding.password
 
-        userindex = getSharedPreferences("userindex", MODE_PRIVATE)
-        userindexEdit = userindex.edit()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

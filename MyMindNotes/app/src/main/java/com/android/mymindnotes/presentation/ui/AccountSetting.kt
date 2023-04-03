@@ -157,7 +157,7 @@ class AccountSetting : AppCompatActivity() {
         }
     }
 
-    fun withdrawDialog() {
+    private fun withdrawDialog() {
         val builder = AlertDialog.Builder(this)
         // 화면 밖이나 뒤로가기 눌렀을 때 다이얼로그 닫히지 않게 하기
         builder.setCancelable(false)
@@ -168,7 +168,7 @@ class AccountSetting : AppCompatActivity() {
         alertDialog.show()
     }
 
-    // error dialoguee
+    // error dialogue
     fun dialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(msg)

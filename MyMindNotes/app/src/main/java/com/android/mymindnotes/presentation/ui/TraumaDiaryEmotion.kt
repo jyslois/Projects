@@ -255,7 +255,7 @@ class TraumaDiaryEmotion : AppCompatActivity() {
     }
 
 
-    // 알림 dialoguee
+    // 알림 dialogue
     fun dialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(msg)
@@ -265,7 +265,7 @@ class TraumaDiaryEmotion : AppCompatActivity() {
     }
 
     // 팁 dialogue
-    fun tipDialog() {
+    private fun tipDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setIcon(R.drawable.tips)
         builder.setTitle("감정 작성 Tips")

@@ -106,7 +106,7 @@ class ChangePassword : AppCompatActivity() {
         }
     }
 
-    // 알림 dialoguee
+    // 알림 dialogue
     fun dialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(msg)
