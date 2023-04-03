@@ -27,8 +27,7 @@ class TraumaDiaryEmotion : AppCompatActivity() {
     // 다이얼로그 변수
     lateinit var alertDialog: AlertDialog
 
-    // 감정 선택 체크 변수
-    private var isChecking = true
+    // 감정 변수
     private var chosenEmotionId = 0
 
 
@@ -75,24 +74,18 @@ class TraumaDiaryEmotion : AppCompatActivity() {
         val emotionGroup1 = binding.emotions1
         val emotionGroup2 = binding.emotions2
 
-        // 감정 선택 시 radiogroup 별로 선택 해제되기 && 선택시 이벤트
-        emotionGroup1.setOnCheckedChangeListener { group: RadioGroup?, checkedId: Int ->
-            if (checkedId != -1 && isChecking) {
-                isChecking = false
-                emotionGroup2.clearCheck()
-                chosenEmotionId = checkedId
+
+        emotionGroup1.setOnCheckedChangeListener { _: RadioGroup?, checkedId: Int ->
+            lifecycleScope.launch {
+                viewModel.clickEmotionGroup1(checkedId)
             }
-            isChecking = true
         }
 
 
-        emotionGroup2.setOnCheckedChangeListener { group: RadioGroup?, checkedId: Int ->
-            if (checkedId != -1 && isChecking) {
-                isChecking = false
-                emotionGroup1.clearCheck()
-                chosenEmotionId = checkedId
+        emotionGroup2.setOnCheckedChangeListener { _: RadioGroup?, checkedId: Int ->
+            lifecycleScope.launch {
+                viewModel.clickEmotionGroup2(checkedId)
             }
-            isChecking = true
         }
 
 
@@ -197,7 +190,8 @@ class TraumaDiaryEmotion : AppCompatActivity() {
                             viewModel.saveEmotionText(emotionText)
 
                             // 다음 화면으로 이동
-                            val intent = Intent(applicationContext, TraumaDiaryReflection::class.java)
+                            val intent =
+                                Intent(applicationContext, TraumaDiaryReflection::class.java)
                             startActivity(intent)
                         }
                     }
@@ -250,6 +244,27 @@ class TraumaDiaryEmotion : AppCompatActivity() {
                     }
                 }
 
+                launch {
+                    // clickEmotionGroup 1
+                    viewModel.emotionGroup1Click.collect {
+                        if (it != -1) {
+                            emotionGroup2.clearCheck()
+                            chosenEmotionId = it
+                        }
+
+                    }
+                }
+
+                launch {
+                    // clickEmotionGroup 2
+                    viewModel.emotionGroup2Click.collect {
+                        if (it != -1) {
+                            emotionGroup1.clearCheck()
+                            chosenEmotionId = it
+                        }
+                    }
+                }
+                
             }
         }
     }

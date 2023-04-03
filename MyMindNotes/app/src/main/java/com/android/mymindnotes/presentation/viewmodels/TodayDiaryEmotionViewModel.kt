@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import com.android.mymindnotes.domain.usecase.UseTodayDiarySharedPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,21 +42,21 @@ class TodayDiaryEmotionViewModel @Inject constructor(
         _recordNextButton.emit(true)
     }
 
-//    // Emotion 클릭 감지
-//    private val _emotionGroup1Click = MutableSharedFlow<Int>()
-//    val emotionGroup1Click = _emotionGroup1Click.asSharedFlow()
-//
-//    private val _emotionGroup2Click = MutableSharedFlow<Int>()
-//    val emotionGroup2Click = _emotionGroup2Click.asSharedFlow()
-//
-//    // Emotion 버튼 클릭
-//    suspend fun clickEmotionGroup1(checkedId: Int) {
-//        _emotionGroup1Click.emit(checkedId)
-//    }
-//
-//    suspend fun clickEmotionGroup2(checkedId: Int) {
-//        _emotionGroup2Click.emit(checkedId)
-//    }
+    // Emotion 클릭 감지
+    private val _emotionGroup1Click = MutableStateFlow<Int>(-1)
+    val emotionGroup1Click = _emotionGroup1Click.asStateFlow()
+
+    private val _emotionGroup2Click = MutableStateFlow<Int>(-1)
+    val emotionGroup2Click = _emotionGroup2Click.asStateFlow()
+
+    // Emotion 버튼 클릭
+    suspend fun clickEmotionGroup1(checkedId: Int) {
+        _emotionGroup1Click.emit(checkedId)
+    }
+
+    suspend fun clickEmotionGroup2(checkedId: Int) {
+        _emotionGroup2Click.emit(checkedId)
+    }
 
     // Save Methods
     suspend fun saveEmotionColor(color: Int) {
