@@ -46,6 +46,13 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
         }
     }
 
+    // Situation
+    suspend fun saveSituation(situation: String) {
+        withContext(ioDispatcher) {
+            situation_sharedPreferences.edit().putString("situation", situation).commit()
+        }
+    }
+
     // Get methods
     // Emotion
     val getEmotion: Flow<String?> = flow {
@@ -57,6 +64,12 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
     val getEmotionText: Flow<String?> = flow {
         val emotionText = emotionText_sharedPreferences.getString("emotionText", "")
         emit(emotionText)
+    }.flowOn(ioDispatcher)
+
+    // Situation
+    val getSituation: Flow<String?> = flow {
+        val situation = situation_sharedPreferences.getString("situation", "")
+        emit(situation)
     }.flowOn(ioDispatcher)
 
 

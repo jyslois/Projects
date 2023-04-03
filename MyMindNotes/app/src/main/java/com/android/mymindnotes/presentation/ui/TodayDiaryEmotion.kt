@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.EmotionInstructions
-import com.android.mymindnotes.New_Situation
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityTodayDiaryEmotionBinding
 import com.android.mymindnotes.presentation.viewmodels.TodayDiaryEmotionViewModel
@@ -191,7 +190,7 @@ class TodayDiaryEmotion : AppCompatActivity() {
                             val emotionText = binding.RecordEmotionUserInput.text.toString()
                             viewModel.saveEmotionText(emotionText)
 
-                            val intent = Intent(applicationContext, New_Situation::class.java)
+                            val intent = Intent(applicationContext, TodayDiarySituation::class.java)
                             startActivity(intent)
                         }
                     }
