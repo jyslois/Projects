@@ -25,6 +25,14 @@ class UseTodayDiarySharedPreferencesUseCase @Inject constructor(
         repository.saveSituation(situation)
     }
 
+    suspend fun saveThought(thought: String) {
+        repository.saveThought(thought)
+    }
+
+    suspend fun saveReflection(reflection: String) {
+        repository.saveReflection(reflection)
+    }
+
     // Get Methods
     suspend fun getEmotion(): Flow<String?> {
         return repository.getEmotion()
@@ -36,6 +44,14 @@ class UseTodayDiarySharedPreferencesUseCase @Inject constructor(
 
     suspend fun getSituation(): Flow<String?> {
         return repository.getSituation()
+    }
+
+    suspend fun getThought(): Flow<String?> {
+        return repository.getThought()
+    }
+
+    suspend fun getReflection(): Flow<String?> {
+        return repository.getReflection()
     }
 
     // Clear Methods

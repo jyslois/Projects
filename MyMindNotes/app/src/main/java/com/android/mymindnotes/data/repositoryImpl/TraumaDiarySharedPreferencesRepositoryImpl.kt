@@ -25,12 +25,25 @@ class TraumaDiarySharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveSituation(situation)
     }
 
+    override suspend fun saveThought(thought: String?) {
+        dataSource.saveThought(thought)
+    }
+
+    override suspend fun saveReflection(reflection: String?) {
+        dataSource.saveReflection(reflection)
+    }
+
     // Get Methods
     override suspend fun getEmotion(): Flow<String?> = dataSource.getEmotion
 
     override suspend fun getEmotionText(): Flow<String?> = dataSource.getEmotionText
 
     override suspend fun getSituation(): Flow<String?> = dataSource.getSituation
+
+    override suspend fun getThought(): Flow<String?> = dataSource.getThought
+
+    override suspend fun getReflection(): Flow<String?> = dataSource.getReflection
+
 
     // Clear Methods
     override suspend fun clearEmotionColorSharedPreferences() {

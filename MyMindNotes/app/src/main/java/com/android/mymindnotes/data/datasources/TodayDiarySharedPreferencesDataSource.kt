@@ -47,9 +47,23 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
     }
 
     // Situation
-    suspend fun saveSituation(situation: String) {
+    suspend fun saveSituation(situation: String?) {
         withContext(ioDispatcher) {
             situation_sharedPreferences.edit().putString("situation", situation).commit()
+        }
+    }
+
+    // Thought
+    suspend fun saveThought(thought: String?) {
+        withContext(ioDispatcher) {
+            thought_sharedPreferences.edit().putString("thought", thought).commit()
+        }
+    }
+
+    // Reflection
+    suspend fun saveReflection(reflection: String?) {
+        withContext(ioDispatcher) {
+            reflection_sharedPreferences.edit().putString("reflection", reflection).commit()
         }
     }
 
@@ -70,6 +84,18 @@ class TodayDiarySharedPreferencesDataSource @Inject constructor(
     val getSituation: Flow<String?> = flow {
         val situation = situation_sharedPreferences.getString("situation", "")
         emit(situation)
+    }.flowOn(ioDispatcher)
+
+    // Thought
+    val getThought: Flow<String?> = flow {
+        val thought = thought_sharedPreferences.getString("thought", "")
+        emit(thought)
+    }.flowOn(ioDispatcher)
+
+    // Reflection
+    val getReflection: Flow<String?> = flow {
+        val reflection = reflection_sharedPreferences.getString("reflection", "")
+        emit(reflection)
     }.flowOn(ioDispatcher)
 
 

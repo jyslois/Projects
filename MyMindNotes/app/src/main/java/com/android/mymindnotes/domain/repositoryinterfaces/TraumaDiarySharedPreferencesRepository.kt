@@ -9,11 +9,15 @@ interface TraumaDiarySharedPreferencesRepository {
     suspend fun saveEmotion(emotion: String?)
     suspend fun saveEmotionText(emotionText: String?)
     suspend fun saveSituation(situation: String)
+    suspend fun saveThought(thought: String?)
+    suspend fun saveReflection(reflection: String?)
 
     // get methods
     suspend fun getEmotion(): Flow<String?>
     suspend fun getEmotionText(): Flow<String?>
     suspend fun getSituation(): Flow<String?>
+    suspend fun getThought(): Flow<String?>
+    suspend fun getReflection(): Flow<String?>
 
     // clear methods
     suspend fun clearEmotionColorSharedPreferences()

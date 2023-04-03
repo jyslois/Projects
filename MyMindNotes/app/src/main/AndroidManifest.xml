@@ -110,7 +110,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".New_Thought"
+            android:name=".presentation.ui.TodayDiaryThought"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
