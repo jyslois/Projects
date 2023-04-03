@@ -9,17 +9,16 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class DiarySharedPreferencesDataSource @Inject constructor(
-    @Emotion private val emotion_sharedPreferences: SharedPreferences,
-    @EmotionText private val emotionText_sharedPreferences: SharedPreferences,
-    @Situation private val situation_sharedPreferences: SharedPreferences,
-    @Thought private val thought_sharedPreferences: SharedPreferences,
-    @Reflection private val reflection_sharedPreferences: SharedPreferences,
-    @Type private val type_sharedPreferences: SharedPreferences,
-    @EmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
+class TraumaDiarySharedPreferencesDataSource @Inject constructor(
+    @Trauma_Emotion private val emotion_sharedPreferences: SharedPreferences,
+    @Trauma_EmotionText private val emotionText_sharedPreferences: SharedPreferences,
+    @Trauma_Situation private val situation_sharedPreferences: SharedPreferences,
+    @Trauma_Thought private val thought_sharedPreferences: SharedPreferences,
+    @Trauma_Reflection private val reflection_sharedPreferences: SharedPreferences,
+    @Trauma_Type private val type_sharedPreferences: SharedPreferences,
+    @Trauma_EmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-    ) {
-
+) {
     // Save methods
     // EmotionColor
     suspend fun saveEmotionColor(color: Int) {
@@ -109,5 +108,4 @@ class DiarySharedPreferencesDataSource @Inject constructor(
             type_sharedPreferences.edit().clear().commit()
         }
     }
-
 }

@@ -11,9 +11,9 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityOldThoughtBinding;
+import com.android.mymindnotes.presentation.ui.TraumaDiaryEmotion;
 import com.bumptech.glide.Glide;
 
 public class Old_Thought extends AppCompatActivity {
@@ -102,7 +102,7 @@ public class Old_Thought extends AppCompatActivity {
                 // 생각 저장
                 thoughtEdit.putString("thought", binding.RecordThoughtUserInput.getText().toString());
                 thoughtEdit.commit();
-                Intent intent = new Intent(getApplicationContext(), Old_Emotion.class);
+                Intent intent = new Intent(getApplicationContext(), TraumaDiaryEmotion.class);
                 startActivity(intent);
             }
         });

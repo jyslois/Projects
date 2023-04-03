@@ -2,7 +2,7 @@ package com.android.mymindnotes.domain.repositoryinterfaces
 
 import kotlinx.coroutines.flow.Flow
 
-interface DiarySharedPreferencesRepository {
+interface TodayDiarySharedPreferencesRepository {
 
     // save methods
     suspend fun saveEmotionColor(color: Int)

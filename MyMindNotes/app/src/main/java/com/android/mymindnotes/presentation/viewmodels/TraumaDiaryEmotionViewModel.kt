@@ -1,15 +1,15 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.domain.usecase.UseTodayDiarySharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecase.UseTraumaDiarySharedPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class TodayDiaryEmotionViewModel @Inject constructor(
-    private val useCase: UseTodayDiarySharedPreferencesUseCase
+class TraumaDiaryEmotionViewModel @Inject constructor(
+    private val useCase: UseTraumaDiarySharedPreferencesUseCase
 ): ViewModel() {
 
     // 버튼 클릭
@@ -40,21 +40,15 @@ class TodayDiaryEmotionViewModel @Inject constructor(
         _recordNextButton.emit(true)
     }
 
-//    // Emotion 클릭 감지
-//    private val _emotionGroup1Click = MutableSharedFlow<Int>()
-//    val emotionGroup1Click = _emotionGroup1Click.asSharedFlow()
-//
-//    private val _emotionGroup2Click = MutableSharedFlow<Int>()
-//    val emotionGroup2Click = _emotionGroup2Click.asSharedFlow()
-//
-//    // Emotion 버튼 클릭
-//    suspend fun clickEmotionGroup1(checkedId: Int) {
-//        _emotionGroup1Click.emit(checkedId)
-//    }
-//
-//    suspend fun clickEmotionGroup2(checkedId: Int) {
-//        _emotionGroup2Click.emit(checkedId)
-//    }
+    // 이전 버튼 클릭 감지
+    private val _recordPreviousButton = MutableSharedFlow<Boolean>()
+    val recordPreviousButton = _recordPreviousButton.asSharedFlow()
+
+    // 이전 버튼 클릭
+    suspend fun clickRecordPreviousButton() {
+        _recordPreviousButton.emit(true)
+    }
+
 
     // Save Methods
     suspend fun saveEmotionColor(color: Int) {
@@ -90,35 +84,5 @@ class TodayDiaryEmotionViewModel @Inject constructor(
             _emotionText.emit(it)
         }
     }
-
-    // Clear Methods
-    suspend fun clearEmotionColorSharedPreferences() {
-        useCase.clearEmotionColorSharedPreferences()
-    }
-
-    suspend fun clearEmotionSharedPreferences() {
-        useCase.clearEmotionSharedPreferences()
-    }
-
-    suspend fun clearEmotionTextSharedPreferences() {
-        useCase.clearEmotionTextSharedPreferences()
-    }
-
-    suspend fun clearSituationSharedPreferences() {
-        useCase.clearSituationSharedPreferences()
-    }
-
-    suspend fun clearThoughtSharedPreferences() {
-        useCase.clearThoughtSharedPreferences()
-    }
-
-    suspend fun clearReflectionSharedPreferences() {
-        useCase.clearReflectionSharedPreferences()
-    }
-
-    suspend fun clearTypeSharedPreferences() {
-        useCase.clearTypeSharedPreferences()
-    }
-
 
 }

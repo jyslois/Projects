@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecase
 
-import com.android.mymindnotes.domain.repositoryinterfaces.DiarySharedPreferencesRepository
+import com.android.mymindnotes.domain.repositoryinterfaces.TodayDiarySharedPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class UseDiarySharedPreferencesUseCase @Inject constructor(
-    private val repository: DiarySharedPreferencesRepository
+class UseTodayDiarySharedPreferencesUseCase @Inject constructor(
+    private val repository: TodayDiarySharedPreferencesRepository
 ) {
 
     // Save Methods
