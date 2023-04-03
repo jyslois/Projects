@@ -103,9 +103,9 @@ class TodayDiaryThought : AppCompatActivity() {
                         if (thought != "") {
                             // 상황 저장
                             viewModel.saveThought(thought)
-                            // 이전 화면으로 이동
-                            finish()
                         }
+                        // 이전 화면으로 이동
+                        finish()
                     }
                 }
             }
@@ -141,9 +141,9 @@ class TodayDiaryThought : AppCompatActivity() {
             if (thought != "") {
                 // 생각 저장
                 viewModel.saveThought(thought)
-                // 이전 화면으로 이동
-                finish()
             }
+            // 이전 화면으로 이동
+            finish()
         }
     }
 

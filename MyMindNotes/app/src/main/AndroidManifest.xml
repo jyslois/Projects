@@ -94,7 +94,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".Old_Thought"
+            android:name=".presentation.ui.TraumaDiaryThought"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

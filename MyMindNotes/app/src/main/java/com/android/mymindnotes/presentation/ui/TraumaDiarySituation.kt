@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import android.content.Intent
-import com.android.mymindnotes.Old_Thought
 import android.content.DialogInterface
 import android.util.Log
 import androidx.activity.viewModels
@@ -88,7 +87,7 @@ class TraumaDiarySituation : AppCompatActivity() {
                             Log.e("확인", situation)
                             viewModel.saveSituation(situation)
                             // 다음 화면으로 이동
-                            val intent = Intent(applicationContext, Old_Thought::class.java)
+                            val intent = Intent(applicationContext, TraumaDiaryThought::class.java)
                             startActivity(intent)
                         }
                     }
