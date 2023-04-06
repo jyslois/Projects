@@ -4,7 +4,6 @@ import android.util.Log
 import com.android.mymindnotes.data.datasources.MemberDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
-import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

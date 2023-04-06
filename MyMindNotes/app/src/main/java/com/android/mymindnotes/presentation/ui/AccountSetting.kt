@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.AlarmSetting
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityAccountInformationBinding
 import com.android.mymindnotes.presentation.viewmodels.AccountSettingViewModel
@@ -118,7 +117,7 @@ class AccountSetting : AppCompatActivity() {
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (it["code"].toString().toDouble() == 4000.0) {
                             // 알람 삭제
-                            AlarmSetting.stopAlarm(applicationContext)
+                            viewModel.stopAlarm(applicationContext)
                             // 모든 상태저장 삭제
                             // 알람 설정 해제 (임시)
                             viewModel.clearAlarmSharedPreferences()

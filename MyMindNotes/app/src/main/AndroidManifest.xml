@@ -23,7 +23,7 @@
         tools:targetApi="32">
 
         <receiver
-            android:name=".AlarmBootReceiver"
+            android:name=".domain.AlarmBootReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -31,12 +31,12 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".domain.AlarmReceiver"
             android:enabled="true"
             android:exported="false" />
 
         <activity
-            android:name=".AlarmSetting"
+            android:name=".presentation.ui.AlarmSetting"
             android:exported="false"
             android:label="알림 설정"
             android:parentActivityName=".presentation.ui.MainMenu"

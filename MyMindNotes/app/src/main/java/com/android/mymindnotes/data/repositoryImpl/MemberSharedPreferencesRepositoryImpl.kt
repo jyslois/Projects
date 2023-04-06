@@ -61,6 +61,49 @@ class MemberSharedPreferencesRepositoryImpl @Inject constructor(
         dataSource.saveFirstTimetoFirstTimeSharedPreferences(state)
     }
 
+    // Alarm
+    // alarm 상태 가져오기
+    override suspend fun getAlarmState(): Flow<Boolean> = dataSource.getAlarmStateFromAlarmSharedPreferences
+
+    // time 가져오기
+    override suspend fun getTime(): Flow<String?> = dataSource.getTimeFromAlarmSharedPreferences
+
+    // alarm 상태 저장하기
+    override suspend fun saveAlarmState(state: Boolean) {
+        dataSource.saveAlarmStateToAlarmSharedPreferences(state)
+    }
+
+    // time 저장하기
+    override suspend fun saveTime(time: String) {
+        dataSource.saveTimeToAlarmSharedPreferences(time)
+    }
+
+    // 시간 저장하기
+    override suspend fun saveHour(hour: Int) {
+       dataSource.saveHourToAlarmSharedPreferences(hour)
+    }
+
+    // 시간 가져오기
+    override suspend fun getHour(): Flow<Int> = dataSource.getHourFromAlarmSharedPreferences
+
+
+    // 분 저장하기
+    override suspend fun saveMinute(minute: Int) {
+        dataSource.saveMinuteToAlarmSharedPreferences(minute)
+    }
+
+    // 분 가져오기
+    override suspend fun getMinute(): Flow<Int> = dataSource.getMinuteFromAlarmSharedPreferences
+
+    // Reboot를 위한 시간 저장하기
+    override suspend fun saveRebootTime(time: Long) {
+        dataSource.saveRebootTimeToTimeSharedPreferences(time)
+    }
+
+    // Reboot 시간 가져오기
+    override suspend fun getRebootTime(): Flow<Long> = dataSource.getRebootTimeFromTimeSharedPreferences
+
+
     // Clear Preferences
     // Clear autoSave SharedPreference
     override suspend fun clearAutoSaveSharedPreferences() {

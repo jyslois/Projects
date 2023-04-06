@@ -101,6 +101,76 @@ class MemberSharedPreferencesDataSource @Inject constructor(
         }
     }
 
+    // Alarm SharedPreferences
+    // alarm 가져오기
+    val getAlarmStateFromAlarmSharedPreferences: Flow<Boolean> = flow {
+        val alarmState = alarm_sharedPreferences.getBoolean("alarm", false)
+        emit(alarmState)
+    }.flowOn(ioDispatcher)
+
+    // alarm 상태 저장하기
+    suspend fun saveAlarmStateToAlarmSharedPreferences(state: Boolean) {
+        withContext(ioDispatcher) {
+            alarm_sharedPreferences.edit().putBoolean("alarm", state).commit()
+        }
+    }
+
+    // time 가져오기
+    val getTimeFromAlarmSharedPreferences: Flow<String?> = flow {
+        val time = alarm_sharedPreferences.getString("time", "")
+        emit(time)
+    }.flowOn(ioDispatcher)
+
+    // time 저장하기
+    suspend fun saveTimeToAlarmSharedPreferences(time: String) {
+        withContext(ioDispatcher) {
+            alarm_sharedPreferences.edit().putString("time", time).commit()
+        }
+    }
+
+    // hour 저장하기
+    suspend fun saveHourToAlarmSharedPreferences(hour: Int) {
+        withContext(ioDispatcher) {
+            alarm_sharedPreferences.edit().putInt("hour", hour).commit()
+        }
+    }
+
+    // hour 가져오기
+    val getHourFromAlarmSharedPreferences: Flow<Int> = flow {
+        val hour = alarm_sharedPreferences.getInt("hour", 22)
+        emit(hour)
+    }.flowOn(ioDispatcher)
+
+
+    // minute 저장하기
+    suspend fun saveMinuteToAlarmSharedPreferences(minute: Int) {
+        withContext(ioDispatcher) {
+            alarm_sharedPreferences.edit().putInt("minute", minute).commit()
+        }
+    }
+
+    // minute 가져오기
+    val getMinuteFromAlarmSharedPreferences: Flow<Int> = flow {
+        val minute = alarm_sharedPreferences.getInt("minute", 0)
+        emit(minute)
+    }.flowOn(ioDispatcher)
+
+    // time 부팅시 알람 재설정을 위한 sharedpreferences
+
+    // 부팅 time 가져오기
+    val getRebootTimeFromTimeSharedPreferences: Flow<Long> = flow {
+        val time = time_sharedPreferences.getLong("time", 0L)
+        emit(time)
+    }.flowOn(ioDispatcher)
+
+    // 부팅 time 저장하기
+    suspend fun saveRebootTimeToTimeSharedPreferences(time: Long) {
+        withContext(ioDispatcher) {
+            time_sharedPreferences.edit().putLong("time", time).commit()
+        }
+    }
+
+
     // Clear Preferences
     // Clear autoSave SharedPreference
     suspend fun clearAutoSaveSharedPreferences() {

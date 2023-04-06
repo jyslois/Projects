@@ -1,7 +1,6 @@
 package com.android.mymindnotes.domain.usecase
 
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
-import com.android.mymindnotes.hilt.module.IoDispatcherCoroutineScope
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*

@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.Diary
 import com.android.mymindnotes.EmotionInstructions
-import com.android.mymindnotes.AlarmSetting
 import com.android.mymindnotes.databinding.ActivityMainMenuBinding
 import com.android.mymindnotes.presentation.viewmodels.MainMenuViewModel
 import dagger.hilt.android.AndroidEntryPoint

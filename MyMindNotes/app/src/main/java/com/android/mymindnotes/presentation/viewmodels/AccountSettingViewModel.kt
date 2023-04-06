@@ -1,8 +1,10 @@
 package com.android.mymindnotes.presentation.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.mymindnotes.domain.usecase.AlarmUseCase
 import com.android.mymindnotes.domain.usecase.DeleteUserUseCase
 import com.android.mymindnotes.domain.usecase.GetUserInfoUseCase
 import com.android.mymindnotes.domain.usecase.UseMemberSharedPreferencesUseCase
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class AccountSettingViewModel @Inject constructor(
     private val useSharedPreferencesUseCase: UseMemberSharedPreferencesUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val alarmUseCase: AlarmUseCase
 ) : ViewModel() {
 
     // 에러 메시지
@@ -91,6 +94,11 @@ class AccountSettingViewModel @Inject constructor(
     // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
     suspend fun clearTimeSharedPreferences() {
         useSharedPreferencesUseCase.clearTimeSharedPreferences()
+    }
+
+    // stop Alarm
+    fun stopAlarm(context: Context) {
+        alarmUseCase.stopAlarm(context)
     }
 
     // collect & emit

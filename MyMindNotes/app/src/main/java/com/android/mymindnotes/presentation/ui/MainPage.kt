@@ -3,7 +3,6 @@ package com.android.mymindnotes.presentation.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.content.DialogInterface
 import android.content.Intent
-import com.android.mymindnotes.AlarmSetting
 import android.os.Bundle
 import android.graphics.Color
 import android.util.Log
