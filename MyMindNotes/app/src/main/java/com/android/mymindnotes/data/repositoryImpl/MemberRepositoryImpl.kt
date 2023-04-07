@@ -1,6 +1,5 @@
 package com.android.mymindnotes.data.repositoryImpl
 
-import android.util.Log
 import com.android.mymindnotes.data.datasources.MemberDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope

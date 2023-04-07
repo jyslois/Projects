@@ -36,7 +36,7 @@ class Join : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJoinBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+        setContentView(binding.root)
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainbackground).into(binding.background)

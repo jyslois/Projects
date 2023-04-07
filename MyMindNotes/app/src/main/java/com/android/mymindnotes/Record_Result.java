@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.android.mymindnotes.databinding.ActivityRecordResultBinding;
 import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
-import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
+import com.android.mymindnotes.data.retrofit.api.user.GetDiaryListApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.android.mymindnotes.presentation.ui.MainPage;
 import com.bumptech.glide.Glide;
@@ -76,7 +76,7 @@ public class Record_Result extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        getDiary();
+//        getDiary();
 
     }
 
@@ -108,7 +108,7 @@ public class Record_Result extends AppCompatActivity {
 
 
         // 화면 세팅
-        getDiary();
+//        getDiary();
 
         // 글짜 크기 조절
         getStandardSize();
@@ -164,68 +164,68 @@ public class Record_Result extends AppCompatActivity {
     }
 
     // 네트워크 통신: 일기 목록 얻어서 일기 가져오기
-    public void getDiary() {
-            RetrofitService retrofitService = new RetrofitService();
-            GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
-            Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
-            call.enqueue(new Callback<Map<String, Object>>() {
-                @Override
-                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 7000) {
-
-                        // 서버로부터 리스트 받아와서 저장하기
-                        // https://ppizil.tistory.com/4
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<List<UserDiary>>() {
-                        }.getType();
-                        String jsonResult = gson.toJson(response.body().get("diaryList"));
-                        diarylist = gson.fromJson(jsonResult, type);
-
-                        index = diarylist.size() - 1;
-
-                        // 다이어리 번호 저장
-                        diaryNumber = diarylist.get(index).getDiary_number();
-
-                        // 타입 뿌리기
-                        binding.type.setText(diarylist.get(index).getType());
-
-                        // 날짜 뿌리기
-                        binding.date.setText(diarylist.get(index).getDate() + " " + diarylist.get(index).getDay());
-
-                        // 상황 텍스트 뿌리기
-                        binding.ResultSituationUserInput.setText(diarylist.get(index).getSituation());
-                        // 생각 텍스트 뿌리기
-                        binding.ResultThoughtUserInput.setText(diarylist.get(index).getThought());
-                        // 감정 뿌리기
-                        binding.ResultEmotionText.setText(diarylist.get(index).getEmotion());
-                        // 감정 텍스트 뿌리기
-                        binding.ResultEmotionUserInput.setText(diarylist.get(index).getEmotionDescription());
-                        // 회고 텍스트 뿌리기
-                        binding.ResultReflectionUserInput.setText(diarylist.get(index).getReflection());
-
-                        // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기.
-                        if (binding.ResultEmotionUserInput.getText().toString().equals("")) {
-                            binding.ResultEmotionUserInput.setVisibility(View.GONE);
-                        } else {
-                            binding.ResultEmotionUserInput.setVisibility(View.VISIBLE);
-                        }
-                        if (binding.ResultReflectionUserInput.getText().toString().equals("")) {
-                            binding.ResultReflectionUserInput.setVisibility(View.GONE);
-                            binding.ResultReflectionTitle.setVisibility(View.GONE);
-                        } else {
-                            binding.ResultReflectionUserInput.setVisibility(View.VISIBLE);
-                            binding.ResultReflectionTitle.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-    }
+//    public void getDiary() {
+//            RetrofitService retrofitService = new RetrofitService();
+//            GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
+//            Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
+//            call.enqueue(new Callback<Map<String, Object>>() {
+//                @Override
+//                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+//                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 7000) {
+//
+//                        // 서버로부터 리스트 받아와서 저장하기
+//                        // https://ppizil.tistory.com/4
+//                        Gson gson = new Gson();
+//                        Type type = new TypeToken<List<UserDiary>>() {
+//                        }.getType();
+//                        String jsonResult = gson.toJson(response.body().get("diaryList"));
+//                        diarylist = gson.fromJson(jsonResult, type);
+//
+//                        index = diarylist.size() - 1;
+//
+//                        // 다이어리 번호 저장
+//                        diaryNumber = diarylist.get(index).getDiary_number();
+//
+//                        // 타입 뿌리기
+//                        binding.type.setText(diarylist.get(index).getType());
+//
+//                        // 날짜 뿌리기
+//                        binding.date.setText(diarylist.get(index).getDate() + " " + diarylist.get(index).getDay());
+//
+//                        // 상황 텍스트 뿌리기
+//                        binding.ResultSituationUserInput.setText(diarylist.get(index).getSituation());
+//                        // 생각 텍스트 뿌리기
+//                        binding.ResultThoughtUserInput.setText(diarylist.get(index).getThought());
+//                        // 감정 뿌리기
+//                        binding.ResultEmotionText.setText(diarylist.get(index).getEmotion());
+//                        // 감정 텍스트 뿌리기
+//                        binding.ResultEmotionUserInput.setText(diarylist.get(index).getEmotionDescription());
+//                        // 회고 텍스트 뿌리기
+//                        binding.ResultReflectionUserInput.setText(diarylist.get(index).getReflection());
+//
+//                        // 만약 감정 텍스트나 회고 텍스트가 비어 있다면, 나타나지 않게 하기.
+//                        if (binding.ResultEmotionUserInput.getText().toString().equals("")) {
+//                            binding.ResultEmotionUserInput.setVisibility(View.GONE);
+//                        } else {
+//                            binding.ResultEmotionUserInput.setVisibility(View.VISIBLE);
+//                        }
+//                        if (binding.ResultReflectionUserInput.getText().toString().equals("")) {
+//                            binding.ResultReflectionUserInput.setVisibility(View.GONE);
+//                            binding.ResultReflectionTitle.setVisibility(View.GONE);
+//                        } else {
+//                            binding.ResultReflectionUserInput.setVisibility(View.VISIBLE);
+//                            binding.ResultReflectionTitle.setVisibility(View.VISIBLE);
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+//                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//            });
+//    }
 
     // 뒤로 가기 버튼 누를 시, 메인 페이지로 돌아가기 (모든 기록 삭제)
     @Override

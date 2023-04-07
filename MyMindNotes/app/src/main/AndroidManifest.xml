@@ -126,7 +126,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".Diary"
+            android:name=".presentation.ui.Diary"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

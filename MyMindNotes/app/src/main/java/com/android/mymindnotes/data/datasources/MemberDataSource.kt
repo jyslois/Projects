@@ -1,6 +1,5 @@
 package com.android.mymindnotes.data.datasources
 
-import android.util.Log
 import com.android.mymindnotes.data.retrofit.api.user.*
 import com.android.mymindnotes.data.retrofit.model.user.ChangeToTemporaryPassword
 import com.android.mymindnotes.data.retrofit.model.user.ChangeUserNickname
@@ -10,7 +9,6 @@ import com.android.mymindnotes.data.retrofit.model.user.UserInfoLogin
 import com.android.mymindnotes.hilt.module.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MemberDataSource @Inject constructor(
@@ -37,7 +35,6 @@ class MemberDataSource @Inject constructor(
             val userIndex = it
             val result = getUserInfoApi.getUserInfo(userIndex)
             emit(result)
-            Log.e("유저 인포", "emit - $result")
         }
     }.flowOn(ioDispatcher)
         .catch {

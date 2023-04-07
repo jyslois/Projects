@@ -15,24 +15,6 @@ public class EmotionSortingPopup extends AppCompatActivity {
     ActivityEmotionSortingPopupBinding binding;
     RadioGroup emotionGroup;
 
-    // 화면 크기에 따른 글자 크기 조절
-    int standardSize_X, standardSize_Y;
-    float density;
-
-    public Point getScreenSize(Activity activity) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        return size;
-    }
-    public void getStandardSize() {
-        Point ScreenSize = getScreenSize(this);
-        density  = getResources().getDisplayMetrics().density;
-
-        standardSize_X = (int) (ScreenSize.x / density);
-        standardSize_Y = (int) (ScreenSize.y / density);
-    }
 
     // 데이터 보내기
     public void sendIntent(String emotion) {
@@ -48,18 +30,6 @@ public class EmotionSortingPopup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEmotionSortingPopupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // 글자 크기 조절
-        getStandardSize();
-        binding.angerButton.setTextSize((float) (standardSize_X / 22));
-        binding.anticipationButton.setTextSize((float) (standardSize_X / 22));
-        binding.disgustButton.setTextSize((float) (standardSize_X / 22));
-        binding.fearButton.setTextSize((float) (standardSize_X / 22));
-        binding.happinessButton.setTextSize((float) (standardSize_X / 22));
-        binding.sadnessButton.setTextSize((float) (standardSize_X / 22));
-        binding.surpriseButton.setTextSize((float) (standardSize_X / 22));
-        binding.trustButton.setTextSize((float) (standardSize_X / 22));
-
 
         emotionGroup = binding.emotionsGroup;
         emotionGroup.setOnCheckedChangeListener((group, checkedId) -> {

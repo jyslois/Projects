@@ -1,6 +1,6 @@
 package com.android.mymindnotes.model.retrofit;
 
-import com.android.mymindnotes.model.DiaryEdit;
+import com.android.mymindnotes.data.retrofit.model.diary.DiaryEdit;
 
 import java.util.Map;
 

@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.android.mymindnotes.databinding.ActivityDiaryResultBinding;
 import com.android.mymindnotes.data.retrofit.model.diary.UserDiary;
 import com.android.mymindnotes.model.retrofit.DeleteDiaryApi;
-import com.android.mymindnotes.model.retrofit.GetDiaryListApi;
+import com.android.mymindnotes.data.retrofit.api.user.GetDiaryListApi;
 import com.android.mymindnotes.data.retrofit.RetrofitService;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
@@ -60,14 +60,14 @@ public class Diary_Result extends AppCompatActivity {
     private ActivityResultLauncher editResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             // 서버를 요청해서 갱신 처리할수도 있고, 자체적으로 갱신처리도 가능.
-            refreshDiary();
+//            refreshDiary();
         }
     });
 
 
     @Override
     protected void onResume() {
-        refreshDiary();
+//        refreshDiary();
         super.onResume();
     }
 
@@ -172,33 +172,33 @@ public class Diary_Result extends AppCompatActivity {
 
 
     // 네트워크 통신: 일기리스트 가져와서 업데이트된 일기 내용 뿌리기
-    public void refreshDiary() {
-            RetrofitService retrofitService = new RetrofitService();
-            GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
-            Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
-            call.enqueue(new Callback<Map<String, Object>>() {
-                @Override
-                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 7000) {
-                        // 서버로부터 리스트 받아와서 저장하기
-                        // https://ppizil.tistory.com/4
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<List<UserDiary>>() {
-                        }.getType();
-                        String jsonResult = gson.toJson(response.body().get("diaryList"));
-                        diarylist = gson.fromJson(jsonResult, type);
-                        sendFragmentsData(diarylist.get(index));
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-    }
+//    public void refreshDiary() {
+//            RetrofitService retrofitService = new RetrofitService();
+//            GetDiaryListApi getDiaryListApi = retrofitService.getRetrofit().create(GetDiaryListApi.class);
+//            Call<Map<String, Object>> call = getDiaryListApi.getAllDiary(userindex.getInt("userindex", 0));
+//            call.enqueue(new Callback<Map<String, Object>>() {
+//                @Override
+//                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+//                    if (Double.parseDouble(String.valueOf(response.body().get("code"))) == 7000) {
+//                        // 서버로부터 리스트 받아와서 저장하기
+//                        // https://ppizil.tistory.com/4
+//                        Gson gson = new Gson();
+//                        Type type = new TypeToken<List<UserDiary>>() {
+//                        }.getType();
+//                        String jsonResult = gson.toJson(response.body().get("diaryList"));
+//                        diarylist = gson.fromJson(jsonResult, type);
+//                        sendFragmentsData(diarylist.get(index));
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+//                    Toast toast = Toast.makeText(getApplicationContext(), "네트워크 연결에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//            });
+//    }
 
     // 데이터 새로고침
     private void sendFragmentsData(UserDiary diary) {
