@@ -4,8 +4,7 @@ import kotlinx.coroutines.flow.*
 
 interface MemberRepository {
     // Get User Info
-    val userInfo: StateFlow<Map<String, Object>>
-    suspend fun getUserInfo()
+    suspend fun getUserInfo(): Flow<Map<String, Object>>
 
     // Log in & Log out
     suspend fun login(email: String, password: String): Flow<Map<String, Object>>

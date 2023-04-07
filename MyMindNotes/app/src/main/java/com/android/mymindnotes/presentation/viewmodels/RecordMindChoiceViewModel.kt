@@ -1,12 +1,9 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.GetUserInfoUseCase
-import com.android.mymindnotes.hilt.module.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -47,9 +44,8 @@ class RecordMindChoiceViewModel @Inject constructor (
         viewModelScope.launch {
             launch {
                 // 회원정보 값 collect& emit
-                getUserInfoUseCase.userInfo.collect {
+                getUserInfoUseCase.getUserInfo().collect {
                     _userInfo.emit(it)
-                    Log.e("UserInfoCheck", "viewModel - emit $it")
                 }
             }
 

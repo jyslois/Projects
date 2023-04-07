@@ -31,15 +31,8 @@ class MemberRepositoryImpl @Inject constructor(
     override suspend fun deleteUser(): Flow<Map<String, Object>> = memberDataSource.deleteUserResultFlow
 
     // 회원 정보 가져오기
-    // 받은 회원 정보 저장하는 플로우
-    private val _userInfo = MutableStateFlow<Map<String, Object>>(emptyMap())
-    override val userInfo = _userInfo.asStateFlow()
-
     // (서버) 회원 정보 가져오기
-    override suspend fun getUserInfo() {
-        memberDataSource.getUserInfo()
-        Log.e("UserInfoCheck", "Repository - 함수콜")
-    }
+    override suspend fun getUserInfo(): Flow<Map<String, Object>> = memberDataSource.getUserInfo()
 
     // 에러
     // 에러 메시지
@@ -58,14 +51,6 @@ class MemberRepositoryImpl @Inject constructor(
 
     init {
         mainDispatcherCoroutineScope.launch {
-            launch {
-                // 회원정보 값 collect & emit
-                memberDataSource.userInfo.collect {
-                    _userInfo.value = it
-                    Log.e("UserInfoCheck", "Repository - emit $it")
-                }
-            }
-
             launch {
                 // 에러 메시지 collect & emit
                 memberDataSource.error.collect {

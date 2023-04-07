@@ -31,26 +31,19 @@ class MemberDataSource @Inject constructor(
     private val _error = MutableSharedFlow<Boolean>(replay = 1)
     val error = _error.asSharedFlow()
 
-    // 회원 정보 가져오기
-    // 받은 회원정보 저장하는 플로우
-    private val _userInfo = MutableStateFlow<Map<String, Object>>(emptyMap())
-    val userInfo = _userInfo.asStateFlow()
-
     // (서버) 회원 정보 가져오기
-    suspend fun getUserInfo() {
-        withContext(ioDispatcher) {
-            try {
-                sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
-                    val userIndex = it
-                    val result = getUserInfoApi.getUserInfo(userIndex)
-                    _userInfo.value = result
-                    Log.e("UserInfoCheck", "DataSource - UserInfo emit됨 $result")
-                }
-            } catch (e: Exception) {
-                _error.emit(true)
-            }
+    suspend fun getUserInfo(): Flow<Map<String, Object>> = flow {
+        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
+            val userIndex = it
+            val result = getUserInfoApi.getUserInfo(userIndex)
+            emit(result)
+            Log.e("유저 인포", "emit - $result")
         }
-    }
+    }.flowOn(ioDispatcher)
+        .catch {
+            _error.emit(true)
+            _error.emit(false)
+        }
 
     // 로그인
     suspend fun loginResultFlow(email: String, password: String): Flow<Map<String, Object>> = flow {

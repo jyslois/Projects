@@ -1,6 +1,5 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.GetUserInfoUseCase
@@ -51,22 +50,14 @@ class MainPageViewModel @Inject constructor(
                 // 최초 접속 여부 collect & emit
                 useSharedPreferencesUseCase.getFirstTime().collect {
                     _firstTime.emit(it)
-                    Log.e("FirstTimeCheck", "viewModel - emit")
                 }
             }
 
             launch {
                 // 회원정보 값 collect & emit
-                getUserInfoUseCase.userInfo.collect {
+                getUserInfoUseCase.getUserInfo().collect {
                     _userInfo.emit(it)
-                    Log.e("UserInfoCheck", "viewModel - emit $it")
                 }
-            }
-
-            launch {
-                // (서버) 닉네임 불러오기 위해 회원정보 불러오는 함수 호출
-                getUserInfoUseCase.getUserInfo()
-                Log.e("UserInfoCheck", "viewModel - 함수콜")
             }
 
             launch {

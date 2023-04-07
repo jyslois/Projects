@@ -1,7 +1,6 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecase.AlarmUseCase
@@ -107,9 +106,8 @@ class AccountSettingViewModel @Inject constructor(
 
             // 회원 정보 collect & emit
             launch {
-                getUserInfoUseCase.userInfo.collect {
+                getUserInfoUseCase.getUserInfo().collect {
                     _userInfo.emit(it)
-                    Log.e("UserInfoCheck", "viewModel - emit $it")
                 }
             }
 
