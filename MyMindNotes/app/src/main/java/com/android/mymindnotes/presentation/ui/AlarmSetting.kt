@@ -147,7 +147,7 @@ class AlarmSetting : AppCompatActivity() {
                         val hour = viewModel.getHour().first()
                         val minute = viewModel.getMinute().first()
 
-                        val dialog = TimePickerDialog(this@AlarmSetting, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, { _, hourOfDay, minute ->
+                        val dialog = TimePickerDialog(this@AlarmSetting, R.style.PinkTimePickerTheme, { _, hourOfDay, minute ->
                             var min = ""
                             var time = ""
                             var daynight = ""
@@ -231,7 +231,7 @@ class AlarmSetting : AppCompatActivity() {
                             Toast.makeText(applicationContext, "매일 $time 분에 알람이 울려요", Toast.LENGTH_SHORT).show()
                         }, hour, minute, false)
 
-                        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
 
                         dialog.show()
                     }

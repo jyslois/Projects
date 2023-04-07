@@ -73,6 +73,10 @@
         <!-- Status bar color. -->
     </style>
 
+    <style name="PinkTimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#C3E3BEB6</item>
+        <item name="android:background">#C3E3BEB6</item>
+    </style>
 
     <style name="Theme.dialogue" parent="Theme.AppCompat.Dialog">
         <item name="windowActionBar">false</item>
