@@ -23,7 +23,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.Diary_Result
-import com.android.mymindnotes.EmotionSortingPopup
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityDiaryBinding
 import com.android.mymindnotes.databinding.DiaryitemBinding

@@ -47,7 +47,7 @@
             android:label="감정 선택"
             android:theme="@style/Theme.dialogue" />
         <activity
-            android:name=".EmotionSortingPopup"
+            android:name=".presentation.ui.EmotionSortingPopup"
             android:exported="false"
             android:label="감정 선택"
             android:theme="@style/Theme.dialogue" />
@@ -99,10 +99,6 @@
             android:theme="@style/Theme.Main" />
         <activity
             android:name=".presentation.ui.TraumaDiarySituation"
-            android:exported="false"
-            android:theme="@style/Theme.Main" />
-        <activity
-            android:name=".Record_Result"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
