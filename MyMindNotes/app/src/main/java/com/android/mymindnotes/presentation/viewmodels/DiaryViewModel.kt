@@ -73,7 +73,7 @@ class DiaryViewModel @Inject constructor(
             }
 
             // error collect & emit
-            getDiaryListUseCase.error.collect {
+            getDiaryListUseCase.getDiaryListError.collect {
                 _error.emit(it)
             }
         }

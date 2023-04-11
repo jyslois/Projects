@@ -82,7 +82,7 @@
             android:theme="@style/Theme.Main"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Diary_Result"
+            android:name=".presentation.ui.DiaryResult"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

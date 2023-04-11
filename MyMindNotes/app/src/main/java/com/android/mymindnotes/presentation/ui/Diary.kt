@@ -22,7 +22,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.Diary_Result
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityDiaryBinding
 import com.android.mymindnotes.databinding.DiaryitemBinding
@@ -77,12 +76,8 @@ class Diary : AppCompatActivity() {
 
         // 일기 수정 화면이 아닌 다른 화면에서 돌아오면 일어나는 null exception 대비
         if (recordList != null) {
-
             lifecycleScope.launch {
-                viewModel.getDiaryList()
-            }
 
-            lifecycleScope.launch {
                 launch {
                     viewModel.diaryList.collectLatest {
                         if (it["code"].toString().toDouble() == 7000.0) {
@@ -158,7 +153,12 @@ class Diary : AppCompatActivity() {
                     }
                 }
 
+                launch {
+                    viewModel.getDiaryList()
+                }
+
             }
+
         }
 
     }
@@ -448,7 +448,7 @@ class Diary : AppCompatActivity() {
             // 아이템 클릭(일기 상세 보기)
             viewHolder.binding.root.setOnClickListener {
 
-                val intent = Intent(applicationContext, Diary_Result::class.java)
+                val intent = Intent(applicationContext, DiaryResult::class.java)
                 intent.putExtra("type", recordList!![position].getType())
                 intent.putExtra(
                     "date",

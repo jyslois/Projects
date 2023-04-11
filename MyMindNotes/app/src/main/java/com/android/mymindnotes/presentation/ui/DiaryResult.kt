@@ -284,6 +284,7 @@ class DiaryResult : AppCompatActivity() {
     // viewPager2 어뎁터 - creating and managing the fragments in the ViewPager2
     inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) :
         FragmentStateAdapter(fragmentActivity) {
+
         override fun createFragment(position: Int): Fragment {
             when (position) {
                 0 -> return SituationFragment.newInstance(intent.extras)
