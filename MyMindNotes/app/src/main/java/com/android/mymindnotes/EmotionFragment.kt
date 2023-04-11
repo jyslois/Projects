@@ -33,11 +33,11 @@ class EmotionFragment @Inject constructor(
         binding.contentEmotionDescription.text = diary.emotionDescription
     }
 
-    companion object {
-        fun newInstance(bundle: Bundle?): EmotionFragment {
-            val fragment = EmotionFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
+//    companion object {
+//        fun newInstance(bundle: Bundle?): EmotionFragment {
+//            val fragment = EmotionFragment()
+//            fragment.arguments = bundle
+//            return fragment
+//        }
+//    }
 }

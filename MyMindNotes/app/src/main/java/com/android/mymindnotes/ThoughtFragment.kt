@@ -31,11 +31,11 @@ class ThoughtFragment @Inject constructor(
         binding.content.text = diary.thought
     }
 
-    companion object {
-        fun newInstance(bundle: Bundle?): ThoughtFragment {
-            val fragment = ThoughtFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
+//    companion object {
+//        fun newInstance(bundle: Bundle?): ThoughtFragment {
+//            val fragment = ThoughtFragment()
+//            fragment.arguments = bundle
+//            return fragment
+//        }
+//    }
 }

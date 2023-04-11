@@ -31,11 +31,11 @@ class ReflectionFragment @Inject constructor(
         binding.content.text = diary.reflection
     }
 
-    companion object {
-        fun newInstance(bundle: Bundle?): ReflectionFragment {
-            val fragment = ReflectionFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
+//    companion object {
+//        fun newInstance(bundle: Bundle?): ReflectionFragment {
+//            val fragment = ReflectionFragment()
+//            fragment.arguments = bundle
+//            return fragment
+//        }
+//    }
 }

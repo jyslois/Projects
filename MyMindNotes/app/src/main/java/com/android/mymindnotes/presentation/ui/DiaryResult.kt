@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -87,6 +88,9 @@ class DiaryResult : AppCompatActivity() {
 
         }
     }
+
+//    @Inject
+//    lateinit var diaryResultFragmentFactory: DiaryResultFragmentFactory
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -282,21 +286,78 @@ class DiaryResult : AppCompatActivity() {
     }
 
     // viewPager2 어뎁터 - creating and managing the fragments in the ViewPager2
-    inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) :
-        FragmentStateAdapter(fragmentActivity) {
+//    inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) :
+//        FragmentStateAdapter(fragmentActivity) {
+//
+//        override fun createFragment(position: Int): Fragment {
+//            when (position) {
+//                0 -> return SituationFragment.newInstance(intent.extras)
+//                1 -> return ThoughtFragment.newInstance(intent.extras)
+//                2 -> return EmotionFragment.newInstance(intent.extras)
+//                3 -> return ReflectionFragment.newInstance(intent.extras)
+//            }
+//            return SituationFragment.newInstance(intent.extras)
+//        }
+//
+//        override fun getItemCount(): Int {
+//            return tabs.size
+//        }
+//    }
 
+    private val fragmentFactory = DiaryResultFragmentFactory()
+
+    inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
         override fun createFragment(position: Int): Fragment {
-            when (position) {
-                0 -> return SituationFragment.newInstance(intent.extras)
-                1 -> return ThoughtFragment.newInstance(intent.extras)
-                2 -> return EmotionFragment.newInstance(intent.extras)
-                3 -> return ReflectionFragment.newInstance(intent.extras)
+            return when (position) {
+                0 -> fragmentFactory.instantiate(
+                    SituationFragment::class.java.classLoader!!,
+                    SituationFragment::class.java.name
+                )
+                1 -> fragmentFactory.instantiate(
+                    ThoughtFragment::class.java.classLoader!!,
+                    ThoughtFragment::class.java.name
+                )
+                2 -> fragmentFactory.instantiate(
+                    EmotionFragment::class.java.classLoader!!,
+                    EmotionFragment::class.java.name
+                )
+                3 -> fragmentFactory.instantiate(
+                    ReflectionFragment::class.java.classLoader!!,
+                    ReflectionFragment::class.java.name
+                )
+                else -> fragmentFactory.instantiate(
+                    SituationFragment::class.java.classLoader!!,
+                    SituationFragment::class.java.name
+                )
             }
-            return SituationFragment.newInstance(intent.extras)
         }
 
         override fun getItemCount(): Int {
             return tabs.size
         }
     }
+
+    inner class DiaryResultFragmentFactory : FragmentFactory() {
+
+        // 인자를 받는 생성자 사용
+        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+            return when (className) {
+                SituationFragment::class.java.name -> SituationFragment().apply {
+                    arguments = intent.extras
+                }
+                ThoughtFragment::class.java.name -> ThoughtFragment().apply {
+                    arguments = intent.extras
+                }
+                EmotionFragment::class.java.name -> EmotionFragment().apply {
+                    arguments = intent.extras
+                }
+                ReflectionFragment::class.java.name -> ReflectionFragment().apply {
+                    arguments = intent.extras
+                }
+                else -> super.instantiate(classLoader, className)
+            }
+        }
+
+    }
+    
 }
