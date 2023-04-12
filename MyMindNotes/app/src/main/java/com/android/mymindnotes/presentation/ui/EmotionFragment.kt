@@ -24,7 +24,7 @@ class EmotionFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.contentEmotion.text = arguments?.getString("emotion")
-        binding.contentEmotionDescription.text = arguments?.getString("emotionText")
+        binding.contentEmotionDescription.text = arguments?.getString("emotionDescription")
     }
 
     fun refreshData(diary: UserDiary) {

@@ -457,7 +457,7 @@ class Diary : AppCompatActivity() {
                 intent.putExtra("situation", recordList!![position].getSituation())
                 intent.putExtra("thought", recordList!![position].getThought())
                 intent.putExtra("emotion", recordList!![position].getEmotion())
-                intent.putExtra("emotionText", recordList!![position].getEmotionDescription())
+                intent.putExtra("emotionDescription", recordList!![position].getEmotionDescription())
                 intent.putExtra("reflection", recordList!![position].getReflection())
                 intent.putExtra("diaryNumber", recordList!![position].getDiary_number())
 

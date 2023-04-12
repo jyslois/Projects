@@ -41,7 +41,7 @@ class DiaryResult : AppCompatActivity() {
     var situation: String? = null
     var thought: String? = null
     var emotion: String? = null
-    var emotionText: String? = null
+    var emotionDescription: String? = null
     var reflection: String? = null
     var index = 0
     var diaryNumber = 0
@@ -50,9 +50,10 @@ class DiaryResult : AppCompatActivity() {
     // tab layout의 tab
     var tabs = arrayOf("상황", "생각", "감정", "회고")
 
-    // diaryResultFragmentFactory 주입 (AssistedInjection - 런타임 시 주입)
+    // diaryResultFragmentFactoryAssistedFactory 주입 (Dagger이 interface의 구현체 만들어 바인딩 제공)
     @Inject
     lateinit var diaryResultFragmentFactoryAssistedFactory: DiaryResultFragmentFactoryAssistedFactory
+
     lateinit var fragmentFactory: DiaryResultFragmentFactory
 
     override fun onResume() {
@@ -113,7 +114,7 @@ class DiaryResult : AppCompatActivity() {
         situation = intent.getStringExtra("situation")
         thought = intent.getStringExtra("thought")
         emotion = intent.getStringExtra("emotion")
-        emotionText = intent.getStringExtra("emotionText")
+        emotionDescription = intent.getStringExtra("emotionDescription")
         reflection = intent.getStringExtra("reflection")
         index = intent.getIntExtra("index", 0)
         diaryNumber = intent.getIntExtra("diaryNumber", 0)
@@ -136,7 +137,7 @@ class DiaryResult : AppCompatActivity() {
             tab.text = tabs[position]
         }.attach()
 
-        // diaryResultFragmentFactory 인스턴스 생성 (런타임 intent.extras 주입)
+        // DiaryResultFragmentFactory 인스턴스 생성 (런타임 시 이 클래스의 intent.extras를 인자로 제공)
         setUpFragmentFactory(intent.extras)
 
 
@@ -194,7 +195,7 @@ class DiaryResult : AppCompatActivity() {
                         intento.putExtra("situation", situation)
                         intento.putExtra("thought", thought)
                         intento.putExtra("emotion", emotion)
-                        intento.putExtra("emotionText", emotionText)
+                        intento.putExtra("emotionDescription", emotionDescription)
                         intento.putExtra("reflection", reflection)
                         intento.putExtra("diaryNumber", diaryNumber)
                         intento.putExtra("index", index)
@@ -259,7 +260,6 @@ class DiaryResult : AppCompatActivity() {
 
     }
 
-
     // 데이터 새로고침 -  refreshing the data of each fragment
     private fun sendFragmentsData(diary: UserDiary) {
         val fragments = supportFragmentManager.fragments
@@ -279,7 +279,7 @@ class DiaryResult : AppCompatActivity() {
                     fragment.refreshData(diary)
                     // 재새팅
                     emotion = diary.getEmotion()
-                    emotionText = diary.getEmotionDescription()
+                    emotionDescription = diary.getEmotionDescription()
                 }
                 is ReflectionFragment -> {
                     fragment.refreshData(diary)
@@ -290,8 +290,7 @@ class DiaryResult : AppCompatActivity() {
         }
     }
 
-
-    // diaryResultFragmentFactory 인스턴스 생성 (런타임 intent.extras 주입)
+    // DiaryResultFragmentFactory 인스턴스 생성 (런타임 시 intent.extras를 인자로 제공하여 생성)
     private fun setUpFragmentFactory(diaryInfo: Bundle?): DiaryResultFragmentFactory {
         fragmentFactory = diaryResultFragmentFactoryAssistedFactory.create(diaryInfo)
         return fragmentFactory

@@ -49,7 +49,7 @@ object SharedPreferencesModule {
     @EmotionText
     @Provides
     fun provideSharedPreferencesForEmotionText(application: Application): SharedPreferences
-    = application.getSharedPreferences("emotionText", Activity.MODE_PRIVATE)
+    = application.getSharedPreferences("emotionDescription", Activity.MODE_PRIVATE)
 
     @Situation
     @Provides

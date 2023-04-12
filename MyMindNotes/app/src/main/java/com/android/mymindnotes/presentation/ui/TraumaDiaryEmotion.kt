@@ -115,7 +115,7 @@ class TraumaDiaryEmotion : AppCompatActivity() {
 
                 // 만약 감정 text가 저장된 상태라면, 화면으로 다시 돌아왔을 때 그대로 뿌리기
                 launch {
-                    // getEmotionText Result 구독
+                    // getEmotionDescription Result 구독
                     viewModel.emotionText.collect {
                         if (it != "") {
                             binding.RecordEmotionUserInput.setText(it)

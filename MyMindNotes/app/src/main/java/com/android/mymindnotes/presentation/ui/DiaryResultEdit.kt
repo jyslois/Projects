@@ -52,7 +52,7 @@ class DiaryResultEdit : AppCompatActivity() {
         situation = intent.getStringExtra("situation")
         thought = intent.getStringExtra("thought")
         emotion = intent.getStringExtra("emotion")
-        emotionDescription = intent.getStringExtra("emotionText")
+        emotionDescription = intent.getStringExtra("emotionDescription")
         reflection = intent.getStringExtra("reflection")
         diaryNumber = intent.getIntExtra("diaryNumber", 0)
         date = intent.getStringExtra("date")

@@ -44,7 +44,7 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
     // EmotionText
     suspend fun saveEmotionText(emotionText: String?) {
         withContext(ioDispatcher) {
-            emotionText_sharedPreferences.edit().putString("emotionText", emotionText).commit()
+            emotionText_sharedPreferences.edit().putString("emotionDescription", emotionText).commit()
         }
     }
 
@@ -99,7 +99,7 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
 
     // EmotionText
     val getEmotionText: Flow<String?> = flow {
-        val emotionText = emotionText_sharedPreferences.getString("emotionText", "")
+        val emotionText = emotionText_sharedPreferences.getString("emotionDescription", "")
         emit(emotionText)
     }.flowOn(ioDispatcher)
 
