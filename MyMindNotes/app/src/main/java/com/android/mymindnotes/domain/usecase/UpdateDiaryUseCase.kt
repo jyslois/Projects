@@ -9,25 +9,34 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DeleteDiaryUseCase @Inject constructor(
+class UpdateDiaryUseCase @Inject constructor(
     private val diaryRepository: DiaryRepository,
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
-    // 에러 메시지
-    private val _deleteDiaryError = MutableSharedFlow<Boolean>()
-    val deleteDiaryError = _deleteDiaryError.asSharedFlow()
+
+    // 에러
+    private val _updateDiaryError = MutableSharedFlow<Boolean>()
+    val updateDiaryError = _updateDiaryError.asSharedFlow()
 
     init {
         mainDispatcherCoroutineScope.launch {
             launch {
-                diaryRepository.deleteDiaryError.collect {
-                    _deleteDiaryError.emit(it)
+                // error collect & emit
+                diaryRepository.updateDiaryError.collect {
+                    _updateDiaryError.emit(it)
                 }
             }
         }
     }
 
-    // Delete Diary
-    suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = diaryRepository.deleteDiary(diaryNumber)
+    // Update Diary
+    suspend fun updateDiary(
+        diaryNumber: Int,
+        situation: String,
+        thought: String,
+        emotion: String,
+        emotionDescription: String?,
+        reflection: String?
+    ): Flow<Map<String, Object>> = diaryRepository.updateDiary(diaryNumber, situation, thought, emotion, emotionDescription, reflection)
 
 }

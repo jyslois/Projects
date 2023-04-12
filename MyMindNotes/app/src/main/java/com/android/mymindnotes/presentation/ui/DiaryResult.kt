@@ -183,7 +183,7 @@ class DiaryResult : AppCompatActivity() {
                 // 수정 버튼 클릭 감지
                 launch {
                     viewModel.editButton.collect {
-                        val intento = Intent(applicationContext, Diary_Result_Edit::class.java)
+                        val intento = Intent(applicationContext, DiaryResultEdit::class.java)
                         intento.putExtra("date", date)
                         intento.putExtra("type", type)
                         intento.putExtra("situation", situation)
@@ -231,7 +231,7 @@ class DiaryResult : AppCompatActivity() {
                 launch {
                     viewModel.getDiaryListError.collect {
                         val toast = Toast.makeText(
-                            applicationContext,
+                            this@DiaryResult,
                             "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
                             Toast.LENGTH_SHORT
                         )
@@ -242,7 +242,7 @@ class DiaryResult : AppCompatActivity() {
                 launch {
                     viewModel.deleteDiaryError.collect {
                         val toast = Toast.makeText(
-                            applicationContext,
+                            this@DiaryResult,
                             "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
                             Toast.LENGTH_SHORT
                         )

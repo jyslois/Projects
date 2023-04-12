@@ -10,8 +10,12 @@ interface DiaryRepository {
     // delete Diary
     suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>>
 
+    // update Diary
+    suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<Map<String, Object>>
+
     // 에러 메시지
     val getDiaryListError: SharedFlow<Boolean>
     val deleteDiaryError: SharedFlow<Boolean>
+    val updateDiaryError: SharedFlow<Boolean>
 
 }

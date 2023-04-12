@@ -77,7 +77,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".Diary_Result_Edit"
+            android:name=".presentation.ui.DiaryResultEdit"
             android:exported="false"
             android:theme="@style/Theme.Main"
             android:windowSoftInputMode="adjustResize" />

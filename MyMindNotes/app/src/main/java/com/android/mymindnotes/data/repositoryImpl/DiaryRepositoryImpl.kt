@@ -23,6 +23,9 @@ class DiaryRepositoryImpl @Inject constructor(
     private val _deleteDiaryError = MutableSharedFlow<Boolean>()
     override val deleteDiaryError = _deleteDiaryError.asSharedFlow()
 
+    private val _updateDiaryError = MutableSharedFlow<Boolean>()
+    override val updateDiaryError = _updateDiaryError.asSharedFlow()
+
     // Get Diary List
     override suspend fun getDiaryList(): Flow<Map<String, Object>> {
         val userIndex = memberSharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().first()
@@ -31,6 +34,16 @@ class DiaryRepositoryImpl @Inject constructor(
 
     // Delete Diary
     override suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = diaryDataSource.deleteDiary(diaryNumber)
+
+    // Update Diary
+    override suspend fun updateDiary(
+        diaryNumber: Int,
+        situation: String,
+        thought: String,
+        emotion: String,
+        emotionDescription: String?,
+        reflection: String?
+    ): Flow<Map<String, Object>> = diaryDataSource.updateDiary(diaryNumber, situation, thought, emotion, emotionDescription, reflection)
 
     init {
         mainDispatcherCoroutineScope.launch {
@@ -44,6 +57,12 @@ class DiaryRepositoryImpl @Inject constructor(
             launch {
                 diaryDataSource.deleteDiaryError.collect {
                     _deleteDiaryError.emit(it)
+                }
+            }
+
+            launch {
+                diaryDataSource.updateDiaryError.collect {
+                    _updateDiaryError.emit(it)
                 }
             }
         }
