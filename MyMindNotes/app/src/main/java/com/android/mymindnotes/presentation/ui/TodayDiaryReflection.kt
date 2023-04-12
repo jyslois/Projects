@@ -5,10 +5,6 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import android.content.Intent
-import com.android.mymindnotes.EmotionInstructions
-import com.android.mymindnotes.data.retrofit.RetrofitService
-import com.android.mymindnotes.data.retrofit.api.diary.SaveDiaryApi
-import com.android.mymindnotes.data.retrofit.model.diary.UserDiary
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -19,9 +15,6 @@ import com.android.mymindnotes.databinding.ActivityTodayDiaryReflectionBinding
 import com.android.mymindnotes.presentation.viewmodels.TodayDiaryReflectionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 

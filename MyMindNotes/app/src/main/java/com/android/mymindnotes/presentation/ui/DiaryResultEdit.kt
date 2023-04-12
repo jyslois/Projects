@@ -6,25 +6,17 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import android.content.Intent
 import android.widget.Toast
-import com.android.mymindnotes.data.retrofit.RetrofitService
-import com.android.mymindnotes.data.retrofit.api.diary.UpdateDiaryApi
-import com.android.mymindnotes.data.retrofit.model.diary.DiaryEdit
 import android.content.DialogInterface
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.EmotionInstructions
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityDiaryResultEditBinding
 import com.android.mymindnotes.presentation.viewmodels.DiaryResultEditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class DiaryResultEdit : AppCompatActivity() {

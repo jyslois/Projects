@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.EmotionInstructions
 import com.android.mymindnotes.databinding.ActivityTraumaDiaryReflectionBinding
 import com.android.mymindnotes.presentation.viewmodels.TraumaDiaryReflectionViewModel
 import dagger.hilt.android.AndroidEntryPoint

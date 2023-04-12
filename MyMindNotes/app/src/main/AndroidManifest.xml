@@ -42,7 +42,7 @@
             android:parentActivityName=".presentation.ui.MainMenu"
             android:theme="@style/Theme.changeScreen" />
         <activity
-            android:name=".EmotionInstructionSortingPopup"
+            android:name=".presentation.ui.EmotionInstructionSortingPopup"
             android:exported="false"
             android:label="감정 선택"
             android:theme="@style/Theme.dialogue" />
@@ -126,7 +126,7 @@
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
-            android:name=".EmotionInstructions"
+            android:name=".presentation.ui.EmotionInstructions"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity

@@ -7,16 +7,19 @@ import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class EmotionSortingPopupViewModel @Inject constructor(
+class EmotionInstructionsViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    // emotionGroup 클릭 감지 저장 플로우
-    private val _emotionGroup = MutableSharedFlow<Int>()
-    val emotionGroup = _emotionGroup.asSharedFlow()
+    // 버튼 클릭 감지
+    // 감정 정렬 버튼
+    private val _sortButton = MutableSharedFlow<Boolean>()
+    val sortButton = _sortButton.asSharedFlow()
 
-    suspend fun clickEmotionGroup(checkedId: Int) {
-        _emotionGroup.emit(checkedId)
+    // 버튼 클릭
+    suspend fun clickSortButton() {
+        _sortButton.emit(true)
     }
+
 
 }

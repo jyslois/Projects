@@ -9,16 +9,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.R
-import com.android.mymindnotes.databinding.ActivityEmotionSortingPopupBinding
+import com.android.mymindnotes.databinding.ActivityEmotionInstructionSortingPopupBinding
 import com.android.mymindnotes.presentation.viewmodels.EmotionPopupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class EmotionSortingPopup : AppCompatActivity() {
-    private lateinit var binding: ActivityEmotionSortingPopupBinding
+class EmotionInstructionSortingPopup : AppCompatActivity() {
+    private lateinit var binding: ActivityEmotionInstructionSortingPopupBinding
 
-    // 뷰모델 객체 주입
+    // 뷰모델 삽입 (EmotionPopupViewModel 재사용)
     private val viewModel: EmotionPopupViewModel by viewModels()
 
     // 데이터 보내기
@@ -32,11 +32,12 @@ class EmotionSortingPopup : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEmotionSortingPopupBinding.inflate(layoutInflater)
+        binding = ActivityEmotionInstructionSortingPopupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var emotionGroup = binding.emotionsGroup
+        val emotionGroup = binding.emotionsGroup
 
+        // 클릭 이벤트
         emotionGroup.setOnCheckedChangeListener { _: RadioGroup?, checkedId: Int ->
             lifecycleScope.launch {
                 viewModel.clickEmotion(checkedId)

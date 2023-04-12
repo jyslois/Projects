@@ -1,6 +1,4 @@
-package com.android.mymindnotes;
-
-import java.util.Comparator;
+package com.android.mymindnotes.presentation.ui;
 
 public class Emotion {
     String emotion;

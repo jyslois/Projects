@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.EmotionInstructions
 import com.android.mymindnotes.R
 import com.android.mymindnotes.databinding.ActivityTodayDiaryEmotionBinding
 import com.android.mymindnotes.presentation.viewmodels.TodayDiaryEmotionViewModel
@@ -190,7 +189,7 @@ class TodayDiaryEmotion : AppCompatActivity() {
                 }
 
                 launch {
-                    // clickEmotionGroup 1
+                    // clickEmotion 1
                     viewModel.emotionGroup1Click.collect {
                         if (it != -1) {
                             emotionGroup2.clearCheck()
@@ -201,7 +200,7 @@ class TodayDiaryEmotion : AppCompatActivity() {
                 }
 
                 launch {
-                    // clickEmotionGroup 2
+                    // clickEmotion 2
                     viewModel.emotionGroup2Click.collect {
                         if (it != -1) {
                             emotionGroup1.clearCheck()
