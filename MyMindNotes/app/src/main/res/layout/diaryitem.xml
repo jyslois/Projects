@@ -79,7 +79,7 @@
             app:layout_constraintTop_toBottomOf="@id/emotionWord"
             app:layout_constraintLeft_toRightOf="@id/emotionCircle"
             android:id="@+id/situation"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/emotionWord"
             android:layout_toRightOf="@id/emotionCircle"
