@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -27,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.ArrayList
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiaryResult : AppCompatActivity() {
@@ -50,6 +50,10 @@ class DiaryResult : AppCompatActivity() {
     // tab layout의 tab
     var tabs = arrayOf("상황", "생각", "감정", "회고")
 
+    // diaryResultFragmentFactory 주입 (AssistedInjection - 런타임 시 주입)
+    @Inject
+    lateinit var diaryResultFragmentFactoryAssistedFactory: DiaryResultFragmentFactoryAssistedFactory
+    lateinit var fragmentFactory: DiaryResultFragmentFactory
 
     override fun onResume() {
         super.onResume()
@@ -89,8 +93,6 @@ class DiaryResult : AppCompatActivity() {
         }
     }
 
-//    @Inject
-//    lateinit var diaryResultFragmentFactory: DiaryResultFragmentFactory
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,6 +135,9 @@ class DiaryResult : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager2) { tab: TabLayout.Tab, position: Int ->
             tab.text = tabs[position]
         }.attach()
+
+        // diaryResultFragmentFactory 인스턴스 생성 (런타임 intent.extras 주입)
+        setUpFragmentFactory(intent.extras)
 
 
         // 클릭 이벤트
@@ -285,27 +290,14 @@ class DiaryResult : AppCompatActivity() {
         }
     }
 
+
+    // diaryResultFragmentFactory 인스턴스 생성 (런타임 intent.extras 주입)
+    private fun setUpFragmentFactory(diaryInfo: Bundle?): DiaryResultFragmentFactory {
+        fragmentFactory = diaryResultFragmentFactoryAssistedFactory.create(diaryInfo)
+        return fragmentFactory
+    }
+
     // viewPager2 어뎁터 - creating and managing the fragments in the ViewPager2
-//    inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) :
-//        FragmentStateAdapter(fragmentActivity) {
-//
-//        override fun createFragment(position: Int): Fragment {
-//            when (position) {
-//                0 -> return SituationFragment.newInstance(intent.extras)
-//                1 -> return ThoughtFragment.newInstance(intent.extras)
-//                2 -> return EmotionFragment.newInstance(intent.extras)
-//                3 -> return ReflectionFragment.newInstance(intent.extras)
-//            }
-//            return SituationFragment.newInstance(intent.extras)
-//        }
-//
-//        override fun getItemCount(): Int {
-//            return tabs.size
-//        }
-//    }
-
-    private val fragmentFactory = DiaryResultFragmentFactory()
-
     inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
         override fun createFragment(position: Int): Fragment {
             return when (position) {
@@ -337,27 +329,4 @@ class DiaryResult : AppCompatActivity() {
         }
     }
 
-    inner class DiaryResultFragmentFactory : FragmentFactory() {
-
-        // 인자를 받는 생성자 사용
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-            return when (className) {
-                SituationFragment::class.java.name -> SituationFragment().apply {
-                    arguments = intent.extras
-                }
-                ThoughtFragment::class.java.name -> ThoughtFragment().apply {
-                    arguments = intent.extras
-                }
-                EmotionFragment::class.java.name -> EmotionFragment().apply {
-                    arguments = intent.extras
-                }
-                ReflectionFragment::class.java.name -> ReflectionFragment().apply {
-                    arguments = intent.extras
-                }
-                else -> super.instantiate(classLoader, className)
-            }
-        }
-
-    }
-    
 }

@@ -1,4 +1,4 @@
-package com.android.mymindnotes.presentation
+package com.android.mymindnotes.presentation.ui
 
 import android.app.Notification
 import android.content.ContextWrapper
@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import android.app.NotificationChannel
 import androidx.core.app.NotificationCompat
 import android.content.Intent
-import com.android.mymindnotes.presentation.ui.RecordMindChoice
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color

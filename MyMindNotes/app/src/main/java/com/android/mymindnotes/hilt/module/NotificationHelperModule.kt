@@ -1,7 +1,7 @@
 package com.android.mymindnotes.hilt.module
 
 import com.android.mymindnotes.domain.NotificationHelper
-import com.android.mymindnotes.presentation.NotificationHelperImpl
+import com.android.mymindnotes.presentation.ui.NotificationHelperImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

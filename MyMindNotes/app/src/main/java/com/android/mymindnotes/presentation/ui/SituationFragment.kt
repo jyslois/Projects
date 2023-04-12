@@ -30,11 +30,4 @@ class SituationFragment @Inject constructor(
         binding.content.text = diary.situation
     }
 
-//    companion object {
-//        fun newInstance(bundle: Bundle?): SituationFragment {
-//            val fragment = SituationFragment()
-//            fragment.arguments = bundle
-//            return fragment
-//        }
-//    }
 }
