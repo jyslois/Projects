@@ -38,9 +38,9 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:backgroundTint="#574E4D"
-                android:text="플루치크의 감정의 바퀴 (선택)"
+                android:text="플루치크의 감정의 바퀴 (클릭)"
                 android:textColor="#F3F5F6"
-                android:textSize="11dp"
+                android:textSize="13dp"
                 android:textStyle="bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
