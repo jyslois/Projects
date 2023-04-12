@@ -1,4 +1,4 @@
-package com.android.mymindnotes
+package com.android.mymindnotes.presentation.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.android.mymindnotes.data.retrofit.model.diary.UserDiary
-import com.android.mymindnotes.ReflectionFragment
 import com.android.mymindnotes.databinding.ActivityReflectionFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
