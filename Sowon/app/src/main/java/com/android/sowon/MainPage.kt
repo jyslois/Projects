@@ -5,28 +5,30 @@ import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.android.sowon.databinding.ActivityMainBinding
 import com.android.sowon.databinding.ActivityMainPageBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainPage : AppCompatActivity() {
-
     private lateinit var binding : ActivityMainPageBinding
-    val fragmentManager: FragmentManager = supportFragmentManager
-    val homeFragment = HomeFragment()
-    val classFragment = ClassFragment()
-    val accountFragment = AccountFragment()
+    private lateinit var homeFragment: HomeFragment
+    private val fragmentManager: FragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val homeFragment = HomeFragment()
+        val classFragment = ClassFragment()
+        val accountFragment = AccountFragment()
+        val fragmentManager: FragmentManager = supportFragmentManager
         val transaction: FragmentTransaction = fragmentManager.beginTransaction()
         // 홈 프레그먼트를 기본 화면으로 띄우기 (우선적으로 프레임레이아웃에 추가하기)
         transaction.add(R.id.mainFrameLayout, homeFragment).commit()
 
         // 하단 탭이 눌렸을 때, 화면을 전환하기 위해서 이벤트 처리 위해 BottomNavigationView 객체 생성
-        var bottomNavigation = binding.bottomNavigation
+        val bottomNavigation = binding.bottomNavigation
 
         // 탭 아이템 선택 시 이벤트 처리
         // bottom_menu.xml에서 설정했던 각 아이템들의 id를 통해 알맞을 프래그먼트로 변경하게 된다.
@@ -68,7 +70,7 @@ class MainPage : AppCompatActivity() {
         }
 
         // 그게 아니라면(다른 탭이면) 뒤로 가기 버튼을 누르면, homeFragment가 보이게 하기
-        val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+        val transaction = fragmentManager.beginTransaction()
         transaction.replace(R.id.mainFrameLayout, homeFragment).commit()
     }
 

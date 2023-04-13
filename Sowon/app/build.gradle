@@ -1,6 +1,9 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'com.android.application' // indicates that this module is an Android application.
+    id 'org.jetbrains.kotlin.android' // enables Kotlin support for Android projects.
+    id 'kotlin-kapt' // Kotlin kapt plugin (enables Kotlin annotation processing)
+    // Hilt gradle plugin.
+    id 'com.google.dagger.hilt.android' // integrates Hilt, a dependency injection library, with this Android project
 }
 
 android {
@@ -37,11 +40,27 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Hilt dependencies
+    implementation 'com.google.dagger:hilt-android:2.45' // integrating Hilt dependency injection library with the Android application.
+    kapt 'com.google.dagger:hilt-compiler:2.45' // compiling the Hilt-generated code at compile time. used by the app at runtime to retrieve instances of classes that have been annotated with the @Inject annotation. Hilt에 대한 런타임 지원을 제공. 런타임 시 주석이 달린 클래스의 인스턴스를 검색하는데 사용.
+
+    // 뷰모델을 위한 dependency 추가
+    implementation "androidx.activity:activity-ktx:1.7.0" // working with activities in a more concise and idiomatic way.
+    implementation "androidx.fragment:fragment-ktx:1.5.6"
+
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4' // working with coroutines, which is a powerful tool for handling asynchronous operations in Kotlin.
+}
+
+// Using Hilt with Kotlin - correct error types
+kapt {
+    correctErrorTypes true // ensure that the correct error types are generated when using Kotlin with Hilt.
 }
