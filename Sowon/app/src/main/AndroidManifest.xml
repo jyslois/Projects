@@ -11,11 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sowon">
         <activity
-            android:name=".MainPage"
+            android:name=".presentation.ui.MainPage"
             android:exported="false">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.ui.MainActivity"
             android:theme="@style/Theme.Sowon.MainActivity"
             android:exported="true">
             <intent-filter>
