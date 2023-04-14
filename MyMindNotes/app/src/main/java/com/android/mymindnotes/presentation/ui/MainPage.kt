@@ -123,17 +123,15 @@ class MainPage : AppCompatActivity() {
     // 뒤로가기 버튼 클릭
     var initTime = 0L
     override fun onBackPressed() {
-        lifecycleScope.launch {
-            if (System.currentTimeMillis() - initTime > 3000) {
-                // 메세지 띄우기
-                val toast = Toast.makeText(applicationContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
-                toast.show()
-                // 현재 시간을 initTime에 지정
-                initTime = System.currentTimeMillis()
-            } else {
-                // 3초 이내에 BackButton이 두 번 눌린 경우 앱 종료
-                finishAffinity()
-            }
+        if (System.currentTimeMillis() - initTime > 3000) {
+            // 메세지 띄우기
+            val toast = Toast.makeText(applicationContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
+            toast.show()
+            // 현재 시간을 initTime에 지정
+            initTime = System.currentTimeMillis()
+        } else {
+            // 3초 이내에 BackButton이 두 번 눌린 경우 앱 종료
+            finishAffinity()
         }
     }
 
