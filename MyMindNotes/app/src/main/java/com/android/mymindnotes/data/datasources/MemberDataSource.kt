@@ -6,7 +6,7 @@ import com.android.mymindnotes.data.retrofit.model.user.ChangeUserNickname
 import com.android.mymindnotes.data.retrofit.model.user.ChangeUserPassword
 import com.android.mymindnotes.data.retrofit.model.user.UserInfo
 import com.android.mymindnotes.data.retrofit.model.user.UserInfoLogin
-import com.android.mymindnotes.hilt.module.IoDispatcher
+import com.android.mymindnotes.hilt.module.coroutine.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

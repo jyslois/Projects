@@ -1,4 +1,4 @@
-package com.android.mymindnotes.hilt.module
+package com.android.mymindnotes.hilt.module.coroutine
 
 import dagger.Module
 import dagger.Provides

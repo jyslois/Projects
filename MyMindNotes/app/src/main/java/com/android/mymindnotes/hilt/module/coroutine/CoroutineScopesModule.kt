@@ -1,5 +1,8 @@
 package com.android.mymindnotes.hilt.module
 
+import com.android.mymindnotes.hilt.module.coroutine.DefaultDispatcher
+import com.android.mymindnotes.hilt.module.coroutine.IoDispatcher
+import com.android.mymindnotes.hilt.module.coroutine.MainDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

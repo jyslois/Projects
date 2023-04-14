@@ -1,11 +1,10 @@
 package com.android.mymindnotes.data.datasources
 
-import android.util.Log
 import com.android.mymindnotes.data.retrofit.api.diary.DeleteDiaryApi
 import com.android.mymindnotes.data.retrofit.api.diary.UpdateDiaryApi
 import com.android.mymindnotes.data.retrofit.api.user.GetDiaryListApi
 import com.android.mymindnotes.data.retrofit.model.diary.DiaryEdit
-import com.android.mymindnotes.hilt.module.IoDispatcher
+import com.android.mymindnotes.hilt.module.coroutine.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
