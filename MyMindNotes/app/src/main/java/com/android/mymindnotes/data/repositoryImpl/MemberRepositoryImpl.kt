@@ -1,6 +1,7 @@
 package com.android.mymindnotes.data.repositoryImpl
 
 import com.android.mymindnotes.data.datasources.MemberDataSource
+import com.android.mymindnotes.data.datasources.MemberSharedPreferencesDataSource
 import com.android.mymindnotes.domain.repositoryinterfaces.MemberRepository
 import com.android.mymindnotes.hilt.module.MainDispatcherCoroutineScope
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +11,7 @@ import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
     private val memberDataSource: MemberDataSource,
+    private val memberSharedPreferencesDataSource: MemberSharedPreferencesDataSource,
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) : MemberRepository {
 
@@ -27,11 +29,17 @@ class MemberRepositoryImpl @Inject constructor(
     override suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>> = memberDataSource.joinResultFlow(email, nickname, password, birthyear)
 
     // 회원탈퇴
-    override suspend fun deleteUser(): Flow<Map<String, Object>> = memberDataSource.deleteUserResultFlow
+    override suspend fun deleteUser(): Flow<Map<String, Object>> {
+        val userIndex = memberSharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().first()
+        return memberDataSource.deleteUserResultFlow(userIndex)
+    }
 
     // 회원 정보 가져오기
     // (서버) 회원 정보 가져오기
-    override suspend fun getUserInfo(): Flow<Map<String, Object>> = memberDataSource.getUserInfo()
+    override suspend fun getUserInfo(): Flow<Map<String, Object>> {
+        val userIndex = memberSharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().first()
+        return memberDataSource.getUserInfo(userIndex)
+    }
 
     // 에러
     // 에러 메시지
@@ -40,10 +48,16 @@ class MemberRepositoryImpl @Inject constructor(
 
     // 회원 정보 수정
     // 닉네임 수정
-    override suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> = memberDataSource.changeNickNameFlow(nickName)
+    override suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> {
+        val userIndex = memberSharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().first()
+        return memberDataSource.changeNickNameFlow(userIndex, nickName)
+    }
 
     // 비밀번호 수정
-    override suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>> = memberDataSource.changePasswordFlow(password, originalPassword)
+    override suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>> {
+        val userIndex = memberSharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().first()
+        return memberDataSource.changePasswordFlow(userIndex, password, originalPassword)
+    }
 
     // 임시 비밀번호로 비밀번호 수정
     override suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>> = memberDataSource.changeToTemporaryPasswordFlow(email, randomPassword)

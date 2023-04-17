@@ -21,7 +21,6 @@ class MemberDataSource @Inject constructor(
     private val changeNicknameApi: ChangeNicknameApi,
     private val changePasswordApi: ChangePasswordApi,
     private val changeToTempPasswordApi: ChangeToTempPasswordApi,
-    private val sharedPreferencesDataSource: MemberSharedPreferencesDataSource,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
@@ -30,12 +29,9 @@ class MemberDataSource @Inject constructor(
     val error = _error.asSharedFlow()
 
     // (서버) 회원 정보 가져오기
-    suspend fun getUserInfo(): Flow<Map<String, Object>> = flow {
-        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
-            val userIndex = it
-            val result = getUserInfoApi.getUserInfo(userIndex)
-            emit(result)
-        }
+    suspend fun getUserInfo(userIndex: Int): Flow<Map<String, Object>> = flow {
+        val result = getUserInfoApi.getUserInfo(userIndex)
+        emit(result)
     }.flowOn(ioDispatcher)
         .catch {
             _error.emit(true)
@@ -76,7 +72,12 @@ class MemberDataSource @Inject constructor(
         }
 
     // 회원가입
-    suspend fun joinResultFlow(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>> = flow {
+    suspend fun joinResultFlow(
+        email: String,
+        nickname: String,
+        password: String,
+        birthyear: Int
+    ): Flow<Map<String, Object>> = flow {
         val user = UserInfo(
             email,
             nickname,
@@ -92,12 +93,9 @@ class MemberDataSource @Inject constructor(
         }
 
     // 회원탈퇴
-    val deleteUserResultFlow: Flow<Map<String, Object>> = flow {
-        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
-            val userIndex = it
-            val result = deleteUserApi.deleteUser(userIndex)
-            emit(result)
-        }
+    suspend fun deleteUserResultFlow(userIndex: Int): Flow<Map<String, Object>> = flow {
+        val result = deleteUserApi.deleteUser(userIndex)
+        emit(result)
     }.flowOn(ioDispatcher)
         .catch {
             _error.emit(true)
@@ -106,31 +104,29 @@ class MemberDataSource @Inject constructor(
 
     // 회원 정보 수정
     // 닉네임 수정
-    suspend fun changeNickNameFlow(nickName: String): Flow<Map<String, Object>> = flow {
-        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
-            val userIndex = it
-            val user =
-                ChangeUserNickname(
-                    userIndex,
-                    nickName
-                )
+    suspend fun changeNickNameFlow(userIndex: Int, nickName: String): Flow<Map<String, Object>> =
+        flow {
+            val user = ChangeUserNickname(
+                userIndex,
+                nickName
+            )
             val result = changeNicknameApi.updateUserNickname(user)
             emit(result)
-        }
-    }.flowOn(ioDispatcher)
-        .catch {
-            _error.emit(true)
-            _error.emit(false)
-        }
+        }.flowOn(ioDispatcher)
+            .catch {
+                _error.emit(true)
+                _error.emit(false)
+            }
 
     // 비밀번호 수정
-    suspend fun changePasswordFlow(password: String, originalPassword: String): Flow<Map<String, Object>> = flow {
-        sharedPreferencesDataSource.getUserIndexfromUserSharedPreferences().collect {
-            val userIndex = it
-            val user = ChangeUserPassword(userIndex, password, originalPassword)
-            val result = changePasswordApi.updateUserPassword(user)
-            emit(result)
-        }
+    suspend fun changePasswordFlow(
+        userIndex: Int,
+        password: String,
+        originalPassword: String
+    ): Flow<Map<String, Object>> = flow {
+        val user = ChangeUserPassword(userIndex, password, originalPassword)
+        val result = changePasswordApi.updateUserPassword(user)
+        emit(result)
     }.flowOn(ioDispatcher)
         .catch {
             _error.emit(true)
@@ -139,7 +135,10 @@ class MemberDataSource @Inject constructor(
 
 
     // 임시 비밀번호로 비밀번호 수정
-    suspend fun changeToTemporaryPasswordFlow(email: String, randomPassword: String): Flow<Map<String, Object>> = flow<Map<String, Object>> {
+    suspend fun changeToTemporaryPasswordFlow(
+        email: String,
+        randomPassword: String
+    ): Flow<Map<String, Object>> = flow<Map<String, Object>> {
         val user =
             ChangeToTemporaryPassword(
                 email,
