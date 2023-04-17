@@ -36,114 +36,139 @@
             android:exported="false" />
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.AlarmSetting"
             android:exported="false"
             android:label="알림 설정"
             android:parentActivityName=".presentation.ui.MainMenu"
             android:theme="@style/Theme.changeScreen" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.EmotionInstructionSortingPopup"
             android:exported="false"
             android:label="감정 선택"
             android:theme="@style/Theme.dialogue" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.EmotionSortingPopup"
             android:exported="false"
             android:label="감정 선택"
             android:theme="@style/Theme.dialogue" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.FindPassword"
             android:exported="false"
             android:parentActivityName=".presentation.ui.Login"
             android:theme="@style/Theme.changeScreen" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.ChangeNickname"
             android:exported="false"
             android:label="닉네임 변경"
             android:parentActivityName=".presentation.ui.AccountSetting"
             android:theme="@style/Theme.changeScreen" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.ChangePassword"
             android:exported="false"
             android:label="비밀번호 변경"
             android:parentActivityName=".presentation.ui.AccountSetting"
             android:theme="@style/Theme.changeScreen" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.AccountSetting"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.MainMenu"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.DiaryResultEdit"
             android:exported="false"
             android:theme="@style/Theme.Main"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.DiaryResult"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TraumaDiaryReflection"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TraumaDiaryEmotion"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TraumaDiaryThought"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TraumaDiarySituation"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TodayDiaryReflection"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TodayDiaryThought"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TodayDiarySituation"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.TodayDiaryEmotion"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.RecordMindChoice"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.Diary"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.EmotionInstructions"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.MainPage"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.Login"
             android:exported="true"
             android:parentActivityName=".presentation.ui.MainActivity"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.Join"
             android:exported="false"
             android:parentActivityName=".presentation.ui.MainActivity"
             android:theme="@style/Theme.Main" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Main">
