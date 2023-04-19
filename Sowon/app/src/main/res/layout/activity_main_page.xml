@@ -6,6 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.MainActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_titleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.075"/>
+
+    <com.google.android.material.appbar.AppBarLayout
+        app:elevation="0dp"
+        android:background="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_titleBar"
+        android:id="@+id/titleBar"
+        android:layout_height="0dp"
+        android:layout_width="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:elevation="0dp"
+            android:background="@color/white"
+            android:id="@+id/toolBar"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.36"
+                    android:id="@+id/guideline_titleLeft"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.6"
+                    android:id="@+id/guideline_titleRight"/>
+
+                <ImageView
+                    android:padding="5dp"
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintLeft_toLeftOf="@id/guideline_titleLeft"
+                    app:layout_constraintRight_toRightOf="@id/guideline_titleRight"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/title"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <FrameLayout
         android:id="@+id/mainFrameLayout"
         android:layout_width="match_parent"

@@ -43,7 +43,7 @@
         app:layout_constraintRight_toRightOf="@id/titleright"
         app:layout_constraintTop_toBottomOf="@id/titletop"
         app:layout_constraintBottom_toBottomOf="@id/titlebottom"
-        android:src="@drawable/title3"/>
+        android:src="@drawable/title"/>
 
 <!-- 서브 타이틀: 시니어를 위한 나의 디지털 선생님 -->
 
@@ -76,7 +76,7 @@
         app:layout_constraintRight_toRightOf="@id/subtitleright"
         app:layout_constraintTop_toTopOf="@id/subtitletop"
         app:layout_constraintBottom_toBottomOf="@id/subtitlebottom"
-        android:src="@drawable/subtitle3"/>
+        android:src="@drawable/subtitle"/>
 
 
 <!-- 할머니 사진 -->
@@ -112,7 +112,7 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/mainimage3"
+        android:src="@drawable/mainimage"
         app:layout_constraintLeft_toLeftOf="@id/imageLeft"
         app:layout_constraintRight_toRightOf="@id/imageRight"
         app:layout_constraintTop_toTopOf="@id/imagetop"
@@ -152,7 +152,7 @@
         android:id="@+id/hint"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/tip3"
+        android:src="@drawable/tip"
         app:layout_constraintTop_toTopOf="@id/hinttop"
         app:layout_constraintBottom_toBottomOf="@id/hintbottom"
         app:layout_constraintLeft_toLeftOf="@id/hintleft"
@@ -197,7 +197,7 @@
         app:layout_constraintRight_toRightOf="@id/kakaologinright"
         app:layout_constraintTop_toTopOf="@id/kakaologintop"
         app:layout_constraintBottom_toBottomOf="@id/kakaologinbottom"
-        android:src="@drawable/kakaologin3"/>
+        android:src="@drawable/kakaologin"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
