@@ -58,6 +58,11 @@ dependencies {
 
     // Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4' // working with coroutines, which is a powerful tool for handling asynchronous operations in Kotlin.
+
+    // ViewPager2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    // ViewPager2 Indicator
+    implementation 'me.relex:circleindicator:2.1.4'
 }
 
 // Using Hilt with Kotlin - correct error types
