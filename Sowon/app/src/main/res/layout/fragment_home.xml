@@ -7,19 +7,24 @@
     android:scrollbars="vertical"
     tools:context=".presentation.ui.HomeFragment">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_titleBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.075" />
+        app:layout_constraintGuide_percent="0.08" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_scrollingBanner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.52" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/bannerViewPager"
@@ -35,8 +40,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.48" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_viewPager2IndicatorVer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
 
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/viewpager2Indicator"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_viewPager2IndicatorVer"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_viewPager2Indicator"
+        app:dotsColor="#B3978D8D"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="16dp"
+        app:dotsSpacing="4dp"
+        app:dotsWidthFactor="2.5"
+        app:selectedDotColor="#E6FFFFFF"
+        app:progressMode="false"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

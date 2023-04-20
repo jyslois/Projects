@@ -1,9 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-// Hilt Gradle plugin
 buildscript { // 빌드 스크립트 자체에 대한 구성을 지정하는 buildscript
     repositories {
+        // Hilt Gradle plugin
         mavenCentral() // sets the repository to mavenCentral()
+        // ViewPager2 Indicator
+        google()
     }
     dependencies {
         // adds a dependency for the plugin - used for dependency injection
