@@ -84,6 +84,7 @@ class MainPage : AppCompatActivity() {
     }
 
     private var backButtonPressedTime = 0L
+
     override fun onBackPressed() {
         for (fragment in supportFragmentManager.fragments) {
             if (fragment.isVisible && fragment is HomeFragment) { // 현재 fragment가 HomeFragment라면
