@@ -7,11 +7,8 @@
     android:scrollbars="vertical"
     tools:context=".presentation.ui.HomeFragment">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    viewPager2 Banner scroller & viewPager2 Indicator -->
 
-    </FrameLayout>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_titleBar"
         android:layout_width="wrap_content"
@@ -62,7 +59,84 @@
         app:dotsSpacing="4dp"
         app:dotsWidthFactor="2.5"
         app:selectedDotColor="#E6FFFFFF"
-        app:progressMode="false"
+        app:progressMode="false" />
+
+<!--    Image (Buttons)-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_SortingButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <TextView
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="6dp"
+        android:textColor="@color/black"
+        android:text="전체"
+        app:layout_constraintTop_toTopOf="@id/guideline_SortingButtons"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/sortingButton_basics"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:id="@+id/sortingButton_all"
+        android:background="@drawable/sortingbuttonbackground_all"
         />
+
+    <TextView
+        android:textSize="16dp"
+        android:layout_marginRight="6dp"
+        android:textColor="@color/black"
+        android:text="기초(무료)"
+        app:layout_constraintTop_toTopOf="@id/guideline_SortingButtons"
+        app:layout_constraintLeft_toRightOf="@id/sortingButton_all"
+        app:layout_constraintRight_toLeftOf="@id/sortingButton_kakaoTalk"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:id="@+id/sortingButton_basics"
+        android:background="@drawable/sortingbuttonbackground_basics"
+        />
+
+    <TextView
+        android:textSize="16dp"
+        android:layout_marginRight="6dp"
+        android:textColor="@color/black"
+        android:text="카카오톡"
+        app:layout_constraintTop_toTopOf="@id/guideline_SortingButtons"
+        app:layout_constraintLeft_toRightOf="@id/sortingButton_basics"
+        app:layout_constraintRight_toLeftOf="@id/sortingButton_baemin"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:id="@+id/sortingButton_kakaoTalk"
+        android:background="@drawable/sortingbuttonbackground_kakaotalk"
+        />
+
+    <TextView
+        android:textSize="16dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/black"
+        android:text="배달의민족"
+        app:layout_constraintTop_toTopOf="@id/guideline_SortingButtons"
+        app:layout_constraintLeft_toRightOf="@id/sortingButton_kakaoTalk"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:id="@+id/sortingButton_baemin"
+        android:background="@drawable/sortingbuttonbackground_baemin"
+        />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
