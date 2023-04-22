@@ -2,6 +2,8 @@ package com.android.sowon.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -89,7 +91,28 @@ class MainPage : AppCompatActivity() {
         for (fragment in supportFragmentManager.fragments) {
             if (fragment.isVisible && fragment is HomeFragment) { // 현재 fragment가 HomeFragment라면
                 if (System.currentTimeMillis() - backButtonPressedTime > 3000) { // 3초가 지나서 눌렀다면
+
                     Toast.makeText(applicationContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT).show()
+//                    val toast = Toast(applicationContext)
+//                    val inflater = layoutInflater
+//                    val layout = inflater.inflate(R.layout.toast_layout, findViewById(R.id.toast_layout))
+//                    val toastText = layout.findViewById<TextView>(R.id.toast_text)
+//                    toastText.text = "종료하려면 한 번 더 누르세요."
+//                    toast.setView(layout)
+//
+//                    // 디바이스 화면 가로 길이에 비례해서 텍스트 크기와 패딩 조정
+//                    // 화면의 가로 길이 구하기
+//                    val displayMetrics = resources.displayMetrics // 디바이스의 화면 픽셀 밀도를 포함한 여러 정보를 담아온다
+//                    val screenWidth = displayMetrics.widthPixels // 화면의 가로 길이를 구한다
+//                    val textSize = screenWidth / 70
+//
+//                    // TextSize와 padding 조정
+//                    toastText?.apply {
+//                        setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize.toFloat()) // TextSize 조정
+//                    }
+//
+//                    toast.show()
+
                     backButtonPressedTime = System.currentTimeMillis() // 현재 시간을 backButtonPreseedTime에 저장
                 } else {
                     ActivityCompat.finishAffinity(this) // 3초 이내에 두 번 누른 경우 앱 종료
