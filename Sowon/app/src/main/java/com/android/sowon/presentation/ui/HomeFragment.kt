@@ -3,11 +3,11 @@ package com.android.sowon.presentation.ui
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,12 +15,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.android.sowon.R
-import com.android.sowon.data.LectureList
 import com.android.sowon.databinding.FragmentHomeBinding
 import com.android.sowon.presentation.viewmodel.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,6 +43,13 @@ class HomeFragment @Inject constructor() : Fragment() {
     private lateinit var basicsSortingButton: TextView
     private lateinit var kakaoTalkSortingButton: TextView
     private lateinit var baeminSortingButton: TextView
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            viewModel.getLectureList()
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 

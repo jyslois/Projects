@@ -20,12 +20,16 @@ class HomeFragmentViewModel @Inject constructor(
     private val _lectureList = MutableSharedFlow<List<Lecture>>()
     val lectureList = _lectureList.asSharedFlow()
 
+    suspend fun getLectureList() {
+        val lectureList = LectureList().getLectureList()
+        _lectureList.emit(lectureList)
+    }
+
     init {
         viewModelScope.launch {
             // 전체 수업 목록 가져오기
             // (임시)
-            val lectureList = LectureList().getLectureList()
-            _lectureList.emit(lectureList)
+           getLectureList()
         }
     }
 

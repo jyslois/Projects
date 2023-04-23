@@ -1,155 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:scrollbars="vertical"
     tools:context=".presentation.ui.HomeFragment">
-
-<!--    viewPager2 Banner scroller & viewPager2 Indicator -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_titleBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_scrollingBanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/bannerViewPager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_scrollingBanner"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_titleBar" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_viewPager2Indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.48" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_viewPager2IndicatorVer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.7" />
-
-    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-        android:id="@+id/viewpager2Indicator"
-        android:layout_height="0dp"
-        android:layout_width="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/guideline_viewPager2IndicatorVer"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_viewPager2Indicator"
-        app:dotsColor="#B3978D8D"
-        app:dotsCornerRadius="8dp"
-        app:dotsSize="16dp"
-        app:dotsSpacing="4dp"
-        app:dotsWidthFactor="2.5"
-        app:selectedDotColor="#E6FFFFFF"
-        app:progressMode="false" />
-
-<!--    Image (Buttons)-->
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_SortingButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/guideline_SortingButtons"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        >
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="전체"
-            app:layout_constraintTop_toTopOf="parent"
+        <!--    viewPager2 Banner scroller & viewPager2 Indicator -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/bannerViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/sortingButton_basics"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:id="@+id/sortingButton_all"
-            android:background="@drawable/sortingbuttonbackground_all"
-            />
-
-        <TextView
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:text="기초(무료)"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/sortingButton_all"
-            app:layout_constraintRight_toLeftOf="@id/sortingButton_kakaoTalk"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:id="@+id/sortingButton_basics"
-            android:background="@drawable/sortingbuttonbackground_basics"
-            />
-
-        <TextView
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:text="카카오톡"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/sortingButton_basics"
-            app:layout_constraintRight_toLeftOf="@id/sortingButton_baemin"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:id="@+id/sortingButton_kakaoTalk"
-            android:background="@drawable/sortingbuttonbackground_kakaotalk"
-            />
-
-        <TextView
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:text="배달의민족"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/sortingButton_kakaoTalk"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:id="@+id/sortingButton_baemin"
-            android:background="@drawable/sortingbuttonbackground_baemin"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_indicator_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/viewpager2Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="14dp"
+            app:dotsColor="#B3978D8D"
+            app:dotsCornerRadius="8dp"
+            app:dotsSize="16dp"
+            app:dotsSpacing="4dp"
+            app:dotsWidthFactor="2.5"
+            app:layout_constraintBottom_toBottomOf="@id/bannerViewPager"
+            app:layout_constraintLeft_toLeftOf="@id/guideline_indicator_left"
+            app:layout_constraintRight_toRightOf="parent"
+            app:progressMode="false"
+            app:selectedDotColor="#E6FFFFFF" />
+
+        <!--    Image (Buttons) -->
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bannerViewPager">
+
+            <TextView
+                android:id="@+id/sortingButton_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sortingbuttonbackground_all"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="전체"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/sortingButton_basics"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sortingButton_basics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sortingbuttonbackground_basics"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="기초(무료)"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toRightOf="@id/sortingButton_all"
+                app:layout_constraintRight_toLeftOf="@id/sortingButton_kakaoTalk"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sortingButton_kakaoTalk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sortingbuttonbackground_kakaotalk"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="카카오톡"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toRightOf="@id/sortingButton_basics"
+                app:layout_constraintRight_toLeftOf="@id/sortingButton_baemin"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sortingButton_baemin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sortingbuttonbackground_baemin"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="배달의민족"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toRightOf="@id/sortingButton_kakaoTalk"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_recyclerView_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.035" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_recyclerView_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.958" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lectureRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/guideline_recyclerView_left"
+            app:layout_constraintRight_toRightOf="@id/guideline_recyclerView_right"
+            app:layout_constraintTop_toBottomOf="@id/buttons" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_lectureList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.62" />
+</androidx.core.widget.NestedScrollView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lectureRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="@id/guideline_lectureList"
-        android:padding="12dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
