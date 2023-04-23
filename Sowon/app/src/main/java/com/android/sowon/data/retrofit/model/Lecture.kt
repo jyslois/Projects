@@ -1,6 +1,6 @@
 package com.android.sowon.data.retrofit.model
 
-data class Class(
+data class Lecture(
     val id: Long,
     val type: String,
     val image: Int,

@@ -12,11 +12,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.android.sowon.R
+import com.android.sowon.data.LectureList
 import com.android.sowon.databinding.FragmentHomeBinding
 import com.android.sowon.presentation.viewmodel.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,6 +37,9 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     // 배너 리스트
     private lateinit var eventBannerList: ArrayList<Int>
+
+    // 리사이클러뷰 어뎁터
+    private lateinit var adaptor: LectureListAdaptor
 
     // 정렬 버튼
     private lateinit var allSortingButton: TextView
@@ -56,6 +63,8 @@ class HomeFragment @Inject constructor() : Fragment() {
         // 수업 종류별 정렬 버튼 세팅 - 버튼 크기와 텍스트 사이즈, 패딩 크기를 디바이스 화면 길이에 비례하여 설정
         setUpSortingButtons()
 
+        // 수업 리스트 RecyclerView 세팅
+        initLectureRecyclerView()
 
         // 버튼 클릭 이벤트
         // 전체 강의 보기 정렬 버튼 클릭
@@ -92,6 +101,14 @@ class HomeFragment @Inject constructor() : Fragment() {
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                // 수업 목록 가져오기
+                launch {
+                    viewModel.lectureList.collect {
+                        adaptor.submitList(it) // adaptor에 수업 목록 업데이트
+                    }
+                }
+
                 // 강의 정렬 버튼 클릭 결과 구독
                 // 전체 강의 버튼
                 launch {
@@ -217,6 +234,13 @@ class HomeFragment @Inject constructor() : Fragment() {
         kakaoTalkSortingButton.setTypeface(null, Typeface.NORMAL)
         baeminSortingButton.setTypeface(null, Typeface.NORMAL)
         textView.setTypeface(null, Typeface.BOLD)
+    }
+
+    // 수업 리스트 RecyclerView 세팅
+    private fun initLectureRecyclerView() {
+        adaptor = LectureListAdaptor() // 어뎁터 객체 생성
+        binding.lectureRecyclerView.adapter = adaptor // RecyclerView에 어뎁터 연결
+        binding.lectureRecyclerView.layoutManager = LinearLayoutManager(context) // 항목을 1차원 목록으로 정렬
     }
 
     override fun onDestroyView() {
