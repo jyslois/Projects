@@ -345,7 +345,7 @@ class HomeFragment @Inject constructor() : Fragment() {
             parent: RecyclerView,
             state: RecyclerView.State
         ) {
-            outRect.bottom = spaceHeight // 아래쪽에 간격을 추가합니다.
+            outRect.bottom = spaceHeight // 아래쪽에 간격을 추가
         }
     }
 
