@@ -8,6 +8,7 @@ import com.android.sowon.data.retrofit.model.Lecture
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,8 +21,27 @@ class HomeFragmentViewModel @Inject constructor(
     private val _lectureList = MutableSharedFlow<List<Lecture>>()
     val lectureList = _lectureList.asSharedFlow()
 
-    suspend fun getLectureList() {
+    private lateinit var list: List<Lecture>
+
+    // 정렬 함수
+    suspend fun getAllLectureList() {
         val lectureList = LectureList().getLectureList()
+        list = lectureList
+        _lectureList.emit(lectureList)
+    }
+
+    suspend fun getBasicsLectureList() {
+        val lectureList = list.filter { it.type == "기초" }
+        _lectureList.emit(lectureList)
+    }
+
+    suspend fun getKakaoLectureList() {
+        val lectureList = list.filter { it.type == "카카오톡" }
+        _lectureList.emit(lectureList)
+    }
+
+    suspend fun getBaeminLectureList() {
+        val lectureList = list.filter { it.type == "배달의 민족" }
         _lectureList.emit(lectureList)
     }
 
@@ -29,7 +49,7 @@ class HomeFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             // 전체 수업 목록 가져오기
             // (임시)
-           getLectureList()
+           getAllLectureList()
         }
     }
 

@@ -14,46 +14,33 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/bannerViewPager"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H,100:85"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_indicator_left"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
-
         <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
             android:id="@+id/viewpager2Indicator"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="14dp"
+            android:layout_height="wrap_content"
             app:dotsColor="#B3978D8D"
             app:dotsCornerRadius="8dp"
             app:dotsSize="16dp"
             app:dotsSpacing="4dp"
             app:dotsWidthFactor="2.5"
             app:layout_constraintBottom_toBottomOf="@id/bannerViewPager"
-            app:layout_constraintLeft_toLeftOf="@id/guideline_indicator_left"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline_recyclerView_right"
             app:progressMode="false"
             app:selectedDotColor="#E6FFFFFF" />
 
         <!--    Image (Buttons) -->
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="5dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/guideline_recyclerView_left"
+            app:layout_constraintRight_toLeftOf="@id/guideline_recyclerView_right"
             app:layout_constraintTop_toBottomOf="@id/bannerViewPager">
 
             <TextView
@@ -62,7 +49,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/sortingbuttonbackground_all"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="전체"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -76,7 +62,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/sortingbuttonbackground_basics"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="기초(무료)"
                 android:textColor="@color/black"
                 app:layout_constraintLeft_toRightOf="@id/sortingButton_all"
@@ -89,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/sortingbuttonbackground_kakaotalk"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="카카오톡"
                 android:textColor="@color/black"
                 app:layout_constraintLeft_toRightOf="@id/sortingButton_basics"
@@ -102,7 +86,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/sortingbuttonbackground_baemin"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="배달의민족"
                 android:textColor="@color/black"
                 app:layout_constraintLeft_toRightOf="@id/sortingButton_kakaoTalk"

@@ -1,18 +1,24 @@
 package com.android.sowon.presentation.ui
 
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.android.sowon.R
 import com.android.sowon.databinding.FragmentHomeBinding
@@ -20,6 +26,7 @@ import com.android.sowon.presentation.viewmodel.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint // enable field injection of Android-specific dependencies
 class HomeFragment @Inject constructor() : Fragment() {
@@ -44,14 +51,44 @@ class HomeFragment @Inject constructor() : Fragment() {
     private lateinit var kakaoTalkSortingButton: TextView
     private lateinit var baeminSortingButton: TextView
 
+    // 정렬 버튼 기억 함수 (화면으로 돌아올 때를 위해)
+    private var allSortingButtonChecked = false
+    private var basicsSortingButtonChecked = false
+    private var kakaoTalkSortingButtonChecked = false
+    private var baeminSortingButtonChecked = false
+
+    // 화면 비율
+    private lateinit var displayMetrics: DisplayMetrics // 디바이스의 화면 픽셀 밀도를 포함한 여러 정보를 담아온다
+    private var screenWidth: Int by Delegates.notNull() // 화면의 가로 길이
+
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {
-            viewModel.getLectureList()
+            val selectedButton = when {
+                allSortingButtonChecked -> allSortingButton
+                basicsSortingButtonChecked -> basicsSortingButton
+                kakaoTalkSortingButtonChecked -> kakaoTalkSortingButton
+                baeminSortingButtonChecked -> baeminSortingButton
+                else -> allSortingButton
+            }
+            selectedButton.let {
+                changeBold(it)
+                when (it) {
+                    allSortingButton -> viewModel.getAllLectureList()
+                    basicsSortingButton -> viewModel.getBasicsLectureList()
+                    kakaoTalkSortingButton -> viewModel.getKakaoLectureList()
+                    baeminSortingButton -> viewModel.getBaeminLectureList()
+                    else -> Unit
+                }
+            }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -118,6 +155,9 @@ class HomeFragment @Inject constructor() : Fragment() {
                 launch {
                     viewModel.allSortingButton.collect {
                         changeBold(it)
+                        setAllButtonsFalse()
+                        allSortingButtonChecked = true
+                        viewModel.getAllLectureList()
                     }
                 }
 
@@ -125,6 +165,9 @@ class HomeFragment @Inject constructor() : Fragment() {
                 launch {
                     viewModel.basicsSortingButton.collect {
                         changeBold(it)
+                        setAllButtonsFalse()
+                        basicsSortingButtonChecked = true
+                        viewModel.getBasicsLectureList()
                     }
                 }
 
@@ -132,6 +175,9 @@ class HomeFragment @Inject constructor() : Fragment() {
                 launch {
                     viewModel.kakaoTalkSortingButton.collect {
                         changeBold(it)
+                        setAllButtonsFalse()
+                        kakaoTalkSortingButtonChecked = true
+                        viewModel.getKakaoLectureList()
                     }
                 }
 
@@ -139,6 +185,9 @@ class HomeFragment @Inject constructor() : Fragment() {
                 launch {
                     viewModel.baeminSortingButton.collect {
                         changeBold(it)
+                        setAllButtonsFalse()
+                        baeminSortingButtonChecked = true
+                        viewModel.getBaeminLectureList()
                     }
                 }
             }
@@ -166,23 +215,44 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     // viewPager2 Indicator
     private fun setupViewPagerIndicator() {
+        // 화면 가로 길이 초기화
+        displayMetrics = resources.displayMetrics // 디바이스의 화면 픽셀 밀도를 포함한 여러 정보를 담아온다
+        screenWidth = displayMetrics.widthPixels // 화면의 가로 길이를 구한다
+
+        // marginBottom
+        val indicator = binding.viewpager2Indicator
+        val layoutParams =
+            indicator.layoutParams as ConstraintLayout.LayoutParams // Get the current LayoutParams and cast them to ConstraintLayout.LayoutParams
+        val newMarginBottom = screenWidth / 20 // Replace with your desired value
+        layoutParams.bottomMargin = newMarginBottom
+        indicator.layoutParams = layoutParams  // Set the modified LayoutParams back to the view
+
         binding.viewpager2Indicator.attachTo(binding.bannerViewPager)
     }
 
+
     // viewPager2 Circular Scrolling
     private fun setupCircularScrolling() {
-        binding.bannerViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            var currentState = 0 // 현재 상태 - ViewPager2.SCROLL_STATE_IDLE, indicating that the ViewPager2 is not currently being scrolled
+        binding.bannerViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            var currentState =
+                0 // 현재 상태 - ViewPager2.SCROLL_STATE_IDLE, indicating that the ViewPager2 is not currently being scrolled
             var currentPos = 0 // 위치 값, which corresponds to the first page in the ViewPager2.
 
             // 페이지가 스크롤될 때 호출 - This method is called when the ViewPager2 is scrolled, either by the user swiping or by programmatic scrolling.
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
                 // 현재 상태가 ViewPager2.SCROLL_STATE_DRAGGING(사용자 스크롤 동작을 감지: 사용자가 ViewPager2를 드래그하거나 fake drag을 사용하여 ViewPager2를 수평으로 이동시키는 경우-사용자가 스크롤하고 있는 것처럼 보이게끔 하지만 실제로는 스크롤이 일어나지 않음)인지,
                 // 현재 위치와 현재 페이지의 위치가 일치하는지 (ViewPager2가 프로그래밍 방식으로 스크롤되면 해당 메서드가 현재 페이지와 일치하지 않는 위치 값을 사용하여 호출될 수 있기 때문)를 체크
                 if (currentState == ViewPager2.SCROLL_STATE_DRAGGING && currentPos == position) {
                     // checks whether the current position is 0 or the last page. If the current position is 0, it sets the current item to the last page (eventBannerList.size - 1) to create the circular scrolling effect. If the current position is the last page, it sets the current item to 0 to loop back to the first page.
-                    if (currentPos == 0) binding.bannerViewPager.currentItem = eventBannerList.size - 1 // currentPos 현재 위치가 0이면 첫 번째 페이지의 위치에서 마지막 페이지로 이동하고자 하는 것이기 때문에, 마지막 페이지의 Position값인 (eventBannerList.size - 1)로 이동하게 함
-                    else if (currentPos == eventBannerList.size - 1) binding.bannerViewPager.currentItem = 0 // 반대로 현재 위치가 마지막 페이지(eventBannerList.size - 1)일 경우 마지막 페이지에서 첫번째 페이지(position=0)으로 이동하게 함. 이로서 순환하는 ViewPager가 만들어진다.
+                    if (currentPos == 0) binding.bannerViewPager.currentItem =
+                        eventBannerList.size - 1 // currentPos 현재 위치가 0이면 첫 번째 페이지의 위치에서 마지막 페이지로 이동하고자 하는 것이기 때문에, 마지막 페이지의 Position값인 (eventBannerList.size - 1)로 이동하게 함
+                    else if (currentPos == eventBannerList.size - 1) binding.bannerViewPager.currentItem =
+                        0 // 반대로 현재 위치가 마지막 페이지(eventBannerList.size - 1)일 경우 마지막 페이지에서 첫번째 페이지(position=0)으로 이동하게 함. 이로서 순환하는 ViewPager가 만들어진다.
                 }
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
@@ -209,16 +279,15 @@ class HomeFragment @Inject constructor() : Fragment() {
         baeminSortingButton = binding.sortingButtonBaemin
 
         // 디바이스 화면 가로 길이에 비례해서 텍스트 크기와 패딩 조정
-        // 화면의 가로 길이 구하기
-        val displayMetrics = resources.displayMetrics // 디바이스의 화면 픽셀 밀도를 포함한 여러 정보를 담아온다
-        val screenWidth = displayMetrics.widthPixels // 화면의 가로 길이를 구한다
-
         // 각 버튼의 가로 길이 비례하여 텍스트 크기와 패딩 조정
         val buttonWidth = screenWidth / 4 // 전체 화면을 4로 나누어 각각의 버튼에 할당할 가로 길이를 구한다
         val textSize = buttonWidth / 5.6 // 텍스트 크기를 비례적으로 조정
         val padding = buttonWidth / 7 // 버튼의 패딩을 비례적으로 조정
 
-        allSortingButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat()) // TypedValue.COMPLEX_UNIT_PX - textSize의 값을 픽셀로 변환
+        allSortingButton.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            textSize.toFloat()
+        ) // TypedValue.COMPLEX_UNIT_PX - textSize의 값을 픽셀로 변환
         allSortingButton.setPadding(padding, padding, padding, padding)
 
         basicsSortingButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
@@ -229,6 +298,14 @@ class HomeFragment @Inject constructor() : Fragment() {
 
         baeminSortingButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
         baeminSortingButton.setPadding(padding, padding, padding, padding)
+
+        // marginTop 세팅
+        val buttons = binding.buttons
+        val layoutParams =
+            buttons.layoutParams as ConstraintLayout.LayoutParams // Get the current LayoutParams and cast them to ConstraintLayout.LayoutParams
+        val newMarginTop = screenWidth / 11 // Replace with your desired value
+        layoutParams.topMargin = newMarginTop
+        buttons.layoutParams = layoutParams  // Set the modified LayoutParams back to the view
     }
 
     // sorting button 굵기 설정
@@ -242,14 +319,48 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     // 수업 리스트 RecyclerView 세팅
     private fun initLectureRecyclerView() {
-        adaptor = LectureListAdaptor() // 어뎁터 객체 생성
+        // marginTop 세팅
+        val recyclerView = binding.lectureRecyclerView
+        val layoutParams =
+            recyclerView.layoutParams as ConstraintLayout.LayoutParams // Get the current LayoutParams and cast them to ConstraintLayout.LayoutParams
+        val newMarginTop = screenWidth / 11 // Replace with your desired value
+        layoutParams.topMargin = newMarginTop
+        recyclerView.layoutParams = layoutParams  // Set the modified LayoutParams back to the view
+
+        // 어뎁터 설치
+        adaptor = LectureListAdaptor(screenWidth) // 어뎁터 객체 생성
         binding.lectureRecyclerView.adapter = adaptor // RecyclerView에 어뎁터 연결
         binding.lectureRecyclerView.layoutManager = LinearLayoutManager(context) // 항목을 1차원 목록으로 정렬
+        // 아이템 사이에 간격 설정
+        val space = screenWidth / 7
+        val itemDecoration = ItemDecoration(space)
+        binding.lectureRecyclerView.addItemDecoration(itemDecoration)
+    }
+
+    // 아이템 사이에 간격 설정
+    class ItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.bottom = spaceHeight // 아래쪽에 간격을 추가합니다.
+        }
+    }
+
+    // 정렬 버튼 클릭 여부 변수 모두 false로 설정
+    private fun setAllButtonsFalse() {
+        allSortingButtonChecked = false
+        basicsSortingButtonChecked = false
+        kakaoTalkSortingButtonChecked = false
+        baeminSortingButtonChecked = false
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null //  Fragment에서 View Binding을 사용할 경우 Fragment는 View보다 오래 지속되어, 메모리 누수가 발생할 수 있기 때문.
+        _binding =
+            null //  Fragment에서 View Binding을 사용할 경우 Fragment는 View보다 오래 지속되어, 메모리 누수가 발생할 수 있기 때문.
     }
 
 }

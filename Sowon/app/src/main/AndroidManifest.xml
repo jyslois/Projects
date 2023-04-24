@@ -11,15 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sowon">
         <activity
-            android:name=".presentation.ui.MainPage"
+            android:name=".presentation.ui.LectureActivity"
             android:exported="false">
         </activity>
         <activity
+            android:name=".presentation.ui.MainPage"
+            android:exported="false" />
+        <activity
             android:name=".presentation.ui.MainActivity"
-            android:theme="@style/Theme.Sowon.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Sowon.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
