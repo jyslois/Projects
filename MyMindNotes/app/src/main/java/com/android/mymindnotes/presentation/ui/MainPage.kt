@@ -1,5 +1,7 @@
 package com.android.mymindnotes.presentation.ui
 
+import android.app.Activity
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.content.DialogInterface
 import android.content.Intent
@@ -100,8 +102,9 @@ class MainPage : AppCompatActivity() {
                 launch {
                     viewModel.clickAddRecordButton.collect {
                         if (it) {
-                            val intent = Intent(applicationContext, RecordMindChoice::class.java)
-                            startActivity(intent)
+                            startActivity<RecordMindChoice>()
+//                            val intent = Intent(applicationContext, RecordMindChoice::class.java)
+//                            startActivity(intent)
                         }
                     }
                 }
@@ -110,8 +113,9 @@ class MainPage : AppCompatActivity() {
                 launch {
                     viewModel.clickMainMenuButton.collect {
                         if (it) {
-                            val intent = Intent(applicationContext, MainMenu::class.java)
-                            startActivity(intent)
+                            startActivity<MainMenu>()
+//                            val intent = Intent(applicationContext, MainMenu::class.java)
+//                            startActivity(intent)
                         }
                     }
                 }
@@ -144,8 +148,9 @@ class MainPage : AppCompatActivity() {
     var dialogListener = DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // 알람 설정 페이지로 이동
-            val intent = Intent(this, AlarmSetting::class.java)
-            startActivity(intent)
+            startActivity<AlarmSetting>()
+//            val intent = Intent(this, AlarmSetting::class.java)
+//            startActivity(intent)
         }
     }
 
@@ -166,6 +171,12 @@ class MainPage : AppCompatActivity() {
         builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()
+    }
+
+    // 실체화한 타입 파라미터로 클래스 참조 대신하기 - 액티비티의 클래스를 java.lang.Class로 전달하는 대신, 실체화한 타입 파라미터 사용하기
+    inline fun <reified T : Activity> Context.startActivity() {  // 타입 파라미터를 reified로 표시
+        val intent = Intent(applicationContext, T::class.java) // T::class로 타입 파라미터의 클래스를 가져온다
+        startActivity(intent)
     }
 
 }
