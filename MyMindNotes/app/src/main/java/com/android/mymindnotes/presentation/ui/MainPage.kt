@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.graphics.Color
+import android.os.SystemClock
 import android.util.Log
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
@@ -123,12 +124,17 @@ class MainPage : AppCompatActivity() {
     // 뒤로가기 버튼 클릭
     var initTime = 0L
     override fun onBackPressed() {
-        if (System.currentTimeMillis() - initTime > 3000) {
+        /*
+        System.currentTimeMillis()는 현재 시간을 반환하는데, 이것은 사용자가 설정을 변경하거나 네트워크 시간 동기화로 인해 변할 수 있다.
+        따라서, 시간이 절대적으로 지나가는 것을 측정하려면 이 방법이 적합하지 않을 수 있다. 반면에 SystemClock.elapsedRealtime()는 장치가
+        부팅된 이후의 경과 시간(잠자기 모드에서는 시간이 흐르지 않음)을 반환하기 때문에 사용자 설정이나 네트워크에 의해 영향을 받지 않으므로, 상대적인 시간 측정에 더 적합하다.
+         */
+        if (SystemClock.elapsedRealtime() - initTime > 3000) {
             // 메세지 띄우기
             val toast = Toast.makeText(applicationContext, "종료하려면 한 번 더 누르세요", Toast.LENGTH_SHORT)
             toast.show()
             // 현재 시간을 initTime에 지정
-            initTime = System.currentTimeMillis()
+            initTime = SystemClock.elapsedRealtime()
         } else {
             // 3초 이내에 BackButton이 두 번 눌린 경우 앱 종료
             finishAffinity()
