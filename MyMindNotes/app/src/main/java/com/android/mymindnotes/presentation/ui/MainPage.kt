@@ -175,7 +175,9 @@ class MainPage : AppCompatActivity() {
 
     // 실체화한 타입 파라미터로 클래스 참조 대신하기 - 액티비티의 클래스를 java.lang.Class로 전달하는 대신, 실체화한 타입 파라미터 사용하기
     inline fun <reified T : Activity> Context.startActivity() {  // 타입 파라미터를 reified로 표시
-        val intent = Intent(applicationContext, T::class.java) // T::class로 타입 파라미터의 클래스를 가져온다
+        val intent = Intent(this, T::class.java) // T::class로 타입 파라미터의 클래스를 가져온다
+        // getApplicationContext()을 사용하게 될 경우에는, 애플리케이션 컨텍스트가 액티비티의 라이프사이클과 연관되지 않기 때문에 task stack에 문제가 발생하여,
+        // 사용자가 "뒤로" 버튼을 눌렀을 때 기대하는 동작과 다르게 동작할 수 있다.
         startActivity(intent)
     }
 
