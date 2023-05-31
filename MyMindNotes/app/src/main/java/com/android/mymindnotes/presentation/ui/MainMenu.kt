@@ -1,5 +1,7 @@
 package com.android.mymindnotes.presentation.ui
 
+import android.app.Activity
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
@@ -63,40 +65,41 @@ class MainMenu : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.recordDiaryButton.collect {
-                        val intent = Intent(applicationContext, RecordMindChoice::class.java)
-                        startActivity(intent)
+                        startActivity<RecordMindChoice>()
                     }
                 }
 
                 launch {
                     viewModel.diaryButton.collect {
-                        val intent = Intent(applicationContext, Diary::class.java)
-                        startActivity(intent)
+                        startActivity<Diary>()
                     }
                 }
 
                 launch {
                     viewModel.emotionInstructionButton.collect {
-                        val intent = Intent(applicationContext, EmotionInstructions::class.java)
-                        startActivity(intent)
+                        startActivity<EmotionInstructions>()
                     }
                 }
 
                 launch {
                     viewModel.accountSettingButton.collect {
-                        val intent = Intent(applicationContext, AccountSetting::class.java)
-                        startActivity(intent)
+                        startActivity<AccountSetting>()
                     }
                 }
 
                 launch {
                     viewModel.alarmSettingButton.collect {
-                        val intent = Intent(applicationContext, AlarmSetting::class.java)
-                        startActivity(intent)
+                        startActivity<AlarmSetting>()
                     }
                 }
             }
         }
 
     }
+
+    inline fun <reified T> Context.startActivity() {
+        val intent = Intent(this, T::class.java)
+        startActivity(intent)
+    }
+
 }
