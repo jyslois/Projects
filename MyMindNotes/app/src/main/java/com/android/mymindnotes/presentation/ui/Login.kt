@@ -1,14 +1,13 @@
 package com.android.mymindnotes.presentation.ui
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.CheckBox
 import android.widget.EditText
-import android.content.SharedPreferences
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.R
 import android.content.Intent
-import android.content.SharedPreferences.Editor
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
@@ -136,8 +135,7 @@ class Login : AppCompatActivity() {
                 // 비밀번호 찾기 버튼 클릭 이벤트 감지
                 launch {
                     viewModel.findPasswordButton.collect {
-                        val intent = Intent(applicationContext, FindPassword::class.java)
-                        startActivity(intent)
+                        startActivity<FindPassword>()
                     }
                 }
 
@@ -198,8 +196,7 @@ class Login : AppCompatActivity() {
                             viewModel.saveUserIndex(it["user_index"].toString().toDouble().toInt())
 
                             // 화면 전환
-                            val intent = Intent(applicationContext, MainPage::class.java)
-                            startActivity(intent)
+                            startActivity<MainPage>()
                         }
                     }
                 }
@@ -247,6 +244,11 @@ class Login : AppCompatActivity() {
             }
         }
 
+    }
+
+    inline fun <reified T> Context.startActivity() {
+        val intent = Intent(this, T::class.java)
+        startActivity(intent)
     }
 
 
