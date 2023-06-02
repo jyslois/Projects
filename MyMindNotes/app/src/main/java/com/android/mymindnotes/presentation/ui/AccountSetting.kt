@@ -1,5 +1,7 @@
 package com.android.mymindnotes.presentation.ui
 
+import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -80,16 +82,14 @@ class AccountSetting : AppCompatActivity() {
                 // 비밀번호 변경 이벤트 처리
                 launch {
                     viewModel.changePasswordButton.collect {
-                        val intent = Intent(applicationContext, ChangePassword::class.java)
-                        startActivity(intent)
+                        startActivity<ChangePassword>()
                     }
                 }
 
                 // 닉네임 변경 이벤트 처리
                 launch {
                     viewModel.changeNicknameButton.collect {
-                        val intent = Intent(applicationContext, ChangeNickname::class.java)
-                        startActivity(intent)
+                        startActivity<ChangeNickname>()
                     }
                 }
 
@@ -98,8 +98,7 @@ class AccountSetting : AppCompatActivity() {
                     viewModel.logoutButton.collect {
                         // 상태 저장
                         viewModel.saveAutoLoginCheck(false)
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(intent)
+                        startActivity<MainActivity>()
                     }
                 }
 
@@ -126,8 +125,7 @@ class AccountSetting : AppCompatActivity() {
                             // 저장 설정 지우기
                             viewModel.clearAutoSaveSharedPreferences()
                             // 화면 전환
-                            val intent = Intent(applicationContext, MainActivity::class.java)
-                            startActivity(intent)
+                            startActivity<MainActivity>()
                         }
                     }
                 }
@@ -144,6 +142,14 @@ class AccountSetting : AppCompatActivity() {
             }
         }
 
+    }
+
+    // 실체화한 타입 파라미터로 클래스 참조 대신하기 - 액티비티의 클래스를 java.lang.Class로 전달하는 대신, 실체화한 타입 파라미터 사용하기
+    inline fun <reified T : Activity> Context.startActivity() {  // 타입 파라미터를 reified로 표시
+        val intent = Intent(this, T::class.java) // T::class로 타입 파라미터의 클래스를 가져온다
+        // getApplicationContext()을 사용하게 될 경우에는, 애플리케이션 컨텍스트가 액티비티의 라이프사이클과 연관되지 않기 때문에 task stack에 문제가 발생하여,
+        // 사용자가 "뒤로" 버튼을 눌렀을 때 기대하는 동작과 다르게 동작할 수 있다.
+        startActivity(intent)
     }
 
     // 탈퇴 시 확인 다이얼로그
