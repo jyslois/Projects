@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="1.7">
+      <module name="MyMindNotes.app" target="17" />
+      <module name="MyMindNotes.core" target="17" />
+      <module name="MyMindNotes.data" target="17" />
+      <module name="MyMindNotes.presentation" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
