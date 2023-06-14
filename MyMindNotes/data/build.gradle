@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+
+    // Hilt
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -22,15 +26,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
+
 }
 
 dependencies {
+    implementation(project(":core"))
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -38,4 +44,17 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Retrofit 설치
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    // gson converter (Retrofit은 requestbody 타입만 취급 가능하므로 다른 타입도 취급 가능하게 하려면 추가해야 함)
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    // okhttp3 설치
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    // logging-interceptor 설치
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
 }

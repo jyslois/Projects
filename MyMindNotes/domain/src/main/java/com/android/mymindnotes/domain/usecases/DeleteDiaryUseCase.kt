@@ -1,0 +1,33 @@
+package com.android.mymindnotes.domain.usecases
+
+import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
+import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+class DeleteDiaryUseCase @Inject constructor(
+    private val diaryRepository: DiaryRepository,
+    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
+) {
+    // 에러 메시지
+    private val _deleteDiaryError = MutableSharedFlow<Boolean>()
+    val deleteDiaryError = _deleteDiaryError.asSharedFlow()
+
+    init {
+        mainDispatcherCoroutineScope.launch {
+            launch {
+                diaryRepository.deleteDiaryError.collect {
+                    _deleteDiaryError.emit(it)
+                }
+            }
+        }
+    }
+
+    // Delete Diary
+    suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = diaryRepository.deleteDiary(diaryNumber)
+
+}
