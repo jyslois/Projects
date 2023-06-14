@@ -24,7 +24,6 @@ class AlarmBootReceiver: BroadcastReceiver() {
     @Inject
     lateinit var mainDispatcherCoroutineScope: CoroutineScope
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onReceive(context: Context, intent: Intent) {
 
         // Code to set alarm on boot
