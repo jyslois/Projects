@@ -56,7 +56,7 @@
 ![image](https://github.com/jyslois/Projects/assets/106723882/e5d655e5-bea5-4bc0-99cf-84c0758cb910)
 
 
-## What?
+## Which?
 ### 판단 기준: 세분화와 오버헤드
 
 안드로이드 앱을 세분화(granularity)하면, 여러 가지 오버헤드가 증가할 수 있다. 
