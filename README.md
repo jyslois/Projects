@@ -76,7 +76,7 @@
 
 ## 아키텍처 및 의존성 방향 선정
 클린 아키텍처(Clean Architecture)의 의존성 방향은 **Presentation -> Domain <- Data**인 반면, Android Developers가 권장하는 앱 아키텍처의 의존성 방향은 **Presentation -> Domain -> Data**이다. 
-계층별 모듈화(Modularization by Layer)을 진행하려면, 어떤 아키텍처(와 의존성 방향)을 적용해야 하는지 결정해야 한다.
+계층별 모듈화(Modularization by Layer)을 진행하려면, 어떤 아키텍처(와 의존성 방향)을 적용해야 할지 결정해야 한다.
 
 ### 아키텍처의 설계 원칙과 목표의 차이에 따른 의존성 방향
 #### Android Developers 권장 앱 아키텍처
