@@ -1,6 +1,7 @@
 # 나의 마음 일지
 🔗 https://play.google.com/store/apps/details?id=com.jys.mymindnotes
 
+# 앱 설계도 및 구조
 ## 모듈화 방식 선정
 
 ## Why? 
