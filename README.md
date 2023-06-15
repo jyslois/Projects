@@ -101,6 +101,7 @@ Clean Architecture는 도메인(비즈니스 로직)을 중심으로 설계된�
 **따라서 "나의 마음 일지"는 Android Developers가 권장하는 앱 아키텍처에 따라 계층별 묘듈화(Modularization by Layer)를 하여, 의존성 방향을 Presentation -> Domain -> Data로 설정하기로 결정했다**
 
 
+
 ## Android Developers 권장 앱 아키텍처에 따른 계층 모듈화 (Modularization by Layer) 
 Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presentation -> Domain -> Data**)를 따르는 아키텍처 계층을 기반으로 모듈화를 진행했다.
 
