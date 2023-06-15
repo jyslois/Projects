@@ -105,7 +105,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
 
 ![image](https://github.com/jyslois/Projects/assets/106723882/1b81b1ff-c7a7-462d-b0a6-c19968a479aa)
 
-+ **app module**: 구조와 앱 수준의 설정을 담당한다. 앱의 초기화, 구성 및 설정과 같은 앱 전반적인 기능을 처리하고, 다른 모듈들을 연결하여 앱의 동작을 조정한다.
++ **app module**: 앱 구조와 앱 수준의 설정을 담당한다. 앱의 초기화, 구성 및 설정과 같은 앱 전반적인 기능을 처리하고, 다른 모듈들을 연결하여 앱의 동작을 조정한다.
   + 의존성
     + 모듈: **모든 모듈들(core, presentation, domain, data)**
     + Hilt, Retrofit2
@@ -116,7 +116,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
 + **core module**: 여러 모듈 간에 공유되는 핵심 기능과 공통 유틸리티 기능을 포함한다. 다른 모듈들에서 공통으로 사용되는 기능들을 중앙 집중화하여 관리한다.  
   + 의존성
     + Retrofit2, Gson Converter, OkHttp3, Logging-Interceptor, Hilt
-  + 구성: 하나 이상의 모듈  공통적으로 사용되는 코드들
+  + 구성: 하나 이상의 모듈에서 공통적으로 사용되는 코드들
     + Hilt: CoroutineDispatcherModules, CoroutineScopeModules, SharedPreferencesModule
     + Model: UserDiary
     + Network: RetrofitService
