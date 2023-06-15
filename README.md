@@ -110,7 +110,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
 
 + **app module**: 앱 구조와 앱 수준의 설정을 담당한다. 앱의 초기화, 구성 및 설정과 같은 앱 전반적인 기능을 처리하고, 다른 모듈들을 연결하여 앱의 동작을 조정한다.
   + 의존성
-    + 모듈: **모든 모듈들(core, presentation, domain, data)**
+    + 모듈: 모든 모듈들(core, presentation, domain, data)
     + Hilt, Retrofit2
   + 구성 
     +  AndroidManifest.xml(user-permission, HiltApplication, BroadCastReceiver 설정 등)
@@ -126,7 +126,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
 
 + **presentation module**: 사용자 인터페이스(UI)와 관련된 부분을 담당한다. 
   + 의존성
-    + 모듈: **domain module, core module**
+    + 모듈: domain module, core module
     + Hilt, Coroutine, Glide, Gson
   + 구성
     + AndroidManifest.xml: Activity 등록
@@ -136,7 +136,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
 
 + **domain module**: 앱의 핵심 비즈니스 로직을 담당한다. presentation 모듈과 data 모듈 사이에서 중개자 역할을 한다.
   + 의존성
-    + 모듈: **data module, core module**
+    + 모듈: data module, core module
     + Hilt
   + 구성
     + Usecases
@@ -144,7 +144,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
   
 + **data module**: 데이터 관리와 관련된 기능들을 포함한다. 로컬 데이터베이스나 서버와의 통신을 담당하고, 데이터 소스를 제공하고 처리한다. 
   + 의존성
-    + 모듈: **core module**
+    + 모듈: core module
     + Retrofit2, Hilt
   + 구성
     + RepositoryInterfaces
