@@ -140,7 +140,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
     + Hilt
   + 구성
     + Usecases
-    + AlarmInterface: AlarmManagerHelperInterface
+    + AlarmManagerHelperInterface
   
 + **data module**: 데이터 관리와 관련된 기능들을 포함한다. 로컬 데이터베이스나 서버와의 통신을 담당하고, 데이터 소스를 제공하고 처리한다. 
   + 의존성
