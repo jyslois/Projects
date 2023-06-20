@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases.userinfo
+package com.android.mymindnotes.domain.usecases.userInfo
 
 import com.android.mymindnotes.data.repositoryInterfaces.MemberSharedPreferencesRepository
 import kotlinx.coroutines.flow.Flow

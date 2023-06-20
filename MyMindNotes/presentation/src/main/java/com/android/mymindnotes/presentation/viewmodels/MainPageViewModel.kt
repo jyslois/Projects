@@ -3,8 +3,8 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.GetUserInfoUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.GetFirstTimeStateUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.SaveFirstTimeStateUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.GetFirstTimeStateUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.SaveFirstTimeStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

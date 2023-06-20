@@ -9,8 +9,8 @@ import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmTimeUseCase
 import com.android.mymindnotes.domain.usecases.alarm.SaveRebootAlarmTimeUseCase
 import com.android.mymindnotes.domain.usecases.alarm.SetAlarmUseCase
 import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.ClearAlarmSettingsUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.ClearTimeSettingsUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.ClearAlarmSettingsUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

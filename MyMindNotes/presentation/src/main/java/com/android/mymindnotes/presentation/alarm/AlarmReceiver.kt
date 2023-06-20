@@ -6,7 +6,7 @@ import android.content.Intent
 import android.media.RingtoneManager
 import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
 import com.android.mymindnotes.domain.usecases.alarm.SaveRebootAlarmTimeUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.ClearTimeSettingsUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

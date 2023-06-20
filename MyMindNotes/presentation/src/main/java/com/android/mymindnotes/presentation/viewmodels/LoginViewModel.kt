@@ -7,10 +7,10 @@ import com.android.mymindnotes.domain.usecases.loginStates.GetAutoLoginStateUseC
 import com.android.mymindnotes.domain.usecases.loginStates.GetAutoSaveStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.GetIdUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.GetPasswordUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.SaveIdAndPasswordUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.SaveUserIndexUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.GetIdUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.GetPasswordUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.SaveIdAndPasswordUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.SaveUserIndexUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

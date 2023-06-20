@@ -6,9 +6,9 @@ import com.android.mymindnotes.domain.usecases.DuplicateCheckUseCase
 import com.android.mymindnotes.domain.usecases.JoinUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.SaveFirstTimeStateUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.SaveIdAndPasswordUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.SaveUserIndexUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.SaveFirstTimeStateUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.SaveIdAndPasswordUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.SaveUserIndexUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

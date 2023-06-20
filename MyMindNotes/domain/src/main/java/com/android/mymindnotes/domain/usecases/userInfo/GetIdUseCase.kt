@@ -1,17 +1,17 @@
-package com.android.mymindnotes.domain.usecases.userinfo
+package com.android.mymindnotes.domain.usecases.userInfo
 
 import com.android.mymindnotes.data.repositoryInterfaces.MemberSharedPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetPasswordUseCase @Inject constructor(
+class GetIdUseCase @Inject constructor(
     private val repository: MemberSharedPreferencesRepository
 ) {
-//    suspend fun getPassword(): Flow<String?> {
-//        return repository.getPassword()
+//    suspend fun getId(): Flow<String?> {
+//        return repository.getId()
 //    }
 
     suspend operator fun invoke(): Flow<String?> {
-        return repository.getPassword()
+        return repository.getId()
     }
 }

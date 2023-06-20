@@ -3,7 +3,7 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.ChangeUserInfoUseCase
-import com.android.mymindnotes.domain.usecases.userinfo.SavePasswordUseCase
+import com.android.mymindnotes.domain.usecases.userInfo.SavePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
