@@ -4,7 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.DuplicateCheckUseCase
 import com.android.mymindnotes.domain.usecases.JoinUseCase
-import com.android.mymindnotes.domain.usecases.UseMemberSharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.loginstates.SaveAutoLoginStateUseCase
+import com.android.mymindnotes.domain.usecases.loginstates.SaveAutoSaveStateUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.SaveFirstTimeStateUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.SaveIdAndPasswordUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.SaveUserIndexUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -14,8 +18,14 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinViewModel @Inject constructor(
     private val duplicateCheckUseCase: DuplicateCheckUseCase,
-    private val useSharedPreferencesUseCase: UseMemberSharedPreferencesUseCase,
-    private val joinUseCase: JoinUseCase
+    private val joinUseCase: JoinUseCase,
+
+    private val saveIdAndPasswordUseCase: SaveIdAndPasswordUseCase,
+    private val saveFirstTimeStateUseCase: SaveFirstTimeStateUseCase,
+    private val saveUserIndexUseCase: SaveUserIndexUseCase,
+
+    private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
+    private val saveAutoSaveStateUseCase: SaveAutoSaveStateUseCase
 ) : ViewModel() {
 
     // 에러 메시지
@@ -111,26 +121,26 @@ class JoinViewModel @Inject constructor(
 
     // 처음으로 로그인한 유저인지 판단을 위한 값을 SharedPreferences에 저장하기 위해 함수 호출
     suspend fun saveFirstTime(boolean: Boolean) {
-        useSharedPreferencesUseCase.saveFirstTime(boolean)
+        saveFirstTimeStateUseCase(boolean)
     }
 
     // 회원 번호를 SharedPreference에 저장하기 위한 함수 호출
     suspend fun saveUserindex(userIndex: Int) {
-        useSharedPreferencesUseCase.saveUserIndex(userIndex)
+        saveUserIndexUseCase(userIndex)
     }
 
     // 아이디와 비밀번호를 SharedPreference에 저장하기 위한 함수 호출
     suspend fun saveIdAndPassword(id: String, password: String) {
-        useSharedPreferencesUseCase.saveIdAndPassword(id, password)
+        saveIdAndPasswordUseCase(id, password)
     }
 
     // AutoSave & AutoLogin Check 상태를 저장하기 위한 함수 호출
     suspend fun saveAutoLoginCheck(state: Boolean) {
-        useSharedPreferencesUseCase.saveAutoLoginCheck(state)
+        saveAutoLoginStateUseCase(state)
     }
 
     suspend fun saveAutoSaveCheck(state: Boolean) {
-        useSharedPreferencesUseCase.saveAutoSaveCheck(state)
+        saveAutoSaveStateUseCase(state)
     }
 
     // textChange

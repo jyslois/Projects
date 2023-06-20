@@ -3,7 +3,7 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.ChangeUserInfoUseCase
-import com.android.mymindnotes.domain.usecases.UseMemberSharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.SavePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -13,7 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
     private val changeUserInfoUseCase: ChangeUserInfoUseCase,
-    private val useSharedPreferencesUseCase: UseMemberSharedPreferencesUseCase
+
+    private val savePasswordUseCase: SavePasswordUseCase
 ): ViewModel() {
 
     // 에러 메시지
@@ -42,7 +43,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     // 비밀번호 재저장
     suspend fun savePassword(password: String?) {
-        useSharedPreferencesUseCase.savePassword(password)
+        savePasswordUseCase(password)
     }
 
     init {

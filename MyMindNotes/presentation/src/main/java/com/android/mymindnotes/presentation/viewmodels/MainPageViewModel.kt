@@ -3,7 +3,8 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.GetUserInfoUseCase
-import com.android.mymindnotes.domain.usecases.UseMemberSharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.GetFirstTimeStateUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.SaveFirstTimeStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainPageViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val useSharedPreferencesUseCase: UseMemberSharedPreferencesUseCase
+
+    private val getFirstTimeStateUseCase: GetFirstTimeStateUseCase,
+    private val saveFirstTimeStateUseCase: SaveFirstTimeStateUseCase
 ) : ViewModel() {
 
     // 에러 메시지
@@ -48,7 +51,7 @@ class MainPageViewModel @Inject constructor(
 
             launch {
                 // 최초 접속 여부 collect & emit
-                useSharedPreferencesUseCase.getFirstTime().collect {
+                getFirstTimeStateUseCase().collect {
                     _firstTime.emit(it)
                 }
             }
@@ -73,7 +76,7 @@ class MainPageViewModel @Inject constructor(
 
     // 최초 접속 값을 바꾸기 위한 함수 호출
     suspend fun saveFirstTime(boolean: Boolean) {
-        useSharedPreferencesUseCase.saveFirstTime(boolean)
+        saveFirstTimeStateUseCase(boolean)
     }
 
     // 클릭 이벤트 처리

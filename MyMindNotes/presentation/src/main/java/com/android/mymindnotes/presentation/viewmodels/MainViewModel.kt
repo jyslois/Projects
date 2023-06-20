@@ -2,7 +2,7 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.UseMemberSharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.loginstates.GetAutoLoginStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val useCase: UseMemberSharedPreferencesUseCase
+    private val getAutoLoginStateUseCase: GetAutoLoginStateUseCase
 ): ViewModel() {
 
 //     autoLoginCheck 값을 저장하는 SharedFlow
@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             launch {
                 // useCase의 getAutoLogin() 함수에 return된 Flow의 Boolean 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
-                useCase.getAutoLogin().collect {
+                getAutoLoginStateUseCase().collect {
                     _autoLoginCheck.emit(it)
                 }
             }
