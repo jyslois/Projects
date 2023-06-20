@@ -2,8 +2,8 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.DeleteUserUseCase
-import com.android.mymindnotes.domain.usecases.GetUserInfoUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.DeleteUserUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.GetUserInfoUseCase
 import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.ClearLoginStatesUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
@@ -28,7 +28,7 @@ class AccountSettingViewModel @Inject constructor(
 
     private val stopAlarmUseCase: StopAlarmUseCase,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     // 에러 메시지
     private val _error = MutableSharedFlow<Boolean>()
@@ -83,7 +83,7 @@ class AccountSettingViewModel @Inject constructor(
 
     // (서버) 회원 탈퇴를 위한 함수 콜
     suspend fun deleteUser() {
-        deleteUserUseCase.deleteUser().collect {
+        deleteUserUseCase().collect {
             _deleteUserResult.emit(it)
         }
     }
@@ -115,7 +115,7 @@ class AccountSettingViewModel @Inject constructor(
 
             // 회원 정보 collect & emit
             launch {
-                getUserInfoUseCase.getUserInfo().collect {
+                getUserInfoUseCase().collect {
                     _userInfo.emit(it)
                 }
             }

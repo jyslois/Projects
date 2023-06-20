@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases
+package com.android.mymindnotes.domain.usecases.diary
 
 import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
@@ -17,7 +17,9 @@ class GetDiaryListUseCase @Inject constructor(
     private val _getDiaryListError = MutableSharedFlow<Boolean>()
     val getDiaryListError = _getDiaryListError.asSharedFlow()
 
-    suspend fun getDiaryList(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
+//    suspend fun getDiaryList(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
+
+    suspend operator fun invoke(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
 
 
     init {

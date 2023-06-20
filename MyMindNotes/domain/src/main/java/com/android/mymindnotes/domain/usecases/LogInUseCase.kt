@@ -17,7 +17,11 @@ class LogInUseCase @Inject constructor(
     val error = _error.asSharedFlow()
 
 
-    suspend fun login(email: String, password: String): Flow<Map<String, Object>> {
+//    suspend fun login(email: String, password: String): Flow<Map<String, Object>> {
+//        return repository.login(email, password)
+//    }
+
+    suspend operator fun invoke(email: String, password: String): Flow<Map<String, Object>> {
         return repository.login(email, password)
     }
 

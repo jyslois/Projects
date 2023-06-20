@@ -2,13 +2,14 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.DuplicateCheckUseCase
 import com.android.mymindnotes.domain.usecases.JoinUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SaveFirstTimeStateUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SaveIdAndPasswordUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SaveUserIndexUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckEmailDuplicateUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckNickNameDuplicateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -17,7 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JoinViewModel @Inject constructor(
-    private val duplicateCheckUseCase: DuplicateCheckUseCase,
     private val joinUseCase: JoinUseCase,
 
     private val saveIdAndPasswordUseCase: SaveIdAndPasswordUseCase,
@@ -25,7 +25,10 @@ class JoinViewModel @Inject constructor(
     private val saveUserIndexUseCase: SaveUserIndexUseCase,
 
     private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
-    private val saveAutoSaveStateUseCase: SaveAutoSaveStateUseCase
+    private val saveAutoSaveStateUseCase: SaveAutoSaveStateUseCase,
+
+    private val checkEmailDuplicateUseCase: CheckEmailDuplicateUseCase,
+    private val checkNickNameDuplicateUseCase: CheckNickNameDuplicateUseCase
 ) : ViewModel() {
 
     // 에러 메시지
@@ -50,7 +53,7 @@ class JoinViewModel @Inject constructor(
 
     // 이메일 중복 체크 함수 호출
     suspend fun checkEmail(emailInput: String) {
-      duplicateCheckUseCase.checkEmail(emailInput).collect {
+        checkEmailDuplicateUseCase(emailInput).collect {
           _emailCheckResult.emit(it)
       }
     }
@@ -72,7 +75,7 @@ class JoinViewModel @Inject constructor(
 
     // (서버) 닉네임 중복 체크 함수 호출
     suspend fun checkNickName(nickNameInput: String) {
-        duplicateCheckUseCase.checkNickName(nickNameInput).collect {
+        checkNickNameDuplicateUseCase(nickNameInput).collect {
             _nickNameCheckResult.emit(it)
         }
     }
@@ -90,7 +93,7 @@ class JoinViewModel @Inject constructor(
 
     // (서버) 회원가입 함수 호출
     suspend fun join(email: String, nickname: String, password: String, birthyear: Int) {
-        joinUseCase.join(email, nickname, password, birthyear).collect {
+        joinUseCase(email, nickname, password, birthyear).collect {
             _joinResult.emit(it)
         }
     }
@@ -112,7 +115,13 @@ class JoinViewModel @Inject constructor(
 
             // duplicateCheck 에러 값 구독
             launch {
-                duplicateCheckUseCase.error.collect {
+                checkEmailDuplicateUseCase.error.collect {
+                    _error.emit(it)
+                }
+            }
+
+            launch {
+                checkNickNameDuplicateUseCase.error.collect {
                     _error.emit(it)
                 }
             }

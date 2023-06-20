@@ -70,7 +70,7 @@ class LoginViewModel @Inject constructor(
 
     // 로그인
     suspend fun login(email: String, password: String) {
-        login_useCase.login(email, password).collect {
+        login_useCase(email, password).collect {
             _logInResult.emit(it)
         }
     }

@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases
+package com.android.mymindnotes.domain.usecases.userInfoRemote
 
 import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
@@ -17,8 +17,10 @@ class GetUserInfoUseCase @Inject constructor(
     val error = _error.asSharedFlow()
 
 
-    // 회원 정보 불러오기
-    suspend fun getUserInfo(): Flow<Map<String, Object>> = memberRepository.getUserInfo()
+//    // 회원 정보 불러오기
+//    suspend fun getUserInfo(): Flow<Map<String, Object>> = memberRepository.getUserInfo()
+
+    suspend operator fun invoke(): Flow<Map<String, Object>> = memberRepository.getUserInfo()
 
 
     init {

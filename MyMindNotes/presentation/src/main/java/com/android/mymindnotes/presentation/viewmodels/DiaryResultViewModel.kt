@@ -2,8 +2,8 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.DeleteDiaryUseCase
-import com.android.mymindnotes.domain.usecases.GetDiaryListUseCase
+import com.android.mymindnotes.domain.usecases.diary.DeleteDiaryUseCase
+import com.android.mymindnotes.domain.usecases.diary.GetDiaryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,7 +21,7 @@ class DiaryResultViewModel @Inject constructor(
     val diaryList = _diaryList.asSharedFlow()
 
     suspend fun getDiaryList() {
-        getDiaryListUseCase.getDiaryList().collect {
+        getDiaryListUseCase().collect {
             _diaryList.emit(it)
         }
     }
@@ -65,7 +65,7 @@ class DiaryResultViewModel @Inject constructor(
 
     // 일기 삭제하기
     suspend fun deleteDiary(diaryNumber: Int) {
-        deleteDiaryUseCase.deleteDiary(diaryNumber).collect {
+        deleteDiaryUseCase(diaryNumber).collect {
             _deleteDiaryResult.emit(it)
         }
     }

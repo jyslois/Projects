@@ -2,8 +2,8 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.ChangeUserInfoUseCase
-import com.android.mymindnotes.domain.usecases.DuplicateCheckUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangeNickNameUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckNickNameDuplicateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,8 +12,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChangeNickNameViewModel @Inject constructor(
-    private val duplicateCheckUseCase: DuplicateCheckUseCase,
-    private val changeUserInfoUseCase: ChangeUserInfoUseCase
+    private val changeNickNameUseCase: ChangeNickNameUseCase,
+    private val checkNickNameDuplicateUseCase: CheckNickNameDuplicateUseCase
+
 ): ViewModel() {
 
     // 에러 메시지
@@ -35,7 +36,7 @@ class ChangeNickNameViewModel @Inject constructor(
 
     // (서버) 닉네임 중복 체크
     suspend fun checkNickName(nickName: String) {
-        duplicateCheckUseCase.checkNickName(nickName).collect {
+        checkNickNameDuplicateUseCase(nickName).collect {
             _nickNameCheckResult.emit(it)
         }
     }
@@ -65,7 +66,7 @@ class ChangeNickNameViewModel @Inject constructor(
 
     // (서버) 닉네임 변경
     suspend fun changeNickName(nickName: String) {
-        changeUserInfoUseCase.changeNickName(nickName).collect {
+        changeNickNameUseCase(nickName).collect {
             _nickNameChangeResult.emit(it)
         }
     }
@@ -73,16 +74,16 @@ class ChangeNickNameViewModel @Inject constructor(
     // collect & emit
     init {
         viewModelScope.launch {
-            // duplicateCheck 에러 값 구독
+            // nickname duplicateCheck 에러 값 구독
             launch {
-                duplicateCheckUseCase.error.collect {
+                checkNickNameDuplicateUseCase.error.collect {
                     _error.emit(it)
                 }
             }
 
             // 닉네임 변경 에러 값 구독
             launch {
-                changeUserInfoUseCase.error.collect {
+                changeNickNameUseCase.error.collect {
                     _error.emit(it)
                 }
             }

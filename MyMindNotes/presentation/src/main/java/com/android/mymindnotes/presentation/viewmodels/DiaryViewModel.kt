@@ -2,10 +2,8 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.GetDiaryListUseCase
-import com.bumptech.glide.Glide.init
+import com.android.mymindnotes.domain.usecases.diary.GetDiaryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -27,7 +25,7 @@ class DiaryViewModel @Inject constructor(
 
     // getDiaryList() 함수 호출
     suspend fun getDiaryList() {
-        getDiaryListUseCase.getDiaryList().collect {
+        getDiaryListUseCase().collect {
             _diaryList.emit(it)
         }
     }
@@ -68,7 +66,7 @@ class DiaryViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             // getDiaryList() 결과값 collect & emit - 생성 시 자동
-            getDiaryListUseCase.getDiaryList().collect {
+            getDiaryListUseCase().collect {
                 _diaryList.emit(it)
             }
 

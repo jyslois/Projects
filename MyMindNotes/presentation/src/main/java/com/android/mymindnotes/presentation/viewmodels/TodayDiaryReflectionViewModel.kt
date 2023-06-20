@@ -2,7 +2,7 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.SaveTodayDiaryUseCase
+import com.android.mymindnotes.domain.usecases.diary.SaveTodayDiaryUseCase
 import com.android.mymindnotes.domain.usecases.UseTodayDiarySharedPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -87,7 +87,7 @@ class TodayDiaryReflectionViewModel @Inject constructor(
 
     // (서버) 일기 저장 함수 호출
     suspend fun saveDiary() {
-        saveDiaryUseCase.saveDiary().collect {
+        saveDiaryUseCase().collect {
             _saveDiary.emit(it)
         }
     }

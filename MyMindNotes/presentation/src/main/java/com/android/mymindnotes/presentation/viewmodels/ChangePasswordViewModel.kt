@@ -2,8 +2,8 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.ChangeUserInfoUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SavePasswordUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,9 +12,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
-    private val changeUserInfoUseCase: ChangeUserInfoUseCase,
+    private val savePasswordUseCase: SavePasswordUseCase,
 
-    private val savePasswordUseCase: SavePasswordUseCase
+    private val changePasswordUseCase: ChangePasswordUseCase
 ): ViewModel() {
 
     // 에러 메시지
@@ -36,7 +36,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     // (서버) 비밀번호 변경
     suspend fun changePassword(password: String, originalPassword: String) {
-        changeUserInfoUseCase.changePassword(password, originalPassword).collect {
+        changePasswordUseCase(password, originalPassword).collect {
             _changePasswordResult.emit(it)
         }
     }
@@ -50,7 +50,7 @@ class ChangePasswordViewModel @Inject constructor(
         viewModelScope.launch {
             // 비밀번호 변경 에러 값 구독
             launch {
-                changeUserInfoUseCase.error.collect {
+                changePasswordUseCase.error.collect {
                     _error.emit(it)
                 }
             }

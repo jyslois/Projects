@@ -2,7 +2,7 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.GetUserInfoUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.GetUserInfoUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.GetFirstTimeStateUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SaveFirstTimeStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,7 +58,7 @@ class MainPageViewModel @Inject constructor(
 
             launch {
                 // 회원정보 값 collect & emit
-                getUserInfoUseCase.getUserInfo().collect {
+                getUserInfoUseCase().collect {
                     _userInfo.emit(it)
                 }
             }

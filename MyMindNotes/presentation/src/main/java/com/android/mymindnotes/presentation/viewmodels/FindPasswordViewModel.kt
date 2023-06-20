@@ -2,7 +2,7 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.ChangeUserInfoUseCase
+import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangeToTemporaryPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FindPasswordViewModel @Inject constructor(
-    private val changeUserInfoUseCase: ChangeUserInfoUseCase
+    private val changeToTemporaryPasswordUseCase: ChangeToTemporaryPasswordUseCase
 ): ViewModel() {
 
     // 에러 메시지
@@ -33,7 +33,7 @@ class FindPasswordViewModel @Inject constructor(
 
     // (서버) 임시 비밀번호로 비밀번호 변경하기
     suspend fun changeToTemporaryPassword(email: String, randomPassword: String) {
-        changeUserInfoUseCase.changeToTemporaryPassword(email, randomPassword).collect {
+        changeToTemporaryPasswordUseCase(email, randomPassword).collect {
             _changeToTemporaryPasswordResult.emit(it)
         }
     }
@@ -42,7 +42,7 @@ class FindPasswordViewModel @Inject constructor(
         viewModelScope.launch {
             // 비밀번호 변경 에러 값 구독
             launch {
-                changeUserInfoUseCase.error.collect {
+                changeToTemporaryPasswordUseCase.error.collect {
                     _error.emit(it)
                 }
             }

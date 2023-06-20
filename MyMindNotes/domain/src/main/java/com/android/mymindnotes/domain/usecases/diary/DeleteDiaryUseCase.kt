@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases
+package com.android.mymindnotes.domain.usecases.diary
 
 import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
@@ -27,7 +27,9 @@ class DeleteDiaryUseCase @Inject constructor(
         }
     }
 
-    // Delete Diary
-    suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = diaryRepository.deleteDiary(diaryNumber)
+//    // Delete Diary
+//    suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = diaryRepository.deleteDiary(diaryNumber)
+
+    suspend operator fun invoke(diaryNumber: Int): Flow<Map<String, Object>> = diaryRepository.deleteDiary(diaryNumber)
 
 }

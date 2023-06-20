@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases
+package com.android.mymindnotes.domain.usecases.userInfoRemote
 
 import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
@@ -14,8 +14,12 @@ class DeleteUserUseCase @Inject constructor(
     @com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
-    // 회원탈퇴 함수 콜
-    suspend fun deleteUser(): Flow<Map<String, Object>> {
+//    // 회원탈퇴 함수 콜
+//    suspend fun deleteUser(): Flow<Map<String, Object>> {
+//        return memberRepository.deleteUser()
+//    }
+
+    suspend operator fun invoke(): Flow<Map<String, Object>> {
         return memberRepository.deleteUser()
     }
 

@@ -2,7 +2,7 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.UpdateDiaryUseCase
+import com.android.mymindnotes.domain.usecases.diary.UpdateDiaryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -48,7 +48,7 @@ class DiaryResultEditViewModel @Inject constructor(
         emotionDescription: String?,
         reflection: String?
     ) {
-        updateDiaryUseCase.updateDiary(diaryNumber, situation, thought, emotion, emotionDescription, reflection).collect {
+        updateDiaryUseCase(diaryNumber, situation, thought, emotion, emotionDescription, reflection).collect {
             _updateDiaryResult.emit(it)
         }
     }
