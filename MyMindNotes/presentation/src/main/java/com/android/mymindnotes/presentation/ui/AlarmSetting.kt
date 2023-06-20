@@ -129,11 +129,11 @@ class AlarmSetting : AppCompatActivity() {
                             binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
                             binding.setTimeButtton.visibility = View.GONE
                             // 모든 상태저장 삭제
-                            viewModel.clearAlarmSharedPreferences()
+                            viewModel.clearAlarmSettings()
                             // 알람 설정 해제
                             // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
                             viewModel.clearTimeSharedPreferences()
-                            viewModel.stopAlarm(applicationContext)
+                            viewModel.stopAlarm()
 
                             Toast.makeText(applicationContext, "알람이 해제되었습니다", Toast.LENGTH_LONG).show()
                         }
@@ -203,7 +203,7 @@ class AlarmSetting : AppCompatActivity() {
                             }
 
                             // Unset the alarm that was originally set.
-                            viewModel.stopAlarm(applicationContext)
+                            viewModel.stopAlarm()
 
 
 

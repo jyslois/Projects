@@ -4,10 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
-import com.android.mymindnotes.domain.usecases.AlarmUseCase
+import com.android.mymindnotes.domain.usecases.alarm.SaveRebootAlarmTimeUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -18,7 +17,10 @@ import javax.inject.Inject
 class AlarmReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var alarmUseCase: AlarmUseCase
+    lateinit var saveRebootAlarmTimeUseCase: SaveRebootAlarmTimeUseCase
+
+    @Inject
+    lateinit var clearTimeSettingsUseCase: ClearTimeSettingsUseCase
 
     @Inject
     lateinit var alarmManagerHelper: AlarmManagerHelper
@@ -47,7 +49,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
         mainDispatcherCoroutineScope.launch {
-            alarmUseCase.clearTimeSharedPreferences()
+            clearTimeSettingsUseCase()
         }
 
         // 알람 재호출 (반복 알람 세팅을 위해) - 하루 후에
@@ -57,7 +59,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
         mainDispatcherCoroutineScope.launch {
-            alarmUseCase.saveRebootTime(calendar.timeInMillis)
+            saveRebootAlarmTimeUseCase(calendar.timeInMillis)
         }
     }
 

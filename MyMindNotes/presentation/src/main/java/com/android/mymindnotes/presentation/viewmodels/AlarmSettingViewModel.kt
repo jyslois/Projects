@@ -1,11 +1,16 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.AlarmUseCase
+import com.android.mymindnotes.domain.usecases.alarm.GetAlarmStateUseCase
+import com.android.mymindnotes.domain.usecases.alarm.GetAlarmTimeUseCase
+import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmStateUseCase
+import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmTimeUseCase
+import com.android.mymindnotes.domain.usecases.alarm.SaveRebootAlarmTimeUseCase
+import com.android.mymindnotes.domain.usecases.alarm.SetAlarmUseCase
+import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.ClearAlarmSettingsUseCase
+import com.android.mymindnotes.domain.usecases.userinfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +20,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlarmSettingViewModel @Inject constructor(
-    private val alarmUseCase: AlarmUseCase
+    private val clearAlarmSettingsUseCase: ClearAlarmSettingsUseCase,
+    private var clearTimeSettingsUseCase: ClearTimeSettingsUseCase,
+
+    private val getAlarmStateUseCase: GetAlarmStateUseCase,
+    private val saveAlarmStateUseCase: SaveAlarmStateUseCase,
+    private val getAlarmTimeUseCase: GetAlarmTimeUseCase,
+    private val saveAlarmTimeUseCase: SaveAlarmTimeUseCase,
+
+    private val saveRebootAlarmTimeUseCase: SaveRebootAlarmTimeUseCase,
+    private val setAlarmUseCase: SetAlarmUseCase,
+    private val stopAlarmUseCase: StopAlarmUseCase
 ): ViewModel() {
     // Alarm
 
@@ -23,10 +38,6 @@ class AlarmSettingViewModel @Inject constructor(
     private val _alarmState = MutableSharedFlow<Boolean>()
     val alarmState = _alarmState.asSharedFlow()
 
-    // time 가져오기
-    suspend fun getTime(): Flow<String?> {
-        return alarmUseCase.getTime()
-    }
 
     // time 저장 플로우
     private val _time = MutableSharedFlow<String?>()
@@ -34,49 +45,49 @@ class AlarmSettingViewModel @Inject constructor(
 
     // alarm 상태 저장하기
     suspend fun saveAlarmState(state: Boolean) {
-        alarmUseCase.saveAlarmState(state)
+        saveAlarmStateUseCase(state)
     }
 
     // time 저장하기
     suspend fun saveTime(time: String) {
-        alarmUseCase.saveTime(time)
+        saveAlarmTimeUseCase.saveTime(time)
     }
 
     // 시간 저장하기
     suspend fun saveHour(hour: Int) {
-        alarmUseCase.saveHour(hour)
+        saveAlarmTimeUseCase.saveHour(hour)
     }
 
     // 시간 가져오기
     suspend fun getHour(): Flow<Int> {
-        return alarmUseCase.getHour()
+        return getAlarmTimeUseCase.getHour()
     }
 
     // 분 저장하기
     suspend fun saveMinute(minute: Int) {
-        alarmUseCase.saveMinute(minute)
+        saveAlarmTimeUseCase.saveMinute(minute)
     }
 
     // 분 가져오기
     suspend fun getMinute(): Flow<Int> {
-        return alarmUseCase.getMinute()
+        return getAlarmTimeUseCase.getMinute()
     }
 
     // Reboot 위한 시간 저장하기
     suspend fun saveRebootTime(time: Long) {
-        alarmUseCase.saveRebootTime(time)
+        saveRebootAlarmTimeUseCase(time)
     }
 
 
     // Clear Preferences
     // Clear Alarm SharedPreferences
-    suspend fun clearAlarmSharedPreferences() {
-        alarmUseCase.clearAlarmSharedPreferences()
+    suspend fun clearAlarmSettings() {
+        clearAlarmSettingsUseCase()
     }
 
     // Clear Time SharedPreferences
     suspend fun clearTimeSharedPreferences() {
-        alarmUseCase.clearTimeSharedPreferences()
+        clearTimeSettingsUseCase()
     }
 
     // 클릭 이벤트 감지
@@ -97,22 +108,22 @@ class AlarmSettingViewModel @Inject constructor(
     }
 
     fun setAlarm(calendar: java.util.Calendar) {
-        alarmUseCase.setAlarm(calendar)
+        setAlarmUseCase(calendar)
     }
 
-    fun stopAlarm(context: Context) {
-        alarmUseCase.stopAlarm()
+    fun stopAlarm() {
+        stopAlarmUseCase()
     }
 
     init {
         viewModelScope.launch {
             // 알람 상태 collect & emit
-            alarmUseCase.getAlarmState().collect {
+            getAlarmStateUseCase().collect {
                 _alarmState.emit(it)
             }
 
             // 시간 collect & emit
-            alarmUseCase.getTime().collect {
+            getAlarmTimeUseCase.getTime().collect {
                 _time.emit(it)
             }
         }

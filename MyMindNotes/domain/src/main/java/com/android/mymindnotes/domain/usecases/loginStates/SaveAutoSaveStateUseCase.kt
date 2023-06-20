@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases.loginstates
+package com.android.mymindnotes.domain.usecases.loginStates
 
 import com.android.mymindnotes.data.repositoryInterfaces.MemberSharedPreferencesRepository
 import javax.inject.Inject

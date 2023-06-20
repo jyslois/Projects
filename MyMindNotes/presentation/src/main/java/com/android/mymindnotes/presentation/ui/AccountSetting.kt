@@ -98,7 +98,7 @@ class AccountSetting : AppCompatActivity() {
                     viewModel.logoutButton.collect {
                         // 상태 저장
                         viewModel.saveAutoLoginCheck(false)
-                        startActivity<com.android.mymindnotes.presentation.ui.MainActivity>()
+                        startActivity<MainActivity>()
                     }
                 }
 
@@ -116,7 +116,7 @@ class AccountSetting : AppCompatActivity() {
                         // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
                         if (it["code"].toString().toDouble() == 4000.0) {
                             // 알람 삭제
-                            viewModel.stopAlarm(applicationContext)
+                            viewModel.stopAlarm()
                             // 모든 상태저장 삭제
                             // 알람 설정 해제 (임시)
                             viewModel.clearAlarmSharedPreferences()

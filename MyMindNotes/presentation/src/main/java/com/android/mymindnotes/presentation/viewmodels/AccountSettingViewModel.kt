@@ -1,13 +1,12 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.AlarmUseCase
 import com.android.mymindnotes.domain.usecases.DeleteUserUseCase
 import com.android.mymindnotes.domain.usecases.GetUserInfoUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.ClearLoginStatesUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.SaveAutoLoginStateUseCase
+import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.ClearLoginStatesUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.ClearAlarmSettingsUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,13 +19,15 @@ import javax.inject.Inject
 class AccountSettingViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
-    private val alarmUseCase: AlarmUseCase,
 
     private val clearAlarmSettingsUseCase: ClearAlarmSettingsUseCase,
     private val clearTimeSettingsUseCase: ClearTimeSettingsUseCase,
 
     private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
-    private val clearLoginStatesUseCase: ClearLoginStatesUseCase
+    private val clearLoginStatesUseCase: ClearLoginStatesUseCase,
+
+    private val stopAlarmUseCase: StopAlarmUseCase,
+
 ) : ViewModel() {
 
     // 에러 메시지
@@ -104,8 +105,8 @@ class AccountSettingViewModel @Inject constructor(
     }
 
     // stop Alarm
-    fun stopAlarm(context: Context) {
-        alarmUseCase.stopAlarm()
+    fun stopAlarm() {
+        stopAlarmUseCase()
     }
 
     // collect & emit

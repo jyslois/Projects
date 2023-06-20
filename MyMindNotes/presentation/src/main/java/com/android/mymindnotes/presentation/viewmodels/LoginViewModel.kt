@@ -3,10 +3,10 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.LogInUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.GetAutoLoginStateUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.GetAutoSaveStateUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.SaveAutoLoginStateUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.SaveAutoSaveStateUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.GetAutoLoginStateUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.GetAutoSaveStateUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.GetIdUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.GetPasswordUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.SaveIdAndPasswordUseCase

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.DuplicateCheckUseCase
 import com.android.mymindnotes.domain.usecases.JoinUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.SaveAutoLoginStateUseCase
-import com.android.mymindnotes.domain.usecases.loginstates.SaveAutoSaveStateUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
+import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.SaveFirstTimeStateUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.SaveIdAndPasswordUseCase
 import com.android.mymindnotes.domain.usecases.userinfo.SaveUserIndexUseCase
