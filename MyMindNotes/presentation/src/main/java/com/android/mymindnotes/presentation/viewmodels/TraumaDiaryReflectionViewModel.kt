@@ -3,7 +3,12 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.SaveTraumaDiaryUseCase
-import com.android.mymindnotes.domain.usecases.UseTraumaDiarySharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.ClearTraumaDiaryTempRecordsUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiaryReflectionUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryRecordDateUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryRecordDayUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryReflectionUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,8 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TraumaDiaryReflectionViewModel @Inject constructor(
-    private val sharedPreferencesUseCase: UseTraumaDiarySharedPreferencesUseCase,
-    private val saveDiaryUseCase: SaveTraumaDiaryUseCase
+    private val saveDiaryUseCase: SaveTraumaDiaryUseCase,
+    private val saveTraumaDiaryReflectionUseCase: SaveTraumaDiaryReflectionUseCase,
+    private val saveTraumaDiaryTypeUseCase: SaveTraumaDiaryTypeUseCase,
+    private val saveTraumaDiaryRecordDateUseCase: SaveTraumaDiaryRecordDateUseCase,
+    private val saveTraumaDiaryRecordDayUseCase: SaveTraumaDiaryRecordDayUseCase,
+    private val getTraumaDiaryReflectionUseCase: GetTraumaDiaryReflectionUseCase,
+    private val clearTraumaDiaryTempRecordsUseCase: ClearTraumaDiaryTempRecordsUseCase
 ): ViewModel() {
 
     // 버튼 클릭
@@ -59,26 +69,26 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
     val reflection = _reflection.asSharedFlow()
 
     suspend fun getReflection() {
-        sharedPreferencesUseCase.getReflection().collect {
+        getTraumaDiaryReflectionUseCase().collect {
             _reflection.emit(it)
         }
     }
 
     // Save Methods
     suspend fun saveReflection(reflection: String?) {
-        sharedPreferencesUseCase.saveReflection(reflection)
+        saveTraumaDiaryReflectionUseCase(reflection)
     }
 
     suspend fun saveType(type: String) {
-        sharedPreferencesUseCase.saveType(type)
+        saveTraumaDiaryTypeUseCase(type)
     }
 
     suspend fun saveDate(date: String) {
-        sharedPreferencesUseCase.saveDate(date)
+        saveTraumaDiaryRecordDateUseCase(date)
     }
 
     suspend fun saveDay(day: String) {
-        sharedPreferencesUseCase.saveDay(day)
+        saveTraumaDiaryRecordDayUseCase(day)
     }
 
     // 일기 저장 결과 플로우
@@ -108,39 +118,7 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
     }
 
     // Clear Methods
-    suspend fun clearEmotionColorSharedPreferences() {
-        sharedPreferencesUseCase.clearEmotionColorSharedPreferences()
-    }
-
-    suspend fun clearEmotionSharedPreferences() {
-        sharedPreferencesUseCase.clearEmotionSharedPreferences()
-    }
-
-    suspend fun clearEmotionTextSharedPreferences() {
-        sharedPreferencesUseCase.clearEmotionTextSharedPreferences()
-    }
-
-    suspend fun clearSituationSharedPreferences() {
-        sharedPreferencesUseCase.clearSituationSharedPreferences()
-    }
-
-    suspend fun clearThoughtSharedPreferences() {
-        sharedPreferencesUseCase.clearThoughtSharedPreferences()
-    }
-
-    suspend fun clearReflectionSharedPreferences() {
-        sharedPreferencesUseCase.clearReflectionSharedPreferences()
-    }
-
-    suspend fun clearTypeSharedPreferences() {
-        sharedPreferencesUseCase.clearTypeSharedPreferences()
-    }
-
-    suspend fun clearDateSharedPreferences() {
-        sharedPreferencesUseCase.clearDateSharedPreferences()
-    }
-
-    suspend fun clearDaySharedPreferences() {
-        sharedPreferencesUseCase.clearDaySharedPreferences()
+    suspend fun clearTraumaDiaryTempRecords() {
+        clearTraumaDiaryTempRecordsUseCase()
     }
 }

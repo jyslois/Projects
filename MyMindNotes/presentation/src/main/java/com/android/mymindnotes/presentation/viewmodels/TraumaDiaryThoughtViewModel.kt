@@ -1,7 +1,8 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.domain.usecases.UseTraumaDiarySharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiaryThoughtUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryThoughtUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -9,7 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TraumaDiaryThoughtViewModel @Inject constructor(
-    private val useCase: UseTraumaDiarySharedPreferencesUseCase
+    private val traumaDiaryThoughtUseCase: SaveTraumaDiaryThoughtUseCase,
+    private val getTraumaDiaryThoughtUseCase: GetTraumaDiaryThoughtUseCase
 ): ViewModel() {
     // 버튼 클릭
     // 팁 버튼 클릭 감지
@@ -41,7 +43,7 @@ class TraumaDiaryThoughtViewModel @Inject constructor(
 
     // Save Method
     suspend fun saveThought(thought: String) {
-        useCase.saveThought(thought)
+        traumaDiaryThoughtUseCase(thought)
     }
 
     // Get Method
@@ -49,7 +51,7 @@ class TraumaDiaryThoughtViewModel @Inject constructor(
     val thought = _thought.asSharedFlow()
 
     suspend fun getThought() {
-        useCase.getThought().collect {
+        getTraumaDiaryThoughtUseCase().collect {
             _thought.emit(it)
         }
     }

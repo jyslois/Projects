@@ -1,7 +1,9 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.domain.usecases.UseTraumaDiarySharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.ClearTraumaDiaryTempRecordsUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiarySituationUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiarySituationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -9,7 +11,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TraumaDiarySituationViewModel @Inject constructor(
-    private val useCase: UseTraumaDiarySharedPreferencesUseCase
+    private val saveTraumaDiarySituationUseCase: SaveTraumaDiarySituationUseCase,
+    private val getTraumaDiarySituationUseCase: GetTraumaDiarySituationUseCase,
+    private val clearTraumaDiaryTempRecordsUseCase: ClearTraumaDiaryTempRecordsUseCase
 ): ViewModel() {
 
     // 버튼 클릭
@@ -33,7 +37,7 @@ class TraumaDiarySituationViewModel @Inject constructor(
 
     // Save Method
     suspend fun saveSituation(situation: String) {
-        useCase.saveSituation(situation)
+        saveTraumaDiarySituationUseCase(situation)
     }
 
     // Get Method
@@ -42,38 +46,14 @@ class TraumaDiarySituationViewModel @Inject constructor(
     val situation = _situation.asSharedFlow()
 
     suspend fun getSituation() {
-        useCase.getSituation().collect {
+        getTraumaDiarySituationUseCase().collect {
             _situation.emit(it)
         }
     }
 
     // Clear Methods
-    suspend fun clearEmotionColorSharedPreferences() {
-        useCase.clearEmotionColorSharedPreferences()
-    }
-
-    suspend fun clearEmotionSharedPreferences() {
-        useCase.clearEmotionSharedPreferences()
-    }
-
-    suspend fun clearEmotionTextSharedPreferences() {
-        useCase.clearEmotionTextSharedPreferences()
-    }
-
-    suspend fun clearSituationSharedPreferences() {
-        useCase.clearSituationSharedPreferences()
-    }
-
-    suspend fun clearThoughtSharedPreferences() {
-        useCase.clearThoughtSharedPreferences()
-    }
-
-    suspend fun clearReflectionSharedPreferences() {
-        useCase.clearReflectionSharedPreferences()
-    }
-
-    suspend fun clearTypeSharedPreferences() {
-        useCase.clearTypeSharedPreferences()
+    suspend fun clearTraumaDiaryTempRecords() {
+        clearTraumaDiaryTempRecordsUseCase()
     }
 
 }

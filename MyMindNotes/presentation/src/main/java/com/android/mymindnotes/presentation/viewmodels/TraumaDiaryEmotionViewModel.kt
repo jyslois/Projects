@@ -1,7 +1,8 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.domain.usecases.UseTraumaDiarySharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiaryEmotionPartsUseCase
+import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryEmotionPartsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TraumaDiaryEmotionViewModel @Inject constructor(
-    private val useCase: UseTraumaDiarySharedPreferencesUseCase
+    private val saveTraumaDiaryEmotionPartsUseCase: SaveTraumaDiaryEmotionPartsUseCase,
+    private val getTraumaDiaryEmotionPartsUseCase: GetTraumaDiaryEmotionPartsUseCase
 ): ViewModel() {
 
     // 버튼 클릭
@@ -69,15 +71,15 @@ class TraumaDiaryEmotionViewModel @Inject constructor(
 
     // Save Methods
     suspend fun saveEmotionColor(color: Int) {
-        useCase.saveEmotionColor(color)
+        saveTraumaDiaryEmotionPartsUseCase.saveEmotionColor(color)
     }
 
     suspend fun saveEmotion(emotion: String?) {
-        useCase.saveEmotion(emotion)
+        saveTraumaDiaryEmotionPartsUseCase.saveEmotion(emotion)
     }
 
     suspend fun saveEmotionText(emotionText: String?) {
-        useCase.saveEmotionText(emotionText)
+        saveTraumaDiaryEmotionPartsUseCase.saveEmotionText(emotionText)
     }
 
     // Get Methods
@@ -87,7 +89,7 @@ class TraumaDiaryEmotionViewModel @Inject constructor(
     val emotion = _emotion.asSharedFlow()
 
     suspend fun getEmotion() {
-        useCase.getEmotion().collect {
+        getTraumaDiaryEmotionPartsUseCase.getEmotion().collect {
             _emotion.emit(it)
         }
     }
@@ -97,7 +99,7 @@ class TraumaDiaryEmotionViewModel @Inject constructor(
     val emotionText = _emotionText.asSharedFlow()
 
     suspend fun getEmotionText() {
-        useCase.getEmotionText().collect {
+        getTraumaDiaryEmotionPartsUseCase.getEmotionText().collect {
             _emotionText.emit(it)
         }
     }

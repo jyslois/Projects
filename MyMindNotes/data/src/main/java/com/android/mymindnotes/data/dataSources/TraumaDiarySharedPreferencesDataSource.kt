@@ -150,66 +150,18 @@ class TraumaDiarySharedPreferencesDataSource @Inject constructor(
 
 
     // Clear methods
-    // EmotionColor
-    suspend fun clearEmotionColorSharedPreferences() {
+    suspend fun clearTraumaDiaryTempRecords() {
         withContext(ioDispatcher) {
-            emotionColor_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // Emotion
-    suspend fun clearEmotionSharedPreferences() {
-        withContext(ioDispatcher) {
-            emotion_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // EmotionText
-    suspend fun clearEmotionTextSharedPreferences() {
-        withContext(ioDispatcher) {
-            emotionText_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // Situation
-    suspend fun clearSituationSharedPreferences() {
-        withContext(ioDispatcher) {
-            situation_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // Thought
-    suspend fun clearThoughtSharedPreferences() {
-        withContext(ioDispatcher) {
-            thought_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // Reflection
-    suspend fun clearReflectionSharedPreferences() {
-        withContext(ioDispatcher) {
-            reflection_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // Type
-    suspend fun clearTypeSharedPreferences() {
-        withContext(ioDispatcher) {
-            type_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // Date
-    suspend fun clearDateSharedPreferences() {
-        withContext(ioDispatcher) {
-            date_sharedPreferences.edit().clear().commit()
-        }
-    }
-
-    // Day
-    suspend fun clearDaySharedPreferences() {
-        withContext(ioDispatcher) {
+            emotionColor_sharedPreferences.edit().clear().apply()
+            emotion_sharedPreferences.edit().clear().apply()
+            emotionText_sharedPreferences.edit().clear().apply()
+            situation_sharedPreferences.edit().clear().apply()
+            thought_sharedPreferences.edit().clear().apply()
+            reflection_sharedPreferences.edit().clear().apply()
+            type_sharedPreferences.edit().clear().apply()
+            date_sharedPreferences.edit().clear().apply()
             day_sharedPreferences.edit().clear().commit()
         }
     }
+
 }

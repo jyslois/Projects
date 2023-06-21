@@ -1,7 +1,9 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.domain.usecases.UseTodayDiarySharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.ClearTodayDiaryTempRecordsUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiaryEmotionPartsUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryEmotionPartsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodayDiaryEmotionViewModel @Inject constructor(
-    private val useCase: UseTodayDiarySharedPreferencesUseCase
+    private val saveTodayDiaryEmotionPartsUseCase: SaveTodayDiaryEmotionPartsUseCase,
+    private val getTodayDiaryEmotionPartsUseCase: GetTodayDiaryEmotionPartsUseCase,
+    private val clearTodayDiaryTempRecordsUseCase: ClearTodayDiaryTempRecordsUseCase
 ): ViewModel() {
 
     // 버튼 클릭
@@ -60,15 +64,15 @@ class TodayDiaryEmotionViewModel @Inject constructor(
 
     // Save Methods
     suspend fun saveEmotionColor(color: Int) {
-        useCase.saveEmotionColor(color)
+        saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(color)
     }
 
     suspend fun saveEmotion(emotion: String) {
-        useCase.saveEmotion(emotion)
+        saveTodayDiaryEmotionPartsUseCase.saveEmotion(emotion)
     }
 
     suspend fun saveEmotionText(emotionText: String?) {
-        useCase.saveEmotionText(emotionText)
+        saveTodayDiaryEmotionPartsUseCase.saveEmotionText(emotionText)
     }
 
     // Get Methods
@@ -78,7 +82,7 @@ class TodayDiaryEmotionViewModel @Inject constructor(
     val emotion = _emotion.asSharedFlow()
 
     suspend fun getEmotion() {
-        useCase.getEmotion().collect {
+        getTodayDiaryEmotionPartsUseCase.getEmotion().collect {
             _emotion.emit(it)
         }
     }
@@ -88,38 +92,14 @@ class TodayDiaryEmotionViewModel @Inject constructor(
     val emotionText = _emotionText.asSharedFlow()
 
     suspend fun getEmotionText() {
-        useCase.getEmotionText().collect {
+        getTodayDiaryEmotionPartsUseCase.getEmotionText().collect {
             _emotionText.emit(it)
         }
     }
 
     // Clear Methods
-    suspend fun clearEmotionColorSharedPreferences() {
-        useCase.clearEmotionColorSharedPreferences()
-    }
-
-    suspend fun clearEmotionSharedPreferences() {
-        useCase.clearEmotionSharedPreferences()
-    }
-
-    suspend fun clearEmotionTextSharedPreferences() {
-        useCase.clearEmotionTextSharedPreferences()
-    }
-
-    suspend fun clearSituationSharedPreferences() {
-        useCase.clearSituationSharedPreferences()
-    }
-
-    suspend fun clearThoughtSharedPreferences() {
-        useCase.clearThoughtSharedPreferences()
-    }
-
-    suspend fun clearReflectionSharedPreferences() {
-        useCase.clearReflectionSharedPreferences()
-    }
-
-    suspend fun clearTypeSharedPreferences() {
-        useCase.clearTypeSharedPreferences()
+    suspend fun clearTodayDiaryTempRecords() {
+        clearTodayDiaryTempRecordsUseCase()
     }
 
 

@@ -103,13 +103,7 @@ class TraumaDiarySituation : AppCompatActivity() {
         if (which == DialogInterface.BUTTON_NEGATIVE) {
             // 기록 삭제
             lifecycleScope.launch {
-                viewModel.clearEmotionColorSharedPreferences()
-                viewModel.clearEmotionSharedPreferences()
-                viewModel.clearEmotionTextSharedPreferences()
-                viewModel.clearSituationSharedPreferences()
-                viewModel.clearThoughtSharedPreferences()
-                viewModel.clearReflectionSharedPreferences()
-                viewModel.clearTypeSharedPreferences()
+                viewModel.clearTraumaDiaryTempRecords()
             }
             finish()
         }

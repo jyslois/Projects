@@ -3,7 +3,12 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.SaveTodayDiaryUseCase
-import com.android.mymindnotes.domain.usecases.UseTodayDiarySharedPreferencesUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.ClearTodayDiaryTempRecordsUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiaryReflectionUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryRecordDateUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryRecordDayUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryReflectionUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,8 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodayDiaryReflectionViewModel @Inject constructor(
-    private val sharedPreferencesUseCase: UseTodayDiarySharedPreferencesUseCase,
-    private val saveDiaryUseCase: SaveTodayDiaryUseCase
+    private val saveDiaryUseCase: SaveTodayDiaryUseCase,
+
+    private val saveTodayDiaryReflectionUseCase: SaveTodayDiaryReflectionUseCase,
+    private val saveTodayDiaryTypeUseCase: SaveTodayDiaryTypeUseCase,
+    private val saveTodayDiaryRecordDateUseCase: SaveTodayDiaryRecordDateUseCase,
+    private val saveTodayDiaryRecordDayUseCase: SaveTodayDiaryRecordDayUseCase,
+    private val getTodayDiaryReflectionUseCase: GetTodayDiaryReflectionUseCase,
+    private val clearTodayDiaryTempRecordsUseCase: ClearTodayDiaryTempRecordsUseCase
 ): ViewModel() {
 
     // 버튼 클릭
@@ -59,26 +70,26 @@ class TodayDiaryReflectionViewModel @Inject constructor(
     val reflection = _reflection.asSharedFlow()
 
     suspend fun getReflection() {
-        sharedPreferencesUseCase.getReflection().collect {
+        getTodayDiaryReflectionUseCase().collect {
             _reflection.emit(it)
         }
     }
 
     // Save Methods
     suspend fun saveReflection(reflection: String?) {
-        sharedPreferencesUseCase.saveReflection(reflection)
+        saveTodayDiaryReflectionUseCase(reflection)
     }
 
     suspend fun saveType(type: String) {
-        sharedPreferencesUseCase.saveType(type)
+        saveTodayDiaryTypeUseCase(type)
     }
 
     suspend fun saveDate(date: String) {
-        sharedPreferencesUseCase.saveDate(date)
+        saveTodayDiaryRecordDateUseCase(date)
     }
 
     suspend fun saveDay(day: String) {
-        sharedPreferencesUseCase.saveDay(day)
+        saveTodayDiaryRecordDayUseCase(day)
     }
 
     // 일기 저장 결과 플로우
@@ -108,39 +119,7 @@ class TodayDiaryReflectionViewModel @Inject constructor(
     }
 
     // Clear Methods
-    suspend fun clearEmotionColorSharedPreferences() {
-        sharedPreferencesUseCase.clearEmotionColorSharedPreferences()
-    }
-
-    suspend fun clearEmotionSharedPreferences() {
-        sharedPreferencesUseCase.clearEmotionSharedPreferences()
-    }
-
-    suspend fun clearEmotionTextSharedPreferences() {
-        sharedPreferencesUseCase.clearEmotionTextSharedPreferences()
-    }
-
-    suspend fun clearSituationSharedPreferences() {
-        sharedPreferencesUseCase.clearSituationSharedPreferences()
-    }
-
-    suspend fun clearThoughtSharedPreferences() {
-        sharedPreferencesUseCase.clearThoughtSharedPreferences()
-    }
-
-    suspend fun clearReflectionSharedPreferences() {
-        sharedPreferencesUseCase.clearReflectionSharedPreferences()
-    }
-
-    suspend fun clearTypeSharedPreferences() {
-        sharedPreferencesUseCase.clearTypeSharedPreferences()
-    }
-
-    suspend fun clearDateSharedPreferences() {
-        sharedPreferencesUseCase.clearDateSharedPreferences()
-    }
-
-    suspend fun clearDaySharedPreferences() {
-        sharedPreferencesUseCase.clearDaySharedPreferences()
+    suspend fun clearTodayDiaryTempRecords() {
+        clearTodayDiaryTempRecordsUseCase()
     }
 }

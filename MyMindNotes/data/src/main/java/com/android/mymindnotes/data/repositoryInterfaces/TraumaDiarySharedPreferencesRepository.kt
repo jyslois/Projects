@@ -22,15 +22,7 @@ interface TraumaDiarySharedPreferencesRepository {
     suspend fun getThought(): Flow<String?>
     suspend fun getReflection(): Flow<String?>
 
-    // clear methods
-    suspend fun clearEmotionColorSharedPreferences()
-    suspend fun clearEmotionSharedPreferences()
-    suspend fun clearEmotionTextSharedPreferences()
-    suspend fun clearSituationSharedPreferences()
-    suspend fun clearThoughtSharedPreferences()
-    suspend fun clearReflectionSharedPreferences()
-    suspend fun clearTypeSharedPreferences()
-    suspend fun clearDateSharedPreferences()
-    suspend fun clearDaySharedPreferences()
+    // clear method
+    suspend fun clearTraumaDiaryTempRecords()
 
 }

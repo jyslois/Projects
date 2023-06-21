@@ -58,39 +58,9 @@ class TraumaDiarySharedPreferencesRepositoryImpl @Inject constructor(
 
 
     // Clear Methods
-    override suspend fun clearEmotionColorSharedPreferences() {
-        dataSource.clearEmotionColorSharedPreferences()
+
+    override suspend fun clearTraumaDiaryTempRecords() {
+        dataSource.clearTraumaDiaryTempRecords()
     }
 
-    override suspend fun clearEmotionSharedPreferences() {
-        dataSource.clearEmotionSharedPreferences()
-    }
-
-    override suspend fun clearEmotionTextSharedPreferences() {
-        dataSource.clearEmotionTextSharedPreferences()
-    }
-
-    override suspend fun clearSituationSharedPreferences() {
-        dataSource.clearSituationSharedPreferences()
-    }
-
-    override suspend fun clearThoughtSharedPreferences() {
-        dataSource.clearThoughtSharedPreferences()
-    }
-
-    override suspend fun clearReflectionSharedPreferences() {
-        dataSource.clearReflectionSharedPreferences()
-    }
-
-    override suspend fun clearTypeSharedPreferences() {
-        dataSource.clearTypeSharedPreferences()
-    }
-
-    override suspend fun clearDateSharedPreferences() {
-        dataSource.clearDateSharedPreferences()
-    }
-
-    override suspend fun clearDaySharedPreferences() {
-        dataSource.clearDaySharedPreferences()
-    }
 }

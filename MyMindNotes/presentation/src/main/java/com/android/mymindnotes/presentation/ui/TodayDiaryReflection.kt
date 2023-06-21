@@ -149,15 +149,7 @@ class TodayDiaryReflection : AppCompatActivity() {
                             dialog(it["msg"] as String)
                         } else if (it["code"].toString().toDouble() == 6000.0) {
                             // 저장한 것 삭제
-                            viewModel.clearReflectionSharedPreferences()
-                            viewModel.clearEmotionColorSharedPreferences()
-                            viewModel.clearEmotionSharedPreferences()
-                            viewModel.clearEmotionTextSharedPreferences()
-                            viewModel.clearSituationSharedPreferences()
-                            viewModel.clearThoughtSharedPreferences()
-                            viewModel.clearTypeSharedPreferences()
-                            viewModel.clearDateSharedPreferences()
-                            viewModel.clearDaySharedPreferences()
+                            viewModel.clearTodayDiaryTempRecords()
 
                             // 성공 토스트 띄우기
                             Toast.makeText(
