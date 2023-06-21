@@ -11,6 +11,9 @@ import com.android.mymindnotes.domain.usecases.userInfo.ClearAlarmSettingsUseCas
 import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,51 +22,20 @@ import javax.inject.Inject
 class AccountSettingViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
-
     private val clearAlarmSettingsUseCase: ClearAlarmSettingsUseCase,
     private val clearTimeSettingsUseCase: ClearTimeSettingsUseCase,
-
     private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
     private val clearLoginStatesUseCase: ClearLoginStatesUseCase,
-
-    private val stopAlarmUseCase: StopAlarmUseCase,
-
+    private val stopAlarmUseCase: StopAlarmUseCase
     ) : ViewModel() {
 
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>()
-    val error = _error.asSharedFlow()
+    // ui상태
+    private val _uiState = MutableStateFlow<AccountSettingUiState>(AccountSettingUiState.Loading)
+    val uiState: StateFlow<AccountSettingUiState> = _uiState
 
-    // 클릭 이벤트
-    // 클릭 이벤트 감지 플로우
-    private val _changePasswordButton = MutableSharedFlow<Boolean>()
-    val changePasswordButton = _changePasswordButton.asSharedFlow()
-
-    private val _changeNicknameButton = MutableSharedFlow<Boolean>()
-    val changeNicknameButton = _changeNicknameButton.asSharedFlow()
-
-    private val _logoutButton = MutableSharedFlow<Boolean>()
-    val logoutButton = _logoutButton.asSharedFlow()
-
-    private val _withdrawalButton = MutableSharedFlow<Boolean>()
-    val withdrawalButton = _withdrawalButton.asSharedFlow()
-
-    // 클릭 이벤트 함수 콜
-    suspend fun clickChangePasswordButton() {
-        _changePasswordButton.emit(true)
-    }
-
-    suspend fun clickChangeNicknameButton() {
-        _changeNicknameButton.emit(true)
-    }
-
-    suspend fun clickLogoutButton() {
-        _logoutButton.emit(true)
-    }
-
-    suspend fun clickWithdrawalButton() {
-        _withdrawalButton.emit(true)
-    }
+    // 애러 상태
+    private val _errorState = MutableStateFlow(false)
+    val errorState: StateFlow<Boolean> = _errorState
 
     // 로그아웃 상태 변경
     // 로그아웃 시 autoLoginCheck 상태 변경 함수 콜
@@ -71,20 +43,12 @@ class AccountSettingViewModel @Inject constructor(
         saveAutoLoginStateUseCase(state)
     }
 
-    // 회원정보
-    // 회원 정보 플로우
-    private val _userInfo = MutableSharedFlow<Map<String, Object>>()
-    val userInfo = _userInfo.asSharedFlow()
-
-    // 회원탈퇴
-    // 회원 탈퇴 결과 플로우
-    private val _deleteUserResult = MutableSharedFlow<Map<String, Object>>()
-    val deleteUserResult = _deleteUserResult.asSharedFlow()
 
     // (서버) 회원 탈퇴를 위한 함수 콜
     suspend fun deleteUser() {
         deleteUserUseCase().collect {
-            _deleteUserResult.emit(it)
+            _uiState.emit(AccountSettingUiState.Success(null, it))
+            _errorState.emit(false) // API 호출 성공 시 에러 상태 초기화
         }
     }
 
@@ -116,26 +80,35 @@ class AccountSettingViewModel @Inject constructor(
             // 회원 정보 collect & emit
             launch {
                 getUserInfoUseCase().collect {
-                    _userInfo.emit(it)
+                    _uiState.emit(AccountSettingUiState.Success(it, null))
+                    _errorState.emit(false) // API 호출 성공 시 에러 상태 초기화
                 }
             }
 
             launch {
                 // 회원정보 error collect & emit
                 getUserInfoUseCase.error.collect {
-                    _error.emit(it)
+                    _errorState.emit(it)
+//                    _uiState.emit(AccountSettingUiState.Error(it))
                 }
             }
 
-            // 회원 탈퇴 결과 collect & emit
             launch {
                 // 회원탈퇴 error collect & emit
                 deleteUserUseCase.error.collect {
-                    _error.emit(it)
+                    _errorState.emit(it)
+//                    _uiState.emit(AccountSettingUiState.Error(it))
                 }
             }
 
         }
+    }
+
+
+    sealed class AccountSettingUiState {
+        object Loading: AccountSettingUiState()
+        data class Success(val userInfo: Map<String, Object>?, val deleteUserResult: Map<String, Object>?): AccountSettingUiState()
+//        data class Error(val error: Boolean): AccountSettingUiState()
     }
 
 

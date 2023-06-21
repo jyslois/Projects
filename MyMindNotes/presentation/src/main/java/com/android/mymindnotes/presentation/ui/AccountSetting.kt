@@ -38,107 +38,92 @@ class AccountSetting : AppCompatActivity() {
         // 버튼 클릭 이벤트 함수 콜
         // 비밀번호 변경 클릭
         binding.changePasswordButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickChangePasswordButton()
-            }
+            startActivity<ChangePassword>()
         }
 
         // 닉네임 변경 버튼 클릭
         binding.changeNicknameButton.setOnClickListener { view: View? ->
-            lifecycleScope.launch {
-                viewModel.clickChangeNicknameButton()
-            }
+            startActivity<ChangeNickname>()
         }
 
         // 로그아웃 버튼 클릭
         binding.logoutButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickLogoutButton()
+                // 상태 저장
+                viewModel.saveAutoLoginCheck(false)
+                startActivity<MainActivity>()
             }
         }
 
         // 계정 탈퇴 버튼 클릭
         binding.withdrawalButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickWithdrawalButton()
-            }
+            withdrawDialog()
         }
 
 
         // 플로우 구독
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 회원정보 플로우 구독, 화면 세팅
-                launch {
-                    viewModel.userInfo.collect {
-                        // 이메일, 닉네임, 생년 세팅
-                        binding.email.text = it["email"] as String?
-                        binding.nickname.text = it["nickname"] as String?
-                        binding.birthyear.text = it["birthyear"]?.toString()?.toDouble()?.toInt()?.toString()
-                    }
-                }
 
-                // 클릭 이벤트 플로우 구독, 이벤트 처리
-                // 비밀번호 변경 이벤트 처리
                 launch {
-                    viewModel.changePasswordButton.collect {
-                        startActivity<com.android.mymindnotes.presentation.ui.ChangePassword>()
-                    }
-                }
+                    viewModel.uiState.collect { uiState ->
+                        when (uiState) {
+                            is AccountSettingViewModel.AccountSettingUiState.Loading -> {
+                                // 로딩 상태 처리
+                                binding.email.text = "로딩 중"
+                                binding.nickname.text = "로딩 중"
+                                binding.birthyear.text = "로딩 중"
+                            }
 
-                // 닉네임 변경 이벤트 처리
-                launch {
-                    viewModel.changeNicknameButton.collect {
-                        startActivity<com.android.mymindnotes.presentation.ui.ChangeNickname>()
-                    }
-                }
+                            is AccountSettingViewModel.AccountSettingUiState.Success -> {
+                                // 성공 상태 처리
+                                // userInfo가 null이 아닌 경우 처리
+                                uiState.userInfo?.let {
+                                    // 회원 정보 업데이트
+                                    // 이메일, 닉네임, 생년 세팅
+                                    binding.email.text = it["email"] as String?
+                                    binding.nickname.text = it["nickname"] as String?
+                                    binding.birthyear.text =
+                                        it["birthyear"]?.toString()?.toDouble()?.toInt()?.toString()
+                                }
+                                // deleteUserResult가 null이 아닌 경우 처리
+                                uiState.deleteUserResult?.let {
+                                    // 회원 탈퇴 결과 처리
+                                    // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
+                                    // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
+                                    if (it["code"].toString().toDouble() == 4000.0) {
+                                        // 알람 삭제
+                                        viewModel.stopAlarm()
+                                        // 모든 상태저장 삭제
+                                        // 알람 설정 해제 (임시)
+                                        viewModel.clearAlarmSharedPreferences()
+                                        // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기 (임시)
+                                        viewModel.clearTimeSharedPreferences()
+                                        // 저장 설정 지우기
+                                        viewModel.clearAutoSaveSharedPreferences()
+                                        // 화면 전환
+                                        startActivity<MainActivity>()
+                                    }
+                                }
+                            }
 
-                // 로그아웃 이벤트 처리
-                launch {
-                    viewModel.logoutButton.collect {
-                        // 상태 저장
-                        viewModel.saveAutoLoginCheck(false)
-                        startActivity<MainActivity>()
-                    }
-                }
-
-                // 회원 탈퇴 이벤트 처리
-                launch {
-                    viewModel.withdrawalButton.collect {
-                        withdrawDialog()
-                    }
-                }
-
-                // 회원 탈퇴 결과 처리
-                launch {
-                    viewModel.deleteUserResult.collect {
-                        // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
-                        // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
-                        if (it["code"].toString().toDouble() == 4000.0) {
-                            // 알람 삭제
-                            viewModel.stopAlarm()
-                            // 모든 상태저장 삭제
-                            // 알람 설정 해제 (임시)
-                            viewModel.clearAlarmSharedPreferences()
-                            // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기 (임시)
-                            viewModel.clearTimeSharedPreferences()
-                            // 저장 설정 지우기
-                            viewModel.clearAutoSaveSharedPreferences()
-                            // 화면 전환
-                            startActivity<com.android.mymindnotes.presentation.ui.MainActivity>()
+//                            is AccountSettingViewModel.AccountSettingUiState.Error -> {
+//                                // 에러 상태 처리
+//                                if (uiState.error) {
+//                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
+//                                }
+//                            }
                         }
                     }
                 }
 
-                // 에러 감지
-                // 에러 값 구독
                 launch {
-                    viewModel.error.collect {
-                        if (it) {
+                    viewModel.errorState.collect { error ->
+                        if (error) {
                             dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
                         }
                     }
-               }
+                }
             }
         }
 
