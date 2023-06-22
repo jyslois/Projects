@@ -14,7 +14,12 @@ import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,16 +37,21 @@ class AlarmSettingViewModel @Inject constructor(
     private val setAlarmUseCase: SetAlarmUseCase,
     private val stopAlarmUseCase: StopAlarmUseCase
 ): ViewModel() {
+
+    // ui 상태를 나타내는 sealed 클래스
+    sealed class AlarmSettingUiState {
+        data class AlarmState(val state: Boolean) : AlarmSettingUiState()
+        data class AlarmTime(val time: String?) : AlarmSettingUiState()
+        data class AlarmSwitchStateChanged(val isChecked: Boolean) : AlarmSettingUiState()
+        data class SetTimeButtonClicked(val state: Boolean) : AlarmSettingUiState()
+    }
+
+    // uiState
+    private val _uiState = MutableSharedFlow<AlarmSettingUiState>()
+    val uiState: SharedFlow<AlarmSettingUiState> = _uiState
+
+
     // Alarm
-
-    // alarm 상태 저장 플로우
-    private val _alarmState = MutableSharedFlow<Boolean>()
-    val alarmState = _alarmState.asSharedFlow()
-
-
-    // time 저장 플로우
-    private val _time = MutableSharedFlow<String?>()
-    val time = _time.asSharedFlow()
 
     // alarm 상태 저장하기
     suspend fun saveAlarmState(state: Boolean) {
@@ -86,25 +96,18 @@ class AlarmSettingViewModel @Inject constructor(
     }
 
     // Clear Time SharedPreferences
-    suspend fun clearTimeSharedPreferences() {
+    suspend fun clearTimeSettings() {
         clearTimeSettingsUseCase()
     }
 
-    // 클릭 이벤트 감지
-    // 알람 스위치 바뀔 때 이벤트 감지 플로우
-    private val _alarmSwitch = MutableSharedFlow<Boolean>()
-    val alarmSwitch = _alarmSwitch.asSharedFlow()
 
     suspend fun changeAlarmSwitch(isChecked: Boolean) {
-        _alarmSwitch.emit(isChecked)
+        _uiState.emit(AlarmSettingUiState.AlarmSwitchStateChanged(isChecked))
     }
 
-    // setTimeButtton 클릭 이벤트 감지 플로우
-    private val _setTimeButton = MutableSharedFlow<Boolean>()
-    val setTimeButton = _setTimeButton.asSharedFlow()
 
     suspend fun clickSetTimeButton() {
-        _setTimeButton.emit(true)
+        _uiState.emit(AlarmSettingUiState.SetTimeButtonClicked(true))
     }
 
     fun setAlarm(calendar: java.util.Calendar) {
@@ -117,15 +120,14 @@ class AlarmSettingViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            // 알람 상태 collect & emit
-            getAlarmStateUseCase().collect {
-                _alarmState.emit(it)
+
+            val alarmStateFlow = getAlarmStateUseCase().map { AlarmSettingUiState.AlarmState(it) }
+            val alarmTimeFlow = getAlarmTimeUseCase.getTime().map { AlarmSettingUiState.AlarmTime(it) }
+
+            merge(alarmStateFlow, alarmTimeFlow).collect {
+                _uiState.emit(it)
             }
 
-            // 시간 collect & emit
-            getAlarmTimeUseCase.getTime().collect {
-                _time.emit(it)
-            }
         }
     }
 

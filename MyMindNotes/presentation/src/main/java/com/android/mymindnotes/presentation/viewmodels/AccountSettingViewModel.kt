@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,9 +35,6 @@ class AccountSettingViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<AccountSettingUiState>(AccountSettingUiState.Loading)
     val uiState: StateFlow<AccountSettingUiState> = _uiState
 
-    // 애러 상태
-    private val _errorState = MutableStateFlow(false)
-    val errorState: StateFlow<Boolean> = _errorState
 
     // 로그아웃 상태 변경
     // 로그아웃 시 autoLoginCheck 상태 변경 함수 콜
@@ -48,7 +47,6 @@ class AccountSettingViewModel @Inject constructor(
     suspend fun deleteUser() {
         deleteUserUseCase().collect {
             _uiState.emit(AccountSettingUiState.Success(null, it))
-            _errorState.emit(false) // API 호출 성공 시 에러 상태 초기화
         }
     }
 
@@ -77,30 +75,14 @@ class AccountSettingViewModel @Inject constructor(
     init {
         viewModelScope.launch {
 
-            // 회원 정보 collect & emit
-            launch {
-                getUserInfoUseCase().collect {
-                    _uiState.emit(AccountSettingUiState.Success(it, null))
-                    _errorState.emit(false) // API 호출 성공 시 에러 상태 초기화
-                }
-            }
+            val userInfoFlow = getUserInfoUseCase().map { AccountSettingUiState.Success(it, null) } // Flow<AccountSettingUiState.Success>
+            val userInfoErrorFlow = getUserInfoUseCase.error.map { AccountSettingUiState.Error(it) }
+            val deleteUserErrorFlow = deleteUserUseCase.error.map { AccountSettingUiState.Error(it) }
 
-            launch {
-                // 회원정보 error collect & emit
-                getUserInfoUseCase.error.collect {
-                    _errorState.emit(it)
-//                    _uiState.emit(AccountSettingUiState.Error(it))
-                }
-            }
+            merge(userInfoFlow, userInfoErrorFlow, deleteUserErrorFlow).collect {
+                _uiState.emit(it)
 
-            launch {
-                // 회원탈퇴 error collect & emit
-                deleteUserUseCase.error.collect {
-                    _errorState.emit(it)
-//                    _uiState.emit(AccountSettingUiState.Error(it))
-                }
             }
-
         }
     }
 
@@ -108,7 +90,7 @@ class AccountSettingViewModel @Inject constructor(
     sealed class AccountSettingUiState {
         object Loading: AccountSettingUiState()
         data class Success(val userInfo: Map<String, Object>?, val deleteUserResult: Map<String, Object>?): AccountSettingUiState()
-//        data class Error(val error: Boolean): AccountSettingUiState()
+        data class Error(val error: Boolean): AccountSettingUiState()
     }
 
 
