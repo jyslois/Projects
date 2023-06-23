@@ -35,22 +35,35 @@ class TodayDiarySituation : AppCompatActivity() {
 
         // 팁 버튼 클릭
         binding.RecordSituationTips.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickTips()
-            }
+            tipDialog()
         }
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickRecordNextButton()
+                val situation = binding.RecordSituationUserInput.text.toString()
+                if (situation == "") {
+                    dialog("상황을 작성해 주세요.")
+                } else {
+                    // 상황 저장
+                    viewModel.saveSituation(situation)
+                    // 다음 화면으로 이동
+                    val intent = Intent(applicationContext, TodayDiaryThought::class.java)
+                    startActivity(intent)
+                }
             }
         }
 
         // 이전 버튼 클릭
         binding.RecordPreviousButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickRecordPreviousButton()
+                val situation = binding.RecordSituationUserInput.text.toString()
+                if (situation != "") {
+                    // 상황 저장
+                    viewModel.saveSituation(situation)
+                }
+                // 이전 화면으로 이동
+                finish()
             }
         }
 
@@ -58,60 +71,23 @@ class TodayDiarySituation : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // 만약 상황이 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
-                launch {
-                    // getSituation() Result 구독
-                    viewModel.situation.collect {
-                        if (it != "") {
-                            binding.RecordSituationUserInput.setText(it)
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        // 만약 상황이 저장된 상태라면 화면에 뿌리기
+                        is TodayDiarySituationViewModel.TodayDiarySituationUiState.Success -> {
+                            uiState.situationResult?.let {
+                                if (it != "") {
+                                    binding.RecordSituationUserInput.setText(it)
+                                }
+                            }
                         }
-                    }
-                }
-
-                launch {
-                    viewModel.getSituation()
-                }
-
-                // 버튼 클릭 감지
-                launch {
-                    // 팁 버튼 클릭 감지
-                    viewModel.recordTips.collect {
-                        tipDialog()
-                    }
-                }
-
-                launch {
-                    // 다음 버튼 클릭 감지
-                    viewModel.recordNextButton.collect {
-                        val situation = binding.RecordSituationUserInput.text.toString()
-                        if (situation == "") {
-                            dialog("상황을 작성해 주세요.")
-                        } else {
-                            // 상황 저장
-                            viewModel.saveSituation(situation)
-                            // 다음 화면으로 이동
-                            val intent = Intent(applicationContext, TodayDiaryThought::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
-
-                launch {
-                    // 이전 버튼 감지
-                    viewModel.recordPreviousButton.collect {
-                        val situation = binding.RecordSituationUserInput.text.toString()
-                        if (situation != "") {
-                            // 상황 저장
-                            viewModel.saveSituation(situation)
-                        }
-                        // 이전 화면으로 이동
-                        finish()
                     }
                 }
             }
         }
-
     }
+
 
     // 알림 dialogue
     fun dialog(msg: String?) {

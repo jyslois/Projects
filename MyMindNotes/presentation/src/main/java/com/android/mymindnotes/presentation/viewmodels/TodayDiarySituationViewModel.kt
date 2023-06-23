@@ -1,11 +1,14 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiarySituationUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiarySituationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,47 +16,25 @@ class TodayDiarySituationViewModel @Inject constructor(
     private val saveTodayDiarySituationUseCase: SaveTodayDiarySituationUseCase,
     private val getTodayDiarySituationUseCase: GetTodayDiarySituationUseCase
 ): ViewModel() {
-    // 버튼 클릭
-    // 팁 버튼 클릭 감지
-    private val _recordTips = MutableSharedFlow<Boolean>()
-    val recordTips = _recordTips.asSharedFlow()
 
-    // 팁 버튼 클릭
-    suspend fun clickTips() {
-        _recordTips.emit(true)
+    sealed class TodayDiarySituationUiState {
+        data class Success(val situationResult: String?): TodayDiarySituationUiState()
     }
 
-    // 다음 버튼 클릭 감지
-    private val _recordNextButton = MutableSharedFlow<Boolean>()
-    val recordNextButton = _recordNextButton.asSharedFlow()
-
-    // 다음 버튼 클릭
-    suspend fun clickRecordNextButton() {
-        _recordNextButton.emit(true)
-    }
-
-    // 이전 버튼 클릭 감지
-    private val _recordPreviousButton = MutableSharedFlow<Boolean>()
-    val recordPreviousButton = _recordPreviousButton.asSharedFlow()
-
-    // 이전 버튼 클릭
-    suspend fun clickRecordPreviousButton() {
-        _recordPreviousButton.emit(true)
-    }
+    // ui상태
+    private val _uiState = MutableSharedFlow<TodayDiarySituationUiState>()
+    val uiState: SharedFlow<TodayDiarySituationUiState> = _uiState
 
     // Save Method
     suspend fun saveSituation(situation: String) {
         saveTodayDiarySituationUseCase(situation)
     }
 
-    // Get Method
-    // Situation Result Flow
-    private val _situation = MutableSharedFlow<String?>()
-    val situation = _situation.asSharedFlow()
-
-    suspend fun getSituation() {
-        getTodayDiarySituationUseCase().collect {
-            _situation.emit(it)
+    init {
+        viewModelScope.launch {
+            getTodayDiarySituationUseCase().collect {
+                _uiState.emit(TodayDiarySituationUiState.Success(it))
+            }
         }
     }
 

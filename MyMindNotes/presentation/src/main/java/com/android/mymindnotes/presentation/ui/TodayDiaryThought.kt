@@ -35,76 +35,52 @@ class TodayDiaryThought : AppCompatActivity() {
 
         // 팁 버튼 클릭
         binding.RecordThoughtTips.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickTips()
-            }
+            tipDialog()
         }
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickRecordNextButton()
+                val thought = binding.RecordThoughtUserInput.text.toString()
+                if (thought == "") {
+                    dialog("생각을 작성해 주세요.")
+                } else {
+                    // 상황 저장
+                    viewModel.saveThought(thought)
+                    // 다음 화면으로 이동
+                    val intent = Intent(applicationContext, TodayDiaryReflection::class.java)
+                    startActivity(intent)
+                }
             }
         }
 
         // 이전 버튼 클릭
         binding.RecordPreviousButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickRecordPreviousButton()
+                val thought = binding.RecordThoughtUserInput.text.toString()
+                if (thought != "") {
+                    // 상황 저장
+                    viewModel.saveThought(thought)
+                }
+                // 이전 화면으로 이동
+                finish()
             }
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // 만약 생각이 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
-                launch {
-                    // getThought() Result 구독
-                    viewModel.thought.collect {
-                        if (it != "") {
-                            binding.RecordThoughtUserInput.setText(it)
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        // 만약 생각이 저장된 상태라면 화면에 뿌리기
+                        is TodayDiaryThoughtViewModel.TodayDiaryThoughtUiState.Success -> {
+                            uiState.thoughtResult?.let {
+                                if (it != "") {
+                                    binding.RecordThoughtUserInput.setText(it)
+                                }
+                            }
                         }
-                    }
-                }
-
-                launch {
-                    viewModel.getThought()
-                }
-
-                // 버튼 클릭 감지
-                launch {
-                    // 팁 버튼 클릭 감지
-                    viewModel.recordTips.collect {
-                        tipDialog()
-                    }
-                }
-
-                launch {
-                    // 다음 버튼 클릭 감지
-                    viewModel.recordNextButton.collect {
-                        val thought = binding.RecordThoughtUserInput.text.toString()
-                        if (thought == "") {
-                            dialog("생각을 작성해 주세요.")
-                        } else {
-                            // 상황 저장
-                            viewModel.saveThought(thought)
-                            // 다음 화면으로 이동
-                            val intent = Intent(applicationContext, TodayDiaryReflection::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
-
-                launch {
-                    // 이전 버튼 감지
-                    viewModel.recordPreviousButton.collect {
-                        val thought = binding.RecordThoughtUserInput.text.toString()
-                        if (thought != "") {
-                            // 상황 저장
-                            viewModel.saveThought(thought)
-                        }
-                        // 이전 화면으로 이동
-                        finish()
                     }
                 }
             }
