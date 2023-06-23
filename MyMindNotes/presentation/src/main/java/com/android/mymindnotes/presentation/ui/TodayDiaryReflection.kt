@@ -40,30 +40,50 @@ class TodayDiaryReflection : AppCompatActivity() {
         // 버튼 클릭
         // 감정 설명서 보기 버튼 클릭
         binding.RecordEmotionHelpButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickRecordEmotionHelpButton()
-            }
-
+            val intent = Intent(applicationContext, EmotionInstructions::class.java)
+            startActivity(intent)
         }
 
         // 팁 버튼 클릭
         binding.RecordReflectionTips.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickRecordEmotionTips()
-            }
+            tipDialog()
         }
 
         // 이전 버튼 클릭
         binding.RecordPreviousButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickRecordPreviousButton()
+                val reflection = binding.RecordReflectionUserInput.text.toString()
+                if (reflection != "") {
+                    // 회고 저장
+                    viewModel.saveReflection(reflection)
+                }
+                // 이전 화면으로 이동
+                finish()
             }
         }
 
         // 저장 버튼 클릭
         binding.RecordSaveButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickRecordSaveButton()
+                // 회고 저장
+                val reflection = binding.RecordReflectionUserInput.text.toString()
+                viewModel.saveReflection(reflection)
+                // 타입 저장
+                viewModel.saveType("오늘의 마음 일기")
+                // 날짜 저장
+                val now = System.currentTimeMillis()
+                val getDate = Date(now)
+                val mFormat = SimpleDateFormat("yyyy-MM-dd")
+                val date = mFormat.format(getDate)
+                viewModel.saveDate(date)
+                // 요일 저장
+                val DAY = arrayOf("", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일")
+                val today = Calendar.getInstance()
+                val day = DAY[today[Calendar.DAY_OF_WEEK]]
+                viewModel.saveDay(day)
+
+                // 서버에 일기 저장
+                viewModel.saveDiary()
             }
         }
 
@@ -71,109 +91,48 @@ class TodayDiaryReflection : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // 만약 회고가 저장된 상태라면 다시 돌아왔을 때 화면에 뿌리기
-                launch {
-                    // getReflection() Result 구독
-                    viewModel.reflection.collect {
-                        if (it != "") {
-                            binding.RecordReflectionUserInput.setText(it)
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is TodayDiaryReflectionViewModel.TodayDiaryReflectionUiState.Success -> {
+                            // reflection 값 구독
+                            uiState.reflectionResult?.let {
+                                if (it != "") {
+                                    // 만약 회고가 저장된 상태라면 화면에 뿌리기
+                                    binding.RecordReflectionUserInput.setText(it)
+                                }
+                            }
+
+                            // 일기 저장 결과 구독
+                            uiState.saveDiaryResult?.let {
+                                if (it["code"].toString().toDouble() == 6001.0) {
+                                    dialog(it["msg"] as String)
+                                } else if (it["code"].toString().toDouble() == 6000.0) {
+                                    // 저장한 것 삭제
+                                    viewModel.clearTodayDiaryTempRecords()
+
+                                    // 성공 토스트 띄우기
+                                    Toast.makeText(
+                                        applicationContext,
+                                        R.string.successfulRecord,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    // 메인으로 화면 전환
+                                    val intent = Intent(applicationContext, MainPage::class.java)
+                                    startActivity(intent)
+                                }
+                            }
+                        }
+
+                        // 애러 구독
+                        is TodayDiaryReflectionViewModel.TodayDiaryReflectionUiState.Error -> {
+                            if (uiState.error) {
+                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                            }
                         }
                     }
                 }
 
-                launch {
-                    viewModel.getReflection()
-                }
-
-                // 버튼 클릭 감지
-                launch {
-                    // 감정 설명서 보기 버튼 클릭 감지
-                    viewModel.recordEmotionHelpButton.collect {
-                        val intent = Intent(applicationContext, EmotionInstructions::class.java)
-                        startActivity(intent)
-                    }
-                }
-
-
-                launch {
-                    // 팁 버튼 클릭 감지
-                    viewModel.recordTips.collect {
-                        tipDialog()
-                    }
-                }
-
-
-                launch {
-                    // 이전 버튼 감지
-                    viewModel.recordPreviousButton.collect {
-                        val reflection = binding.RecordReflectionUserInput.text.toString()
-                        if (reflection != "") {
-                            // 회고 저장
-                            viewModel.saveReflection(reflection)
-                        }
-                        // 이전 화면으로 이동
-                        finish()
-                    }
-                }
-
-                launch {
-                    // 일기 저장 버튼 클릭 감지
-                    viewModel.recordSaveButton.collect {
-                        // 회고 저장
-                        val reflection = binding.RecordReflectionUserInput.text.toString()
-                        viewModel.saveReflection(reflection)
-                        // 타입 저장
-                        viewModel.saveType("오늘의 마음 일기")
-                        // 날짜 저장
-                        val now = System.currentTimeMillis()
-                        val getDate = Date(now)
-                        val mFormat = SimpleDateFormat("yyyy-MM-dd")
-                        val date = mFormat.format(getDate)
-                        viewModel.saveDate(date)
-                        // 요일 저장
-                        val DAY = arrayOf("", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일")
-                        val today = Calendar.getInstance()
-                        val day = DAY[today[Calendar.DAY_OF_WEEK]]
-                        viewModel.saveDay(day)
-
-                        // 서버에 일기 저장
-                        viewModel.saveDiary()
-                    }
-                }
-
-
-                launch {
-                    // 일기 저장 결과 플로우 구독
-                    viewModel.saveDiary.collect {
-                        if (it["code"].toString().toDouble() == 6001.0) {
-                            dialog(it["msg"] as String)
-                        } else if (it["code"].toString().toDouble() == 6000.0) {
-                            // 저장한 것 삭제
-                            viewModel.clearTodayDiaryTempRecords()
-
-                            // 성공 토스트 띄우기
-                            Toast.makeText(
-                                applicationContext,
-                                R.string.successfulRecord,
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                            // 메인으로 화면 전환
-                            val intent = Intent(applicationContext, MainPage::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
-
-                // 에러 감지
-                // 에러 값 구독
-                launch {
-                    viewModel.error.collect {
-                        if (it) {
-                            dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                        }
-                    }
-                }
 
             }
 
