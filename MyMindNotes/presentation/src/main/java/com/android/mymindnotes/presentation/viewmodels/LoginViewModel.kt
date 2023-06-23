@@ -13,7 +13,11 @@ import com.android.mymindnotes.domain.usecases.userInfo.SaveIdAndPasswordUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SaveUserIndexUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,66 +35,33 @@ class LoginViewModel @Inject constructor(
     private val getAutoSaveStateUseCase: GetAutoSaveStateUseCase,
     private val saveAutoSaveStateUseCase: SaveAutoSaveStateUseCase
 ) : ViewModel() {
-    // autoSaveCheck 값을 저장하는 SharedFlow
-    private val _autoSaveCheck = MutableSharedFlow<Boolean>()
-    val autoSaveCheck = _autoSaveCheck.asSharedFlow()
 
-    // autoLoginCheck 값을 저장하는 SharedFlow
-    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
-    val autoLoginCheck = _autoLoginCheck.asSharedFlow()
 
-    // Id 값을 저장하는 SharedFlow
-    private val _id = MutableSharedFlow<String?>()
-    val id = _id.asSharedFlow()
+    sealed class LoginUiState {
+        data class Success(val loginResult: Map<String, Object>?): LoginUiState()
+        data class AutoSaveState(val isChecked: Boolean): LoginUiState()
+        data class AutoLoginState(val isChecked: Boolean): LoginUiState()
 
-    // Password 값을 저장하는 SharedFlow
-    private val _password = MutableSharedFlow<String?>()
-    val password = _password.asSharedFlow()
+        data class Id(val id: String?): LoginUiState()
 
-    // 버튼 상태 저장하는 SharedFlow
-    private val _autoSaveButton = MutableSharedFlow<Boolean>()
-    val autoSaveButton = _autoSaveButton.asSharedFlow()
+        data class Password(val password: String?): LoginUiState()
+        data class Error(val error: Boolean): LoginUiState()
+    }
 
-    private val _autoLoginButton = MutableSharedFlow<Boolean>()
-    val autoLoginButton = _autoLoginButton.asSharedFlow()
+    // ui상태
+    private val _uiState = MutableSharedFlow<LoginUiState>()
+    val uiState: SharedFlow<LoginUiState> = _uiState
 
-    private val _findPasswordButton = MutableSharedFlow<Boolean>()
-    val findPasswordButton = _findPasswordButton.asSharedFlow()
 
-    private val _loginButton = MutableSharedFlow<Boolean>()
-    val loginButton = _loginButton.asSharedFlow()
 
-    // 로그인 결과 값을 저장하는 SharedFlow
-    private val _logInResult = MutableSharedFlow<Map<String, Object>>()
-    val logInResult = _logInResult.asSharedFlow()
-
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>()
-    val error = _error.asSharedFlow()
 
     // 로그인
     suspend fun login(email: String, password: String) {
         login_useCase(email, password).collect {
-            _logInResult.emit(it)
+            _uiState.emit(LoginUiState.Success(it))
         }
     }
 
-    // 버튼 클릭 메서드
-    suspend fun clickAutoSaveBox() {
-        _autoSaveButton.emit(true)
-    }
-
-    suspend fun clickAutoLoginBox() {
-        _autoLoginButton.emit(true)
-    }
-
-    suspend fun clickFindPasswordButton() {
-        _findPasswordButton.emit(true)
-    }
-
-    suspend fun clickLoginButton() {
-        _loginButton.emit(true)
-    }
 
     // save methods - SharedPreferneces
     suspend fun saveAutoLoginCheck(state: Boolean) {
@@ -112,38 +83,16 @@ class LoginViewModel @Inject constructor(
     // ViewModel instance가 만들어질 때, autoSaveCheck/autoLoginCheck/id/password 값 불러오기
     init {
         viewModelScope.launch {
-            launch {
-                // useCase의 함수 리턴 값을 구독해서 viewModel의 SharedFlow에 방출하기.
-                getAutoSaveStateUseCase().collect {
-                    _autoSaveCheck.emit(it)
-                }
-            }
 
-            launch {
-                getAutoLoginStateUseCase().collect {
-                    _autoLoginCheck.emit(it)
-                }
-            }
+            val getAutoSaveStateFlow = getAutoSaveStateUseCase().map { LoginUiState.AutoSaveState(it) }
+            val getAutoLoginStateFlow = getAutoLoginStateUseCase().map { LoginUiState.AutoLoginState(it) }
+            val getIdFlow = getIdUseCase().map { LoginUiState.Id(it) }
+            val getPasswordFlow = getPasswordUseCase().map { LoginUiState.Password(it) }
+            val getLoginErrorFlow = login_useCase.error.map { LoginUiState.Error(it) }
 
-            launch {
-                getIdUseCase().collect {
-                    _id.emit(it)
-                }
+            merge(getAutoSaveStateFlow, getAutoLoginStateFlow, getIdFlow, getPasswordFlow, getLoginErrorFlow).collect {
+                _uiState.emit(it)
             }
-
-            launch {
-                getPasswordUseCase().collect {
-                    _password.emit(it)
-                }
-            }
-
-            launch {
-                // error collect & emit
-                login_useCase.error.collect {
-                    _error.emit(it)
-                }
-            }
-
         }
     }
 }

@@ -63,7 +63,7 @@ class AlarmSetting : AppCompatActivity() {
                         // 알람 상태 가져오기
                         is AlarmSettingViewModel.AlarmSettingUiState.AlarmState -> {
                             // 알람이 설정된 적이 있으면
-                            if (uiState.state) {
+                            if (uiState.isSet) {
                                 binding.alarmSwitch.isChecked = true
                                 // On일 때의 동작
                                 binding.timeText.setTextColor(Color.BLACK)
@@ -95,7 +95,7 @@ class AlarmSetting : AppCompatActivity() {
                         }
 
                         // alarmSwitch 이벤트 구독
-                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchStateChanged -> {
+                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchState -> {
                             val isChecked = uiState.isChecked
                             if (isChecked) {
                                 // Android 12까지는 앱을 설치하면 기본적으로 Notification을 띄울 수 있었지만,
@@ -151,8 +151,8 @@ class AlarmSetting : AppCompatActivity() {
                         }
 
                         // setTimeButton 클릭 이벤트 감지
-                        is AlarmSettingViewModel.AlarmSettingUiState.SetTimeButtonClicked -> {
-                            val state = uiState.state
+                        is AlarmSettingViewModel.AlarmSettingUiState.SetTimeButtonState -> {
+                            val state = uiState.isClicked
                             if (state) {
                                 val hour = viewModel.getHour().first()
                                 val minute = viewModel.getMinute().first()

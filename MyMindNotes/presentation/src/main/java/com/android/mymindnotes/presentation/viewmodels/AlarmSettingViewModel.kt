@@ -14,10 +14,7 @@ import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
@@ -40,10 +37,10 @@ class AlarmSettingViewModel @Inject constructor(
 
     // ui 상태를 나타내는 sealed 클래스
     sealed class AlarmSettingUiState {
-        data class AlarmState(val state: Boolean) : AlarmSettingUiState()
+        data class AlarmState(val isSet: Boolean) : AlarmSettingUiState()
         data class AlarmTime(val time: String?) : AlarmSettingUiState()
-        data class AlarmSwitchStateChanged(val isChecked: Boolean) : AlarmSettingUiState()
-        data class SetTimeButtonClicked(val state: Boolean) : AlarmSettingUiState()
+        data class AlarmSwitchState(val isChecked: Boolean) : AlarmSettingUiState()
+        data class SetTimeButtonState(val isClicked: Boolean) : AlarmSettingUiState()
     }
 
     // uiState
@@ -102,12 +99,12 @@ class AlarmSettingViewModel @Inject constructor(
 
 
     suspend fun changeAlarmSwitch(isChecked: Boolean) {
-        _uiState.emit(AlarmSettingUiState.AlarmSwitchStateChanged(isChecked))
+        _uiState.emit(AlarmSettingUiState.AlarmSwitchState(isChecked))
     }
 
 
     suspend fun clickSetTimeButton() {
-        _uiState.emit(AlarmSettingUiState.SetTimeButtonClicked(true))
+        _uiState.emit(AlarmSettingUiState.SetTimeButtonState(true))
     }
 
     fun setAlarm(calendar: java.util.Calendar) {
