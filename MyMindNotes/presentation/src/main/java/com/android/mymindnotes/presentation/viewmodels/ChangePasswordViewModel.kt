@@ -6,6 +6,9 @@ import com.android.mymindnotes.domain.usecases.userInfo.SavePasswordUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,31 +16,23 @@ import javax.inject.Inject
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
     private val savePasswordUseCase: SavePasswordUseCase,
-
     private val changePasswordUseCase: ChangePasswordUseCase
 ): ViewModel() {
 
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>()
-    val error = _error.asSharedFlow()
-
-    // 비밀번호 변경
-    // 비밀번호 변경 버튼 클릭
-    private val _changePasswordButton = MutableSharedFlow<Boolean>()
-    val changePasswordButton = _changePasswordButton.asSharedFlow()
-
-    suspend fun clickChangePasswordButton() {
-        _changePasswordButton.emit(true)
+    sealed class ChangePasswordUiState {
+        data class Success(val changePasswordResult: Map<String, Object>?): ChangePasswordUiState()
+        data class Error(val error: Boolean): ChangePasswordUiState()
     }
 
-    // 비밀번호 변경 결과 저장 플로우
-    private val _changePasswordResult = MutableSharedFlow<Map<String, Object>>()
-    val changePasswordResult = _changePasswordResult.asSharedFlow()
+    // ui상태
+    private val _uiState = MutableSharedFlow<ChangePasswordUiState>()
+    val uiState: SharedFlow<ChangePasswordUiState> = _uiState
+
 
     // (서버) 비밀번호 변경
     suspend fun changePassword(password: String, originalPassword: String) {
         changePasswordUseCase(password, originalPassword).collect {
-            _changePasswordResult.emit(it)
+            _uiState.emit(ChangePasswordUiState.Success(it))
         }
     }
 
@@ -51,7 +46,7 @@ class ChangePasswordViewModel @Inject constructor(
             // 비밀번호 변경 에러 값 구독
             launch {
                 changePasswordUseCase.error.collect {
-                    _error.emit(it)
+                    _uiState.emit(ChangePasswordUiState.Error(it))
                 }
             }
         }

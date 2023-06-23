@@ -76,96 +76,90 @@ class DiaryResultEdit : AppCompatActivity() {
         // 버튼 클릭 이벤트
         // 감정 설명서 페이지 클릭
         binding.emotionHelp.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickEmotionHelp()
-            }
+            // 감정 설명서 페이지로 이동
+            val intentToEmotionInstructions =
+                Intent(applicationContext, EmotionInstructions::class.java)
+            startActivity(intentToEmotionInstructions)
         }
 
         // 수정 버튼 클릭
         binding.editButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickEditButton()
+                val situation = binding.editSituation.text.toString()
+                val thought = binding.editThought.text.toString()
+                val emotion = binding.editEmotion.text.toString()
+                val emotionDescription = binding.editEmotionText.text.toString()
+                val reflection = binding.editReflection.text.toString()
+
+                // 일기 수정 네트워크 통신
+                if (type == "트라우마 일기" && reflection.isEmpty()) {
+                    Toast.makeText(this@DiaryResultEdit, "회고를 입력해 주세요", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    viewModel.updateDiary(
+                        diaryNumber,
+                        situation,
+                        thought,
+                        emotion,
+                        emotionDescription,
+                        reflection
+                    )
+                }
+
             }
         }
 
         // 감지
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 버튼 클릭 감지
-                // 감정 설명서 페이지 클릭 감지
-                launch {
-                    viewModel.emotionHelp.collect {
-                        // 감정 설명서 페이지로 이동
-                        val intentToEmotionInstructions =
-                            Intent(applicationContext, EmotionInstructions::class.java)
-                        startActivity(intentToEmotionInstructions)
-                    }
-                }
 
-                // 수정 버튼 클릭 감지
-                launch {
-                    viewModel.editButton.collect {
-                        val situation = binding.editSituation.text.toString()
-                        val thought = binding.editThought.text.toString()
-                        val emotion = binding.editEmotion.text.toString()
-                        val emotionDescription = binding.editEmotionText.text.toString()
-                        val reflection = binding.editReflection.text.toString()
+                viewModel.uiState.collect { uiState ->
+                    when(uiState) {
 
-                        // 일기 수정 네트워크 통신
-                        if (type == "트라우마 일기" && reflection.isEmpty()) {
-                            Toast.makeText(this@DiaryResultEdit, "회고를 입력해 주세요", Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            viewModel.updateDiary(
-                                diaryNumber,
-                                situation,
-                                thought,
-                                emotion,
-                                emotionDescription,
-                                reflection
-                            )
+                        // 수정 결과 구독
+                        is DiaryResultEditViewModel.DiaryResultEditUiState.Success -> {
+                           uiState.updateDiaryResult?.let {
+                               if (it["code"].toString().toDouble() == 8001.0) {
+                                   val toast = Toast.makeText(
+                                       this@DiaryResultEdit,
+                                       it["msg"] as String?,
+                                       Toast.LENGTH_SHORT
+                                   )
+                                   toast.show()
+                               } else if (it["code"].toString().toDouble() == 8000.0) {
+                                   finish()
+                               }
+                           }
+                        }
+
+                        // 애러 구독
+                        is DiaryResultEditViewModel.DiaryResultEditUiState.Error -> {
+                            if (uiState.error) {
+                                val toast = Toast.makeText(
+                                    this@DiaryResultEdit,
+                                    "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                toast.show()
+                            }
                         }
                     }
                 }
 
-                // 일기 수정 결과 구독
-                launch {
-                    viewModel.updateDiaryResult.collect {
-                        if (it["code"].toString().toDouble() == 8001.0) {
-                            val toast = Toast.makeText(
-                                this@DiaryResultEdit,
-                                it["msg"] as String?,
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.show()
-                        } else if (it["code"].toString().toDouble() == 8000.0) {
-                            finish()
-                        }
-                    }
-                }
 
-                // 일기 오류 구독
-                launch {
-                    viewModel.updateDiaryError.collect {
-                        val toast = Toast.makeText(
-                            this@DiaryResultEdit,
-                            "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                            Toast.LENGTH_SHORT
-                        )
-                        toast.show()
-                    }
-                }
+
             }
         }
 
     }
 
-    private var dialogListener = DialogInterface.OnClickListener { _: DialogInterface?, which: Int ->
-        if (which == DialogInterface.BUTTON_NEGATIVE) {
-            // 취소면 Activity.RESULT_CANCEL 로 처리
-            finish()
+    private var dialogListener =
+        DialogInterface.OnClickListener { _: DialogInterface?, which: Int ->
+            if (which == DialogInterface.BUTTON_NEGATIVE) {
+                // 취소면 Activity.RESULT_CANCEL 로 처리
+                finish()
+            }
         }
-    }
 
     // 뒤로 가기 버튼 누를 시, 알람창 띄우기
     override fun onBackPressed() {

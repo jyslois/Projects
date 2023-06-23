@@ -10,11 +10,8 @@ import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUse
 import com.android.mymindnotes.domain.usecases.userInfo.ClearAlarmSettingsUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
@@ -31,6 +28,12 @@ class AccountSettingViewModel @Inject constructor(
     private val stopAlarmUseCase: StopAlarmUseCase
     ) : ViewModel() {
 
+    sealed class AccountSettingUiState {
+        object Loading: AccountSettingUiState()
+        data class Success(val userInfo: Map<String, Object>?, val deleteUserResult: Map<String, Object>?): AccountSettingUiState()
+        data class Error(val error: Boolean): AccountSettingUiState()
+    }
+
     // ui상태
     private val _uiState = MutableStateFlow<AccountSettingUiState>(AccountSettingUiState.Loading)
     val uiState: StateFlow<AccountSettingUiState> = _uiState
@@ -46,7 +49,7 @@ class AccountSettingViewModel @Inject constructor(
     // (서버) 회원 탈퇴를 위한 함수 콜
     suspend fun deleteUser() {
         deleteUserUseCase().collect {
-            _uiState.emit(AccountSettingUiState.Success(null, it))
+            _uiState.value = AccountSettingUiState.Success(null, it)
         }
     }
 
@@ -80,17 +83,9 @@ class AccountSettingViewModel @Inject constructor(
             val deleteUserErrorFlow = deleteUserUseCase.error.map { AccountSettingUiState.Error(it) }
 
             merge(userInfoFlow, userInfoErrorFlow, deleteUserErrorFlow).collect {
-                _uiState.emit(it)
-
+                _uiState.value = it
             }
         }
-    }
-
-
-    sealed class AccountSettingUiState {
-        object Loading: AccountSettingUiState()
-        data class Success(val userInfo: Map<String, Object>?, val deleteUserResult: Map<String, Object>?): AccountSettingUiState()
-        data class Error(val error: Boolean): AccountSettingUiState()
     }
 
 

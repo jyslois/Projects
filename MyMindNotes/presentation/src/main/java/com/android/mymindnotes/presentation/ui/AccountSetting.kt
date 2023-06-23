@@ -110,7 +110,7 @@ class AccountSetting : AppCompatActivity() {
                             is AccountSettingViewModel.AccountSettingUiState.Error -> {
                                 // 에러 상태 처리
                                 if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
+                                    dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
                                 }
                             }
                         }

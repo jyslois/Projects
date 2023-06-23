@@ -1,12 +1,17 @@
 package com.android.mymindnotes.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangeNickNameUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckNickNameDuplicateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,76 +22,41 @@ class ChangeNickNameViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>()
-    val error = _error.asSharedFlow()
-
-    // 닉네임 중복
-    // 닉네임 중복 확인 버튼 클릭 감지
-    private val _checkNickNameButton = MutableSharedFlow<Boolean>()
-    val checkNickNameButton = _checkNickNameButton.asSharedFlow()
-
-    suspend fun clickCheckNickNameButton() {
-        _checkNickNameButton.emit(true)
+    sealed class ChangeNickNameUiState {
+        data class Success(val nickNameDuplicateCheckResult: Map<String, Object>?, val nickNameChangeResult: Map<String, Object>?): ChangeNickNameUiState()
+        data class Error(val error: Boolean): ChangeNickNameUiState()
     }
 
-    // 닉네임 중복 체크 결과 저장 플로우
-    private val _nickNameCheckResult = MutableSharedFlow<Map<String, Object>>()
-    val nickNameCheckResult = _nickNameCheckResult.asSharedFlow()
+    // ui상태
+    private val _uiState = MutableSharedFlow<ChangeNickNameUiState>()
+    val uiState: SharedFlow<ChangeNickNameUiState> = _uiState
+
 
     // (서버) 닉네임 중복 체크
     suspend fun checkNickName(nickName: String) {
         checkNickNameDuplicateUseCase(nickName).collect {
-            _nickNameCheckResult.emit(it)
+            _uiState.emit(ChangeNickNameUiState.Success(nickNameDuplicateCheckResult = it, null))
         }
     }
-
-    // textChange
-    // textChange 감지를 위한 SharedFlow
-    private val _nickNameInputTextChange = MutableSharedFlow<Boolean>()
-    val nickNameInputTextChange = _nickNameInputTextChange.asSharedFlow()
-
-    // textChange 감지 함수
-    suspend fun nickNameInputTextChange() {
-        _nickNameInputTextChange.emit(true)
-    }
-
-    // 닉네임 변경
-    // 닉네임 변경 버튼 클릭
-    private val _changeNickNameButton = MutableSharedFlow<Boolean>()
-    val changeNickNameButton = _changeNickNameButton.asSharedFlow()
-
-    suspend fun clickChangeNickNameButton() {
-        _changeNickNameButton.emit(true)
-    }
-
-    // 닉네임 변경 결과 저장 플로우
-    private val _nickNameChangeResult = MutableSharedFlow<Map<String, Object>>()
-    val nickNameChangeResult = _nickNameChangeResult
 
     // (서버) 닉네임 변경
     suspend fun changeNickName(nickName: String) {
         changeNickNameUseCase(nickName).collect {
-            _nickNameChangeResult.emit(it)
+            _uiState.emit(ChangeNickNameUiState.Success(null, it))
         }
     }
 
     // collect & emit
     init {
         viewModelScope.launch {
-            // nickname duplicateCheck 에러 값 구독
-            launch {
-                checkNickNameDuplicateUseCase.error.collect {
-                    _error.emit(it)
-                }
+
+            val duplicateCheckErrorFlow = checkNickNameDuplicateUseCase.error.map { ChangeNickNameUiState.Error(it) }
+            val changeNickNameErrorFlow = changeNickNameUseCase.error.map { ChangeNickNameUiState.Error(it) }
+
+            merge(duplicateCheckErrorFlow, changeNickNameErrorFlow).collect {
+                _uiState.emit(it)
             }
 
-            // 닉네임 변경 에러 값 구독
-            launch {
-                changeNickNameUseCase.error.collect {
-                    _error.emit(it)
-                }
-            }
         }
     }
 
