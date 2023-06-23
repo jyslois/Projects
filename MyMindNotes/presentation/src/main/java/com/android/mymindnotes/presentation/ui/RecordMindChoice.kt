@@ -35,59 +35,39 @@ class RecordMindChoice : AppCompatActivity() {
         // 버튼 클릭 이벤트
         // 오늘의 마음 일기 버튼 클릭
         binding.todayEmotionButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickTodayEmotionButton()
-            }
+            val intent = Intent(applicationContext, TodayDiaryEmotion::class.java)
+            startActivity(intent)
         }
 
         // 트라우마 일기 버튼 클릭
         binding.traumaButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickTraumaButton()
-            }
+            val intent = Intent(applicationContext, TraumaDiarySituation::class.java)
+            startActivity(intent)
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // 닉네임 세팅 ㅡ 회원정보 값 구독
-                launch {
-                    viewModel.userInfo.collect {
-                        val nick = it["nickname"] as String?
-                        if (nick != null) {
-                            binding.nickNameText.text = "$nick 님,"
-                        }
-                    }
-                }
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
 
-                // 클릭 이벤트 감지
-                // 오늘의 마음 일기 버튼 클릭 감지
-                launch {
-                    viewModel.clickTodayEmotionButton.collect {
-                        if (it) {
-                            val intent = Intent(applicationContext, TodayDiaryEmotion::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                }
+                        // 회원정보 값 구독
+                        is RecordMindChoiceViewModel.RecordMindChoiceUiState.Success ->
+                           uiState.userInfoResult?.let {
+                               // 닉네임 세팅
+                               val nick = it["nickname"] as String?
+                               if (nick != null) {
+                                   binding.nickNameText.text = "$nick 님,"
+                               }
+                           }
 
-                // 트라우마 일기 버튼 클릭 감지
-                launch {
-                    viewModel.clickTraumaButton.collect {
-                        if (it) {
-                            val intent = Intent(applicationContext, TraumaDiarySituation::class.java)
-                            startActivity(intent)
+                        // 애러 구독
+                        is RecordMindChoiceViewModel.RecordMindChoiceUiState.Error -> {
+                            if (uiState.error) {
+                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
+                            }
                         }
-                    }
-                }
 
-                // 에러 감지
-                // 에러 값 구독
-                launch {
-                    viewModel.error.collect {
-                        if (it) {
-                            dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
-                        }
                     }
                 }
             }

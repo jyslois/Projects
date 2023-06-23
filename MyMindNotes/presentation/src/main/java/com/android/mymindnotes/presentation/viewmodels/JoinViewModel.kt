@@ -12,7 +12,10 @@ import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckEmailDuplicat
 import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckNickNameDuplicateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,99 +34,51 @@ class JoinViewModel @Inject constructor(
     private val checkNickNameDuplicateUseCase: CheckNickNameDuplicateUseCase
 ) : ViewModel() {
 
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>()
-    val error = _error.asSharedFlow()
-
-    // 이메일
-    // 이메일 중복 체크 버튼 클릭 감지 플로우
-    private val _clickEmailCheck = MutableSharedFlow<Boolean>()
-    val clickEmailCheck = _clickEmailCheck.asSharedFlow()
-
-    // 이메일 중복 체크 버튼 클릭 감지
-    suspend fun clickEmailCheckButton() {
-        _clickEmailCheck.emit(true)
+    sealed class JoinUiState {
+        data class Success(val emailDuplicateCheckResult: Map<String, Object>?, val nickNameDuplicateCheckResult: Map<String, Object>?, val joinResult: Map<String, Object>?): JoinUiState()
+        data class Error(val error: Boolean): JoinUiState()
     }
 
-    // SharedFlow
-    // (서버) 이메일 중복 체크 결과 저장 플로우
-    private val _emailCheckResult = MutableSharedFlow<Map<String, Object>>()
-    val emailCheckResult = _emailCheckResult.asSharedFlow()
+    // ui상태
+    private val _uiState = MutableSharedFlow<JoinUiState>()
+    val uiState: SharedFlow<JoinUiState> = _uiState
 
 
     // 이메일 중복 체크 함수 호출
     suspend fun checkEmail(emailInput: String) {
         checkEmailDuplicateUseCase(emailInput).collect {
-          _emailCheckResult.emit(it)
+          _uiState.emit(JoinUiState.Success(it, null, null))
       }
     }
-
-    // 닉네임
-    // 닉네임 중복 체크 버튼 클릭 감지 플로우
-    private val _clickNickNameCheck = MutableSharedFlow<Boolean>()
-    val clickNickNameCheck = _clickNickNameCheck.asSharedFlow()
-
-    // 닉네임 중복 체크 버튼 클릭 감지
-    suspend fun clickNickNameCheckButton() {
-        _clickNickNameCheck.emit(true)
-    }
-
-    // 닉네임 중복 체크 결과 저장 플로우
-    private val _nickNameCheckResult = MutableSharedFlow<Map<String, Object>>()
-    val nickNameCheckResult = _nickNameCheckResult.asSharedFlow()
 
 
     // (서버) 닉네임 중복 체크 함수 호출
     suspend fun checkNickName(nickNameInput: String) {
         checkNickNameDuplicateUseCase(nickNameInput).collect {
-            _nickNameCheckResult.emit(it)
+            _uiState.emit(JoinUiState.Success(null, it, null))
         }
     }
 
-
-    // 회원가입
-    // 회원가입 버튼 클릭 감지 플로우
-    private val _clickJoinButton = MutableSharedFlow<Boolean>()
-    val clickJoinButton = _clickJoinButton.asSharedFlow()
-
-    // 회원가입 버튼 클릭 감지
-    suspend fun clickJoinButton() {
-        _clickJoinButton.emit(true)
-    }
 
     // (서버) 회원가입 함수 호출
     suspend fun join(email: String, nickname: String, password: String, birthyear: Int) {
         joinUseCase(email, nickname, password, birthyear).collect {
-            _joinResult.emit(it)
+            _uiState.emit(JoinUiState.Success(null, null, it))
         }
     }
-
-    // 회원가입 결과 저장 플로우
-    private val _joinResult = MutableSharedFlow<Map<String, Object>>()
-    val joinResult = _joinResult.asSharedFlow()
 
 
     // collect & emit
     init {
         viewModelScope.launch {
-            // 회원가입 에러 값 구독
-            launch {
-                joinUseCase.error.collect {
-                    _error.emit(it)
-                }
-            }
 
-            // duplicateCheck 에러 값 구독
-            launch {
-                checkEmailDuplicateUseCase.error.collect {
-                    _error.emit(it)
-                }
-            }
+            val joinErrorFlow =  joinUseCase.error.map { JoinUiState.Error(it) }
+            val emailDuplicateCheckErrorFlow = checkEmailDuplicateUseCase.error.map { JoinUiState.Error(it) }
+            val nickNameDuplicateCheckErrorFlow = checkNickNameDuplicateUseCase.error.map { JoinUiState.Error(it) }
 
-            launch {
-                checkNickNameDuplicateUseCase.error.collect {
-                    _error.emit(it)
-                }
+            merge(joinErrorFlow, emailDuplicateCheckErrorFlow, nickNameDuplicateCheckErrorFlow).collect {
+                _uiState.emit(it)
+
             }
         }
     }
@@ -152,21 +107,5 @@ class JoinViewModel @Inject constructor(
         saveAutoSaveStateUseCase(state)
     }
 
-    // textChange
-    // textChange 감지를 위한 SharedFlow
-    private val _emailInputTextChange = MutableSharedFlow<Boolean>()
-    val emailInputTextChange = _emailInputTextChange.asSharedFlow()
-
-    private val _nickNameInputTextChange = MutableSharedFlow<Boolean>()
-    val nickNameInputTextChange = _nickNameInputTextChange.asSharedFlow()
-
-    // textChange 감지 함수
-    suspend fun emailInputTextChange() {
-        _emailInputTextChange.emit(true)
-    }
-
-    suspend fun nickNameInputTextChange() {
-        _nickNameInputTextChange.emit(true)
-    }
 
 }

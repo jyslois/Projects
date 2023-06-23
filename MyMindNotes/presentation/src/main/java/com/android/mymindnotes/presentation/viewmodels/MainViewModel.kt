@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.loginStates.GetAutoLoginStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,15 +15,15 @@ class MainViewModel @Inject constructor(
     private val getAutoLoginStateUseCase: GetAutoLoginStateUseCase
 ): ViewModel() {
 
-//     autoLoginCheck 값을 저장하는 SharedFlow
-    private val _autoLoginCheck = MutableSharedFlow<Boolean>()
-    val autoLoginCheck get() = _autoLoginCheck.asSharedFlow()
 
-    // 버튼 클릭 감지를 위한 SharedFlow
-    private val _login = MutableSharedFlow<Boolean>()
-    val login get() = _login.asSharedFlow()
-    private val _join = MutableSharedFlow<Boolean>()
-    val join get() = _join.asSharedFlow()
+    sealed class MainUiState {
+        data class State(val autoLoginStateResult: Boolean): MainUiState()
+    }
+
+    // ui상태
+    private val _uiState = MutableSharedFlow<MainUiState>()
+    val uiState: SharedFlow<MainUiState> = _uiState
+
 
     // ViewModel instance가 만들어질 때,
     init {
@@ -30,19 +31,12 @@ class MainViewModel @Inject constructor(
             launch {
                 // useCase의 getAutoLogin() 함수에 return된 Flow의 Boolean 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
                 getAutoLoginStateUseCase().collect {
-                    _autoLoginCheck.emit(it)
+                    _uiState.emit(MainUiState.State(it))
                 }
             }
         }
     }
 
-    suspend fun clickLoginButton() {
-        _login.emit(true)
-    }
-
-    suspend fun clickJoinButton() {
-        _join.emit(true)
-    }
 
 
 }

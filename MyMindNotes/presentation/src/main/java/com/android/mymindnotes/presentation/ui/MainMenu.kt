@@ -5,21 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import android.content.Intent
-import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityMainMenuBinding
-import com.android.mymindnotes.presentation.viewmodels.MainMenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainMenu : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
-    private val viewModel: MainMenuViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainMenuBinding.inflate(layoutInflater)
@@ -30,69 +22,26 @@ class MainMenu : AppCompatActivity() {
 
         // 버튼 클릭 이벤트
         binding.recordDiaryButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickRecordDiaryButton()
-            }
+            startActivity<RecordMindChoice>()
         }
 
         binding.diaryButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickDiaryButton()
-            }
+            startActivity<Diary>()
         }
 
         binding.emotionInstructionButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickEmotionInstructionButton()
-            }
+            startActivity<EmotionInstructions>()
         }
 
         binding.accountSettingButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickAccountSettingButton()
-            }
+            startActivity<AccountSetting>()
         }
 
         binding.alarmSettingButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickAlarmSettingButton()
-            }
+            startActivity<AlarmSetting>()
         }
 
-        // 버튼 클릭 이벤트 감지
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.recordDiaryButton.collect {
-                        startActivity<RecordMindChoice>()
-                    }
-                }
 
-                launch {
-                    viewModel.diaryButton.collect {
-                        startActivity<Diary>()
-                    }
-                }
-
-                launch {
-                    viewModel.emotionInstructionButton.collect {
-                        startActivity<EmotionInstructions>()
-                    }
-                }
-
-                launch {
-                    viewModel.accountSettingButton.collect {
-                        startActivity<com.android.mymindnotes.presentation.ui.AccountSetting>()
-                    }
-                }
-
-                launch {
-                    viewModel.alarmSettingButton.collect {
-                        startActivity<AlarmSetting>()
-                    }
-                }
-            }
-        }
 
     }
 

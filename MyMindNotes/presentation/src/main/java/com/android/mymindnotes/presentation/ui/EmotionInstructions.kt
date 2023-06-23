@@ -13,28 +13,18 @@ import androidx.annotation.RequiresApi
 import android.os.Build
 import android.graphics.text.LineBreaker
 import android.view.View
-import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityEmotionInstructionsBinding
 import com.android.mymindnotes.presentation.databinding.EmotionitemBinding
-import com.android.mymindnotes.presentation.viewmodels.EmotionInstructionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EmotionInstructions : AppCompatActivity() {
     private lateinit var binding: ActivityEmotionInstructionsBinding
-
-    // 뷰모델 객체 주입
-    private val viewModel: EmotionInstructionsViewModel by viewModels()
-
     private lateinit var adaptor: EmotionInstructionAdaptor
-    private var emotionList = listOf<com.android.mymindnotes.presentation.ui.Emotion>()
-    private var singleEmotion = mutableListOf<com.android.mymindnotes.presentation.ui.Emotion>()
+    private var emotionList = listOf<Emotion>()
+    private var singleEmotion = mutableListOf<Emotion>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,42 +37,42 @@ class EmotionInstructions : AppCompatActivity() {
 
         // 리스트 만들기
         emotionList = listOf(
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "기쁨",
                 R.drawable.orange_happiness,
                 R.string.happiness
             ),
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "기대",
                 R.drawable.green_anticipation,
                 R.string.anticipation
             ),
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "신뢰",
                 R.drawable.darkblue_trust,
                 R.string.trust
             ),
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "놀람",
                 R.drawable.yellow_surprise,
                 R.string.surprise
             ),
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "슬픔",
                 R.drawable.grey_sadness,
                 R.string.sadness
             ),
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "혐오",
                 R.drawable.brown_disgust,
                 R.string.disgust
             ),
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "공포",
                 R.drawable.black_fear,
                 R.string.fear
             ),
-            com.android.mymindnotes.presentation.ui.Emotion(
+            Emotion(
                 "분노",
                 R.drawable.red_anger,
                 R.string.anger
@@ -98,23 +88,14 @@ class EmotionInstructions : AppCompatActivity() {
 
         // 감정 정렬 버튼 클릭 이벤트
         binding.sortButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickSortButton()
-            }
+            val intent =
+                Intent(this@EmotionInstructions, EmotionInstructionSortingPopup::class.java)
+            startActivityForResult(intent, 1)
         }
-
-        // 감정 정렬 버튼 클릭 감지
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.sortButton.collect {
-                    val intent =
-                        Intent(this@EmotionInstructions, EmotionInstructionSortingPopup::class.java)
-                    startActivityForResult(intent, 1)
-                }
-            }
-        }
-
     }
+
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

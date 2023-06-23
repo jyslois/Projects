@@ -39,85 +39,57 @@ class MainPage : AppCompatActivity() {
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
+
         // 메뉴 이미지
         binding.mainmenu.setColorFilter(Color.parseColor("#BCFFD7CE"))
 
         // 버튼 클릭 이벤트
         // 일기 쓰기 버튼 클릭
         binding.addRecordButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickAddRecordButton()
-            }
+            startActivity<RecordMindChoice>()
         }
 
         // 메뉴 버튼 클릭
         binding.mainmenu.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickMainMenuButton()
-            }
+            startActivity<MainMenu>()
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 최초 접속 시에 알람 설정 다이얼로그 띄워주기
-                // 최초 값 구독
-                launch {
-                    Log.e("FirstTimeCheck", "Activity - launch 안에 들어옴")
-                    viewModel.firstTime.collect {
-                        Log.e("FirstTimeCheck", "결과 최종으로 돌어옴 - 결과: $it")
-                        if (it) {
-                            Log.e("FirstTimeCheck", "결과 최종 - true일 경우. 완료")
-                            // 다이얼로그 띄우기
-                            setAlarmDialog()
-                            viewModel.saveFirstTime(false)
-                        }
-                    }
-                }
 
-                // 닉네임 세팅
-                // 회원 정보 값 구독
-                launch {
-                    viewModel.userInfo.collect {
-                        // 닉네임 세팅
-                        Log.e("UserInfoCheck", "결과 최종으로 돌어옴 - 결과: $it")
-                        val nick = it["nickname"] as String?
-                        if (nick != null) {
-                            binding.mainpagetext.text = "오늘 하루도 고생했어요, $nick 님."
-                        }
-                    }
-                }
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
 
-                // 에러 감지
-                // 에러 값 구독
-                launch {
-                    viewModel.error.collect {
-                        if (it) {
-                            dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
+                        // 최초 값 구독
+                        is MainPageViewModel.MainPageUiState.State -> {
+                            if (uiState.firstTime) {
+                                // 최초 접속 시에 알람 설정 다이얼로그 띄워주기
+                                setAlarmDialog()
+                                viewModel.saveFirstTime(false)
+                            }
                         }
-                    }
-                }
 
-                // 클릭 이벤트 감지
-                // 일기 쓰기 버튼 클릭 이벤트 감지
-                launch {
-                    viewModel.clickAddRecordButton.collect {
-                        if (it) {
-                            startActivity<RecordMindChoice>()
-//                            val intent = Intent(applicationContext, RecordMindChoice::class.java)
-//                            startActivity(intent)
+                        // 회원 정보 값 구독
+                        is MainPageViewModel.MainPageUiState.Success -> {
+                            uiState.userInfoResult?.let {
+                                // 닉네임 세팅
+                                Log.e("UserInfoCheck", "결과 최종으로 돌어옴 - 결과: $it")
+                                val nick = it["nickname"] as String?
+                                if (nick != null) {
+                                    binding.mainpagetext.text = "오늘 하루도 고생했어요, $nick 님."
+                                }
+                            }
                         }
-                    }
-                }
 
-                // 메뉴 버튼 클릭 이벤트 감지
-                launch {
-                    viewModel.clickMainMenuButton.collect {
-                        if (it) {
-                            startActivity<MainMenu>()
-//                            val intent = Intent(applicationContext, MainMenu::class.java)
-//                            startActivity(intent)
+                        // 애러 구독
+                        is MainPageViewModel.MainPageUiState.Error -> {
+                            if (uiState.error) {
+                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
+                            }
                         }
+
                     }
+
                 }
 
             }
