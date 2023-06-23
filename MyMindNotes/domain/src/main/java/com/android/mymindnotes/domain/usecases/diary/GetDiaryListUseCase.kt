@@ -14,8 +14,8 @@ class GetDiaryListUseCase @Inject constructor(
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
     // 에러 메시지
-    private val _getDiaryListError = MutableSharedFlow<Boolean>()
-    val getDiaryListError = _getDiaryListError.asSharedFlow()
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
 
 //    suspend fun getDiaryList(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
 
@@ -27,7 +27,7 @@ class GetDiaryListUseCase @Inject constructor(
             launch {
                 // error collect & emit
                 diaryRepository.getDiaryListError.collect {
-                    _getDiaryListError.emit(it)
+                    _error.emit(it)
                 }
             }
         }

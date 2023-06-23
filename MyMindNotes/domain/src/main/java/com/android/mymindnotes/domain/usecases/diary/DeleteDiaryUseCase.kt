@@ -14,14 +14,14 @@ class DeleteDiaryUseCase @Inject constructor(
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
     // 에러 메시지
-    private val _deleteDiaryError = MutableSharedFlow<Boolean>()
-    val deleteDiaryError = _deleteDiaryError.asSharedFlow()
+    private val _error = MutableSharedFlow<Boolean>()
+    val error = _error.asSharedFlow()
 
     init {
         mainDispatcherCoroutineScope.launch {
             launch {
                 diaryRepository.deleteDiaryError.collect {
-                    _deleteDiaryError.emit(it)
+                    _error.emit(it)
                 }
             }
         }

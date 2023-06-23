@@ -6,7 +6,10 @@ import com.android.mymindnotes.domain.usecases.diary.DeleteDiaryUseCase
 import com.android.mymindnotes.domain.usecases.diary.GetDiaryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,75 +17,47 @@ import javax.inject.Inject
 class DiaryResultViewModel @Inject constructor(
     private val deleteDiaryUseCase: DeleteDiaryUseCase,
     private val getDiaryListUseCase: GetDiaryListUseCase
-): ViewModel() {
+) : ViewModel() {
+
+    sealed class DiaryResultUiState {
+        data class Success(val getDiaryListResult: Map<String, Object>?, val deleteDiaryListResult: Map<String, Object>?) : DiaryResultUiState()
+        data class Error(val error: Boolean) : DiaryResultUiState()
+    }
+
+    // ui상태
+    private val _uiState = MutableSharedFlow<DiaryResultUiState>()
+    val uiState: SharedFlow<DiaryResultUiState> = _uiState
+
 
     // 다이어리 리스트 불러오기
-    private val _diaryList = MutableSharedFlow<Map<String, Object>>()
-    val diaryList = _diaryList.asSharedFlow()
-
     suspend fun getDiaryList() {
         getDiaryListUseCase().collect {
-            _diaryList.emit(it)
+            _uiState.emit(DiaryResultUiState.Success(it, null))
         }
     }
-
-    // 에러
-    private val _getDiaryListError = MutableSharedFlow<Boolean>()
-    val getDiaryListError = _getDiaryListError.asSharedFlow()
-
-    private val _deleteDiaryError = MutableSharedFlow<Boolean>()
-    val deleteDiaryError = _deleteDiaryError.asSharedFlow()
-
-    // 버튼 클릭 감지
-    // 돌아가기 버튼 클릭 감지 플로우
-    private val _backToListButton = MutableSharedFlow<Boolean>()
-    val backToListButton = _backToListButton.asSharedFlow()
-
-    suspend fun clickBackToListButton() {
-        _backToListButton.emit(true)
-    }
-
-    // 수정하기 버튼 클릭 감지 플로우
-    private val _editButton = MutableSharedFlow<Boolean>()
-    val editButton = _editButton.asSharedFlow()
-
-    suspend fun clickEditButton() {
-        _editButton.emit(true)
-    }
-
-    // 삭제하기 버튼 클릭 감지 플로우
-    private val _deleteButton = MutableSharedFlow<Boolean>()
-    val deleteButton = _deleteButton.asSharedFlow()
-
-    suspend fun clickDeleteButton() {
-        _deleteButton.emit(true)
-    }
-
-    // 일기 삭제하기
-    // 일기 삭제하기 저장 플로우
-    private val _deleteDiaryResult = MutableSharedFlow<Map<String, Object>>()
-    val deleteDiaryResult = _deleteDiaryResult.asSharedFlow()
 
     // 일기 삭제하기
     suspend fun deleteDiary(diaryNumber: Int) {
         deleteDiaryUseCase(diaryNumber).collect {
-            _deleteDiaryResult.emit(it)
+            _uiState.emit(DiaryResultUiState.Success(null, it))
         }
     }
 
     init {
         viewModelScope.launch {
-            // error collect & emit
-            getDiaryListUseCase.getDiaryListError.collect {
-                _getDiaryListError.emit(it)
+
+            val getDiaryListErrorFlow = getDiaryListUseCase.error.map {
+                DiaryResultUiState.Error(it)
             }
+            val deleteDiaryListErrorFlow = deleteDiaryUseCase.error.map {
+                DiaryResultUiState.Error(it)
+            }
+
+            merge(getDiaryListErrorFlow, deleteDiaryListErrorFlow).collect {
+                _uiState.emit(it)
+            }
+
         }
 
-        viewModelScope.launch {
-            deleteDiaryUseCase.deleteDiaryError.collect {
-                _deleteDiaryError.emit(it)
-            }
-        }
     }
-
 }

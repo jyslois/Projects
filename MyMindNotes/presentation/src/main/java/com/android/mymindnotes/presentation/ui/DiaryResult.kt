@@ -62,37 +62,41 @@ class DiaryResult : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            launch {
-                // 일기 새로고침 감지
-                viewModel.diaryList.collectLatest {
-                    if (it["code"].toString().toDouble() == 7000.0) {
-                        val gson = Gson()
-                        val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                        val jsonResult = gson.toJson(it["diaryList"])
-                        diarylist = gson.fromJson(jsonResult, type)
-                        diarylist?.let { diaryList -> sendFragmentsData(diaryList[index]) }
+            viewModel.uiState.collect { uiState ->
+                when (uiState) {
+                    is DiaryResultViewModel.DiaryResultUiState.Success -> {
+                        // 일기 리스트 불러오기 감지
+                        uiState.getDiaryListResult?.let {
+                            if (it["code"].toString().toDouble() == 7000.0) {
+                                val gson = Gson()
+                                val type = object : TypeToken<List<UserDiary?>?>() {}.type
+                                val jsonResult = gson.toJson(it["diaryList"])
+                                diarylist = gson.fromJson(jsonResult, type)
+                                diarylist?.let { diaryList -> sendFragmentsData(diaryList[index]) }
+                            }
+                        }
+                    }
+
+                    // 애러 감지
+                    is DiaryResultViewModel.DiaryResultUiState.Error -> {
+                        val toast = Toast.makeText(
+                            applicationContext,
+                            "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
+                            Toast.LENGTH_SHORT
+                        )
+                        toast.show()
                     }
                 }
-            }
 
-            launch {
-                // 애러 구독
-                viewModel.getDiaryListError.collect {
-                    val toast = Toast.makeText(
-                        applicationContext,
-                        "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                        Toast.LENGTH_SHORT
-                    )
-                    toast.show()
-                }
-            }
-
-            launch {
-                // 일기 리스트 새로고침
-                viewModel.getDiaryList()
             }
 
         }
+
+        lifecycleScope.launch {
+            // 일기 리스트 새로고침
+            viewModel.getDiaryList()
+        }
+
     }
 
 
@@ -145,17 +149,7 @@ class DiaryResult : AppCompatActivity() {
         // 클릭 이벤트
         // 돌아가기 버튼 클릭
         binding.backtoListButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickBackToListButton()
-            }
-        }
-
-        // 수정 버튼 클릭
-        // 수정 버튼 클릭 시
-        binding.editButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.clickEditButton()
-            }
+            finish()
         }
 
         // 수정 화면 전환/돌아오기
@@ -169,91 +163,65 @@ class DiaryResult : AppCompatActivity() {
                 }
             }
 
+        // 수정 버튼 클릭
+        binding.editButton.setOnClickListener {
+            val intento = Intent(applicationContext, DiaryResultEdit::class.java)
+            intento.putExtra("date", date)
+            intento.putExtra("type", type)
+            intento.putExtra("situation", situation)
+            intento.putExtra("thought", thought)
+            intento.putExtra("emotion", emotion)
+            intento.putExtra("emotionDescription", emotionDescription)
+            intento.putExtra("reflection", reflection)
+            intento.putExtra("diaryNumber", diaryNumber)
+            intento.putExtra("index", index)
+            editResult.launch(intento)
+        }
+
+
         // 삭제 버튼 클릭
         binding.deleteButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickDeleteButton()
+                viewModel.deleteDiary(diaryNumber)
+
             }
         }
 
+
+        // 구독
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is DiaryResultViewModel.DiaryResultUiState.Success -> {
+                            // 일기 리스트 불러오기 감지
+                            uiState.getDiaryListResult?.let {
+                                if (it["code"].toString().toDouble() == 7000.0) {
+                                    val gson = Gson()
+                                    val type = object : TypeToken<List<UserDiary?>?>() {}.type
+                                    val jsonResult = gson.toJson(it["diaryList"])
+                                    diarylist = gson.fromJson(jsonResult, type)
+                                    diarylist?.let { diaryList -> sendFragmentsData(diaryList[index]) }
+                                }
+                            }
 
-                // 버튼 클릭 감지
-                // 돌아가기 버튼 클릭 감지
-                launch {
-                    viewModel.backToListButton.collect {
-                        finish()
-                    }
-                }
-
-                // 수정 버튼 클릭 감지
-                launch {
-                    viewModel.editButton.collect {
-                        val intento = Intent(applicationContext, DiaryResultEdit::class.java)
-                        intento.putExtra("date", date)
-                        intento.putExtra("type", type)
-                        intento.putExtra("situation", situation)
-                        intento.putExtra("thought", thought)
-                        intento.putExtra("emotion", emotion)
-                        intento.putExtra("emotionDescription", emotionDescription)
-                        intento.putExtra("reflection", reflection)
-                        intento.putExtra("diaryNumber", diaryNumber)
-                        intento.putExtra("index", index)
-                        editResult.launch(intento)
-                    }
-                }
-
-                // 삭제 버튼 클릭 감지
-                launch {
-                    viewModel.deleteButton.collect {
-                        viewModel.deleteDiary(diaryNumber)
-                    }
-                }
-
-                // 일기 삭제 감지
-                launch {
-                    viewModel.deleteDiaryResult.collect {
-                        if (it["code"].toString().toDouble() == 9000.0) {
-                            finish()
+                            // 일기 삭제 감지
+                            uiState.deleteDiaryListResult?.let {
+                                if (it["code"].toString().toDouble() == 9000.0) {
+                                    finish()
+                                }
+                            }
                         }
-                    }
-                }
 
-                // 일기 리스트 불러오기 감지
-                launch {
-                    // 일기 새로고침 감지
-                    viewModel.diaryList.collectLatest {
-                        if (it["code"].toString().toDouble() == 7000.0) {
-                            val gson = Gson()
-                            val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                            val jsonResult = gson.toJson(it["diaryList"])
-                            diarylist = gson.fromJson(jsonResult, type)
-                            diarylist?.let { diaryList -> sendFragmentsData(diaryList[index]) }
+                        // 애러 감지
+                        is DiaryResultViewModel.DiaryResultUiState.Error -> {
+                            val toast = Toast.makeText(
+                                this@DiaryResult,
+                                "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
                         }
-                    }
-                }
-
-                // 애러 구독
-                launch {
-                    viewModel.getDiaryListError.collect {
-                        val toast = Toast.makeText(
-                            this@DiaryResult,
-                            "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                            Toast.LENGTH_SHORT
-                        )
-                        toast.show()
-                    }
-                }
-
-                launch {
-                    viewModel.deleteDiaryError.collect {
-                        val toast = Toast.makeText(
-                            this@DiaryResult,
-                            "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                            Toast.LENGTH_SHORT
-                        )
-                        toast.show()
                     }
                 }
             }
