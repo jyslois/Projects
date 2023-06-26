@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class Login : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     lateinit var alertDialog: AlertDialog
     lateinit var autoSave: CheckBox
@@ -45,7 +45,7 @@ class Login : AppCompatActivity() {
         setContentView(binding.root)
 
         // 백그라운드 이미지
-        Glide.with(this@Login).load(R.drawable.mainbackground).into(binding.background)
+        Glide.with(this@LoginActivity).load(R.drawable.mainbackground).into(binding.background)
 
         // 로그인 정보 저장 & 자동 로그인 구현 관련
         var loginButton = binding.loginButton
@@ -96,7 +96,7 @@ class Login : AppCompatActivity() {
 
         // 비밀번호 찾기 버튼 클릭시
         findPasswordButton.setOnClickListener {
-            startActivity<FindPassword>()
+            startActivity<FindPasswordActivity>()
         }
 
         // 로그인 버튼 클릭 시
@@ -192,7 +192,7 @@ class Login : AppCompatActivity() {
                                     )
 
                                     // 화면 전환
-                                    startActivity<MainPage>()
+                                    startActivity<MainPageActivity>()
                                 }
                             }
                         }

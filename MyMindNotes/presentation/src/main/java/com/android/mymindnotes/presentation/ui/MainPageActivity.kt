@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainPage : AppCompatActivity() {
+class MainPageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainPageBinding
 
     // viewModel 객체 주입
@@ -46,12 +46,12 @@ class MainPage : AppCompatActivity() {
         // 버튼 클릭 이벤트
         // 일기 쓰기 버튼 클릭
         binding.addRecordButton.setOnClickListener {
-            startActivity<RecordMindChoice>()
+            startActivity<RecordMindChoiceActivity>()
         }
 
         // 메뉴 버튼 클릭
         binding.mainmenu.setOnClickListener {
-            startActivity<MainMenu>()
+            startActivity<MainMenuActivity>()
         }
 
         lifecycleScope.launch {
@@ -120,8 +120,8 @@ class MainPage : AppCompatActivity() {
     var dialogListener = DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // 알람 설정 페이지로 이동
-            startActivity<AlarmSetting>()
-//            val intent = Intent(this, AlarmSetting::class.java)
+            startActivity<AlarmSettingActivity>()
+//            val intent = Intent(this, AlarmSettingActivity::class.java)
 //            startActivity(intent)
         }
     }

@@ -1,7 +1,6 @@
 package com.android.mymindnotes.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
-import android.content.SharedPreferences
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import android.text.TextWatcher
@@ -9,7 +8,6 @@ import android.text.Editable
 import android.widget.Toast
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
@@ -18,14 +16,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityChangeNicknameBinding
-import com.android.mymindnotes.presentation.viewmodels.AccountSettingViewModel
 import com.android.mymindnotes.presentation.viewmodels.ChangeNickNameViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 @AndroidEntryPoint
-class ChangeNickname : AppCompatActivity() {
+class ChangeNicknameActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChangeNicknameBinding
     private val viewModel: ChangeNickNameViewModel by viewModels()
 
@@ -130,7 +127,7 @@ class ChangeNickname : AppCompatActivity() {
                                     )
                                         .show()
                                     // 화면 전환
-                                    val intent = Intent(applicationContext, MainPage::class.java)
+                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
                                     startActivity(intent)
                                 }
                             }

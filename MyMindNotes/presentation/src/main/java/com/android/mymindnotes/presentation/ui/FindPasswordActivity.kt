@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
-class FindPassword : AppCompatActivity() {
+class FindPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFindPasswordBinding
     // 뷰모델 객체 주입
     private val viewModel: FindPasswordViewModel by viewModels()

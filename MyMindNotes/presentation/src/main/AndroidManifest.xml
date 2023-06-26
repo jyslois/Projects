@@ -5,10 +5,10 @@
     <application>
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.AlarmSetting"
+            android:name=".ui.AlarmSettingActivity"
             android:exported="false"
             android:label="알림 설정"
-            android:parentActivityName=".ui.MainMenu"
+            android:parentActivityName=".ui.MainMenuActivity"
             android:theme="@style/Theme.changeScreen" />
         <activity
             android:screenOrientation="portrait"
@@ -24,94 +24,94 @@
             android:theme="@style/Theme.dialogue" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.FindPassword"
+            android:name=".ui.FindPasswordActivity"
             android:exported="false"
-            android:parentActivityName=".ui.Login"
+            android:parentActivityName=".ui.LoginActivity"
             android:theme="@style/Theme.changeScreen" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.ChangeNickname"
+            android:name=".ui.ChangeNicknameActivity"
             android:exported="false"
             android:label="닉네임 변경"
-            android:parentActivityName=".ui.AccountSetting"
+            android:parentActivityName=".ui.AccountSettingActivity"
             android:theme="@style/Theme.changeScreen" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.ChangePassword"
+            android:name=".ui.ChangePasswordActivity"
             android:exported="false"
             android:label="비밀번호 변경"
-            android:parentActivityName=".ui.AccountSetting"
+            android:parentActivityName=".ui.AccountSettingActivity"
             android:theme="@style/Theme.changeScreen" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.AccountSetting"
+            android:name=".ui.AccountSettingActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.MainMenu"
+            android:name=".ui.MainMenuActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.DiaryResultEdit"
+            android:name=".ui.DiaryResultEditActivity"
             android:exported="false"
             android:theme="@style/Theme.Main"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.DiaryResult"
+            android:name=".ui.DiaryResultActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TraumaDiaryReflection"
+            android:name=".ui.TraumaDiaryReflectionActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TraumaDiaryEmotion"
+            android:name=".ui.TraumaDiaryEmotionActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TraumaDiaryThought"
+            android:name=".ui.TraumaDiaryThoughtActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TraumaDiarySituation"
+            android:name=".ui.TraumaDiarySituationActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TodayDiaryReflection"
+            android:name=".ui.TodayDiaryReflectionActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TodayDiaryThought"
+            android:name=".ui.TodayDiaryThoughtActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TodayDiarySituation"
+            android:name=".ui.TodayDiarySituationActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.TodayDiaryEmotion"
+            android:name=".ui.TodayDiaryEmotionActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:name=".ui.RecordMindChoice"
+            android:name=".ui.RecordMindChoiceActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.Diary"
+            android:name=".ui.DiaryActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
@@ -121,18 +121,18 @@
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.MainPage"
+            android:name=".ui.MainPageActivity"
             android:exported="false"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.Login"
+            android:name=".ui.LoginActivity"
             android:exported="true"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/Theme.Main" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.Join"
+            android:name=".ui.JoinActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/Theme.Main" />

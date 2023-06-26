@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
-class AlarmSetting : AppCompatActivity() {
+class AlarmSettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAlarmSettingBinding
     private val viewModel: AlarmSettingViewModel by viewModels()
 
@@ -158,7 +158,7 @@ class AlarmSetting : AppCompatActivity() {
                                 val minute = viewModel.getMinute().first()
 
                                 val dialog = TimePickerDialog(
-                                    this@AlarmSetting,
+                                    this@AlarmSettingActivity,
                                     R.style.PinkTimePickerTheme,
                                     { _, hourOfDay, minute ->
                                         var min = ""

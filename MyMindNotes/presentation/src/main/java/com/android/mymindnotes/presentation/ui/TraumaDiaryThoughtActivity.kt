@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TraumaDiaryThought : AppCompatActivity() {
+class TraumaDiaryThoughtActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTraumaDiaryThoughtBinding
 
     // 뷰모델 객체 주입
@@ -48,7 +48,7 @@ class TraumaDiaryThought : AppCompatActivity() {
                     // 상황 저장
                     viewModel.saveThought(thought)
                     // 다음 화면으로 이동
-                    val intent = Intent(applicationContext, TraumaDiaryEmotion::class.java)
+                    val intent = Intent(applicationContext, TraumaDiaryEmotionActivity::class.java)
                     startActivity(intent)
                 }
             }

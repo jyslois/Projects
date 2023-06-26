@@ -6,7 +6,6 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.android.mymindnotes.presentation.viewmodels.MainViewModel
 import android.content.Intent
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                         when (uiState) {
                             is MainViewModel.MainUiState.State -> {
                                 if (uiState.autoLoginStateResult) {
-                                    val intent = Intent(applicationContext, MainPage::class.java)
+                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
                                     startActivity(intent);
                                 }
                             }
@@ -53,13 +52,13 @@ class MainActivity : AppCompatActivity() {
 
         // 로그인 클릭
         binding.loginButton.setOnClickListener {
-            val intent = Intent(applicationContext, Login::class.java)
+            val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
 
         // 회원가입 클릭
         binding.joinButton.setOnClickListener {
-            val intent = Intent(applicationContext, Join::class.java)
+            val intent = Intent(applicationContext, JoinActivity::class.java)
             startActivity(intent)
         }
     }

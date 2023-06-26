@@ -10,7 +10,7 @@ import com.android.mymindnotes.presentation.databinding.ActivityMainMenuBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainMenu : AppCompatActivity() {
+class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +22,11 @@ class MainMenu : AppCompatActivity() {
 
         // 버튼 클릭 이벤트
         binding.recordDiaryButton.setOnClickListener {
-            startActivity<RecordMindChoice>()
+            startActivity<RecordMindChoiceActivity>()
         }
 
         binding.diaryButton.setOnClickListener {
-            startActivity<Diary>()
+            startActivity<DiaryActivity>()
         }
 
         binding.emotionInstructionButton.setOnClickListener {
@@ -34,11 +34,11 @@ class MainMenu : AppCompatActivity() {
         }
 
         binding.accountSettingButton.setOnClickListener {
-            startActivity<AccountSetting>()
+            startActivity<AccountSettingActivity>()
         }
 
         binding.alarmSettingButton.setOnClickListener {
-            startActivity<AlarmSetting>()
+            startActivity<AlarmSettingActivity>()
         }
 
 

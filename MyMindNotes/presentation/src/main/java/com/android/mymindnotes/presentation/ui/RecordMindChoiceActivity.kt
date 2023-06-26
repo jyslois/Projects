@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RecordMindChoice : AppCompatActivity() {
+class RecordMindChoiceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordMindChoiceBinding
     // 뷰모델 객체 주입
     private val viewModel: RecordMindChoiceViewModel by viewModels()
@@ -35,13 +35,13 @@ class RecordMindChoice : AppCompatActivity() {
         // 버튼 클릭 이벤트
         // 오늘의 마음 일기 버튼 클릭
         binding.todayEmotionButton.setOnClickListener {
-            val intent = Intent(applicationContext, TodayDiaryEmotion::class.java)
+            val intent = Intent(applicationContext, TodayDiaryEmotionActivity::class.java)
             startActivity(intent)
         }
 
         // 트라우마 일기 버튼 클릭
         binding.traumaButton.setOnClickListener {
-            val intent = Intent(applicationContext, TraumaDiarySituation::class.java)
+            val intent = Intent(applicationContext, TraumaDiarySituationActivity::class.java)
             startActivity(intent)
         }
 

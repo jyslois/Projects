@@ -12,7 +12,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
 import com.android.mymindnotes.presentation.R
-import com.android.mymindnotes.presentation.ui.RecordMindChoice
+import com.android.mymindnotes.presentation.ui.RecordMindChoiceActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -55,7 +55,7 @@ class NotificationHelper @Inject constructor(
 
     fun getChannelNotification(): NotificationCompat.Builder {
         // 알림창 클릭했을 때 넘어가는 페이지 세팅
-        val intent1 = Intent(this, RecordMindChoice::class.java)
+        val intent1 = Intent(this, RecordMindChoiceActivity::class.java)
         val pIntent = PendingIntent.getActivity(this, 1, intent1, PendingIntent.FLAG_IMMUTABLE)
 
         return NotificationCompat.Builder(applicationContext, channelId)
@@ -64,7 +64,7 @@ class NotificationHelper @Inject constructor(
             .setColor(Color.parseColor("#e0037a"))
             .setContentTitle("오늘 하루는 어떠셨나요?")
             .setContentText("나의 마음을 기록해 봐요")
-            // 알림창 클릭했을 때 MainPage 나타나기
+            // 알림창 클릭했을 때 MainPageActivity 나타나기
             .setContentIntent(pIntent)
     }
 }

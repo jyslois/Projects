@@ -24,13 +24,12 @@ import com.android.mymindnotes.presentation.databinding.ActivityDiaryResultBindi
 import com.android.mymindnotes.core.model.UserDiary
 import com.android.mymindnotes.presentation.viewmodels.DiaryResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DiaryResult : AppCompatActivity() {
+class DiaryResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDiaryResultBinding
 
     // 뷰모델 객체 주입
@@ -165,7 +164,7 @@ class DiaryResult : AppCompatActivity() {
 
         // 수정 버튼 클릭
         binding.editButton.setOnClickListener {
-            val intento = Intent(applicationContext, DiaryResultEdit::class.java)
+            val intento = Intent(applicationContext, DiaryResultEditActivity::class.java)
             intento.putExtra("date", date)
             intento.putExtra("type", type)
             intento.putExtra("situation", situation)
@@ -216,7 +215,7 @@ class DiaryResult : AppCompatActivity() {
                         // 애러 감지
                         is DiaryResultViewModel.DiaryResultUiState.Error -> {
                             val toast = Toast.makeText(
-                                this@DiaryResult,
+                                this@DiaryResultActivity,
                                 "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
                                 Toast.LENGTH_SHORT
                             )

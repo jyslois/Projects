@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TodayDiaryThought : AppCompatActivity() {
+class TodayDiaryThoughtActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTodayDiaryThoughtBinding
 
     // 뷰모델 객체 주입
@@ -48,7 +48,7 @@ class TodayDiaryThought : AppCompatActivity() {
                     // 상황 저장
                     viewModel.saveThought(thought)
                     // 다음 화면으로 이동
-                    val intent = Intent(applicationContext, TodayDiaryReflection::class.java)
+                    val intent = Intent(applicationContext, TodayDiaryReflectionActivity::class.java)
                     startActivity(intent)
                 }
             }

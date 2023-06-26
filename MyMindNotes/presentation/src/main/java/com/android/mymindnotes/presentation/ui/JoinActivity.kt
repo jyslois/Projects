@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 @AndroidEntryPoint
-class Join : AppCompatActivity() {
+class JoinActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJoinBinding
 
     // 중복 확인을 했는지에 대한 변수
@@ -206,7 +206,7 @@ class Join : AppCompatActivity() {
                                     viewModel.saveFirstTime(true)
 
                                     // 메인 화면 전환
-                                    val intent = Intent(applicationContext, MainPage::class.java)
+                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
                                     startActivity(intent)
                                 }
                             }

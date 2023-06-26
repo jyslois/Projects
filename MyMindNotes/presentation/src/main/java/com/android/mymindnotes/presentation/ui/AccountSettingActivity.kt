@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AccountSetting : AppCompatActivity() {
+class AccountSettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAccountInformationBinding
     private val viewModel: AccountSettingViewModel by viewModels()
 
@@ -38,12 +38,12 @@ class AccountSetting : AppCompatActivity() {
         // 버튼 클릭 이벤트 함수 콜
         // 비밀번호 변경 클릭
         binding.changePasswordButton.setOnClickListener {
-            startActivity<ChangePassword>()
+            startActivity<ChangePasswordActivity>()
         }
 
         // 닉네임 변경 버튼 클릭
         binding.changeNicknameButton.setOnClickListener { view: View? ->
-            startActivity<ChangeNickname>()
+            startActivity<ChangeNicknameActivity>()
         }
 
         // 로그아웃 버튼 클릭

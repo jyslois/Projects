@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 @AndroidEntryPoint
-class ChangePassword : AppCompatActivity() {
+class ChangePasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChangePasswordBinding
     private val viewModel: ChangePasswordViewModel by viewModels()
 
@@ -88,7 +88,7 @@ class ChangePassword : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     // 화면 전환
-                                    val intent = Intent(applicationContext, MainPage::class.java)
+                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
                                     startActivity(intent)
                                 }
                             }

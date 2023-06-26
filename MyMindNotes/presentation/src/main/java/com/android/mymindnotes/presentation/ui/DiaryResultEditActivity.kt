@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DiaryResultEdit : AppCompatActivity() {
+class DiaryResultEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDiaryResultEditBinding
 
     // 데이터 저장을 위한 변수
@@ -93,7 +93,7 @@ class DiaryResultEdit : AppCompatActivity() {
 
                 // 일기 수정 네트워크 통신
                 if (type == "트라우마 일기" && reflection.isEmpty()) {
-                    Toast.makeText(this@DiaryResultEdit, "회고를 입력해 주세요", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@DiaryResultEditActivity, "회고를 입력해 주세요", Toast.LENGTH_SHORT)
                         .show()
                 } else {
                     viewModel.updateDiary(
@@ -121,7 +121,7 @@ class DiaryResultEdit : AppCompatActivity() {
                            uiState.updateDiaryResult?.let {
                                if (it["code"].toString().toDouble() == 8001.0) {
                                    val toast = Toast.makeText(
-                                       this@DiaryResultEdit,
+                                       this@DiaryResultEditActivity,
                                        it["msg"] as String?,
                                        Toast.LENGTH_SHORT
                                    )
@@ -136,7 +136,7 @@ class DiaryResultEdit : AppCompatActivity() {
                         is DiaryResultEditViewModel.DiaryResultEditUiState.Error -> {
                             if (uiState.error) {
                                 val toast = Toast.makeText(
-                                    this@DiaryResultEdit,
+                                    this@DiaryResultEditActivity,
                                     "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
                                     Toast.LENGTH_SHORT
                                 )

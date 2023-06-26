@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class TraumaDiaryReflection : AppCompatActivity() {
+class TraumaDiaryReflectionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTraumaDiaryReflectionBinding
 
     // 뷰모델 객체 주입
@@ -124,7 +124,7 @@ class TraumaDiaryReflection : AppCompatActivity() {
                                     ).show()
 
                                     // 메인으로 화면 전환
-                                    val intent = Intent(applicationContext, MainPage::class.java)
+                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
                                     startActivity(intent)
                                 }
                             }

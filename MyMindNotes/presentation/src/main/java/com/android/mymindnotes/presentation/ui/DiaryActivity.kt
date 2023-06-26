@@ -18,8 +18,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -29,12 +27,11 @@ import com.android.mymindnotes.presentation.databinding.DiaryitemBinding
 import com.android.mymindnotes.core.model.UserDiary
 import com.android.mymindnotes.presentation.viewmodels.DiaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 @AndroidEntryPoint
-class Diary : AppCompatActivity() {
+class DiaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDiaryBinding
 
     // 오리지날 리스트와 리사이클러뷰, 어뎁터
@@ -272,7 +269,7 @@ class Diary : AppCompatActivity() {
                 }
             }
             adaptor!!.updateItemList(emotionRecordList)
-            val linearLayoutManager1 = LinearLayoutManager(this@Diary)
+            val linearLayoutManager1 = LinearLayoutManager(this@DiaryActivity)
             // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
             if (binding.sortDateButton.text == "오래된순") {
                 linearLayoutManager1.reverseLayout = false
@@ -300,7 +297,7 @@ class Diary : AppCompatActivity() {
                 }
             }
             adaptor!!.updateItemList(traumaRecordList)
-            val linearLayoutManager1 = LinearLayoutManager(this@Diary)
+            val linearLayoutManager1 = LinearLayoutManager(this@DiaryActivity)
             // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
             if (binding.sortDateButton.text == "오래된순") {
                 linearLayoutManager1.reverseLayout = false
@@ -314,7 +311,7 @@ class Diary : AppCompatActivity() {
 
         // 감정벌 정렬 버튼 클릭
         binding.sortEmotionButton.setOnClickListener {
-            val intent = Intent(this@Diary, EmotionSortingPopup::class.java)
+            val intent = Intent(this@DiaryActivity, EmotionSortingPopup::class.java)
             startActivityForResult(intent, 1)
         }
 
@@ -417,7 +414,7 @@ class Diary : AppCompatActivity() {
             // 아이템 클릭(일기 상세 보기)
             viewHolder.binding.root.setOnClickListener {
 
-                val intent = Intent(applicationContext, DiaryResult::class.java)
+                val intent = Intent(applicationContext, DiaryResultActivity::class.java)
                 intent.putExtra("type", recordList!![position].getType())
                 intent.putExtra(
                     "date",
