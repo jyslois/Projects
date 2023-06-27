@@ -20,11 +20,7 @@ import javax.inject.Inject
 class AccountSettingViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
-    private val clearAlarmSettingsUseCase: ClearAlarmSettingsUseCase,
-    private val clearTimeSettingsUseCase: ClearTimeSettingsUseCase,
     private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
-    private val clearLoginStatesUseCase: ClearLoginStatesUseCase,
-    private val stopAlarmUseCase: StopAlarmUseCase
     ) : ViewModel() {
 
     sealed class AccountSettingUiState {
@@ -52,22 +48,12 @@ class AccountSettingViewModel @Inject constructor(
 
     // (서버) 회원 탈퇴를 위한 함수 콜
     suspend fun deleteUser() {
-        try {
-            deleteUserUseCase().collect {
-                if (it["code"].toString().toDouble() == 4000.0) {
-                    // 알람 삭제
-                    stopAlarmUseCase()
-                    // 알람 설정 해제
-                    clearAlarmSettingsUseCase()
-                    // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
-                    clearTimeSettingsUseCase()
-                    // 모든 상태 저장 설정 지우기
-                    clearLoginStatesUseCase()
-                    // ui 상태 변경
-                    _uiState.value = AccountSettingUiState.Withdraw
-                }
-            }
-        } catch(e: Exception) {
+
+        val resultState = deleteUserUseCase()
+        if (resultState == "Success") {
+            // ui 상태 변경
+            _uiState.value = AccountSettingUiState.Withdraw
+        } else if (resultState == "Error") {
             _uiState.value = AccountSettingUiState.Error("회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")
         }
 
