@@ -60,7 +60,6 @@ class AccountSettingViewModel @Inject constructor(
     }
 
 
-
     // collect & emit
     init {
         viewModelScope.launch {

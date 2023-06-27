@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Alarm
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityAlarmSettingBinding
 import com.android.mymindnotes.presentation.viewmodels.AlarmSettingViewModel
@@ -55,186 +56,28 @@ class AlarmSettingActivity : AppCompatActivity() {
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
 
-                        // 알람 상태 가져오기
-                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmState -> {
-                            // 알람이 설정된 적이 있으면
-                            if (uiState.isSet) {
-                                binding.alarmSwitch.isChecked = true
-                                // On일 때의 동작
-                                uiWhenSwitchedOn()
-
-                                lifecycleScope.launch {
-                                    viewModel.uiState
-                                        .filterIsInstance<AlarmSettingViewModel.AlarmSettingUiState.AlarmTime>()
-                                        .collect { alarmTime ->
-                                            if (!alarmTime.time.isNullOrEmpty()) {
-                                                binding.setTimeButtton.text = alarmTime.time
-                                            }
-                                        }
-                                }
-                            } else {
-                                // 알람이 설정된 적이 없거나 off이다면
-                                binding.alarmSwitch.isChecked = false
-                                // Off일 때의 동작
-                                uiWhenSwitchedOff()
-                            }
+                        is AlarmSettingViewModel.AlarmSettingUiState.Loading -> {
+                            uiWhenSwitchedOff()
                         }
 
-                        // alarmSwitch 이벤트 구독
-                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchState -> {
-                            val isChecked = uiState.isChecked
-                            if (isChecked) {
-                                // Android 12까지는 앱을 설치하면 기본적으로 Notification을 띄울 수 있었지만,
-                                // 안드로이드 13, 티라미슈 - 2022년 2월 10일 처음공개 - 부터는 Notification 런타임 권한이 추가되었고, 이제 이 권한으로 앱의 Notification 발송 권한을 제어할 수 있도록 변경되었다.
-                                // 또한, 기본적으로 Runtime permission은 OFF이기 때문에, 앱은 사용자에게 이 권한을 받기 전까지 노티피케이션을 발송할 수 없다.
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                    // 권한 허용을 받았다면
-                                    if (ContextCompat.checkSelfPermission(
-                                            applicationContext,
-                                            Manifest.permission.POST_NOTIFICATIONS
-                                        ) == PackageManager.PERMISSION_GRANTED
-                                    ) {
-                                        // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
-                                       uiWhenSwitchedOn()
-                                        // 상태 저장
-                                        viewModel.saveAlarmState(true)
 
-                                    } else {
-                                        // 권한 허용을 받지 못했다면
-                                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                                    }
-                                } else {
-                                    // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
-                                    uiWhenSwitchedOn()
-                                    // 상태 저장
-                                    viewModel.saveAlarmState(true)
-
-                                }
-                            } else {
-                                // Off일 때의 동작
-                                uiWhenSwitchedOff()
-                                // 모든 상태저장 삭제
-                                viewModel.clearAlarmSettings()
-                                // 알람 설정 해제
-                                // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
-                                viewModel.clearTimeSettings()
-                                viewModel.stopAlarm()
-
-                                Toast.makeText(applicationContext, "알람이 해제되었습니다", Toast.LENGTH_LONG)
-                                    .show()
-                            }
+                        // AlarmSwitch 이벤트
+                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchedOnWithTime -> {
+                            // On이고 이미 설정한 알람이 존재한다면, 그 시간을 화면에 표시
+                            uiWhenSwitchedOnWithTime(uiState.time)
                         }
 
-                        // setTimeButton 클릭 이벤트 감지
-                        is AlarmSettingViewModel.AlarmSettingUiState.SetTimeButtonState -> {
-                            val state = uiState.isClicked
-                            if (state) {
-                                val hour = viewModel.getHour().first()
-                                val minute = viewModel.getMinute().first()
-
-                                val dialog = TimePickerDialog(
-                                    this@AlarmSettingActivity,
-                                    R.style.PinkTimePickerTheme,
-                                    { _, hourOfDay, minute ->
-                                        var min = ""
-                                        var time = ""
-                                        var daynight = ""
-                                        var hour = ""
-
-                                        min = if (minute in 0..9) {
-                                            "0$minute"
-                                        } else {
-                                            "$minute"
-                                        }
-
-                                        Log.e("알람 체크", "분 - $min")
-
-                                        // Convert the selected 24-hour time to 12-hour format (AM/PM)
-                                        // 24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11: AM
-                                        // 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23: PM
-                                        if (hourOfDay in 0..11) {
-                                            daynight = "오전"
-                                            hour = hourOfDay.toString()
-
-                                            if (hourOfDay == 0) {
-                                                hour = "12"
-                                            }
-                                        } else {
-                                            daynight = "오후"
-                                            hour = (hourOfDay - 12).toString()
-                                            if (hourOfDay == 12) {
-                                                hour = "12"
-                                            }
-                                        }
-                                        // set text to selected time
-                                        time = "$daynight $hour:$min"
-                                        binding.setTimeButtton.text = time
-                                        binding.setTimeButtton.paintFlags =
-                                            Paint.UNDERLINE_TEXT_FLAG
-
-
-                                        // store selected time
-                                        launch {
-                                            viewModel.saveTime(time)
-                                        }
-
-                                        launch {
-                                            viewModel.saveHour(hourOfDay)
-                                        }
-
-                                        launch {
-                                            viewModel.saveMinute(Integer.parseInt(min))
-                                        }
-
-                                        // Delete time in sharedPrefenreces to reset alarm on boot
-                                        launch {
-                                            viewModel.clearTimeSettings()
-                                        }
-
-                                        // Unset the alarm that was originally set.
-                                        viewModel.stopAlarm()
-
-
-                                        // Set the alarm to the selected time.
-                                        val calendar = Calendar.getInstance()
-                                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                                        calendar.set(Calendar.MINUTE, minute)
-                                        calendar.set(Calendar.SECOND, 0)
-
-                                        // if earlier than the current time
-                                        if (calendar.before(Calendar.getInstance())) {
-                                            // set to the next day
-                                            calendar.add(Calendar.DATE, 1)
-                                        }
-
-                                        launch {
-                                            // Save calendar time to sharedPrefenreces to reset alarm at bootup
-                                            viewModel.saveRebootTime(calendar.timeInMillis)
-                                        }
-
-
-                                        viewModel.setAlarm(calendar)
-
-
-                                        Toast.makeText(
-                                            applicationContext,
-                                            "매일 $time 분에 알람이 울려요",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    },
-                                    hour,
-                                    minute,
-                                    false
-                                )
-
-
-
-                                dialog.show()
-                            }
+                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchedOn -> {
+                            // 그냥 On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
+                            uiWhenSwitchedOn()
                         }
 
-                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmTime -> {
-                            // Do nothing
+                        is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchedOff -> {
+                            // Off일 때 동작
+                            uiWhenSwitchedOff()
+
+                            Toast.makeText(applicationContext, "알람이 해제되었습니다", Toast.LENGTH_LONG)
+                                .show()
                         }
 
                     }
@@ -248,7 +91,29 @@ class AlarmSettingActivity : AppCompatActivity() {
         // 알람 스위치 바뀔 때의 이벤트
         binding.alarmSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             lifecycleScope.launch {
-                viewModel.changeAlarmSwitch(isChecked)
+                // 알람 스위치 켰을 때
+                if (isChecked) {
+                    // Android 12까지는 앱을 설치하면 기본적으로 Notification을 띄울 수 있었지만,
+                    // 안드로이드 13, 티라미슈 - 2022년 2월 10일 처음공개 - 부터는 Notification 런타임 권한이 추가되었고, 이제 이 권한으로 앱의 Notification 발송 권한을 제어할 수 있도록 변경되었다.
+                    // 또한, 기본적으로 Runtime permission은 OFF이기 때문에, 앱은 사용자에게 이 권한을 받기 전까지 노티피케이션을 발송할 수 없다.
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        // 권한 허용을 받았다면
+                        if (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                        ) {
+                            viewModel.changeAlarmSwitch(true)
+                        } else {
+                            // 권한 허용을 받지 못했다면
+                            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    } else {
+                        viewModel.changeAlarmSwitch(true)
+
+                    }
+                } else {
+                    // 알람 스위치 껐을 때
+                    viewModel.changeAlarmSwitch(false)
+                }
+
             }
         }
 
@@ -256,7 +121,52 @@ class AlarmSettingActivity : AppCompatActivity() {
         // 클릭 시 다일러로그 띄우기, OK버튼 누르면 기본 알람 설정 해제. 선택한 시간으로 새로운 알람 설정. 버튼 텍스트 선택한 시간으로 변경.
         binding.setTimeButtton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickSetTimeButton()
+                val hour = viewModel.getHour()
+                val minute = viewModel.getMinute()
+
+                val dialog = TimePickerDialog(this@AlarmSettingActivity, R.style.PinkTimePickerTheme, { _, hourOfDay, minute ->
+                    var min = ""
+                    var time = ""
+                    var daynight = ""
+                    var hour = ""
+
+                    min = if (minute in 0..9) {
+                        "0$minute"
+                    } else {
+                        "$minute"
+                    }
+
+                    // Convert the selected 24-hour time to 12-hour format (AM/PM)
+                    // 24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11: AM
+                    // 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23: PM
+                    if (hourOfDay in 0..11) {
+                        daynight = "오전"
+                        hour = hourOfDay.toString()
+
+                        if (hourOfDay == 0) {
+                            hour = "12"
+                        }
+                    } else {
+                        daynight = "오후"
+                        hour = (hourOfDay - 12).toString()
+                        if (hourOfDay == 12) {
+                            hour = "12"
+                        }
+                    }
+                    // set text to selected time
+                    time = "$daynight $hour:$min"
+                    binding.setTimeButtton.text = time
+                    binding.setTimeButtton.paintFlags =
+                        Paint.UNDERLINE_TEXT_FLAG
+
+
+                    viewModel.doAlarmSettings(time, hourOfDay, Integer.parseInt(min), minute)
+
+
+                    Toast.makeText(applicationContext, "매일 $time 분에 알람이 울려요", Toast.LENGTH_SHORT).show()
+                }, hour, minute, false)
+
+                dialog.show()
             }
         }
 
@@ -272,7 +182,9 @@ class AlarmSettingActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+    // 알람이 켜지기만 한 상태(설정 안 되어 있으면)의 UI
     private fun uiWhenSwitchedOn() {
+        binding.alarmSwitch.isChecked = true
         // on일 때의 ui설정 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
         binding.setTimeButtton.text = "시간선택(클릭)"
         binding.timeText.setTextColor(Color.BLACK)
@@ -280,7 +192,19 @@ class AlarmSettingActivity : AppCompatActivity() {
         binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
     }
 
+    // 알람도 켜져 있고, 알람 시간도 설정되어 있을 때 UI
+    private fun uiWhenSwitchedOnWithTime(time: String) {
+        binding.alarmSwitch.isChecked = true
+        // on일 때의 ui설정 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
+        binding.setTimeButtton.text = time
+        binding.timeText.setTextColor(Color.BLACK)
+        binding.setTimeButtton.visibility = View.VISIBLE
+        binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+    }
+
+    // 알람이 꺼져 있을 때 UI
     private fun uiWhenSwitchedOff() {
+        binding.alarmSwitch.isChecked = false
         // off일 때의 ui설정 - 시간 바꾸는 버튼의 텍스트 보이지 않게 하고, timeText 텍스트 글짜색 흐리게 바꾸기
         binding.timeText.setTextColor(Color.parseColor("#979696"))
         binding.setTimeButtton.visibility = View.INVISIBLE
@@ -291,16 +215,10 @@ class AlarmSettingActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 // 만약 허용해주었다면
-                // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
-                binding.timeText.setTextColor(Color.BLACK)
-                binding.setTimeButtton.visibility = View.VISIBLE
-                binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-
-                // 상태 저장
                 lifecycleScope.launch {
-                    viewModel.saveAlarmState(true)
+                    viewModel.changeAlarmSwitch(true)
                 }
-                binding.setTimeButtton.text = "시간선택(클릭)"
+
             } else {
                 // 허용해주지 않았다면
                 Toast.makeText(this, "설정 > 앱 > 권한에서 알림 권한을 허용해주세요.", Toast.LENGTH_SHORT).show()
