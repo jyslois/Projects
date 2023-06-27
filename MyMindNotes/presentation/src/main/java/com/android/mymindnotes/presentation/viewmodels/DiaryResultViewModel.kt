@@ -1,16 +1,15 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.android.mymindnotes.core.model.UserDiary
 import com.android.mymindnotes.domain.usecases.diary.DeleteDiaryUseCase
 import com.android.mymindnotes.domain.usecases.diary.GetDiaryListUseCase
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,44 +19,49 @@ class DiaryResultViewModel @Inject constructor(
 ) : ViewModel() {
 
     sealed class DiaryResultUiState {
-        data class Success(val getDiaryListResult: Map<String, Object>?, val deleteDiaryListResult: Map<String, Object>?) : DiaryResultUiState()
-        data class Error(val error: Boolean) : DiaryResultUiState()
+        object Loading : DiaryResultUiState()
+        object Finish : DiaryResultUiState()
+        data class Success(val diaryList: ArrayList<UserDiary>?) : DiaryResultUiState()
+        data class Error(val error: String) : DiaryResultUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<DiaryResultUiState>()
-    val uiState: SharedFlow<DiaryResultUiState> = _uiState
+    private val _uiState = MutableStateFlow<DiaryResultUiState>(DiaryResultUiState.Loading)
+    val uiState: StateFlow<DiaryResultUiState> = _uiState
 
 
     // 다이어리 리스트 불러오기
     suspend fun getDiaryList() {
-        getDiaryListUseCase().collect {
-            _uiState.emit(DiaryResultUiState.Success(it, null))
+        try {
+            getDiaryListUseCase().collect {
+                if (it["code"].toString().toDouble() == 7000.0) {
+                    val gson = Gson()
+                    val type = object : TypeToken<List<UserDiary?>?>() {}.type
+                    val jsonResult = gson.toJson(it["diaryList"])
+                    val diaryList: ArrayList<UserDiary>? = gson.fromJson(jsonResult, type)
+                    _uiState.value = DiaryResultUiState.Success(diaryList)
+                }
+            }
+        } catch (e: Exception) {
+            _uiState.value = DiaryResultUiState.Error("일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+            _uiState.value = DiaryResultUiState.Loading
         }
+
     }
 
     // 일기 삭제하기
     suspend fun deleteDiary(diaryNumber: Int) {
-        deleteDiaryUseCase(diaryNumber).collect {
-            _uiState.emit(DiaryResultUiState.Success(null, it))
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-
-            val getDiaryListErrorFlow = getDiaryListUseCase.error.map {
-                DiaryResultUiState.Error(it)
+        try {
+            deleteDiaryUseCase(diaryNumber).collect {
+                if (it["code"].toString().toDouble() == 9000.0) {
+                    _uiState.value = DiaryResultUiState.Finish
+                }
             }
-            val deleteDiaryListErrorFlow = deleteDiaryUseCase.error.map {
-                DiaryResultUiState.Error(it)
-            }
-
-            merge(getDiaryListErrorFlow, deleteDiaryListErrorFlow).collect {
-                _uiState.emit(it)
-            }
-
+        } catch (e: Exception) {
+            _uiState.value = DiaryResultUiState.Error("일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+            _uiState.value = DiaryResultUiState.Loading
         }
 
     }
+
 }

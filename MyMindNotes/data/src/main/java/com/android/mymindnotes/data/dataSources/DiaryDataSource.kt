@@ -30,20 +30,13 @@ class DiaryDataSource @Inject constructor(
         val diaryList = getDiaryListApi.getAllDiary(userIndex)
         emit(diaryList)
     }.flowOn(ioDispatcher)
-        .catch {
-            _getDiaryListError.emit(true)
-            _getDiaryListError.emit(false)
-        }
+
 
     // 일기 삭제하기
     suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = flow {
         val result = deleteDiaryApi.deleteDiary(diaryNumber)
         emit(result)
     }.flowOn(ioDispatcher)
-        .catch {
-            _deleteDiaryError.emit(true)
-            _deleteDiaryError.emit(false)
-        }
 
     // 일기 수정하기
     suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<Map<String, Object>> = flow {

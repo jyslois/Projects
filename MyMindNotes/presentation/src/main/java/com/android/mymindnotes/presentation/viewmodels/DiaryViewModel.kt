@@ -6,7 +6,6 @@ import com.android.mymindnotes.domain.usecases.diary.GetDiaryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
@@ -38,9 +37,9 @@ class DiaryViewModel @Inject constructor(
         viewModelScope.launch {
 
             val getDiaryListFlow = getDiaryListUseCase().map { DiaryUiState.Success(it) }
-            val getDiaryListErrorFlow = getDiaryListUseCase.error.map { DiaryUiState.Error(it) }
 
-            merge(getDiaryListFlow, getDiaryListErrorFlow).collect {
+
+            merge(getDiaryListFlow).collect {
                 _uiState.emit(it)
             }
         }

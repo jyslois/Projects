@@ -11,8 +11,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -61,26 +59,34 @@ class DiaryResultActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
+            // 일기 리스트 새로 고침
+            viewModel.getDiaryList()
+
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
+
+                    is DiaryResultViewModel.DiaryResultUiState.Loading -> {
+                        setDataOnScreen()
+                    }
+
                     is DiaryResultViewModel.DiaryResultUiState.Success -> {
                         // 일기 리스트 불러오기 감지
-                        uiState.getDiaryListResult?.let {
-                            if (it["code"].toString().toDouble() == 7000.0) {
-                                val gson = Gson()
-                                val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                                val jsonResult = gson.toJson(it["diaryList"])
-                                diarylist = gson.fromJson(jsonResult, type)
-                                diarylist?.let { diaryList -> sendFragmentsData(diaryList[index]) }
-                            }
+                        uiState.diaryList?.let { diaryList ->
+                            diarylist = diaryList
+                            sendFragmentsData(diaryList[index])
                         }
+
+                    }
+
+                    is DiaryResultViewModel.DiaryResultUiState.Finish -> {
+                        finish()
                     }
 
                     // 애러 감지
                     is DiaryResultViewModel.DiaryResultUiState.Error -> {
                         val toast = Toast.makeText(
-                            applicationContext,
-                            "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
+                            this@DiaryResultActivity,
+                            uiState.error,
                             Toast.LENGTH_SHORT
                         )
                         toast.show()
@@ -89,11 +95,6 @@ class DiaryResultActivity : AppCompatActivity() {
 
             }
 
-        }
-
-        lifecycleScope.launch {
-            // 일기 리스트 새로고침
-            viewModel.getDiaryList()
         }
 
     }
@@ -109,40 +110,51 @@ class DiaryResultActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background)
 
-        // 데이터 세팅을 위해 가져오기
-        val intent = intent
-
         // 데이터 세팅
-        type = intent.getStringExtra("type")
-        date = intent.getStringExtra("date")
-        situation = intent.getStringExtra("situation")
-        thought = intent.getStringExtra("thought")
-        emotion = intent.getStringExtra("emotion")
-        emotionDescription = intent.getStringExtra("emotionDescription")
-        reflection = intent.getStringExtra("reflection")
-        index = intent.getIntExtra("index", 0)
-        diaryNumber = intent.getIntExtra("diaryNumber", 0)
-
-        // 타입 뿌리기
-        binding.type.text = "$type,  "
-        // 오늘 날짜 뿌리기
-        binding.date.text = "$date "
+        setDataOnScreen()
 
         // viewPager2와 tablayout 세팅
-        val tabLayout = binding.tabLayout
-        val viewPager2 = binding.viewpager2
-        val adapter = ViewPager2Adapter(this)
-        viewPager2.adapter = adapter
-        // 캐싱을 해놓을 페이지의 최대 갯수 설정, 즉, 좌우 몇개의 페이지를 그려놓고 있을지 설정(상태를 유지할 페이지의 최대 갯수). 따라서 모든 페이지를 한번 초기화하고 다시는 초기화하지 않게 하려면, viewPager.setOffscreenPageLimit(PAGE_LENGTH) 처럼 사용하면 된다. 뒤에 페이지를 모두 미리 로딩하고 싶다면 setOffscreenPageLimit(4) - 미리 뒤에 보여줄 Fragment를 담아놓고, 스크롤 할 때 보여주게 된다.
-        viewPager2.offscreenPageLimit = 4
-
-        // viewPager2와 tablayout 연동하기
-        TabLayoutMediator(tabLayout, viewPager2) { tab: TabLayout.Tab, position: Int ->
-            tab.text = tabs[position]
-        }.attach()
+        setViewPagerAndTabLayout()
 
         // DiaryResultFragmentFactory 인스턴스 생성 (런타임 시 이 클래스의 intent.extras를 인자로 제공)
         setUpFragmentFactory(intent.extras)
+
+        // 구독
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is DiaryResultViewModel.DiaryResultUiState.Loading -> {
+                            setDataOnScreen()
+                        }
+
+                        is DiaryResultViewModel.DiaryResultUiState.Success -> {
+                            // 일기 리스트 불러오기 감지
+                            uiState.diaryList?.let { diaryList ->
+
+                                sendFragmentsData(diaryList[index])
+                            }
+
+                        }
+
+                        is DiaryResultViewModel.DiaryResultUiState.Finish -> {
+                            finish()
+                        }
+
+                        // 애러 감지
+                        is DiaryResultViewModel.DiaryResultUiState.Error -> {
+                            val toast = Toast.makeText(
+                                this@DiaryResultActivity,
+                                uiState.error,
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
+                        }
+                    }
+                }
+            }
+        }
 
 
         // 클릭 이벤트
@@ -183,46 +195,6 @@ class DiaryResultActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 viewModel.deleteDiary(diaryNumber)
 
-            }
-        }
-
-
-        // 구독
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is DiaryResultViewModel.DiaryResultUiState.Success -> {
-                            // 일기 리스트 불러오기 감지
-                            uiState.getDiaryListResult?.let {
-                                if (it["code"].toString().toDouble() == 7000.0) {
-                                    val gson = Gson()
-                                    val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                                    val jsonResult = gson.toJson(it["diaryList"])
-                                    diarylist = gson.fromJson(jsonResult, type)
-                                    diarylist?.let { diaryList -> sendFragmentsData(diaryList[index]) }
-                                }
-                            }
-
-                            // 일기 삭제 감지
-                            uiState.deleteDiaryListResult?.let {
-                                if (it["code"].toString().toDouble() == 9000.0) {
-                                    finish()
-                                }
-                            }
-                        }
-
-                        // 애러 감지
-                        is DiaryResultViewModel.DiaryResultUiState.Error -> {
-                            val toast = Toast.makeText(
-                                this@DiaryResultActivity,
-                                "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.show()
-                        }
-                    }
-                }
             }
         }
 
@@ -294,6 +266,40 @@ class DiaryResultActivity : AppCompatActivity() {
         override fun getItemCount(): Int {
             return tabs.size
         }
+    }
+
+    // 데이터 세팅
+    private fun setDataOnScreen() {
+        val intent = intent
+
+        type = intent.getStringExtra("type")
+        date = intent.getStringExtra("date")
+        situation = intent.getStringExtra("situation")
+        thought = intent.getStringExtra("thought")
+        emotion = intent.getStringExtra("emotion")
+        emotionDescription = intent.getStringExtra("emotionDescription")
+        reflection = intent.getStringExtra("reflection")
+        index = intent.getIntExtra("index", 0)
+        diaryNumber = intent.getIntExtra("diaryNumber", 0)
+
+        // 타입 뿌리기
+        binding.type.text = "$type,  "
+        // 오늘 날짜 뿌리기
+        binding.date.text = "$date "
+    }
+
+    private fun setViewPagerAndTabLayout() {
+        val tabLayout = binding.tabLayout
+        val viewPager2 = binding.viewpager2
+        val adapter = ViewPager2Adapter(this)
+        viewPager2.adapter = adapter
+        // 캐싱을 해놓을 페이지의 최대 갯수 설정, 즉, 좌우 몇개의 페이지를 그려놓고 있을지 설정(상태를 유지할 페이지의 최대 갯수). 따라서 모든 페이지를 한번 초기화하고 다시는 초기화하지 않게 하려면, viewPager.setOffscreenPageLimit(PAGE_LENGTH) 처럼 사용하면 된다. 뒤에 페이지를 모두 미리 로딩하고 싶다면 setOffscreenPageLimit(4) - 미리 뒤에 보여줄 Fragment를 담아놓고, 스크롤 할 때 보여주게 된다.
+        viewPager2.offscreenPageLimit = 4
+
+        // viewPager2와 tablayout 연동하기
+        TabLayoutMediator(tabLayout, viewPager2) { tab: TabLayout.Tab, position: Int ->
+            tab.text = tabs[position]
+        }.attach()
     }
 
 }
