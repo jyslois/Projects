@@ -41,12 +41,45 @@ class ChangeNicknameActivity : AppCompatActivity() {
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
 
         // 엑션바 설정
-        // 액션 바 타이틀
-        supportActionBar?.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
-        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
-        supportActionBar?.setCustomView(R.layout.changenickname_actionbartext) // 커스텀 사용할 파일 위치
-        // Up 버튼 제공
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setActionBar()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is ChangeNickNameViewModel.ChangeNickNameUiState.Loading -> {
+                            binding.nickNameInput.hint = "특수문자 제외 2자 이상"
+                        }
+
+                        // 닉네임 중복 체크 결과
+                        is ChangeNickNameViewModel.ChangeNickNameUiState.NickNameDuplicateChecked -> {
+                            confirmNicknameDialog()
+                        }
+
+                        // 닉네임 수정 결과
+                        is ChangeNickNameViewModel.ChangeNickNameUiState.NickNameChanged -> {
+                            Toast.makeText(
+                                applicationContext,
+                                "닉네임이 변경되었습니다.",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            // 화면 전환
+                            val intent = Intent(applicationContext, MainPageActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                        // 애러 처리
+                        is ChangeNickNameViewModel.ChangeNickNameUiState.Error -> {
+                            dialog(uiState.error)
+                        }
+
+                    }
+                }
+
+            }
+        }
 
         // 닉네임 형식 체크
         val nicknamePattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9-_]{2,10}$"
@@ -98,53 +131,17 @@ class ChangeNicknameActivity : AppCompatActivity() {
         })
 
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
 
-                        // 서버와의 통신 성공 상태 처리
-                        is ChangeNickNameViewModel.ChangeNickNameUiState.Success -> {
+    }
 
-                            // 닉네임 중복 체크 결과
-                            uiState.nickNameDuplicateCheckResult?.let {
-                                if (it["code"].toString().toDouble() == 1003.0) {
-                                    dialog(it["msg"] as String)
-                                } else if (it["code"].toString().toDouble() == 1002.0) {
-                                    confirmNicknameDialog()
-                                }
-                            }
-
-                            // 닉네임 수정 결과
-                            uiState.nickNameChangeResult?.let {
-                                if (it["code"].toString().toDouble() == 3001.0) {
-                                    dialog(it["msg"] as String?)
-                                } else if (it["code"].toString().toDouble() == 3000.0) {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "닉네임이 변경되었습니다.",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
-                                    // 화면 전환
-                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            }
-                        }
-
-                        // 애러 처리
-                        is ChangeNickNameViewModel.ChangeNickNameUiState.Error -> {
-                            if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
-                            }
-                        }
-
-                    }
-                }
-
-            }
-        }
+    // 액션 바 설정
+    private fun setActionBar() {
+        // 액션 바 타이틀
+        supportActionBar?.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
+        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
+        supportActionBar?.setCustomView(R.layout.changenickname_actionbartext) // 커스텀 사용할 파일 위치
+        // Up 버튼 제공
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     // 알림 dialogue

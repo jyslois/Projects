@@ -54,7 +54,7 @@ class AlarmSettingViewModel @Inject constructor(
     suspend fun changeAlarmSwitch(isChecked: Boolean) {
         val time = getAlarmTimeUseCase.getTime().first() // 저장한 알람 시간 불러오기
 
-        // swtich가 on만 됐을 때 (지정한 알람 시간이 없을 때)
+        // switch가 on만 됐을 때 (지정한 알람 시간이 없을 때)
         if(isChecked && time.isNullOrEmpty()) {
             saveAlarmStateUseCase(true) // 상태 저장
             _uiState.value = AlarmSettingUiState.AlarmSwitchedOn

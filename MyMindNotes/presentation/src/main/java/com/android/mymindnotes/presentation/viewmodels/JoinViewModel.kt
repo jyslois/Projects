@@ -74,9 +74,9 @@ class JoinViewModel @Inject constructor(
 
             val joinErrorFlow =  joinUseCase.error.map { JoinUiState.Error(it) }
             val emailDuplicateCheckErrorFlow = checkEmailDuplicateUseCase.error.map { JoinUiState.Error(it) }
-            val nickNameDuplicateCheckErrorFlow = checkNickNameDuplicateUseCase.error.map { JoinUiState.Error(it) }
 
-            merge(joinErrorFlow, emailDuplicateCheckErrorFlow, nickNameDuplicateCheckErrorFlow).collect {
+
+            merge(joinErrorFlow, emailDuplicateCheckErrorFlow).collect {
                 _uiState.emit(it)
 
             }

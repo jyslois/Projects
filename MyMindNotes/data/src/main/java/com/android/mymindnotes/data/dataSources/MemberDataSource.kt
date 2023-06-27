@@ -63,10 +63,7 @@ class MemberDataSource @Inject constructor(
         val result = checkNickNameApi.checkNickname(nickNameInput)
         emit(result)
     }.flowOn(ioDispatcher)
-        .catch {
-            _error.emit(true)
-            _error.emit(false)
-        }
+
 
     // 회원가입
     suspend fun joinResultFlow(
@@ -106,10 +103,7 @@ class MemberDataSource @Inject constructor(
             val result = changeNicknameApi.updateUserNickname(user)
             emit(result)
         }.flowOn(ioDispatcher)
-            .catch {
-                _error.emit(true)
-                _error.emit(false)
-            }
+
 
     // 비밀번호 수정
     suspend fun changePasswordFlow(
@@ -121,10 +115,7 @@ class MemberDataSource @Inject constructor(
         val result = changePasswordApi.updateUserPassword(user)
         emit(result)
     }.flowOn(ioDispatcher)
-        .catch {
-            _error.emit(true)
-            _error.emit(false)
-        }
+
 
 
     // 임시 비밀번호로 비밀번호 수정

@@ -14,18 +14,6 @@ class ChangeNickNameUseCase @Inject constructor(
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>(replay = 1)
-    val error = _error.asSharedFlow()
-
-    init {
-        mainDispatcherCoroutineScope.launch {
-            repository.error.collect {
-                _error.emit(it)
-            }
-        }
-    }
-
 //    // 닉네임 바꾸기
 //    suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> {
 //        return repository.changeNickName(nickName)

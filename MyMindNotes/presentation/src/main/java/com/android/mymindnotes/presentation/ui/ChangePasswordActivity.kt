@@ -35,12 +35,43 @@ class ChangePasswordActivity : AppCompatActivity() {
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
 
         // 액션바 설정
-        // 액션 바 타이틀
-        supportActionBar!!.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
-        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
-        supportActionBar!!.setCustomView(R.layout.changepassword_actionbartext) // 커스텀 사용할 파일 위치
-        // Up 버튼 제공
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        setActionBar()
+
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is ChangePasswordViewModel.ChangePasswordUiState.Loading -> {
+                            binding.originalPasswordInput.hint = "기존 비밀번호"
+                            binding.passwordInput.hint = "영문+숫자 조합 6자 이상"
+                            binding.passwordReypeInput.hint = "영문+숫자 조합 6자 이상"
+                        }
+
+                        // 비밀번호 변경 구독
+                        is ChangePasswordViewModel.ChangePasswordUiState.Success -> {
+
+                            Toast.makeText(
+                                applicationContext,
+                                "비밀번호가 변경되었습니다.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            // 화면 전환
+                            val intent = Intent(applicationContext, MainPageActivity::class.java)
+                            startActivity(intent)
+                        }
+
+
+                        // 애러 구독
+                        is ChangePasswordViewModel.ChangePasswordUiState.Error -> {
+                            dialog(uiState.error)
+                        }
+                    }
+                }
+
+            }
+        }
 
         // 비밀번호 형식 체크
         val passwordPattern = "(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}"
@@ -66,45 +97,6 @@ class ChangePasswordActivity : AppCompatActivity() {
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        // 비밀번호 변경 구독
-                        is ChangePasswordViewModel.ChangePasswordUiState.Success -> {
-                            uiState.changePasswordResult?.let {
-                                if (it["code"].toString()
-                                        .toDouble() == 3005.0 || it["code"].toString()
-                                        .toDouble() == 3003.0
-                                ) {
-                                    dialog(it["msg"] as String?)
-                                } else if (it["code"].toString().toDouble() == 3002.0) {
-                                    // 비밀번호 재저장
-                                    val passwordInput = binding.passwordInput.text.toString()
-                                    viewModel.savePassword(passwordInput)
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "비밀번호가 변경되었습니다.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    // 화면 전환
-                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            }
-                        }
-
-                        // 애러 구독
-                        is ChangePasswordViewModel.ChangePasswordUiState.Error -> {
-                            if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
     }
 
     // 알림 dialogue
@@ -114,5 +106,15 @@ class ChangePasswordActivity : AppCompatActivity() {
         builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()
+    }
+
+    // 액션바 설정
+    private fun setActionBar() {
+        // 액션 바 타이틀
+        supportActionBar!!.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
+        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
+        supportActionBar!!.setCustomView(R.layout.changepassword_actionbartext) // 커스텀 사용할 파일 위치
+        // Up 버튼 제공
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 }
