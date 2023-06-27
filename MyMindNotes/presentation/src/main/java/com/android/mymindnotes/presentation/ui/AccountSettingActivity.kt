@@ -9,6 +9,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -49,9 +50,7 @@ class AccountSettingActivity : AppCompatActivity() {
         // 로그아웃 버튼 클릭
         binding.logoutButton.setOnClickListener {
             lifecycleScope.launch {
-                // 상태 저장
-                viewModel.saveAutoLoginCheck(false)
-                startActivity<MainActivity>()
+                viewModel.clickLogoutButton()
             }
         }
 
@@ -78,41 +77,28 @@ class AccountSettingActivity : AppCompatActivity() {
                             is AccountSettingViewModel.AccountSettingUiState.Success -> {
                                 // 성공 상태 처리
                                 // userInfo가 null이 아닌 경우 처리
-                                uiState.userInfo?.let {
+                                uiState.userInfo?.let { userInfo ->
                                     // 회원 정보 업데이트
                                     // 이메일, 닉네임, 생년 세팅
-                                    binding.email.text = it["email"] as String?
-                                    binding.nickname.text = it["nickname"] as String?
-                                    binding.birthyear.text =
-                                        it["birthyear"]?.toString()?.toDouble()?.toInt()?.toString()
+                                    binding.email.text = userInfo["email"] as String?
+                                    binding.nickname.text = userInfo["nickname"] as String?
+                                    binding.birthyear.text = userInfo["birthyear"]?.toString()?.toDouble()?.toInt()?.toString()
                                 }
-                                // deleteUserResult가 null이 아닌 경우 처리
-                                uiState.deleteUserResult?.let {
-                                    // 회원 탈퇴 결과 처리
-                                    // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
-                                    // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
-                                    if (it["code"].toString().toDouble() == 4000.0) {
-                                        // 알람 삭제
-                                        viewModel.stopAlarm()
-                                        // 모든 상태저장 삭제
-                                        // 알람 설정 해제 (임시)
-                                        viewModel.clearAlarmSharedPreferences()
-                                        // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기 (임시)
-                                        viewModel.clearTimeSharedPreferences()
-                                        // 저장 설정 지우기
-                                        viewModel.clearAutoSaveSharedPreferences()
-                                        // 화면 전환
-                                        startActivity<MainActivity>()
-                                    }
-                                }
+
+                            }
+
+                            is AccountSettingViewModel.AccountSettingUiState.Logout, AccountSettingViewModel.AccountSettingUiState.Withdraw -> {
+                                // 로그아웃이나 회원탈퇴 시에 메인 화면으로 전환
+                                startActivity<MainActivity>()
                             }
 
                             is AccountSettingViewModel.AccountSettingUiState.Error -> {
                                 // 에러 상태 처리
-                                if (uiState.error) {
-                                    dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
-                                }
+                                val errorMessage = uiState.errorMessage
+                                dialog(errorMessage)
+
                             }
+
                         }
                     }
                 }

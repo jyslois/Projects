@@ -12,8 +12,7 @@ import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,8 +29,10 @@ class AccountSettingViewModel @Inject constructor(
 
     sealed class AccountSettingUiState {
         object Loading: AccountSettingUiState()
-        data class Success(val userInfo: Map<String, Object>?, val deleteUserResult: Map<String, Object>?): AccountSettingUiState()
-        data class Error(val error: Boolean): AccountSettingUiState()
+        data class Success(val userInfo: Map<String, Object>?): AccountSettingUiState()
+        object Logout: AccountSettingUiState()
+        object Withdraw: AccountSettingUiState()
+        data class Error(val errorMessage: String): AccountSettingUiState()
     }
 
     // ui상태
@@ -39,51 +40,49 @@ class AccountSettingViewModel @Inject constructor(
     val uiState: StateFlow<AccountSettingUiState> = _uiState
 
 
-    // 로그아웃 상태 변경
-    // 로그아웃 시 autoLoginCheck 상태 변경 함수 콜
-    suspend fun saveAutoLoginCheck(state: Boolean) {
-        saveAutoLoginStateUseCase(state)
+    // 로그아웃 버튼 클릭
+    suspend fun clickLogoutButton() {
+        // autoLoginCheck 상태 변경
+        saveAutoLoginStateUseCase(false)
+        // ui 상태 변경
+        _uiState.value = AccountSettingUiState.Logout
     }
+
 
 
     // (서버) 회원 탈퇴를 위한 함수 콜
     suspend fun deleteUser() {
-        deleteUserUseCase().collect {
-            _uiState.value = AccountSettingUiState.Success(null, it)
+        try {
+            deleteUserUseCase().collect {
+                if (it["code"].toString().toDouble() == 4000.0) {
+                    // 알람 삭제
+                    stopAlarmUseCase()
+                    // 알람 설정 해제
+                    clearAlarmSettingsUseCase()
+                    // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
+                    clearTimeSettingsUseCase()
+                    // 모든 상태 저장 설정 지우기
+                    clearLoginStatesUseCase()
+                    // ui 상태 변경
+                    _uiState.value = AccountSettingUiState.Withdraw
+                }
+            }
+        } catch(e: Exception) {
+            _uiState.value = AccountSettingUiState.Error("회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")
         }
+
     }
 
-    // 회원탈퇴 시 SharedPreference clear하는 함수
-    // autoSave SharedPreference clear하는 함수 콜
-    suspend fun clearAutoSaveSharedPreferences() {
-        clearLoginStatesUseCase()
-    }
 
-    // 알람 설정 SharedPreference clear하는 함수 콜
-    suspend fun clearAlarmSharedPreferences() {
-        clearAlarmSettingsUseCase()
-    }
-
-    // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
-    suspend fun clearTimeSharedPreferences() {
-        clearTimeSettingsUseCase()
-    }
-
-    // stop Alarm
-    fun stopAlarm() {
-        stopAlarmUseCase()
-    }
 
     // collect & emit
     init {
         viewModelScope.launch {
-
-            val userInfoFlow = getUserInfoUseCase().map { AccountSettingUiState.Success(it, null) } // Flow<AccountSettingUiState.Success>
-            val userInfoErrorFlow = getUserInfoUseCase.error.map { AccountSettingUiState.Error(it) }
-            val deleteUserErrorFlow = deleteUserUseCase.error.map { AccountSettingUiState.Error(it) }
-
-            merge(userInfoFlow, userInfoErrorFlow, deleteUserErrorFlow).collect {
-                _uiState.value = it
+            try {
+                val userInfo = getUserInfoUseCase().first()
+                _uiState.value = AccountSettingUiState.Success(userInfo)
+            } catch(e: Exception) {
+                _uiState.value = AccountSettingUiState.Error("회원 정보를 불러오는 데 실패했습니다. 인터넷 연결을 확인해 주세요.")
             }
         }
     }

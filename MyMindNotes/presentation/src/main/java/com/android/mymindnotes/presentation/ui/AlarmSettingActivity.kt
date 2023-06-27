@@ -39,7 +39,6 @@ class AlarmSettingActivity : AppCompatActivity() {
     // 다이얼로그 변수
     lateinit var alertDialog: AlertDialog
 
-    @RequiresApi(Build.VERSION_CODES.N)
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAlarmSettingBinding.inflate(layoutInflater)
@@ -48,12 +47,8 @@ class AlarmSettingActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
 
-        // 액션 바 타이틀
-        supportActionBar!!.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
-        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
-        supportActionBar!!.setCustomView(R.layout.changepassword_actionbartext) // 커스텀 사용할 파일 위치
-        // Up 버튼 제공
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        // 액션 바 세팅
+        setActionBar()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -66,22 +61,14 @@ class AlarmSettingActivity : AppCompatActivity() {
                             if (uiState.isSet) {
                                 binding.alarmSwitch.isChecked = true
                                 // On일 때의 동작
-                                binding.timeText.setTextColor(Color.BLACK)
-                                binding.setTimeButtton.visibility = View.VISIBLE
-                                binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                                uiWhenSwitchedOn()
 
                                 lifecycleScope.launch {
                                     viewModel.uiState
                                         .filterIsInstance<AlarmSettingViewModel.AlarmSettingUiState.AlarmTime>()
                                         .collect { alarmTime ->
-                                            if (alarmTime.time.isNullOrEmpty()) {
-                                                binding.setTimeButtton.text = "시간선택(클릭)"
-                                                binding.setTimeButtton.paintFlags =
-                                                    Paint.UNDERLINE_TEXT_FLAG
-                                            } else {
+                                            if (!alarmTime.time.isNullOrEmpty()) {
                                                 binding.setTimeButtton.text = alarmTime.time
-                                                binding.setTimeButtton.paintFlags =
-                                                    Paint.UNDERLINE_TEXT_FLAG
                                             }
                                         }
                                 }
@@ -89,8 +76,7 @@ class AlarmSettingActivity : AppCompatActivity() {
                                 // 알람이 설정된 적이 없거나 off이다면
                                 binding.alarmSwitch.isChecked = false
                                 // Off일 때의 동작
-                                binding.timeText.setTextColor(Color.parseColor("#979696"))
-                                binding.setTimeButtton.visibility = View.INVISIBLE
+                                uiWhenSwitchedOff()
                             }
                         }
 
@@ -109,11 +95,7 @@ class AlarmSettingActivity : AppCompatActivity() {
                                         ) == PackageManager.PERMISSION_GRANTED
                                     ) {
                                         // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
-                                        binding.timeText.setTextColor(Color.BLACK)
-                                        binding.setTimeButtton.text = "시간선택(클릭)"
-                                        binding.setTimeButtton.visibility = View.VISIBLE
-                                        binding.setTimeButtton.paintFlags =
-                                            Paint.UNDERLINE_TEXT_FLAG
+                                       uiWhenSwitchedOn()
                                         // 상태 저장
                                         viewModel.saveAlarmState(true)
 
@@ -123,21 +105,14 @@ class AlarmSettingActivity : AppCompatActivity() {
                                     }
                                 } else {
                                     // On일 때의 동작 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
-                                    binding.timeText.setTextColor(Color.BLACK)
-                                    binding.setTimeButtton.text = "시간선택(클릭)"
-                                    binding.setTimeButtton.visibility = View.VISIBLE
-                                    binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                                    uiWhenSwitchedOn()
                                     // 상태 저장
                                     viewModel.saveAlarmState(true)
 
                                 }
                             } else {
                                 // Off일 때의 동작
-                                binding.timeText.setTextColor(Color.parseColor("#979696"))
-                                // Text 원래대로 되돌리기. 그런 다음 보이지 않게 하기.
-                                binding.setTimeButtton.text = "시간선택(클릭)"
-                                binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-                                binding.setTimeButtton.visibility = View.GONE
+                                uiWhenSwitchedOff()
                                 // 모든 상태저장 삭제
                                 viewModel.clearAlarmSettings()
                                 // 알람 설정 해제
@@ -286,6 +261,29 @@ class AlarmSettingActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun setActionBar() {
+        // 액션 바 타이틀
+        supportActionBar!!.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
+        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
+        supportActionBar!!.setCustomView(R.layout.changepassword_actionbartext) // 커스텀 사용할 파일 위치
+        // Up 버튼 제공
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun uiWhenSwitchedOn() {
+        // on일 때의 ui설정 - timeText 색깔 변경하고 시간 바꾸는 버튼의 텍스트 보이기
+        binding.setTimeButtton.text = "시간선택(클릭)"
+        binding.timeText.setTextColor(Color.BLACK)
+        binding.setTimeButtton.visibility = View.VISIBLE
+        binding.setTimeButtton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+    }
+
+    private fun uiWhenSwitchedOff() {
+        // off일 때의 ui설정 - 시간 바꾸는 버튼의 텍스트 보이지 않게 하고, timeText 텍스트 글짜색 흐리게 바꾸기
+        binding.timeText.setTextColor(Color.parseColor("#979696"))
+        binding.setTimeButtton.visibility = View.INVISIBLE
     }
 
     // 권한 요청 팝업창

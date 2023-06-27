@@ -33,10 +33,7 @@ class MemberDataSource @Inject constructor(
         val result = getUserInfoApi.getUserInfo(userIndex)
         emit(result)
     }.flowOn(ioDispatcher)
-        .catch {
-            _error.emit(true)
-            _error.emit(false)
-        }
+
 
     // 로그인
     suspend fun loginResultFlow(email: String, password: String): Flow<Map<String, Object>> = flow {
@@ -97,10 +94,6 @@ class MemberDataSource @Inject constructor(
         val result = deleteUserApi.deleteUser(userIndex)
         emit(result)
     }.flowOn(ioDispatcher)
-        .catch {
-            _error.emit(true)
-            _error.emit(false)
-        }
 
     // 회원 정보 수정
     // 닉네임 수정
