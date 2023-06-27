@@ -46,31 +46,38 @@ class DiaryResultEditActivity : AppCompatActivity() {
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background)
 
         // 화면 세팅
-        // 데이터 세팅
-        val intent = intent
-        type = intent.getStringExtra("type")
-        situation = intent.getStringExtra("situation")
-        thought = intent.getStringExtra("thought")
-        emotion = intent.getStringExtra("emotion")
-        emotionDescription = intent.getStringExtra("emotionDescription")
-        reflection = intent.getStringExtra("reflection")
-        diaryNumber = intent.getIntExtra("diaryNumber", 0)
-        date = intent.getStringExtra("date")
+        showRecordOnScreen()
 
-        // 화면에 뿌리기
-        binding.date.text = "$date "
-        binding.type.text = type
-        binding.editSituation.setText(situation)
-        binding.editThought.setText(thought)
-        binding.editEmotion.setText(emotion)
-        binding.editEmotionText.setText(emotionDescription)
-        binding.editReflection.setText(reflection)
+        // 감지
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-        // 타입에 따라 회고 입력란 힌트 다르게 설정
-        if (type == "오늘의 마음 일기") {
-            binding.editReflection.hint = "(선택) 나는 왜 그런 마음이 들었을까요?"
-        } else if (type == "트라우마 일기") {
-            binding.editReflection.hint = "지금의 내게 어떤 영향을 미치고 있나요?"
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is DiaryResultEditViewModel.DiaryResultEditUiState.Loading -> {
+                            showRecordOnScreen()
+                        }
+
+                        // 수정 결과 구독
+                        is DiaryResultEditViewModel.DiaryResultEditUiState.Success -> {
+                            finish()
+                        }
+
+                        // 애러 구독
+                        is DiaryResultEditViewModel.DiaryResultEditUiState.Error -> {
+                            val toast = Toast.makeText(
+                                this@DiaryResultEditActivity,
+                                uiState.error,
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
+                        }
+                    }
+                }
+
+
+            }
         }
 
         // 버튼 클릭 이벤트
@@ -109,47 +116,7 @@ class DiaryResultEditActivity : AppCompatActivity() {
             }
         }
 
-        // 감지
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                viewModel.uiState.collect { uiState ->
-                    when(uiState) {
-
-                        // 수정 결과 구독
-                        is DiaryResultEditViewModel.DiaryResultEditUiState.Success -> {
-                           uiState.updateDiaryResult?.let {
-                               if (it["code"].toString().toDouble() == 8001.0) {
-                                   val toast = Toast.makeText(
-                                       this@DiaryResultEditActivity,
-                                       it["msg"] as String?,
-                                       Toast.LENGTH_SHORT
-                                   )
-                                   toast.show()
-                               } else if (it["code"].toString().toDouble() == 8000.0) {
-                                   finish()
-                               }
-                           }
-                        }
-
-                        // 애러 구독
-                        is DiaryResultEditViewModel.DiaryResultEditUiState.Error -> {
-                            if (uiState.error) {
-                                val toast = Toast.makeText(
-                                    this@DiaryResultEditActivity,
-                                    "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                                    Toast.LENGTH_SHORT
-                                )
-                                toast.show()
-                            }
-                        }
-                    }
-                }
-
-
-
-            }
-        }
 
     }
 
@@ -174,5 +141,33 @@ class DiaryResultEditActivity : AppCompatActivity() {
     override fun finish() {
         setResult(RESULT_OK)
         super.finish()
+    }
+
+    private fun showRecordOnScreen() {
+        val intent = intent
+        type = intent.getStringExtra("type")
+        situation = intent.getStringExtra("situation")
+        thought = intent.getStringExtra("thought")
+        emotion = intent.getStringExtra("emotion")
+        emotionDescription = intent.getStringExtra("emotionDescription")
+        reflection = intent.getStringExtra("reflection")
+        diaryNumber = intent.getIntExtra("diaryNumber", 0)
+        date = intent.getStringExtra("date")
+
+        // 화면에 뿌리기
+        binding.date.text = "$date "
+        binding.type.text = type
+        binding.editSituation.setText(situation)
+        binding.editThought.setText(thought)
+        binding.editEmotion.setText(emotion)
+        binding.editEmotionText.setText(emotionDescription)
+        binding.editReflection.setText(reflection)
+
+        // 타입에 따라 회고 입력란 힌트 다르게 설정
+        if (type == "오늘의 마음 일기") {
+            binding.editReflection.hint = "(선택) 나는 왜 그런 마음이 들었을까요?"
+        } else if (type == "트라우마 일기") {
+            binding.editReflection.hint = "지금의 내게 어떤 영향을 미치고 있나요?"
+        }
     }
 }

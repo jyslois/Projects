@@ -1,13 +1,10 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.UpdateDiaryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,13 +13,14 @@ class DiaryResultEditViewModel @Inject constructor(
 ): ViewModel() {
 
     sealed class DiaryResultEditUiState {
-        data class Success(val updateDiaryResult: Map<String, Object>?):  DiaryResultEditUiState()
-        data class Error(val error: Boolean):  DiaryResultEditUiState()
+        object Loading: DiaryResultEditUiState()
+        object Success:  DiaryResultEditUiState()
+        data class Error(val error: String):  DiaryResultEditUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<DiaryResultEditUiState>()
-    val uiState: SharedFlow<DiaryResultEditUiState> = _uiState
+    private val _uiState = MutableStateFlow<DiaryResultEditUiState>(DiaryResultEditUiState.Loading)
+    val uiState: StateFlow<DiaryResultEditUiState> = _uiState
 
 
     // (네트워크) 일기 수정
@@ -34,17 +32,27 @@ class DiaryResultEditViewModel @Inject constructor(
         emotionDescription: String?,
         reflection: String?
     ) {
-        updateDiaryUseCase(diaryNumber, situation, thought, emotion, emotionDescription, reflection).collect {
-            _uiState.emit(DiaryResultEditUiState.Success(it))
-        }
-    }
+        try {
+            updateDiaryUseCase(
+                diaryNumber,
+                situation,
+                thought,
+                emotion,
+                emotionDescription,
+                reflection
+            ).collect {
+                if (it["code"].toString().toDouble() == 8001.0) {
 
-    init {
-        viewModelScope.launch {
-            // 에러 구독 & emit
-            updateDiaryUseCase.updateDiaryError.collect {
-                _uiState.emit(DiaryResultEditUiState.Error(it))
+                    _uiState.value = DiaryResultEditUiState.Error(it["msg"] as String)
+
+                } else if (it["code"].toString().toDouble() == 8000.0) {
+
+                    _uiState.emit(DiaryResultEditUiState.Success)
+                }
             }
+        } catch(e: Exception) {
+            _uiState.value = DiaryResultEditUiState.Error("일기 수정 실패. 인터넷 연결을 확인해 주세요.")
+            _uiState.value = DiaryResultEditUiState.Loading
         }
     }
 

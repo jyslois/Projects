@@ -51,9 +51,5 @@ class DiaryDataSource @Inject constructor(
         val result = updateDiaryApi.updateDiary(diaryNumber, diary)
         emit(result)
     }.flowOn(ioDispatcher)
-        .catch {
-            _updateDiaryError.emit(true)
-            _updateDiaryError.emit(false)
-        }
 
 }
