@@ -34,6 +34,10 @@ class AlarmSettingActivity : AppCompatActivity() {
     // 다이얼로그 변수
     lateinit var alertDialog: AlertDialog
 
+    // 시간 변수
+    var hour: Int = 22
+    var minute: Int = 0
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAlarmSettingBinding.inflate(layoutInflater)
@@ -59,6 +63,8 @@ class AlarmSettingActivity : AppCompatActivity() {
                         is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchedOnWithTime -> {
                             // On이고 이미 설정한 알람이 존재한다면, 그 시간을 화면에 표시
                             uiWhenSwitchedOnWithTime(uiState.time)
+                            hour = uiState.hour
+                            minute = uiState.minute
                         }
 
                         is AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchedOn -> {
@@ -115,8 +121,8 @@ class AlarmSettingActivity : AppCompatActivity() {
         // 클릭 시 다일러로그 띄우기, OK버튼 누르면 기본 알람 설정 해제. 선택한 시간으로 새로운 알람 설정. 버튼 텍스트 선택한 시간으로 변경.
         binding.setTimeButtton.setOnClickListener {
             lifecycleScope.launch {
-                val hour = viewModel.getHour()
-                val minute = viewModel.getMinute()
+                val hour = hour
+                val minute = minute
 
                 val dialog = TimePickerDialog(this@AlarmSettingActivity, R.style.PinkTimePickerTheme, { _, hourOfDay, minute ->
                     var min = ""
@@ -202,6 +208,8 @@ class AlarmSettingActivity : AppCompatActivity() {
         // off일 때의 ui설정 - 시간 바꾸는 버튼의 텍스트 보이지 않게 하고, timeText 텍스트 글짜색 흐리게 바꾸기
         binding.timeText.setTextColor(Color.parseColor("#979696"))
         binding.setTimeButtton.visibility = View.INVISIBLE
+        hour = 22
+        minute = 0
     }
 
     // 권한 요청 팝업창

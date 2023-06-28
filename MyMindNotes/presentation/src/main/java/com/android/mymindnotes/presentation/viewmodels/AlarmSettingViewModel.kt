@@ -1,6 +1,5 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.alarm.GetAlarmStateUseCase
@@ -41,7 +40,7 @@ class AlarmSettingViewModel @Inject constructor(
     sealed class AlarmSettingUiState {
         object Loading : AlarmSettingUiState()
         object AlarmSwitchedOn : AlarmSettingUiState()
-        data class AlarmSwitchedOnWithTime(val time: String) : AlarmSettingUiState()
+        data class AlarmSwitchedOnWithTime(val time: String, val hour: Int, val minute: Int) : AlarmSettingUiState()
         object AlarmSwitchedOff : AlarmSettingUiState()
     }
 
@@ -53,6 +52,8 @@ class AlarmSettingViewModel @Inject constructor(
 
     suspend fun alarmSwitchChanged(isChecked: Boolean) {
         val time = getAlarmTimeUseCase.getTime().first() // 저장한 알람 시간 불러오기
+        val hour = getAlarmTimeUseCase.getHour().first()
+        val minute = getAlarmTimeUseCase.getMinute().first()
 
         // switch가 on만 됐을 때 (지정한 알람 시간이 없을 때)
         if(isChecked && time.isNullOrEmpty()) {
@@ -61,7 +62,7 @@ class AlarmSettingViewModel @Inject constructor(
             // 이미 지정한 알람 시간이 있을 때
         } else if(isChecked && !time.isNullOrEmpty()) {
             saveAlarmStateUseCase(true)
-            _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(time)
+            _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(time, hour, minute)
             // Off일 때
         } else {
             clearAlarmSettingsUseCase()
@@ -69,14 +70,6 @@ class AlarmSettingViewModel @Inject constructor(
             stopAlarmUseCase()
             _uiState.value = AlarmSettingUiState.AlarmSwitchedOff
         }
-    }
-
-    suspend fun getHour(): Int {
-        return getAlarmTimeUseCase.getHour().first()
-    }
-
-    suspend fun getMinute(): Int {
-        return getAlarmTimeUseCase.getMinute().first()
     }
 
     fun alarmDialogueSet(time: String, hourOfDay: Int, min: Int, minute: Int) {
@@ -104,6 +97,8 @@ class AlarmSettingViewModel @Inject constructor(
             }
             saveRebootAlarmTimeUseCase(calendar.timeInMillis)
             setAlarmUseCase(calendar)
+
+            _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(time, hourOfDay, minute)
         }
 
     }
