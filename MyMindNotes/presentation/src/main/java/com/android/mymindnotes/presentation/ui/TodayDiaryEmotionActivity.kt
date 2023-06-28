@@ -88,7 +88,6 @@ class TodayDiaryEmotionActivity : AppCompatActivity() {
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener {
-
             if (chosenEmotionId == 0) {
                 dialog("감정을 선택해 주세요.")
             } else {
@@ -96,6 +95,7 @@ class TodayDiaryEmotionActivity : AppCompatActivity() {
                 // 감정 및 감정 설명 저장
                 viewModel.nextButtonClicked(chosenEmotionId, emotionText)
 
+                // 다음 화면 이동
                 val intent =
                     Intent(applicationContext, TodayDiarySituationActivity::class.java)
                 startActivity(intent)

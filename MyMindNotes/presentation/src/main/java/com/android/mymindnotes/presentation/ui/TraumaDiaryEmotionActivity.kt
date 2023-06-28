@@ -28,7 +28,13 @@ class TraumaDiaryEmotionActivity : AppCompatActivity() {
     // 감정 변수
     private var chosenEmotionId = 0
 
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            viewModel.getEmotionTempRecords()
+        }
 
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTraumaDiaryEmotionBinding.inflate(layoutInflater)
@@ -36,6 +42,33 @@ class TraumaDiaryEmotionActivity : AppCompatActivity() {
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground1).into(binding.recordbackground)
+
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is TraumaDiaryEmotionViewModel.TraumaDiaryEmotionUiState.Loading -> {
+                            setUpEmotionSelection()
+                        }
+
+                        is TraumaDiaryEmotionViewModel.TraumaDiaryEmotionUiState.Success -> {
+
+                            // 만약 감정이 저장된 상태라면, 화면으로 다시 돌아왔을 때 체크 표시가 돼 있게 뿌리기
+                            updateEmotion(uiState.emotion)
+
+                            // 만약 감정 text가 저장된 상태라면, 화면으로 다시 돌아왔을 때 그대로 뿌리기
+                            updateEmotionText(uiState.emotionText)
+
+                        }
+                    }
+                }
+
+            }
+        }
+
 
         // 버튼 클릭
         // 감정 설명서 보기 버튼 클릭
@@ -52,120 +85,58 @@ class TraumaDiaryEmotionActivity : AppCompatActivity() {
 
         // 다음 버튼 클릭
         binding.RecordNextButton.setOnClickListener {
-            lifecycleScope.launch {
-                // emotion 저장
-                if (chosenEmotionId == 0) {
-                    dialog("감정을 선택해 주세요.")
-                } else {
-                    when (chosenEmotionId) {
-                        R.id.happinessButton -> {
-                            viewModel.saveEmotionColor(R.drawable.orange_happiness)
-                            viewModel.saveEmotion("기쁨")
-                        }
+            if (chosenEmotionId == 0) {
+                dialog("감정을 선택해 주세요.")
+            } else {
+                val emotionText = binding.RecordEmotionUserInput.text.toString()
+                // 감정 및 감정 설명 저장
+                viewModel.nextOrPreviousButtonClickedOrPaused(chosenEmotionId, emotionText)
 
-                        R.id.anticipationButton -> {
-                            viewModel.saveEmotionColor(R.drawable.green_anticipation)
-                            viewModel.saveEmotion("기대")
-                        }
-
-                        R.id.trustButton -> {
-                            viewModel.saveEmotionColor(R.drawable.darkblue_trust)
-                            viewModel.saveEmotion("신뢰")
-                        }
-
-                        R.id.surpriseButton -> {
-                            viewModel.saveEmotionColor(R.drawable.yellow_surprise)
-                            viewModel.saveEmotion("놀람")
-                        }
-
-                        R.id.sadnessButton -> {
-                            viewModel.saveEmotionColor(R.drawable.grey_sadness)
-                            viewModel.saveEmotion("슬픔")
-                        }
-
-                        R.id.disgustButton -> {
-                            viewModel.saveEmotionColor(R.drawable.brown_disgust)
-                            viewModel.saveEmotion("혐오")
-                        }
-
-                        R.id.fearButton -> {
-                            viewModel.saveEmotionColor(R.drawable.black_fear)
-                            viewModel.saveEmotion("공포")
-                        }
-
-                        R.id.angerButton -> {
-                            viewModel.saveEmotionColor(R.drawable.red_anger)
-                            viewModel.saveEmotion("분노")
-                        }
-                    }
-                    // 감정Text 저장
-                    val emotionText = binding.RecordEmotionUserInput.text.toString()
-                    viewModel.saveEmotionText(emotionText)
-
-                    // 다음 화면으로 이동
-                    val intent =
-                        Intent(applicationContext, TraumaDiaryReflectionActivity::class.java)
-                    startActivity(intent)
-                }
+                // 다음 화면으로 이동
+                val intent =
+                    Intent(applicationContext, TraumaDiaryReflectionActivity::class.java)
+                startActivity(intent)
             }
+
         }
 
         // 이전 버튼 클릭
         binding.RecordPreviousButton.setOnClickListener {
-            lifecycleScope.launch {
-                // 저장 후 이전 화면으로 이동
-                when (chosenEmotionId) {
-                    R.id.happinessButton -> {
-                        viewModel.saveEmotionColor(R.drawable.orange_happiness)
-                        viewModel.saveEmotion("기쁨")
-                    }
 
-                    R.id.anticipationButton -> {
-                        viewModel.saveEmotionColor(R.drawable.green_anticipation)
-                        viewModel.saveEmotion("기대")
-                    }
+            val emotionText = binding.RecordEmotionUserInput.text.toString()
+            // 감정 및 감정 설명 저장
+            viewModel.nextOrPreviousButtonClickedOrPaused(chosenEmotionId, emotionText)
 
-                    R.id.trustButton -> {
-                        viewModel.saveEmotionColor(R.drawable.darkblue_trust)
-                        viewModel.saveEmotion("신뢰")
-                    }
+            // 이전 화면으로 이동
+            finish()
 
-                    R.id.surpriseButton -> {
-                        viewModel.saveEmotionColor(R.drawable.yellow_surprise)
-                        viewModel.saveEmotion("놀람")
-                    }
-
-                    R.id.sadnessButton -> {
-                        viewModel.saveEmotionColor(R.drawable.grey_sadness)
-                        viewModel.saveEmotion("슬픔")
-                    }
-
-                    R.id.disgustButton -> {
-                        viewModel.saveEmotionColor(R.drawable.brown_disgust)
-                        viewModel.saveEmotion("혐오")
-                    }
-
-                    R.id.fearButton -> {
-                        viewModel.saveEmotionColor(R.drawable.black_fear)
-                        viewModel.saveEmotion("공포")
-                    }
-
-                    R.id.angerButton -> {
-                        viewModel.saveEmotionColor(R.drawable.red_anger)
-                        viewModel.saveEmotion("분노")
-                    }
-                }
-                // 감정Text 저장
-                val emotionText = binding.RecordEmotionUserInput.text.toString()
-                viewModel.saveEmotionText(emotionText)
-
-                // 이전 화면으로 이동
-                finish()
-            }
         }
 
+    }
 
-        // 감정 선택
+    private fun updateEmotion(emotion: String?) {
+        emotion?.let {
+            when (it) {
+                "기쁨" -> binding.happinessButton.isChecked = true
+                "기대" -> binding.anticipationButton.isChecked = true
+                "신뢰" -> binding.trustButton.isChecked = true
+                "놀람" -> binding.surpriseButton.isChecked = true
+                "슬픔" -> binding.sadnessButton.isChecked = true
+                "혐오" -> binding.disgustButton.isChecked = true
+                "공포" -> binding.fearButton.isChecked = true
+                "분노" -> binding.angerButton.isChecked = true
+            }
+        }
+    }
+
+    private fun updateEmotionText(emotionText: String?) {
+        emotionText?.let {
+            binding.RecordEmotionUserInput.setText(it)
+        }
+    }
+
+
+    private fun setUpEmotionSelection() {
         val emotionGroup1 = binding.emotions1
         val emotionGroup2 = binding.emotions2
 
@@ -186,40 +157,6 @@ class TraumaDiaryEmotionActivity : AppCompatActivity() {
                 emotionGroup1.clearCheck()
                 chosenEmotionId = checkedId
                 isChangingCheckedState = false
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is TraumaDiaryEmotionViewModel.TraumaDiaryEmotionUiState.Success -> {
-
-                            // 만약 감정이 저장된 상태라면, 화면으로 다시 돌아왔을 때 체크 표시가 돼 있게 뿌리기
-                            uiState.emotion?.let {
-                                when (it) {
-                                    "기쁨" -> binding.happinessButton.isChecked = true
-                                    "기대" -> binding.anticipationButton.isChecked = true
-                                    "신뢰" -> binding.trustButton.isChecked = true
-                                    "놀람" -> binding.surpriseButton.isChecked = true
-                                    "슬픔" -> binding.sadnessButton.isChecked = true
-                                    "혐오" -> binding.disgustButton.isChecked = true
-                                    "공포" -> binding.fearButton.isChecked = true
-                                    "분노" -> binding.angerButton.isChecked = true
-                                }
-                            }
-
-                            // 만약 감정 text가 저장된 상태라면, 화면으로 다시 돌아왔을 때 그대로 뿌리기
-                            uiState.emotionText?.let {
-                                if (it != "") {
-                                    binding.RecordEmotionUserInput.setText(it)
-                                }
-                            }
-                        }
-                    }
-                }
-
             }
         }
     }
@@ -248,90 +185,21 @@ class TraumaDiaryEmotionActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
 
-        lifecycleScope.launch {
-            when (chosenEmotionId) {
-                R.id.happinessButton -> {
-                    viewModel.saveEmotionColor(R.drawable.orange_happiness)
-                    viewModel.saveEmotion("기쁨")
-                }
-                R.id.anticipationButton -> {
-                    viewModel.saveEmotionColor(R.drawable.green_anticipation)
-                    viewModel.saveEmotion("기대")
-                }
-                R.id.trustButton -> {
-                    viewModel.saveEmotionColor(R.drawable.darkblue_trust)
-                    viewModel.saveEmotion("신뢰")
-                }
-                R.id.surpriseButton -> {
-                    viewModel.saveEmotionColor(R.drawable.yellow_surprise)
-                    viewModel.saveEmotion("놀람")
-                }
-                R.id.sadnessButton -> {
-                    viewModel.saveEmotionColor(R.drawable.grey_sadness)
-                    viewModel.saveEmotion("슬픔")
-                }
-                R.id.disgustButton -> {
-                    viewModel.saveEmotionColor(R.drawable.brown_disgust)
-                    viewModel.saveEmotion("혐오")
-                }
-                R.id.fearButton -> {
-                    viewModel.saveEmotionColor(R.drawable.black_fear)
-                    viewModel.saveEmotion("공포")
-                }
-                R.id.angerButton -> {
-                    viewModel.saveEmotionColor(R.drawable.red_anger)
-                    viewModel.saveEmotion("분노")
-                }
-            }
-            // 감정Text 저장
-            val emotionText = binding.RecordEmotionUserInput.text.toString()
-            viewModel.saveEmotionText(emotionText)
+        val emotionText = binding.RecordEmotionUserInput.text.toString()
+        // 감정 및 감정 설명 저장
+        viewModel.nextOrPreviousButtonClickedOrPaused(chosenEmotionId, emotionText)
 
-            finish()
-        }
+        // 이전 화면으로 이동
+        finish()
     }
 
     override fun onPause() {
         super.onPause()
-        lifecycleScope.launch {
-            when (chosenEmotionId) {
-                R.id.happinessButton -> {
-                    viewModel.saveEmotionColor(R.drawable.orange_happiness)
-                    viewModel.saveEmotion("기쁨")
-                }
-                R.id.anticipationButton -> {
-                    viewModel.saveEmotionColor(R.drawable.green_anticipation)
-                    viewModel.saveEmotion("기대")
-                }
-                R.id.trustButton -> {
-                    viewModel.saveEmotionColor(R.drawable.darkblue_trust)
-                    viewModel.saveEmotion("신뢰")
-                }
-                R.id.surpriseButton -> {
-                    viewModel.saveEmotionColor(R.drawable.yellow_surprise)
-                    viewModel.saveEmotion("놀람")
-                }
-                R.id.sadnessButton -> {
-                    viewModel.saveEmotionColor(R.drawable.grey_sadness)
-                    viewModel.saveEmotion("슬픔")
-                }
-                R.id.disgustButton -> {
-                    viewModel.saveEmotionColor(R.drawable.brown_disgust)
-                    viewModel.saveEmotion("혐오")
-                }
-                R.id.fearButton -> {
-                    viewModel.saveEmotionColor(R.drawable.black_fear)
-                    viewModel.saveEmotion("공포")
-                }
-                R.id.angerButton -> {
-                    viewModel.saveEmotionColor(R.drawable.red_anger)
-                    viewModel.saveEmotion("분노")
-                }
-            }
-            // 감정Text 저장
-            val emotionText = binding.RecordEmotionUserInput.text.toString()
-            viewModel.saveEmotionText(emotionText)
-        }
+
+        val emotionText = binding.RecordEmotionUserInput.text.toString()
+        // 감정 및 감정 설명 저장
+        viewModel.nextOrPreviousButtonClickedOrPaused(chosenEmotionId, emotionText)
+
     }
 
 }
