@@ -23,7 +23,6 @@ import com.android.mymindnotes.core.model.UserDiary
 import com.android.mymindnotes.presentation.viewmodels.DiaryResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.ArrayList
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,7 +42,6 @@ class DiaryResultActivity : AppCompatActivity() {
     var reflection: String? = null
     var index = 0
     var diaryNumber = 0
-    var diarylist: ArrayList<UserDiary>? = null
 
     // tab layout의 tab
     var tabs = arrayOf("상황", "생각", "감정", "회고")
@@ -58,43 +56,8 @@ class DiaryResultActivity : AppCompatActivity() {
         super.onResume()
 
         lifecycleScope.launch {
-
             // 일기 리스트 새로 고침
             viewModel.getDiaryList()
-
-            viewModel.uiState.collect { uiState ->
-                when (uiState) {
-
-                    is DiaryResultViewModel.DiaryResultUiState.Loading -> {
-                        setDataOnScreen()
-                    }
-
-                    is DiaryResultViewModel.DiaryResultUiState.Success -> {
-                        // 일기 리스트 불러오기 감지
-                        uiState.diaryList?.let { diaryList ->
-                            diarylist = diaryList
-                            sendFragmentsData(diaryList[index])
-                        }
-
-                    }
-
-                    is DiaryResultViewModel.DiaryResultUiState.Finish -> {
-                        finish()
-                    }
-
-                    // 애러 감지
-                    is DiaryResultViewModel.DiaryResultUiState.Error -> {
-                        val toast = Toast.makeText(
-                            this@DiaryResultActivity,
-                            uiState.error,
-                            Toast.LENGTH_SHORT
-                        )
-                        toast.show()
-                    }
-                }
-
-            }
-
         }
 
     }
@@ -210,17 +173,20 @@ class DiaryResultActivity : AppCompatActivity() {
                     // 재새팅
                     situation = diary.getSituation()
                 }
+
                 is ThoughtFragment -> {
                     fragment.refreshData(diary)
                     // 재새팅
                     thought = diary.getThought()
                 }
+
                 is EmotionFragment -> {
                     fragment.refreshData(diary)
                     // 재새팅
                     emotion = diary.getEmotion()
                     emotionDescription = diary.getEmotionDescription()
                 }
+
                 is ReflectionFragment -> {
                     fragment.refreshData(diary)
                     // 재새팅
@@ -237,25 +203,30 @@ class DiaryResultActivity : AppCompatActivity() {
     }
 
     // viewPager2 어뎁터 - creating and managing the fragments in the ViewPager2
-    inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+    inner class ViewPager2Adapter(fragmentActivity: FragmentActivity) :
+        FragmentStateAdapter(fragmentActivity) {
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> fragmentFactory.instantiate(
                     SituationFragment::class.java.classLoader!!,
                     SituationFragment::class.java.name
                 )
+
                 1 -> fragmentFactory.instantiate(
                     ThoughtFragment::class.java.classLoader!!,
                     ThoughtFragment::class.java.name
                 )
+
                 2 -> fragmentFactory.instantiate(
                     EmotionFragment::class.java.classLoader!!,
                     EmotionFragment::class.java.name
                 )
+
                 3 -> fragmentFactory.instantiate(
                     ReflectionFragment::class.java.classLoader!!,
                     ReflectionFragment::class.java.name
                 )
+
                 else -> fragmentFactory.instantiate(
                     SituationFragment::class.java.classLoader!!,
                     SituationFragment::class.java.name
