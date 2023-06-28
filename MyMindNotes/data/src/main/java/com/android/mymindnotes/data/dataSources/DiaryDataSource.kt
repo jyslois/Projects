@@ -15,15 +15,6 @@ class DiaryDataSource @Inject constructor(
     private val updateDiaryApi: UpdateDiaryApi,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-    // 에러
-    private val _getDiaryListError = MutableSharedFlow<Boolean>()
-    val getDiaryListError = _getDiaryListError.asSharedFlow()
-
-    private val _deleteDiaryError = MutableSharedFlow<Boolean>()
-    val deleteDiaryError = _deleteDiaryError.asSharedFlow()
-
-    private val _updateDiaryError = MutableSharedFlow<Boolean>()
-    val updateDiaryError = _updateDiaryError.asSharedFlow()
 
     // 일기 리스트 가져오기
     suspend fun getDiaryList(userIndex: Int): Flow<Map<String, Object>> = flow {

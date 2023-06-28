@@ -14,10 +14,9 @@ import androidx.annotation.RequiresApi
 import android.os.Build
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -35,8 +34,9 @@ class DiaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDiaryBinding
 
     // 오리지날 리스트와 리사이클러뷰, 어뎁터
-    var recordList: ArrayList<UserDiary>? = null
-    private var adaptor: DiaryAdaptor? = null
+    var recordList: ArrayList<UserDiary>? = ArrayList<UserDiary>()
+    private var adapter: DiaryAdaptor? = null
+    private var linearLayoutManager: LinearLayoutManager = LinearLayoutManager(this)
 
     // 날짜를 위한 변수
     var date: String? = null
@@ -69,100 +69,22 @@ class DiaryActivity : AppCompatActivity() {
     // 뷰모델 객체 주입
     private val viewModel: DiaryViewModel by viewModels()
 
+
     // 다시 화면으로 돌아왔을 때 데이터 업데이트 시켜주기
     public override fun onResume() {
         super.onResume()
 
-        // 일기 수정 화면이 아닌 다른 화면에서 돌아오면 일어나는 null exception 대비
-        if (recordList != null) {
             lifecycleScope.launch {
+                // 일기 목록 새로고침
+                refreshDiaryList()
 
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is DiaryViewModel.DiaryUiState.Success -> {
-                            uiState.getDiaryListResult?.let {
-                                if (it["code"].toString().toDouble() == 7000.0) {
-                                    // 서버로부터 리스트 받아와서 저장하기
-                                    val gson = Gson()
-                                    val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                                    val jsonResult = gson.toJson(it["diaryList"])
+                // 최신순/오래된순에서 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
+                maintainSortOrder()
 
-                                    recordList = gson.fromJson(jsonResult, type)
-
-                                    // 최신순/오래된순에서 수정 후 돌아왔을 때 최신순/오래된순 정렬 유지
-                                    if (binding.sortDateButton.text.toString() == "최신순") {
-                                        val linearLayoutManager =
-                                            LinearLayoutManager(applicationContext)
-                                        linearLayoutManager.reverseLayout = true
-                                        linearLayoutManager.stackFromEnd = true
-                                        diaryView!!.layoutManager = linearLayoutManager
-                                    } else {
-                                        val linearLayoutManager =
-                                            LinearLayoutManager(applicationContext)
-                                        linearLayoutManager.reverseLayout = false
-                                        linearLayoutManager.stackFromEnd = false
-                                        diaryView!!.layoutManager = linearLayoutManager
-                                    }
-
-                                    adaptor!!.updateItemList(recordList)
-
-                                    // 만약 마음일기 모음에서 클릭이나 수정 후 돌아온 거라면
-                                    if (isEmotionRecordListChecked) {
-                                        emotionRecordList = ArrayList()
-                                        for (i in recordList?.indices!!) {
-                                            if (recordList!![i].type == "오늘의 마음 일기") {
-                                                emotionRecordList.add(recordList!![i])
-                                            }
-                                        }
-                                        adaptor!!.updateItemList(emotionRecordList)
-                                    }
-
-
-                                    // 만약 트라우마일기 모음에서 클릭이나 수정 후 돌아온 거라면
-                                    if (isTraumaRecordListChecked) {
-                                        traumaRecordList = ArrayList()
-                                        for (i in recordList?.indices!!) {
-                                            if (recordList!![i].type == "트라우마 일기") {
-                                                traumaRecordList.add(recordList!![i])
-                                            }
-                                        }
-                                        adaptor!!.updateItemList(traumaRecordList)
-                                    }
-
-
-                                    // 감정별 정렬에서 클릭이나 수정 후 돌아온 거라면
-                                    if (isSingleEmotionListChecked) {
-                                        singleEmotionList = ArrayList()
-                                        for (i in recordList?.indices!!) {
-                                            if (recordList!![i].getEmotion() == singleEmotion) {
-                                                singleEmotionList.add(recordList!![i])
-                                            }
-                                        }
-                                        adaptor!!.updateItemList(singleEmotionList)
-                                    }
-                                }
-                            }
-                        }
-
-                        is DiaryViewModel.DiaryUiState.Error -> {
-                            val toast = Toast.makeText(
-                                applicationContext,
-                                "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.show()
-                        }
-                    }
-                }
+                // sorting 결과에 따라 화면에 표시되는 뷰 업데이트
+                updateAdapterData()
             }
-
-            lifecycleScope.launch {
-                // 일기 리스트 새로고침
-                viewModel.getDiaryList()
-            }
-        }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,53 +96,26 @@ class DiaryActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background)
 
-        // RecyclerView 세팅
-        diaryView = binding.diaryView
-        // RecyclerView에 LayoutManager 적용 (기본을 최근순)
-        val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.reverseLayout = true
-        linearLayoutManager.stackFromEnd = true
-        diaryView!!.layoutManager = linearLayoutManager
-
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 viewModel.uiState.collect { uiState ->
                     when (uiState) {
+                        is DiaryViewModel.DiaryUiState.Loading -> {
+                            setRecyclerView()
+                        }
+
                         is DiaryViewModel.DiaryUiState.Success -> {
-                            uiState.getDiaryListResult?.let {
-                                if (it["code"].toString().toDouble() == 7000.0) {
-                                    // 서버로부터 리스트 받아와서 저장하기 , https://ppizil.tistory.com/4
-                                    val gson = Gson()
-                                    val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                                    val jsonResult = gson.toJson(it["diaryList"])
-
-                                    recordList = gson.fromJson(jsonResult, type)
-                                    // 어레이리스트를 매개변수로 넘겨주어서 어뎁터 객체를 생성
-                                    adaptor = DiaryAdaptor(recordList)
-                                    // 생성한 어뎁터 객체를 RecyclerView에 적용
-                                    diaryView!!.adapter = adaptor
-
-                                    // 생성한 itemDecoration 객체를 RecyclerView에 적용
-                                    // 한 번도 생성이 안 됐을 경우(null)일 경우만 간격 추가해주기. (아니면 화면이 재생성될 때마다 간격이 추가돼 버린다).
-                                    if (diaryRecyclerViewDecoration == null) {
-                                        diaryRecyclerViewDecoration = DiaryRecyclerViewDecoration()
-                                        diaryView!!.addItemDecoration(diaryRecyclerViewDecoration!!)
-                                    }
-                                }
+                            uiState.diaryList?.let {
+                                recordList = uiState.diaryList
+                                adapter!!.updateItemList(uiState.diaryList)
                             }
                         }
 
                         is DiaryViewModel.DiaryUiState.Error -> {
-                            if (uiState.error) {
-                                val toast = Toast.makeText(
-                                    applicationContext,
-                                    "서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.",
-                                    Toast.LENGTH_SHORT
-                                )
-                                toast.show()
-                            }
+
+                            dialog(uiState.error)
+
                         }
                     }
                 }
@@ -232,13 +127,8 @@ class DiaryActivity : AppCompatActivity() {
         // 정렬 버튼 감지
         // 날짜별 최신순/오래된순 정렬 버튼 클릭
         binding.sortDateButton.setOnClickListener {
-            binding.sortEmotionButton.text = "감정별"
-            isEmotionRecordListChecked = false
-            isTraumaRecordListChecked = false
-            isSingleEmotionListChecked = false
-            indexListSingleEmotion.clear()
-            indexListEmotion.clear()
-            indexListTrauma.clear()
+            resetFilterFlags()
+
             if (binding.sortDateButton.text.toString() == "오래된순") {
                 binding.sortDateButton.text = "최신순"
                 linearLayoutManager.reverseLayout = true
@@ -250,63 +140,26 @@ class DiaryActivity : AppCompatActivity() {
                 linearLayoutManager.stackFromEnd = false
                 diaryView!!.layoutManager = linearLayoutManager
             }
-            adaptor!!.updateItemList(recordList)
+
+            adapter!!.updateItemList(recordList)
+
         }
 
         // 마음 일기 모음 버튼 클릭
         binding.sortEmotionDiaryButton.setOnClickListener {
-            binding.sortEmotionButton.text = "감정별"
+            resetFilterFlags()
             isEmotionRecordListChecked = true
-            isTraumaRecordListChecked = false
-            isSingleEmotionListChecked = false
-            indexListSingleEmotion.clear()
-            indexListTrauma.clear()
-            emotionRecordList = ArrayList()
-            for (i in recordList!!.indices) {
-                if (recordList!![i].type == "오늘의 마음 일기") {
-                    emotionRecordList.add(recordList!![i])
-                    indexListEmotion.add(i)
-                }
-            }
-            adaptor!!.updateItemList(emotionRecordList)
-            val linearLayoutManager1 = LinearLayoutManager(this@DiaryActivity)
-            // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
-            if (binding.sortDateButton.text == "오래된순") {
-                linearLayoutManager1.reverseLayout = false
-                linearLayoutManager1.stackFromEnd = false
-            } else if (binding.sortDateButton.text == "최신순") {
-                linearLayoutManager1.reverseLayout = true
-                linearLayoutManager1.stackFromEnd = true
-            }
-            diaryView!!.layoutManager = linearLayoutManager1
+            filterList("오늘의 마음 일기", emotionRecordList, indexListEmotion)
+
         }
 
         // 트라우마 일기 모음 버튼 클릭
         binding.sortTraumaButton.setOnClickListener {
-            binding.sortEmotionButton.text = "감정별"
+
+            resetFilterFlags()
             isTraumaRecordListChecked = true
-            isEmotionRecordListChecked = false
-            isSingleEmotionListChecked = false
-            indexListSingleEmotion.clear()
-            indexListEmotion.clear()
-            traumaRecordList = ArrayList()
-            for (i in recordList!!.indices) {
-                if (recordList!![i].type == "트라우마 일기") {
-                    traumaRecordList.add(recordList!![i])
-                    indexListTrauma.add(i)
-                }
-            }
-            adaptor!!.updateItemList(traumaRecordList)
-            val linearLayoutManager1 = LinearLayoutManager(this@DiaryActivity)
-            // 옆에 최신순/오래된순 버튼의 텍스트에 따라서 All 클릭 시에 오리지널 리스트 일기 정렬되기 - 화면이 중간지점부터가 아닌 가장 윗쪽으로 스크롤 된 상태로 뜨게 하기 위한 조치
-            if (binding.sortDateButton.text == "오래된순") {
-                linearLayoutManager1.reverseLayout = false
-                linearLayoutManager1.stackFromEnd = false
-            } else if (binding.sortDateButton.text == "최신순") {
-                linearLayoutManager1.reverseLayout = true
-                linearLayoutManager1.stackFromEnd = true
-            }
-            diaryView!!.layoutManager = linearLayoutManager1
+            filterList("트라우마 일기", traumaRecordList, indexListTrauma)
+
         }
 
         // 감정벌 정렬 버튼 클릭
@@ -315,6 +168,99 @@ class DiaryActivity : AppCompatActivity() {
             startActivityForResult(intent, 1)
         }
 
+    }
+
+
+    // 일기 목록 새로고침
+    private suspend fun refreshDiaryList() {
+        viewModel.getDiaryList()
+    }
+
+    // Maintain the order of the sort after returning from modifications 사용자가 선택한 정렬 순서 유지
+    private fun maintainSortOrder() {
+        val sortOrder = binding.sortDateButton.text.toString()
+        val isReverseLayout = sortOrder == "최신순" // sortOrder 값이 "최신순"이면 true를, 그렇지 않으면 false를 할당
+
+        val layoutManager = LinearLayoutManager(applicationContext)
+        layoutManager.reverseLayout = isReverseLayout //만약 "최신순"이 선택되었다면, 이 속성은 true가 되어 리사이클러뷰의 항목들이 역순으로 표시
+        layoutManager.stackFromEnd = isReverseLayout //  "최신순"이 선택되었다면, 이 속성은 true가 되어 리사이클러뷰가 가장 마지막 항목부터 시작
+
+        diaryView?.layoutManager = layoutManager
+    }
+
+    private fun updateAdapterData() {
+        // Update the data for the adapter based on which screen was last active
+        when {
+            isEmotionRecordListChecked -> {
+                updateEmotionRecordList()
+                adapter?.updateItemList(emotionRecordList)
+            }
+            isTraumaRecordListChecked -> {
+                updateTraumaRecordList()
+                adapter?.updateItemList(traumaRecordList)
+            }
+            isSingleEmotionListChecked -> {
+                updateSingleEmotionList()
+                adapter?.updateItemList(singleEmotionList)
+            }
+            else -> {
+                adapter?.updateItemList(recordList)
+            }
+        }
+    }
+
+    private fun updateEmotionRecordList() {
+        emotionRecordList.clear()
+        recordList?.filterTo(emotionRecordList) { it.type == "오늘의 마음 일기" }
+    }
+
+    private fun updateTraumaRecordList() {
+        traumaRecordList.clear()
+        recordList?.filterTo(traumaRecordList) { it.type == "트라우마 일기" }
+    }
+
+    private fun updateSingleEmotionList() {
+        singleEmotionList.clear()
+        recordList?.filterTo(singleEmotionList) { it.getEmotion() == singleEmotion }
+    }
+    private fun resetFilterFlags() {
+        binding.sortEmotionButton.text = "감정별"
+        isEmotionRecordListChecked = false
+        isTraumaRecordListChecked = false
+        isSingleEmotionListChecked = false
+        indexListSingleEmotion.clear()
+        indexListEmotion.clear()
+        indexListTrauma.clear()
+    }
+
+    private fun filterList(type: String, filteredRecordList: ArrayList<UserDiary>, indexList: ArrayList<Int>) {
+        filteredRecordList.clear()
+        indexList.clear()
+
+        recordList?.let { list ->
+            for ((index, record) in list.withIndex()) {
+                if (record.type == type) {
+                    filteredRecordList.add(record)
+                    indexList.add(index)
+                }
+            }
+        }
+
+        adapter?.updateItemList(filteredRecordList)
+        setupLinearLayoutManager()
+
+    }
+
+    private fun setupLinearLayoutManager() {
+        val linearLayoutManager = LinearLayoutManager(this@DiaryActivity)
+        if (binding.sortDateButton.text == "오래된순") {
+            linearLayoutManager.reverseLayout = false
+            linearLayoutManager.stackFromEnd = false
+        } else if (binding.sortDateButton.text == "최신순") {
+            linearLayoutManager.reverseLayout = true
+            linearLayoutManager.stackFromEnd = true
+        }
+        diaryView?.layoutManager = linearLayoutManager
     }
 
     // 감정정렬팝업으로부터 데이터 가져오기 (EmotionSortingPopup)
@@ -332,21 +278,21 @@ class DiaryActivity : AppCompatActivity() {
 
     // 감정별 정렬을 위한 함수
     private fun sortByEmotion(emotion: String?) {
-        isEmotionRecordListChecked = false
-        isTraumaRecordListChecked = false
+        resetFilterFlags()
         isSingleEmotionListChecked = true
         singleEmotionList = ArrayList()
-        indexListTrauma.clear()
-        indexListEmotion.clear()
-        indexListSingleEmotion.clear()
         singleEmotion = emotion
-        for (i in recordList!!.indices) {
-            if (recordList!![i].getEmotion() == emotion) {
-                singleEmotionList.add(recordList!![i])
-                indexListSingleEmotion.add(i)
+
+        recordList?.let { list ->
+            for ((index, record) in list.withIndex()) {
+                if (record.getEmotion() == emotion) {
+                    singleEmotionList.add(record)
+                    indexListSingleEmotion.add(index)
+                }
             }
         }
-        adaptor!!.updateItemList(singleEmotionList)
+
+        adapter?.updateItemList(singleEmotionList)
     }
 
     // RecyclerView
@@ -423,7 +369,10 @@ class DiaryActivity : AppCompatActivity() {
                 intent.putExtra("situation", recordList!![position].getSituation())
                 intent.putExtra("thought", recordList!![position].getThought())
                 intent.putExtra("emotion", recordList!![position].getEmotion())
-                intent.putExtra("emotionDescription", recordList!![position].getEmotionDescription())
+                intent.putExtra(
+                    "emotionDescription",
+                    recordList!![position].getEmotionDescription()
+                )
                 intent.putExtra("reflection", recordList!![position].getReflection())
                 intent.putExtra("diaryNumber", recordList!![position].getDiary_number())
 
@@ -457,6 +406,24 @@ class DiaryActivity : AppCompatActivity() {
     }
 
 
+    private fun setRecyclerView() {
+        // RecyclerView 세팅
+        diaryView = binding.diaryView
+        // 어댑터 개체 생성
+        adapter = DiaryAdaptor(recordList)
+        // 생성한 어뎁터 객체를 RecyclerView에 적용
+        diaryView!!.adapter = adapter
+        // RecyclerView에 LayoutManager 적용 (기본을 최근순)
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.reverseLayout = true
+        linearLayoutManager.stackFromEnd = true
+        diaryView!!.layoutManager = linearLayoutManager
+        // itemDecoration 생성
+        diaryRecyclerViewDecoration = DiaryRecyclerViewDecoration()
+        // 생성한 itemDecoration 객체를 RecyclerView에 적용
+        diaryView!!.addItemDecoration(diaryRecyclerViewDecoration!!)
+    }
+
     class DiaryRecyclerViewDecoration : ItemDecoration() {
         override fun getItemOffsets(
             outRect: Rect,
@@ -472,5 +439,14 @@ class DiaryActivity : AppCompatActivity() {
 
     companion object {
         var diaryView: RecyclerView? = null
+    }
+
+    // 알람 다이얼로그
+    fun dialog(msg: String?) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(msg)
+        builder.setPositiveButton("확인", null)
+        val alertDialog = builder.show()
+        alertDialog.show()
     }
 }

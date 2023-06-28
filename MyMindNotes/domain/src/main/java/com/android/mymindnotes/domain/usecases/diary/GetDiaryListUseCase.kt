@@ -13,7 +13,4 @@ class GetDiaryListUseCase @Inject constructor(
 
     suspend operator fun invoke(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
 
-
-
-
 }

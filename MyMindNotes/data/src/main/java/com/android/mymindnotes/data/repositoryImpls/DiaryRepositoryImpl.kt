@@ -15,15 +15,6 @@ class DiaryRepositoryImpl @Inject constructor(
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ): DiaryRepository {
 
-    // 에러 메시지
-    private val _getDiaryListError = MutableSharedFlow<Boolean>()
-    override val getDiaryListError = _getDiaryListError.asSharedFlow()
-
-    private val _deleteDiaryError = MutableSharedFlow<Boolean>()
-    override val deleteDiaryError = _deleteDiaryError.asSharedFlow()
-
-    private val _updateDiaryError = MutableSharedFlow<Boolean>()
-    override val updateDiaryError = _updateDiaryError.asSharedFlow()
 
     // Get Diary List
     override suspend fun getDiaryList(): Flow<Map<String, Object>> {
@@ -44,27 +35,5 @@ class DiaryRepositoryImpl @Inject constructor(
         reflection: String?
     ): Flow<Map<String, Object>> = diaryDataSource.updateDiary(diaryNumber, situation, thought, emotion, emotionDescription, reflection)
 
-    init {
-        mainDispatcherCoroutineScope.launch {
-            launch {
-                // 에러 메시지 collect & emit
-                diaryDataSource.getDiaryListError.collect {
-                    _getDiaryListError.emit(it)
-                }
-            }
-
-            launch {
-                diaryDataSource.deleteDiaryError.collect {
-                    _deleteDiaryError.emit(it)
-                }
-            }
-
-            launch {
-                diaryDataSource.updateDiaryError.collect {
-                    _updateDiaryError.emit(it)
-                }
-            }
-        }
-    }
 
 }
