@@ -44,6 +44,7 @@ class DiaryResultEditViewModel @Inject constructor(
                 if (it["code"].toString().toDouble() == 8001.0) {
 
                     _uiState.value = DiaryResultEditUiState.Error(it["msg"] as String)
+                    _uiState.value = DiaryResultEditUiState.Loading
 
                 } else if (it["code"].toString().toDouble() == 8000.0) {
 

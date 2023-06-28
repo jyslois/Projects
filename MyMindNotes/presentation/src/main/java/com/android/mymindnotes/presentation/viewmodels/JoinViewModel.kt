@@ -1,7 +1,6 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.JoinUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
@@ -11,12 +10,8 @@ import com.android.mymindnotes.domain.usecases.userInfo.SaveUserIndexUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckEmailDuplicateUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckNickNameDuplicateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,76 +30,82 @@ class JoinViewModel @Inject constructor(
 ) : ViewModel() {
 
     sealed class JoinUiState {
-        data class Success(val emailDuplicateCheckResult: Map<String, Object>?, val nickNameDuplicateCheckResult: Map<String, Object>?, val joinResult: Map<String, Object>?): JoinUiState()
-        data class Error(val error: Boolean): JoinUiState()
+        object Loading: JoinUiState()
+        object EmailDuplicateCheckSucceed: JoinUiState()
+        object NicknameDuplicateCheckSucceed: JoinUiState()
+        object JoinSucceed: JoinUiState()
+        data class Error(val error: String): JoinUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<JoinUiState>()
-    val uiState: SharedFlow<JoinUiState> = _uiState
+    private val _uiState = MutableStateFlow<JoinUiState>(JoinUiState.Loading)
+    val uiState: StateFlow<JoinUiState> = _uiState
 
 
     // 이메일 중복 체크 함수 호출
     suspend fun checkEmail(emailInput: String) {
-        checkEmailDuplicateUseCase(emailInput).collect {
-          _uiState.emit(JoinUiState.Success(it, null, null))
-      }
+        try {
+            checkEmailDuplicateUseCase(emailInput).collect {
+                if (it["code"].toString().toDouble() == 1001.0) {
+                    _uiState.value = JoinUiState.Error(it["msg"] as String)
+                } else if (it["code"].toString().toDouble() == 1000.0) {
+                    _uiState.value = JoinUiState.EmailDuplicateCheckSucceed
+                }
+            }
+        } catch (e: Exception) {
+            _uiState.value = JoinUiState.Error("이메일 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+        }
+
+        _uiState.value = JoinUiState.Loading
     }
 
 
     // (서버) 닉네임 중복 체크 함수 호출
     suspend fun checkNickName(nickNameInput: String) {
-        checkNickNameDuplicateUseCase(nickNameInput).collect {
-            _uiState.emit(JoinUiState.Success(null, it, null))
+        try {
+            checkNickNameDuplicateUseCase(nickNameInput).collect {
+                if (it["code"].toString().toDouble() == 1003.0) {
+                    _uiState.value = JoinUiState.Error(it["msg"] as String)
+                } else if (it["code"].toString().toDouble() == 1002.0) {
+                    _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed
+                }
+            }
+        } catch (e: Exception) {
+            _uiState.value = JoinUiState.Error("닉네임 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요.")
         }
+
+        _uiState.value = JoinUiState.Loading
     }
 
 
     // (서버) 회원가입 함수 호출
     suspend fun join(email: String, nickname: String, password: String, birthyear: Int) {
-        joinUseCase(email, nickname, password, birthyear).collect {
-            _uiState.emit(JoinUiState.Success(null, null, it))
-        }
-    }
+        try {
+            joinUseCase(email, nickname, password, birthyear).collect {
+                if (it["code"].toString().toDouble() == 2001.0) {
+                    _uiState.value = JoinUiState.Error(it["msg"] as String)
+                } else if (it["code"].toString().toDouble() == 2000.0) {
+                    // 회원 번호 저장
+                    saveUserIndexUseCase(it["user_index"].toString().toDouble().toInt())
 
+                    // 아이디와 비밀번호 저장
+                    saveIdAndPasswordUseCase(email, password)
 
-    // collect & emit
-    init {
-        viewModelScope.launch {
+                    // 아이디/비밀번호 저장 체크 박스 상태를 true로 저장, 자동 로그인 설정
+                    saveAutoSaveStateUseCase(true)
+                    saveAutoLoginStateUseCase(true)
 
-            val joinErrorFlow =  joinUseCase.error.map { JoinUiState.Error(it) }
-            val emailDuplicateCheckErrorFlow = checkEmailDuplicateUseCase.error.map { JoinUiState.Error(it) }
+                    // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
+                    saveFirstTimeStateUseCase(true)
 
-
-            merge(joinErrorFlow, emailDuplicateCheckErrorFlow).collect {
-                _uiState.emit(it)
-
+                    _uiState.value = JoinUiState.JoinSucceed
+                }
             }
+        } catch (e: Exception) {
+            _uiState.value = JoinUiState.Error("회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요.")
         }
-    }
 
-    // 처음으로 로그인한 유저인지 판단을 위한 값을 SharedPreferences에 저장하기 위해 함수 호출
-    suspend fun saveFirstTime(boolean: Boolean) {
-        saveFirstTimeStateUseCase(boolean)
-    }
-
-    // 회원 번호를 SharedPreference에 저장하기 위한 함수 호출
-    suspend fun saveUserindex(userIndex: Int) {
-        saveUserIndexUseCase(userIndex)
-    }
-
-    // 아이디와 비밀번호를 SharedPreference에 저장하기 위한 함수 호출
-    suspend fun saveIdAndPassword(id: String, password: String) {
-        saveIdAndPasswordUseCase(id, password)
-    }
-
-    // AutoSave & AutoLogin Check 상태를 저장하기 위한 함수 호출
-    suspend fun saveAutoLoginCheck(state: Boolean) {
-        saveAutoLoginStateUseCase(state)
-    }
-
-    suspend fun saveAutoSaveCheck(state: Boolean) {
-        saveAutoSaveStateUseCase(state)
+        _uiState.value = JoinUiState.Loading
     }
 
 

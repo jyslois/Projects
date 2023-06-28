@@ -6,14 +6,11 @@ import com.android.mymindnotes.domain.usecases.userInfoRemote.GetUserInfoUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.GetFirstTimeStateUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SaveFirstTimeStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,37 +21,40 @@ class MainPageViewModel @Inject constructor(
 ) : ViewModel() {
 
     sealed class MainPageUiState {
-        data class State(val firstTime: Boolean) : MainPageUiState()
-        data class Success(val userInfoResult: Map<String, Object>?): MainPageUiState()
-        data class Error(val error: Boolean): MainPageUiState()
+        object Loading: MainPageUiState()
+        object FirstTime : MainPageUiState()
+        data class Success(val nickName: String): MainPageUiState()
+        data class Error(val error: String): MainPageUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<MainPageUiState>()
-    val uiState: SharedFlow<MainPageUiState> = _uiState
+    private val _uiState = MutableStateFlow<MainPageUiState>(MainPageUiState.Loading)
+    val uiState: StateFlow<MainPageUiState> = _uiState
 
+    suspend fun getNickNameFromUserInfo() {
+        try {
+            getUserInfoUseCase().collect {
+                val nickName = it["nickname"] as String
+                _uiState.value = MainPageUiState.Success(nickName)
+            }
+        } catch (e: Exception) {
+            _uiState.value = MainPageUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+            _uiState.value = MainPageUiState.Loading
+        }
+    }
 
     init {
 
         viewModelScope.launch {
 
-            val getFirstTimeStateFlow = getFirstTimeStateUseCase().map { MainPageUiState.State(it) }
-            val getUserInfoFlow = getUserInfoUseCase().map { MainPageUiState.Success(it) }
-            val getUserInfoErrorFlow = getUserInfoUseCase.error.map { MainPageUiState.Error(it) }
-
-            merge(getFirstTimeStateFlow, getUserInfoFlow, getUserInfoErrorFlow).collect {
-                _uiState.emit(it)
+            if(getFirstTimeStateUseCase().first()) {
+                _uiState.value = MainPageUiState.FirstTime
+                saveFirstTimeStateUseCase(false)
             }
+
+            getNickNameFromUserInfo()
 
         }
     }
-
-
-    // 최초 접속 값을 바꾸기 위한 함수 호출
-    suspend fun saveFirstTime(boolean: Boolean) {
-        saveFirstTimeStateUseCase(boolean)
-    }
-
-
 
 }

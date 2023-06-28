@@ -1,13 +1,11 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangeToTemporaryPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,31 +15,32 @@ class FindPasswordViewModel @Inject constructor(
 
 
     sealed class FindPasswordUiState {
-        data class Success(val changeToTemporaryPasswordResult: Map<String, Object>?): FindPasswordUiState()
-        data class Error(val error: Boolean): FindPasswordUiState()
+        object Loading: FindPasswordUiState()
+        data class Success(val successMessage: String?): FindPasswordUiState()
+        data class Error(val error: String?): FindPasswordUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<FindPasswordUiState>()
-    val uiState: SharedFlow<FindPasswordUiState> = _uiState
+    private val _uiState = MutableStateFlow<FindPasswordUiState>(FindPasswordUiState.Loading)
+    val uiState: StateFlow<FindPasswordUiState> = _uiState
 
 
     // (서버) 임시 비밀번호로 비밀번호 변경하기
     suspend fun changeToTemporaryPassword(email: String, randomPassword: String) {
-        changeToTemporaryPasswordUseCase(email, randomPassword).collect {
-            _uiState.emit(FindPasswordUiState.Success(it))
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-            // 비밀번호 변경 에러 값 구독
-            launch {
-                changeToTemporaryPasswordUseCase.error.collect {
-                    _uiState.emit(FindPasswordUiState.Error(it))
+        try {
+            changeToTemporaryPasswordUseCase(email, randomPassword).collect {
+                if (it["code"].toString().toDouble() == 3007.0) {
+                    _uiState.value = FindPasswordUiState.Error(it["msg"] as String?)
+                } else if (it["code"].toString().toDouble() == 3006.0) {
+                    // 전송 완료 알림 띄우기
+                    _uiState.value = FindPasswordUiState.Success(it["msg"] as String?)
                 }
             }
+        } catch (e: Exception) {
+            _uiState.value = FindPasswordUiState.Error("비밀번호 발송에 실패했습니다. 인터넷 연결을 확인해 주세요.")
         }
+        _uiState.value = FindPasswordUiState.Loading
     }
+
 
 }

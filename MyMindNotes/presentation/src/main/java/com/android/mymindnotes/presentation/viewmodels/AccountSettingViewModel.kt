@@ -4,11 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.userInfoRemote.DeleteUserUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.GetUserInfoUseCase
-import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
-import com.android.mymindnotes.domain.usecases.loginStates.ClearLoginStatesUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
-import com.android.mymindnotes.domain.usecases.userInfo.ClearAlarmSettingsUseCase
-import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -55,6 +51,7 @@ class AccountSettingViewModel @Inject constructor(
             _uiState.value = AccountSettingUiState.Withdraw
         } else if (resultState == "Error") {
             _uiState.value = AccountSettingUiState.Error("회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")
+            _uiState.value = AccountSettingUiState.Loading
         }
 
     }
@@ -68,6 +65,7 @@ class AccountSettingViewModel @Inject constructor(
                 _uiState.value = AccountSettingUiState.Success(userInfo)
             } catch(e: Exception) {
                 _uiState.value = AccountSettingUiState.Error("회원 정보를 불러오는 데 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                _uiState.value = AccountSettingUiState.Loading
             }
         }
     }

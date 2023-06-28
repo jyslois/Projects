@@ -45,9 +45,6 @@ class DiaryResultEditActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background)
 
-        // 화면 세팅
-        showRecordOnScreen()
-
         // 감지
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

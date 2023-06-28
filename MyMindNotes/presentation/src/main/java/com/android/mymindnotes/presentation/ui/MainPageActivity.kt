@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.graphics.Color
 import android.os.SystemClock
-import android.util.Log
 import com.bumptech.glide.Glide
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -32,6 +31,13 @@ class MainPageActivity : AppCompatActivity() {
     // 다이얼로그 변수
     lateinit var alertDialog: AlertDialog
 
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            viewModel.getNickNameFromUserInfo()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainPageBinding.inflate(layoutInflater)
@@ -43,6 +49,47 @@ class MainPageActivity : AppCompatActivity() {
         // 메뉴 이미지
         binding.mainmenu.setColorFilter(Color.parseColor("#BCFFD7CE"))
 
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is MainPageViewModel.MainPageUiState.Loading -> {
+                            binding.mainpagetext.text = "오늘 하루도 고생했어요."
+                        }
+
+                        // 최초 값 구독
+                        is MainPageViewModel.MainPageUiState.FirstTime -> {
+
+                            // 최초 접속 시에 알람 설정 다이얼로그 띄워주기
+                            setAlarmDialog()
+
+                        }
+
+                        // 회원 정보 값 구독
+                        is MainPageViewModel.MainPageUiState.Success -> {
+
+                            binding.mainpagetext.text = "오늘 하루도 고생했어요, ${uiState.nickName} 님."
+
+                        }
+
+
+                        // 애러 구독
+                        is MainPageViewModel.MainPageUiState.Error -> {
+
+                            dialog(uiState.error)
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
         // 버튼 클릭 이벤트
         // 일기 쓰기 버튼 클릭
         binding.addRecordButton.setOnClickListener {
@@ -52,47 +99,6 @@ class MainPageActivity : AppCompatActivity() {
         // 메뉴 버튼 클릭
         binding.mainmenu.setOnClickListener {
             startActivity<MainMenuActivity>()
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-
-                        // 최초 값 구독
-                        is MainPageViewModel.MainPageUiState.State -> {
-                            if (uiState.firstTime) {
-                                // 최초 접속 시에 알람 설정 다이얼로그 띄워주기
-                                setAlarmDialog()
-                                viewModel.saveFirstTime(false)
-                            }
-                        }
-
-                        // 회원 정보 값 구독
-                        is MainPageViewModel.MainPageUiState.Success -> {
-                            uiState.userInfoResult?.let {
-                                // 닉네임 세팅
-                                Log.e("UserInfoCheck", "결과 최종으로 돌어옴 - 결과: $it")
-                                val nick = it["nickname"] as String?
-                                if (nick != null) {
-                                    binding.mainpagetext.text = "오늘 하루도 고생했어요, $nick 님."
-                                }
-                            }
-                        }
-
-                        // 애러 구독
-                        is MainPageViewModel.MainPageUiState.Error -> {
-                            if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
-                            }
-                        }
-
-                    }
-
-                }
-
-            }
         }
 
     }
@@ -121,8 +127,6 @@ class MainPageActivity : AppCompatActivity() {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             // 알람 설정 페이지로 이동
             startActivity<AlarmSettingActivity>()
-//            val intent = Intent(this, AlarmSettingActivity::class.java)
-//            startActivity(intent)
         }
     }
 

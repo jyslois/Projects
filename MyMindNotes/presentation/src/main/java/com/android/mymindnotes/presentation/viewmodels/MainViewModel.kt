@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.loginStates.GetAutoLoginStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,12 +16,13 @@ class MainViewModel @Inject constructor(
 
 
     sealed class MainUiState {
-        data class State(val autoLoginStateResult: Boolean): MainUiState()
+        object Loading: MainUiState()
+        object AutoLogin: MainUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<MainUiState>()
-    val uiState: SharedFlow<MainUiState> = _uiState
+    private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
+    val uiState: StateFlow<MainUiState> = _uiState
 
 
     // ViewModel instance가 만들어질 때,
@@ -31,7 +31,9 @@ class MainViewModel @Inject constructor(
             launch {
                 // useCase의 getAutoLogin() 함수에 return된 Flow의 Boolean 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
                 getAutoLoginStateUseCase().collect {
-                    _uiState.emit(MainUiState.State(it))
+                    if (it) {
+                        _uiState.emit(MainUiState.AutoLogin)
+                    }
                 }
             }
         }

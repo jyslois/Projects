@@ -73,15 +73,6 @@ class DiaryResultActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground4).into(binding.background)
 
-        // 데이터 세팅
-        setDataOnScreen()
-
-        // viewPager2와 tablayout 세팅
-        setViewPagerAndTabLayout()
-
-        // DiaryResultFragmentFactory 인스턴스 생성 (런타임 시 이 클래스의 intent.extras를 인자로 제공)
-        setUpFragmentFactory(intent.extras)
-
         // 구독
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -89,7 +80,14 @@ class DiaryResultActivity : AppCompatActivity() {
                     when (uiState) {
 
                         is DiaryResultViewModel.DiaryResultUiState.Loading -> {
+                            // 데이터 세팅
                             setDataOnScreen()
+
+                            // viewPager2와 tablayout 세팅
+                            setViewPagerAndTabLayout()
+
+                            // DiaryResultFragmentFactory 인스턴스 생성 (런타임 시 이 클래스의 intent.extras를 인자로 제공)
+                            setUpFragmentFactory(intent.extras)
                         }
 
                         is DiaryResultViewModel.DiaryResultUiState.Success -> {

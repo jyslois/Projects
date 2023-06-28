@@ -20,6 +20,7 @@ import java.util.*
 @AndroidEntryPoint
 class FindPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFindPasswordBinding
+
     // 뷰모델 객체 주입
     private val viewModel: FindPasswordViewModel by viewModels()
 
@@ -37,14 +38,31 @@ class FindPasswordActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainbackground).into(binding.background)
 
-        // 액션바 세팅
-        // 액션 바 타이틀
-        supportActionBar!!.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
-        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
-        supportActionBar!!.setCustomView(R.layout.changepassword_actionbartext) // 커스텀 사용할 파일 위치
-        // Up 버튼 제공
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        // 임시 비밀번호 보내기 결과 구독
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
 
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is FindPasswordViewModel.FindPasswordUiState.Loading -> {
+                            // 액션바 세팅
+                            setActionBar()
+                        }
+
+                        is FindPasswordViewModel.FindPasswordUiState.Success -> {
+                            uiState.successMessage?.let {
+                                dialog(it)
+                            }
+                        }
+
+                        is FindPasswordViewModel.FindPasswordUiState.Error -> {
+                            dialog(uiState.error)
+                        }
+                    }
+                }
+            }
+        }
 
         // 임시 비밀번호 보내기 버튼
         binding.sendEmailButton.setOnClickListener {
@@ -58,48 +76,22 @@ class FindPasswordActivity : AppCompatActivity() {
                     val rightLimit = 122 // letter 'z'
                     val targetStringLength = 10
                     val random = Random()
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        randomPassword = random.ints(leftLimit, rightLimit + 1)
-                            .filter { i: Int -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97) }
-                            .limit(targetStringLength.toLong())
-                            .collect(
-                                { StringBuilder() },
-                                { obj: java.lang.StringBuilder, codePoint: Int ->
-                                    obj.appendCodePoint(codePoint)
-                                }) { obj: java.lang.StringBuilder, s: java.lang.StringBuilder? ->
-                                obj.append(
-                                    s
-                                )
-                            }
-                            .toString()
-                    }
-                    viewModel.changeToTemporaryPassword(email, randomPassword)
-                }
-            }
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                    viewModel.uiState.collect { uiState ->
-                        when (uiState) {
-                            is FindPasswordViewModel.FindPasswordUiState.Success -> {
-                                uiState.changeToTemporaryPasswordResult?.let {
-                                    if (it["code"].toString().toDouble() == 3007.0) {
-                                        dialog(it["msg"] as String?)
-                                    } else if (it["code"].toString().toDouble() == 3006.0) {
-                                        // 전송 완료 알림 띄우기
-                                        dialog(it["msg"] as String?)
-                                    }
-                                }
-                            }
-
-                            is FindPasswordViewModel.FindPasswordUiState.Error -> {
-                                if (uiState.error) {
-                                    dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                                }
-                            }
+                    randomPassword = random.ints(leftLimit, rightLimit + 1)
+                        .filter { i: Int -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97) }
+                        .limit(targetStringLength.toLong())
+                        .collect(
+                            { StringBuilder() },
+                            { obj: java.lang.StringBuilder, codePoint: Int ->
+                                obj.appendCodePoint(codePoint)
+                            }) { obj: java.lang.StringBuilder, s: java.lang.StringBuilder? ->
+                            obj.append(
+                                s
+                            )
                         }
-                    }
+                        .toString()
+
+                    viewModel.changeToTemporaryPassword(email, randomPassword)
                 }
             }
 
@@ -113,6 +105,15 @@ class FindPasswordActivity : AppCompatActivity() {
         builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()
+    }
+
+    private fun setActionBar() {
+        // 액션 바 타이틀
+        supportActionBar!!.setDisplayShowTitleEnabled(false) // 기본 타이틀 사용 안함
+        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM // 커스텀 사용
+        supportActionBar!!.setCustomView(R.layout.changepassword_actionbartext) // 커스텀 사용할 파일 위치
+        // Up 버튼 제공
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
 }

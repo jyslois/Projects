@@ -27,7 +27,4 @@ interface MemberRepository {
 
     // change to TemporaryPassword
     suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>>
-
-    // 에러 메시지
-    val error: SharedFlow<Boolean>
 }

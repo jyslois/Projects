@@ -24,6 +24,10 @@ class RecordMindChoiceActivity : AppCompatActivity() {
     // 다이얼로그 변수
     lateinit var alertDialog: AlertDialog
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getNickNameFromUserInfo()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityRecordMindChoiceBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -31,6 +35,32 @@ class RecordMindChoiceActivity : AppCompatActivity() {
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground2).into(binding.choicebackground)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is RecordMindChoiceViewModel.RecordMindChoiceUiState.Loading -> {
+                            binding.recordText.text = "오늘은 어떤 마음에 대해 알아 볼까요?"
+                        }
+
+                        // 닉네임 가져오기
+                        is RecordMindChoiceViewModel.RecordMindChoiceUiState.Success -> {
+                            binding.nickNameText.text = "${uiState.nickName} 님,"
+                        }
+
+                        // 애러 구독
+                        is RecordMindChoiceViewModel.RecordMindChoiceUiState.Error -> {
+                            dialog(uiState.error)
+                        }
+
+                    }
+                }
+            }
+        }
+
 
         // 버튼 클릭 이벤트
         // 오늘의 마음 일기 버튼 클릭
@@ -43,34 +73,6 @@ class RecordMindChoiceActivity : AppCompatActivity() {
         binding.traumaButton.setOnClickListener {
             val intent = Intent(applicationContext, TraumaDiarySituationActivity::class.java)
             startActivity(intent)
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-
-                        // 회원정보 값 구독
-                        is RecordMindChoiceViewModel.RecordMindChoiceUiState.Success ->
-                           uiState.userInfoResult?.let {
-                               // 닉네임 세팅
-                               val nick = it["nickname"] as String?
-                               if (nick != null) {
-                                   binding.nickNameText.text = "$nick 님,"
-                               }
-                           }
-
-                        // 애러 구독
-                        is RecordMindChoiceViewModel.RecordMindChoiceUiState.Error -> {
-                            if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결 확인 후 앱을 다시 시작해주세요.")
-                            }
-                        }
-
-                    }
-                }
-            }
         }
 
     }

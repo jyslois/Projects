@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     // viewModel 객체 생성
     private val viewModel: MainViewModel by viewModels()
 
@@ -32,20 +33,23 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-
                 launch {
                     viewModel.uiState.collect { uiState ->
                         when (uiState) {
-                            is MainViewModel.MainUiState.State -> {
-                                if (uiState.autoLoginStateResult) {
-                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
-                                    startActivity(intent);
-                                }
+                            is MainViewModel.MainUiState.Loading -> {
+
+                            }
+
+                            is MainViewModel.MainUiState.AutoLogin -> {
+
+                                val intent =
+                                    Intent(applicationContext, MainPageActivity::class.java)
+                                startActivity(intent)
+
                             }
                         }
                     }
                 }
-
             }
         }
 

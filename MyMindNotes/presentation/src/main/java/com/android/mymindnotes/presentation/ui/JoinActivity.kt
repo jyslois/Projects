@@ -41,6 +41,46 @@ class JoinActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainbackground).into(binding.background)
 
+        // ViewModel SharedFlow 구독
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is JoinViewModel.JoinUiState.Loading -> {
+                            binding.emailInput.hint = "이메일 입력"
+                            binding.passwordInput.hint = "영문+숫자 조합 6자 이상"
+                            binding.passwordRetypeInput.hint = "비밀번호 확인"
+                            binding.nickNameInput.hint = "특수문자 제외 2자 이상"
+                            binding.birthyearInput.hint = "태어난 년도"
+                        }
+
+                        // 이메일 중복 체크 결과 플로우 구독
+                        is JoinViewModel.JoinUiState.EmailDuplicateCheckSucceed -> {
+                            confirmEmailDialog()
+                        }
+
+                        // 닉네임 중복 체크 결과 플로우 구독
+                        is JoinViewModel.JoinUiState.NicknameDuplicateCheckSucceed -> {
+                            confirmNicknameDialog()
+                        }
+
+                        // 회원가입 결과 플로우 구독
+                        is JoinViewModel.JoinUiState.JoinSucceed -> {
+                            // 메인 화면 전환
+                            val intent = Intent(applicationContext, MainPageActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                        is JoinViewModel.JoinUiState.Error -> {
+                            dialog(uiState.error)
+                        }
+                    }
+                }
+            }
+        }
+
         // 형식 체크
         val emailPattern = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
         val passwordPattern = "(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}"
@@ -107,7 +147,7 @@ class JoinActivity : AppCompatActivity() {
                 } else if (nickNameInput == "") {
                     dialog("닉네임을 입력해 주세요")
                     // 생년을 입력하지 않았다면
-                } else if (birthyearInput == null || birthyearInput == "") {
+                } else if (birthyearInput == "") {
                     dialog("태어난 년도를 력해 주세요")
                     // 생년의 형식이 잘못되었다면
                 } else if (birthyearInput.toInt() < 1901 || birthyearInput.toInt() > 2155) {
@@ -156,71 +196,6 @@ class JoinActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-
-        // ViewModel SharedFlow 구독
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is JoinViewModel.JoinUiState.Success -> {
-                            // 이메일 중복 체크 결과 플로우 구독
-                            uiState.emailDuplicateCheckResult?.let {
-                                if (it["code"].toString().toDouble() == 1001.0) {
-                                    dialog(it["msg"] as String)
-                                } else if (it["code"].toString().toDouble() == 1000.0) {
-                                    confirmEmailDialog()
-                                }
-                            }
-
-                            // 닉네임 중복 체크 결과 플로우 구독
-                            uiState.nickNameDuplicateCheckResult?.let {
-                                // Object로 저장되어 있는 Double(스프링부트에서 더블로 저장됨)을 우선 String으로 만든 다음
-                                // Double로 캐스팅한 다음에 int와 비교해야 오류가 나지 않는다. (Object == int 이렇게 비교되지 않는다)
-                                if (it["code"].toString().toDouble() == 1003.0) {
-                                    dialog(it["msg"] as String)
-                                } else if (it["code"].toString().toDouble() == 1002.0) {
-                                    confirmNicknameDialog()
-                                }
-                            }
-
-                            // 회원가입 결과 플로우 구독
-                            uiState.joinResult?.let {
-                                val emailInput = binding.emailInput.text.toString()
-                                val passwordInput = binding.passwordInput.text.toString()
-
-                                if (it["code"].toString().toDouble() == 2001.0) {
-                                    dialog(it["msg"] as String?)
-                                } else if (it["code"].toString().toDouble() == 2000.0) {
-                                    // 회원 번호 저장
-                                    viewModel.saveUserindex(it["user_index"].toString().toDouble().toInt())
-
-                                    // 아이디와 비밀번호 저장
-                                    viewModel.saveIdAndPassword(emailInput, passwordInput)
-
-                                    // 아이디/비밀번호 저장 체크 박스 상태를 true로 저장, 자동 로그인 설정
-                                    viewModel.saveAutoSaveCheck(true)
-                                    viewModel.saveAutoLoginCheck(true)
-
-                                    // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
-                                    viewModel.saveFirstTime(true)
-
-                                    // 메인 화면 전환
-                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            }
-                        }
-
-                        is JoinViewModel.JoinUiState.Error -> {
-                            if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
 

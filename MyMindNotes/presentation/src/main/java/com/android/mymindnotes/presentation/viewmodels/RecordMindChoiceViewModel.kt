@@ -4,11 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.userInfoRemote.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,25 +15,32 @@ class RecordMindChoiceViewModel @Inject constructor (
 ): ViewModel() {
 
     sealed class RecordMindChoiceUiState {
-        data class Success(val userInfoResult: Map<String, Object>?): RecordMindChoiceUiState()
-        data class Error(val error: Boolean): RecordMindChoiceUiState()
+        object Loading: RecordMindChoiceUiState()
+        data class Success(val nickName: String): RecordMindChoiceUiState()
+        data class Error(val error: String): RecordMindChoiceUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<RecordMindChoiceUiState>()
-    val uiState: SharedFlow<RecordMindChoiceUiState> = _uiState
+    private val _uiState = MutableStateFlow<RecordMindChoiceUiState>(RecordMindChoiceUiState.Loading)
+    val uiState: StateFlow<RecordMindChoiceUiState> = _uiState
 
+    fun getNickNameFromUserInfo() {
+        viewModelScope.launch {
+            try {
+                getUserInfoUseCase().collect {
+                    val nickName = it["nickname"] as String
+                    _uiState.value = RecordMindChoiceUiState.Success(nickName)
+                }
+            } catch(e: Exception) {
+                _uiState.value = RecordMindChoiceUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                _uiState.value = RecordMindChoiceUiState.Loading
+            }
+        }
+    }
 
     init {
         viewModelScope.launch {
-
-            val getUserInfoFlow = getUserInfoUseCase().map { RecordMindChoiceUiState.Success(it) }
-            val getUserInfoErrorFlow = getUserInfoUseCase.error.map { RecordMindChoiceUiState.Error(it) }
-
-            merge(getUserInfoFlow, getUserInfoErrorFlow).collect {
-                _uiState.emit(it)
-            }
-
+            getNickNameFromUserInfo()
         }
     }
 

@@ -30,15 +30,6 @@ class LoginActivity : AppCompatActivity() {
     // 뷰모델 객체 주입
     private val viewModel: LoginViewModel by viewModels()
 
-    // 알림 dialoguee
-    fun dialog(msg: String?) {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(msg)
-        builder.setPositiveButton("확인", null)
-        alertDialog = builder.show()
-        alertDialog.show()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -48,34 +39,68 @@ class LoginActivity : AppCompatActivity() {
         Glide.with(this@LoginActivity).load(R.drawable.mainbackground).into(binding.background)
 
         // 로그인 정보 저장 & 자동 로그인 구현 관련
-        var loginButton = binding.loginButton
-        var findPasswordButton = binding.findPasswordButton
+        val loginButton = binding.loginButton
+        val findPasswordButton = binding.findPasswordButton
         autoSave = binding.autoSaveButton
         autoLogin = binding.autoLoginButton
         email = binding.email
         password = binding.password
 
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is LoginViewModel.LoginUiState.Loading -> {
+                            binding.email.hint = "이메일"
+                            binding.password.hint = "비밀번호"
+                        }
+
+                        // 저장된 데이터 화면에 뿌리기
+                        is LoginViewModel.LoginUiState.Succeed -> {
+                            autoSave.isChecked = uiState.autoSaveState
+
+                            if (uiState.autoLoginState) {
+                                // 체크박스 상태도 체크로 표시 (아이디 비밀번호 저장, 로그인 상태 유지 둘 다 체크)
+                                autoLogin.isChecked = true
+                                autoSave.isChecked = true
+                            } else {
+                                autoLogin.isChecked = false
+                            }
+
+                            email.setText(uiState.id)
+                            password.setText(uiState.password)
+
+
+                        }
+
+                        // 로그인 성공 시
+                        is LoginViewModel.LoginUiState.LoginSucceed -> {
+                            // 화면 전환
+                            startActivity<MainPageActivity>()
+                        }
+
+                        // 로그인 애러 감지
+                        is LoginViewModel.LoginUiState.Error -> {
+                            dialog(uiState.error)
+                        }
+
+
+                    }
+                }
+            }
+        }
+
         // 클릭 이벤트
 
         // 아이디/비밀번호 저장 체크 박스 클릭 시
         autoSave.setOnClickListener {
             lifecycleScope.launch {
-                // 만약 체크 박스가 체크표시되어 있거나, 로그인 상태 유지 체크 박스가 체크되어 있다면,
-                if (autoSave.isChecked || autoLogin.isChecked) {
-                    // 상태 저장
-                    viewModel.saveAutoSaveCheck(true)
-                    // 아이디와 비밀번호 저장
-                    viewModel.saveIdAndPassword(
-                        email.text.toString(),
-                        password.text.toString()
-                    )
-                } else {
-                    // 체크되어 있지 않다면,
-                    // 상태 저장, 아이디와 비밀번호 값을 null로 저장
-                    viewModel.saveAutoSaveCheck(false)
-                    viewModel.saveIdAndPassword(null, null)
-                }
+
+                viewModel.saveAutoSaveCheck(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
+
             }
         }
 
@@ -86,8 +111,7 @@ class LoginActivity : AppCompatActivity() {
                 if (autoLogin.isChecked) {
                     // autoSave 박스도 자동으로 체크해 주기
                     autoSave.isChecked = true
-                    viewModel.saveAutoSaveCheck(true) // The onClickListener is only triggered when the button is clicked by the user. Changing the isClicked of the button programmatically does not count as a user click, so the onClickListener will not be triggered.
-                } else {
+                    viewModel.saveAutoSaveCheck(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
                     // 체크되어 있지 않다면 상태 저장
                     viewModel.saveAutoLoginCheck(false)
                 }
@@ -106,9 +130,9 @@ class LoginActivity : AppCompatActivity() {
                 val passwordInput = password.text.toString()
 
                 // 만약 이메일/페스워드를 적지 않았다면
-                if (emailInput == "") {
+                if (emailInput.isBlank()) {
                     dialog("아이디를 입력하세요")
-                } else if (passwordInput == "") {
+                } else if (passwordInput.isBlank()) {
                     dialog("비밀번호를 입력하세요")
                     // 바른 이메일 형식을 입력하지 않았다면ㄴ
                 } else if (!emailInput.contains("@")) {
@@ -118,98 +142,31 @@ class LoginActivity : AppCompatActivity() {
                     dialog("비밀번호가 틀렸습니다")
                 } else {
                     // 형식 통과
-                    // 아이디/비밀번호 저장 버튼이 체크되어 있다면
-                    if (autoSave.isChecked) {
-                        // 체크박스 상태 저장
-                        viewModel.saveAutoSaveCheck(true)
-                        // 아이디와 비밀번호 저장
-                        viewModel.saveIdAndPassword(emailInput, passwordInput)
-                    } else {
-                        viewModel.saveAutoSaveCheck(false)
-                        viewModel.saveIdAndPassword(null, null)
+                    if (autoLogin.isChecked) {
+                        autoSave.isChecked = true // 자동 로그인 체크가 되었다면, 자동 저장 체크도 자동으로 해 주기
                     }
 
-                    viewModel.login(emailInput, passwordInput) // 로그인 하기
+                    // 로그인 시도
+                    viewModel.login(
+                        emailInput,
+                        passwordInput,
+                        autoLogin.isChecked,
+                        autoSave.isChecked
+                    )
 
                 }
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+    }
 
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        // AutoSaveCheck 값 구독 (시작할 때)
-                        is LoginViewModel.LoginUiState.AutoSaveState -> {
-                            autoSave.isChecked = uiState.isChecked
-                        }
-
-                        // AutoLoginCheck 값 구독 (시작할 때)
-                        is LoginViewModel.LoginUiState.AutoLoginState -> {
-                            if (uiState.isChecked) {
-                                // 체크박스 상태도 체크로 표시 (아이디 비밀번호 저장, 로그인 상태 유지 둘 다 체크)
-                                autoLogin.isChecked = true
-                                autoSave.isChecked = true
-                            } else {
-                                autoLogin.isChecked = false
-                            }
-                        }
-
-                        // id 값 구독 (시작할 때)
-                        is LoginViewModel.LoginUiState.Id -> {
-                            // 아이디 뷰에 뿌리기
-                            email.setText(uiState.id)
-                        }
-
-                        // password 값 구독 (시작할 때)
-                        is LoginViewModel.LoginUiState.Password -> {
-                            // 패스워드 뷰에 뿌리기
-                            password.setText(uiState.password)
-                        }
-
-                        // 로그인 결과 구독
-                        is LoginViewModel.LoginUiState.Success -> {
-                            uiState.loginResult?.let {
-                                if (it["code"].toString()
-                                        .toDouble() == 5001.0 || it["code"].toString()
-                                        .toDouble() == 5003.0
-                                    || it["code"].toString().toDouble() == 5005.0
-                                ) {
-                                    // 형식 오류/아이디와 비번 불일치로 인한 메시지
-                                    dialog(it["msg"] as String)
-                                } else if (it["code"].toString().toDouble() == 5000.0) {
-                                    // 로그인 성공
-                                    if (autoLogin.isChecked) {
-                                        // MainActivity에서의 자동 로그인을 위한 상태 저장
-                                        autoSave.isChecked = true
-                                        viewModel.saveAutoLoginCheck(true)
-                                    }
-
-                                    // 회원 번호 저장
-                                    viewModel.saveUserIndex(
-                                        it["user_index"].toString().toDouble().toInt()
-                                    )
-
-                                    // 화면 전환
-                                    startActivity<MainPageActivity>()
-                                }
-                            }
-                        }
-
-                        // 애러 감지
-                        is LoginViewModel.LoginUiState.Error -> {
-                            if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                            }
-                        }
-
-
-                    }
-                }
-            }
-        }
-
+    // 알림 dialoguee
+    fun dialog(msg: String?) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(msg)
+        builder.setPositiveButton("확인", null)
+        alertDialog = builder.show()
+        alertDialog.show()
     }
 
     inline fun <reified T> Context.startActivity() {
@@ -225,14 +182,12 @@ class LoginActivity : AppCompatActivity() {
             // 만약 체크 박스가 체크되어 있다면
             if (autoSave.isChecked) {
                 // 상태 저장
-                viewModel.saveAutoSaveCheck(true)
-                // 아이디와 비밀번호 저장
-                viewModel.saveIdAndPassword(email.text.toString(), password.text.toString())
+                viewModel.saveAutoSaveCheck(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
             } else {
                 // 체크되어 있지 않다면 아이디와 비밀번호 값을 null 저장
-                viewModel.saveAutoSaveCheck(false)
-                viewModel.saveIdAndPassword(null, null)
+                viewModel.saveAutoSaveCheck(false, false, null, null)
             }
+
         }
 
     }

@@ -1,18 +1,14 @@
 package com.android.mymindnotes.data.repositoryImpls
 
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
-import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
 import com.android.mymindnotes.data.dataSources.MemberDataSource
 import com.android.mymindnotes.data.dataSources.MemberSharedPreferencesDataSource
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
     private val memberDataSource: MemberDataSource,
-    private val memberSharedPreferencesDataSource: MemberSharedPreferencesDataSource,
-    @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
+    private val memberSharedPreferencesDataSource: MemberSharedPreferencesDataSource
 ) : MemberRepository {
 
     // 로그인
@@ -41,11 +37,6 @@ class MemberRepositoryImpl @Inject constructor(
         return memberDataSource.getUserInfo(userIndex)
     }
 
-    // 에러
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>(replay = 1)
-    override val error = _error.asSharedFlow()
-
     // 회원 정보 수정
     // 닉네임 수정
     override suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> {
@@ -62,15 +53,5 @@ class MemberRepositoryImpl @Inject constructor(
     // 임시 비밀번호로 비밀번호 수정
     override suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>> = memberDataSource.changeToTemporaryPasswordFlow(email, randomPassword)
 
-    init {
-        mainDispatcherCoroutineScope.launch {
-            launch {
-                // 에러 메시지 collect & emit
-                memberDataSource.error.collect {
-                    _error.emit(it)
-                }
-            }
-        }
-    }
 
 }
