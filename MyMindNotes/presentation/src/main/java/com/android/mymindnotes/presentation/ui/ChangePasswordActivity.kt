@@ -92,7 +92,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                     // 비밀번호와 비밀번호 확인란이 일치하지 않으면
                 } else {
                     // 네트워크 통신, 비밀번호 변경
-                    viewModel.changePassword(passwordInput, originalPasswordInput)
+                    viewModel.changePasswordButtonClicked(passwordInput, originalPasswordInput)
                 }
             }
         }

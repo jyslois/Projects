@@ -9,7 +9,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -50,7 +49,7 @@ class AccountSettingActivity : AppCompatActivity() {
         // 로그아웃 버튼 클릭
         binding.logoutButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.clickLogoutButton()
+                viewModel.logoutButtonClicked()
             }
         }
 
@@ -120,7 +119,7 @@ class AccountSettingActivity : AppCompatActivity() {
         // 탈퇴 눌렀을 때 이벤트 처리
         if (which == DialogInterface.BUTTON_NEGATIVE) {
             lifecycleScope.launch {
-                viewModel.deleteUser()
+                viewModel.deleteUserButtonClicked()
             }
         }
     }

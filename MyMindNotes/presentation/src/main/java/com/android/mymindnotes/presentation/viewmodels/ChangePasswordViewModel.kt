@@ -1,20 +1,11 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.content.Intent
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.userInfo.SavePasswordUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangePasswordUseCase
-import com.android.mymindnotes.presentation.ui.MainPageActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -36,7 +27,7 @@ class ChangePasswordViewModel @Inject constructor(
 
 
     // (서버) 비밀번호 변경
-    suspend fun changePassword(password: String, originalPassword: String) {
+    suspend fun changePasswordButtonClicked(password: String, originalPassword: String) {
         try {
             changePasswordUseCase(password, originalPassword).collect {
                 if (it["code"].toString()

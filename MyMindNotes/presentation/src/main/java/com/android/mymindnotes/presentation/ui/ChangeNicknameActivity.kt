@@ -98,7 +98,7 @@ class ChangeNicknameActivity : AppCompatActivity() {
                     // 형식 체크 통과
                     if (!nicknameCheck) {
                         // 네트워크 통신(닉네임이 중복 체크)
-                        viewModel.checkNickName(nickName)
+                        viewModel.checkNickNameButtonClicked(nickName)
                     }
                 }
             }
@@ -111,7 +111,7 @@ class ChangeNicknameActivity : AppCompatActivity() {
                     dialog("닉네임 중복확인을 해주세요.")
                 } else {
                     val nickName = binding.nickNameInput.text.toString()
-                    viewModel.changeNickName(nickName)
+                    viewModel.changeNickNameButtonClicked(nickName)
                 }
             }
         }

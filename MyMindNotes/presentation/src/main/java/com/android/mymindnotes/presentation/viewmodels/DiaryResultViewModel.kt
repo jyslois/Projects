@@ -50,7 +50,7 @@ class DiaryResultViewModel @Inject constructor(
     }
 
     // 일기 삭제하기
-    suspend fun deleteDiary(diaryNumber: Int) {
+    suspend fun deleteDiaryButtonClicked(diaryNumber: Int) {
         try {
             deleteDiaryUseCase(diaryNumber).collect {
                 if (it["code"].toString().toDouble() == 9000.0) {

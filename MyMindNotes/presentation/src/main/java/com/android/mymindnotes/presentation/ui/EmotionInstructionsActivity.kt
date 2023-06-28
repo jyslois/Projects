@@ -35,6 +35,21 @@ class EmotionInstructions : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground5).into(binding.background)
 
+        setupEmotionList()
+
+        setupRecyclerView()
+
+
+        // 감정 정렬 버튼 클릭 이벤트
+        binding.sortButton.setOnClickListener {
+            val intent =
+                Intent(this@EmotionInstructions, EmotionInstructionSortingPopup::class.java)
+            startActivityForResult(intent, 1)
+        }
+    }
+
+
+    private fun setupEmotionList() {
         // 리스트 만들기
         emotionList = listOf(
             Emotion(
@@ -78,24 +93,17 @@ class EmotionInstructions : AppCompatActivity() {
                 R.string.anger
             )
         )
-
-        // RecycerView 세팅
-        adaptor = EmotionInstructionAdaptor(emotionList)
-        binding.emotionInstructionView.adapter = adaptor
-        binding.emotionInstructionView.layoutManager = LinearLayoutManager(this)
-        binding.emotionInstructionView.addItemDecoration(EmotionRecyclerViewDecoration())
-
-
-        // 감정 정렬 버튼 클릭 이벤트
-        binding.sortButton.setOnClickListener {
-            val intent =
-                Intent(this@EmotionInstructions, EmotionInstructionSortingPopup::class.java)
-            startActivityForResult(intent, 1)
-        }
     }
 
 
-
+    private fun setupRecyclerView() {
+        adaptor = EmotionInstructionAdaptor(emotionList)
+        binding.emotionInstructionView.apply {
+            adapter = adaptor
+            layoutManager = LinearLayoutManager(this@EmotionInstructions)
+            addItemDecoration(EmotionRecyclerViewDecoration())
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -147,7 +155,7 @@ class EmotionInstructionAdaptor(  // 항목 구성 데이터
     }
 
     // 데이터셋을 업데이트하기 위한 메서드
-    fun updateItemList(arrayList: List<com.android.mymindnotes.presentation.ui.Emotion>?) {
+    fun updateItemList(arrayList: List<Emotion>?) {
         emotionList = arrayList
         notifyDataSetChanged()
     }

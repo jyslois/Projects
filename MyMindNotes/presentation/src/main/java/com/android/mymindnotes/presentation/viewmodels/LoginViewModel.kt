@@ -48,10 +48,8 @@ class LoginViewModel @Inject constructor(
     val uiState: StateFlow<LoginUiState> = _uiState
 
 
-
-
     // 로그인
-    suspend fun login(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean) {
+    suspend fun loginButtonClicked(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean) {
         try {
             login_useCase(email, password).collect {
                 if (it["code"].toString()
@@ -90,22 +88,22 @@ class LoginViewModel @Inject constructor(
 
     }
 
-
-    // save methods - SharedPreferneces
-    suspend fun saveAutoLoginCheck(state: Boolean) {
-        saveAutoLoginStateUseCase(state)
+    fun autoSaveBoxClicked(isAutoSaveChecked: Boolean, isAutoLoginChecked: Boolean, id: String?, password: String?) {
+        viewModelScope.launch {
+            if (isAutoSaveChecked || isAutoLoginChecked) {
+                saveAutoSaveStateUseCase(true)
+                saveIdAndPasswordUseCase(id, password)
+            } else {
+                saveAutoSaveStateUseCase(false)
+                saveIdAndPasswordUseCase(null, null)
+            }
+        }
     }
 
-    suspend fun saveAutoSaveCheck(isAutoSaveChecked: Boolean, isAutoLoginChecked: Boolean, id: String?, password: String?) {
-
-        if (isAutoSaveChecked || isAutoLoginChecked) {
-            saveAutoSaveStateUseCase(true)
-            saveIdAndPasswordUseCase(id, password)
-        } else {
-            saveAutoSaveStateUseCase(false)
-            saveIdAndPasswordUseCase(null, null)
+    fun autoLoginBoxUnChecked() {
+        viewModelScope.launch {
+            saveAutoLoginStateUseCase(false)
         }
-
     }
 
 

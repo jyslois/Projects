@@ -24,7 +24,7 @@ class DiaryResultEditViewModel @Inject constructor(
 
 
     // (네트워크) 일기 수정
-    suspend fun updateDiary(
+    suspend fun updateDiaryButtonClicked(
         diaryNumber: Int,
         situation: String,
         thought: String,

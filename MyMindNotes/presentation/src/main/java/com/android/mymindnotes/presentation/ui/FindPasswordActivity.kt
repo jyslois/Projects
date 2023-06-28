@@ -1,7 +1,6 @@
 package com.android.mymindnotes.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
@@ -91,7 +90,7 @@ class FindPasswordActivity : AppCompatActivity() {
                         }
                         .toString()
 
-                    viewModel.changeToTemporaryPassword(email, randomPassword)
+                    viewModel.sendEmailButtonClicked(email, randomPassword)
                 }
             }
 

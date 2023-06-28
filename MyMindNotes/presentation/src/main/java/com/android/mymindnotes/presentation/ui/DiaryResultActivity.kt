@@ -154,7 +154,7 @@ class DiaryResultActivity : AppCompatActivity() {
         // 삭제 버튼 클릭
         binding.deleteButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.deleteDiary(diaryNumber)
+                viewModel.deleteDiaryButtonClicked(diaryNumber)
 
             }
         }

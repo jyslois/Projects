@@ -100,7 +100,7 @@ class JoinActivity : AppCompatActivity() {
                 } else {
                     if (!emailCheck) {
                         // 네트워크 통신(이메일 중복됐는지 체크)
-                        viewModel.checkEmail(emailInput)
+                        viewModel.checkEmailButtonClicked(emailInput)
                     }
                 }
             }
@@ -118,7 +118,7 @@ class JoinActivity : AppCompatActivity() {
                 } else {
                     if (!nicknameCheck) {
                         // 네트워크 통신(닉네임이 중복됐는지 체크)
-                        viewModel.checkNickName(nickNameInput)
+                        viewModel.checkNickNameButtonClicked(nickNameInput)
                     }
                 }
             }
@@ -160,7 +160,7 @@ class JoinActivity : AppCompatActivity() {
                     dialog("닉네임 중복확인을 해주세요")
                     // 형식체크 통과
                 } else {
-                    viewModel.join(
+                    viewModel.joinButtonClicked(
                         emailInput,
                         nickNameInput,
                         passwordInput,

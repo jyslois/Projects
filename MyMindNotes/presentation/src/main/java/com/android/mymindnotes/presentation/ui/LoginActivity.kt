@@ -97,11 +97,9 @@ class LoginActivity : AppCompatActivity() {
 
         // 아이디/비밀번호 저장 체크 박스 클릭 시
         autoSave.setOnClickListener {
-            lifecycleScope.launch {
 
-                viewModel.saveAutoSaveCheck(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
+            viewModel.autoSaveBoxClicked(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
 
-            }
         }
 
         // 자동 로그인 체크 박스 클릭 시
@@ -111,9 +109,15 @@ class LoginActivity : AppCompatActivity() {
                 if (autoLogin.isChecked) {
                     // autoSave 박스도 자동으로 체크해 주기
                     autoSave.isChecked = true
-                    viewModel.saveAutoSaveCheck(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
+                    viewModel.autoSaveBoxClicked(
+                        autoSave.isChecked,
+                        autoLogin.isChecked,
+                        email.text.toString(),
+                        password.text.toString()
+                    )
+                } else {
                     // 체크되어 있지 않다면 상태 저장
-                    viewModel.saveAutoLoginCheck(false)
+                    viewModel.autoLoginBoxUnChecked()
                 }
             }
         }
@@ -147,7 +151,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     // 로그인 시도
-                    viewModel.login(
+                    viewModel.loginButtonClicked(
                         emailInput,
                         passwordInput,
                         autoLogin.isChecked,
@@ -182,10 +186,10 @@ class LoginActivity : AppCompatActivity() {
             // 만약 체크 박스가 체크되어 있다면
             if (autoSave.isChecked) {
                 // 상태 저장
-                viewModel.saveAutoSaveCheck(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
+                viewModel.autoSaveBoxClicked(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
             } else {
                 // 체크되어 있지 않다면 아이디와 비밀번호 값을 null 저장
-                viewModel.saveAutoSaveCheck(false, false, null, null)
+                viewModel.autoSaveBoxClicked(false, false, null, null)
             }
 
         }

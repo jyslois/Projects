@@ -1,6 +1,5 @@
 package com.android.mymindnotes.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangeNickNameUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckNickNameDuplicateUseCase
@@ -30,7 +29,7 @@ class ChangeNickNameViewModel @Inject constructor(
 
 
     // (서버) 닉네임 중복 체크
-    suspend fun checkNickName(nickName: String) {
+    suspend fun checkNickNameButtonClicked(nickName: String) {
         try {
             checkNickNameDuplicateUseCase(nickName).collect {
                 if (it["code"].toString().toDouble() == 1003.0) {
@@ -47,7 +46,7 @@ class ChangeNickNameViewModel @Inject constructor(
     }
 
     // (서버) 닉네임 변경
-    suspend fun changeNickName(nickName: String) {
+    suspend fun changeNickNameButtonClicked(nickName: String) {
         try {
             changeNickNameUseCase(nickName).collect {
                 if (it["code"].toString().toDouble() == 3001.0) {

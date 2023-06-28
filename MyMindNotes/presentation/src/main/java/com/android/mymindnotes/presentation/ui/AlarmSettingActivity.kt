@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -22,15 +21,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Alarm
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityAlarmSettingBinding
 import com.android.mymindnotes.presentation.viewmodels.AlarmSettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class AlarmSettingActivity : AppCompatActivity() {
@@ -100,18 +95,18 @@ class AlarmSettingActivity : AppCompatActivity() {
                         // 권한 허용을 받았다면
                         if (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
                         ) {
-                            viewModel.changeAlarmSwitch(true)
+                            viewModel.alarmSwitchChanged(true)
                         } else {
                             // 권한 허용을 받지 못했다면
                             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                         }
                     } else {
-                        viewModel.changeAlarmSwitch(true)
+                        viewModel.alarmSwitchChanged(true)
 
                     }
                 } else {
                     // 알람 스위치 껐을 때
-                    viewModel.changeAlarmSwitch(false)
+                    viewModel.alarmSwitchChanged(false)
                 }
 
             }
@@ -160,7 +155,7 @@ class AlarmSettingActivity : AppCompatActivity() {
                         Paint.UNDERLINE_TEXT_FLAG
 
 
-                    viewModel.doAlarmSettings(time, hourOfDay, Integer.parseInt(min), minute)
+                    viewModel.alarmDialogueSet(time, hourOfDay, Integer.parseInt(min), minute)
 
 
                     Toast.makeText(applicationContext, "매일 $time 분에 알람이 울려요", Toast.LENGTH_SHORT).show()
@@ -216,7 +211,7 @@ class AlarmSettingActivity : AppCompatActivity() {
             if (isGranted) {
                 // 만약 허용해주었다면
                 lifecycleScope.launch {
-                    viewModel.changeAlarmSwitch(true)
+                    viewModel.alarmSwitchChanged(true)
                 }
 
             } else {

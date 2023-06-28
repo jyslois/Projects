@@ -51,14 +51,14 @@ class AlarmSettingViewModel @Inject constructor(
 
 
 
-    suspend fun changeAlarmSwitch(isChecked: Boolean) {
+    suspend fun alarmSwitchChanged(isChecked: Boolean) {
         val time = getAlarmTimeUseCase.getTime().first() // 저장한 알람 시간 불러오기
 
         // switch가 on만 됐을 때 (지정한 알람 시간이 없을 때)
         if(isChecked && time.isNullOrEmpty()) {
             saveAlarmStateUseCase(true) // 상태 저장
             _uiState.value = AlarmSettingUiState.AlarmSwitchedOn
-            // 이미 지정한 알람 시정이 있을 때
+            // 이미 지정한 알람 시간이 있을 때
         } else if(isChecked && !time.isNullOrEmpty()) {
             saveAlarmStateUseCase(true)
             _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(time)
@@ -79,7 +79,7 @@ class AlarmSettingViewModel @Inject constructor(
         return getAlarmTimeUseCase.getMinute().first()
     }
 
-    fun doAlarmSettings(time: String, hourOfDay: Int, min: Int, minute: Int) {
+    fun alarmDialogueSet(time: String, hourOfDay: Int, min: Int, minute: Int) {
         // store Selected time
         viewModelScope.launch {
             saveAlarmTimeUseCase.saveTime(time)
@@ -113,7 +113,7 @@ class AlarmSettingViewModel @Inject constructor(
 
             // 알람을 세팅한 적이 있으면, switch를 on으로 해 주기
             if (getAlarmStateUseCase().first()) {
-                changeAlarmSwitch(true)
+                alarmSwitchChanged(true)
             }
         }
 

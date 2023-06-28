@@ -43,7 +43,7 @@ class JoinViewModel @Inject constructor(
 
 
     // 이메일 중복 체크 함수 호출
-    suspend fun checkEmail(emailInput: String) {
+    suspend fun checkEmailButtonClicked(emailInput: String) {
         try {
             checkEmailDuplicateUseCase(emailInput).collect {
                 if (it["code"].toString().toDouble() == 1001.0) {
@@ -61,7 +61,7 @@ class JoinViewModel @Inject constructor(
 
 
     // (서버) 닉네임 중복 체크 함수 호출
-    suspend fun checkNickName(nickNameInput: String) {
+    suspend fun checkNickNameButtonClicked(nickNameInput: String) {
         try {
             checkNickNameDuplicateUseCase(nickNameInput).collect {
                 if (it["code"].toString().toDouble() == 1003.0) {
@@ -79,7 +79,7 @@ class JoinViewModel @Inject constructor(
 
 
     // (서버) 회원가입 함수 호출
-    suspend fun join(email: String, nickname: String, password: String, birthyear: Int) {
+    suspend fun joinButtonClicked(email: String, nickname: String, password: String, birthyear: Int) {
         try {
             joinUseCase(email, nickname, password, birthyear).collect {
                 if (it["code"].toString().toDouble() == 2001.0) {

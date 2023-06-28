@@ -33,7 +33,7 @@ class AccountSettingViewModel @Inject constructor(
 
 
     // 로그아웃 버튼 클릭
-    suspend fun clickLogoutButton() {
+    suspend fun logoutButtonClicked() {
         // autoLoginCheck 상태 변경
         saveAutoLoginStateUseCase(false)
         // ui 상태 변경
@@ -43,7 +43,7 @@ class AccountSettingViewModel @Inject constructor(
 
 
     // (서버) 회원 탈퇴를 위한 함수 콜
-    suspend fun deleteUser() {
+    suspend fun deleteUserButtonClicked() {
 
         val resultState = deleteUserUseCase()
         if (resultState == "Success") {

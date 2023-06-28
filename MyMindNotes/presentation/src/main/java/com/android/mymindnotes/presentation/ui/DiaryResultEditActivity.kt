@@ -100,7 +100,7 @@ class DiaryResultEditActivity : AppCompatActivity() {
                     Toast.makeText(this@DiaryResultEditActivity, "회고를 입력해 주세요", Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    viewModel.updateDiary(
+                    viewModel.updateDiaryButtonClicked(
                         diaryNumber,
                         situation,
                         thought,

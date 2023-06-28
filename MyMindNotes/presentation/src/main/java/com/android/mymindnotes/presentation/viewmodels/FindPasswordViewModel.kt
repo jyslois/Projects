@@ -26,7 +26,7 @@ class FindPasswordViewModel @Inject constructor(
 
 
     // (서버) 임시 비밀번호로 비밀번호 변경하기
-    suspend fun changeToTemporaryPassword(email: String, randomPassword: String) {
+    suspend fun sendEmailButtonClicked(email: String, randomPassword: String) {
         try {
             changeToTemporaryPasswordUseCase(email, randomPassword).collect {
                 if (it["code"].toString().toDouble() == 3007.0) {
