@@ -10,18 +10,14 @@ import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryRecordD
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryReflectionUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TodayDiaryReflectionViewModel @Inject constructor(
     private val saveDiaryUseCase: SaveTodayDiaryUseCase,
-
     private val saveTodayDiaryReflectionUseCase: SaveTodayDiaryReflectionUseCase,
     private val saveTodayDiaryTypeUseCase: SaveTodayDiaryTypeUseCase,
     private val saveTodayDiaryRecordDateUseCase: SaveTodayDiaryRecordDateUseCase,
@@ -31,52 +27,55 @@ class TodayDiaryReflectionViewModel @Inject constructor(
 ): ViewModel() {
 
     sealed class TodayDiaryReflectionUiState {
-        data class Success(val reflectionResult: String?, val saveDiaryResult: Map<String, Object>?): TodayDiaryReflectionUiState()
-        data class Error(val error: Boolean): TodayDiaryReflectionUiState()
+        object Loading: TodayDiaryReflectionUiState()
+        data class Success(val reflection: String?): TodayDiaryReflectionUiState()
+
+        object DiarySaved: TodayDiaryReflectionUiState()
+        data class Error(val error: String): TodayDiaryReflectionUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<TodayDiaryReflectionUiState>()
-    val uiState: SharedFlow<TodayDiaryReflectionUiState> = _uiState
+    private val _uiState = MutableStateFlow<TodayDiaryReflectionUiState>(TodayDiaryReflectionUiState.Loading)
+    val uiState: StateFlow<TodayDiaryReflectionUiState> = _uiState
 
-    // Save Methods
-    suspend fun saveReflection(reflection: String?) {
+
+    suspend fun previousButtonClickedOrBackPressed(reflection: String) {
         saveTodayDiaryReflectionUseCase(reflection)
     }
 
-    suspend fun saveType(type: String) {
-        saveTodayDiaryTypeUseCase(type)
-    }
-
-    suspend fun saveDate(date: String) {
-        saveTodayDiaryRecordDateUseCase(date)
-    }
-
-    suspend fun saveDay(day: String) {
-        saveTodayDiaryRecordDayUseCase(day)
-    }
-
-    // Clear Methods
-    suspend fun clearTodayDiaryTempRecords() {
-        clearTodayDiaryTempRecordsUseCase()
-    }
 
     // (서버) 일기 저장 함수 호출
-    suspend fun saveDiary() {
-        saveDiaryUseCase().collect {
-            _uiState.emit(TodayDiaryReflectionUiState.Success(null, it))
+    suspend fun saveDiaryButtonClicked(reflection: String?, type: String, date: String, day: String) {
+        saveTodayDiaryReflectionUseCase(reflection)
+        saveTodayDiaryTypeUseCase(type)
+        saveTodayDiaryRecordDateUseCase(date)
+        saveTodayDiaryRecordDayUseCase(day)
+
+        try {
+            saveDiaryUseCase().collect {
+                if (it["code"].toString().toDouble() == 6001.0) {
+                    _uiState.value = TodayDiaryReflectionUiState.Error(it["msg"] as String)
+                    _uiState.value = TodayDiaryReflectionUiState.Loading
+                } else if (it["code"].toString().toDouble() == 6000.0) {
+                    // 저장한 것 삭제
+                    clearTodayDiaryTempRecordsUseCase()
+                    _uiState.value = TodayDiaryReflectionUiState.DiarySaved
+                }
+            }
+        } catch (e: Exception) {
+            _uiState.value =
+                TodayDiaryReflectionUiState.Error("일기 저장에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+            _uiState.value = TodayDiaryReflectionUiState.Loading
         }
     }
 
     init {
         viewModelScope.launch {
 
-            val getReflectionFlow = getTodayDiaryReflectionUseCase().map { TodayDiaryReflectionUiState.Success(it, null) }
-            val saveDiaryErrorFlow = saveDiaryUseCase.error.map { TodayDiaryReflectionUiState.Error(it) }
-
-            merge(getReflectionFlow, saveDiaryErrorFlow).collect {
-                _uiState.emit(it)
+            getTodayDiaryReflectionUseCase().collect {
+                _uiState.value = TodayDiaryReflectionUiState.Success(it)
             }
+
         }
     }
 

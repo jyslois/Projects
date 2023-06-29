@@ -28,13 +28,5 @@ class TodayDiaryDataSource @Inject constructor(
         val result = saveDiaryApi.addDiary(userDiary)
         emit(result)
     }.flowOn(ioDispatcher)
-        .catch {
-            _error.emit(true)
-            _error.emit(false)
-        }
-
-    // 에러 메시지
-    private val _error = MutableSharedFlow<Boolean>(replay = 1)
-    val error = _error.asSharedFlow()
 
 }

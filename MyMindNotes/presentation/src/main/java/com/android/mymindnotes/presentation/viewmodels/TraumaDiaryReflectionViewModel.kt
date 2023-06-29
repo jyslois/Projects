@@ -10,11 +10,8 @@ import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryRecor
 import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryReflectionUseCase
 import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,54 +27,53 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
 ): ViewModel() {
 
     sealed class TraumaDiaryReflectionUiState {
-        data class Success(val reflectionResult: String?, val saveDiaryResult: Map<String, Object>?): TraumaDiaryReflectionUiState()
-        data class Error(val error: Boolean): TraumaDiaryReflectionUiState()
+        object Loading: TraumaDiaryReflectionUiState()
+        data class Success(val reflection: String?): TraumaDiaryReflectionUiState()
+
+        object DiarySaved: TraumaDiaryReflectionUiState()
+        data class Error(val error: String): TraumaDiaryReflectionUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<TraumaDiaryReflectionUiState>()
-    val uiState: SharedFlow<TraumaDiaryReflectionUiState> = _uiState
+    private val _uiState = MutableStateFlow<TraumaDiaryReflectionUiState>(TraumaDiaryReflectionUiState.Loading)
+    val uiState: StateFlow<TraumaDiaryReflectionUiState> = _uiState
 
-
-    // Save Methods
-    suspend fun saveReflection(reflection: String?) {
+    suspend fun previousButtonClickedOrBackPressed(reflection: String) {
         saveTraumaDiaryReflectionUseCase(reflection)
     }
 
-    suspend fun saveType(type: String) {
-        saveTraumaDiaryTypeUseCase(type)
-    }
-
-    suspend fun saveDate(date: String) {
-        saveTraumaDiaryRecordDateUseCase(date)
-    }
-
-    suspend fun saveDay(day: String) {
-        saveTraumaDiaryRecordDayUseCase(day)
-    }
-
-    // Clear Methods
-    suspend fun clearTraumaDiaryTempRecords() {
-        clearTraumaDiaryTempRecordsUseCase()
-    }
-
-
     // (서버) 일기 저장 함수 호출
-    suspend fun saveDiary() {
-        saveDiaryUseCase().collect {
-            _uiState.emit(TraumaDiaryReflectionUiState.Success(null, it))
+    suspend fun saveDiaryButtonClicked(reflection: String?, type: String, date: String, day: String) {
+        saveTraumaDiaryReflectionUseCase(reflection)
+        saveTraumaDiaryTypeUseCase(type)
+        saveTraumaDiaryRecordDateUseCase(date)
+        saveTraumaDiaryRecordDayUseCase(day)
+
+        try {
+            saveDiaryUseCase().collect {
+                if (it["code"].toString().toDouble() == 6001.0) {
+                    _uiState.value = TraumaDiaryReflectionUiState.Error(it["msg"] as String)
+                    _uiState.value = TraumaDiaryReflectionUiState.Loading
+                } else if (it["code"].toString().toDouble() == 6000.0) {
+                    // 저장한 것 삭제
+                    clearTraumaDiaryTempRecordsUseCase()
+                    _uiState.value = TraumaDiaryReflectionUiState.DiarySaved
+                }
+            }
+        } catch (e: Exception) {
+            _uiState.value = TraumaDiaryReflectionUiState.Error("일기 저장에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+            _uiState.value = TraumaDiaryReflectionUiState.Loading
         }
     }
+
 
     init {
         viewModelScope.launch {
 
-            val getReflectionFlow = getTraumaDiaryReflectionUseCase().map { TraumaDiaryReflectionUiState.Success(it, null) }
-            val saveDiaryErrorFlow = saveDiaryUseCase.error.map { TraumaDiaryReflectionUiState.Error(it) }
-
-            merge(getReflectionFlow, saveDiaryErrorFlow).collect {
-                _uiState.emit(it)
+            getTraumaDiaryReflectionUseCase().collect {
+                _uiState.value = TraumaDiaryReflectionUiState.Success(it)
             }
+
         }
     }
 

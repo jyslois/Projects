@@ -37,6 +37,50 @@ class TraumaDiaryReflectionActivity : AppCompatActivity() {
         Glide.with(this).load(R.drawable.diarybackground1).into(binding.recordbackground)
 
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        is TraumaDiaryReflectionViewModel.TraumaDiaryReflectionUiState.Loading -> {
+
+                        }
+
+                        is TraumaDiaryReflectionViewModel.TraumaDiaryReflectionUiState.Success -> {
+                            // reflection 값 구독
+                            uiState.reflection?.let {
+                                if (it != "") {
+                                    // 만약 회고가 저장된 상태라면 화면에 뿌리기
+                                    binding.RecordReflectionUserInput.setText(it)
+                                }
+                            }
+                        }
+
+                        is TraumaDiaryReflectionViewModel.TraumaDiaryReflectionUiState.DiarySaved -> {
+                            // 성공 토스트 띄우기
+                            Toast.makeText(
+                                applicationContext,
+                                R.string.successfulRecord,
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            // 메인으로 화면 전환
+                            val intent = Intent(applicationContext, MainPageActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                        // 애러 구독
+                        is TraumaDiaryReflectionViewModel.TraumaDiaryReflectionUiState.Error -> {
+                            dialog(uiState.error)
+                        }
+                    }
+                }
+
+            }
+
+        }
+
         // 버튼 클릭
         // 감정 설명서 보기 버튼 클릭
         binding.RecordEmotionHelpButton.setOnClickListener {
@@ -56,7 +100,7 @@ class TraumaDiaryReflectionActivity : AppCompatActivity() {
                 val reflection = binding.RecordReflectionUserInput.text.toString()
                 if (reflection != "") {
                     // 회고 저장
-                    viewModel.saveReflection(reflection)
+                    viewModel.previousButtonClickedOrBackPressed(reflection)
                 }
                 // 이전 화면으로 이동
                 finish()
@@ -66,82 +110,31 @@ class TraumaDiaryReflectionActivity : AppCompatActivity() {
         // 저장 버튼 클릭
         binding.RecordSaveButton.setOnClickListener {
             lifecycleScope.launch {
+                // 회고
                 val reflection = binding.RecordReflectionUserInput.text.toString()
 
                 if (reflection == "") {
                     dialog("회고를 작성해 주세요.")
                 } else {
-                    // 회고 저장
-                    viewModel.saveReflection(reflection)
-                    // 타입 저장
-                    viewModel.saveType("트라우마 일기")
-                    // 날짜 저장
+
+                    // 날짜
                     val now = System.currentTimeMillis()
                     val getDate = Date(now)
                     val mFormat = SimpleDateFormat("yyyy-MM-dd")
                     val date = mFormat.format(getDate)
-                    viewModel.saveDate(date)
-                    // 요일 저장
-                    val DAY = arrayOf("", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일")
+
+                    // 요일
+                    val dayOfWeek = arrayOf("", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일")
                     val today = Calendar.getInstance()
-                    val day = DAY[today[Calendar.DAY_OF_WEEK]]
-                    viewModel.saveDay(day)
+                    val day = dayOfWeek[today[Calendar.DAY_OF_WEEK]]
+
 
                     // 서버에 일기 저장
-                    viewModel.saveDiary()
+                    viewModel.saveDiaryButtonClicked(reflection, "트라우마 일기", date, day)
                 }
             }
         }
 
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is TraumaDiaryReflectionViewModel.TraumaDiaryReflectionUiState.Success -> {
-                            // reflection 값 구독
-                            uiState.reflectionResult?.let {
-                                if (it != "") {
-                                    // 만약 회고가 저장된 상태라면 화면에 뿌리기
-                                    binding.RecordReflectionUserInput.setText(it)
-                                }
-                            }
-
-                            // 일기 저장 결과 구독
-                            uiState.saveDiaryResult?.let {
-                                if (it["code"].toString().toDouble() == 6001.0) {
-                                    dialog(it["msg"] as String)
-                                } else if (it["code"].toString().toDouble() == 6000.0) {
-                                    // 저장한 것 삭제
-                                    viewModel.clearTraumaDiaryTempRecords()
-
-                                    // 성공 토스트 띄우기
-                                    Toast.makeText(
-                                        applicationContext,
-                                        R.string.successfulRecord,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                    // 메인으로 화면 전환
-                                    val intent = Intent(applicationContext, MainPageActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            }
-                        }
-
-                        // 애러 구독
-                        is TraumaDiaryReflectionViewModel.TraumaDiaryReflectionUiState.Error -> {
-                            if (uiState.error) {
-                                dialog("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                            }
-                        }
-                    }
-                }
-
-            }
-
-        }
 
 
     }
@@ -175,7 +168,7 @@ class TraumaDiaryReflectionActivity : AppCompatActivity() {
             val reflection = binding.RecordReflectionUserInput.text.toString()
             if (reflection != "") {
                 // 회고 저장
-                viewModel.saveReflection(reflection)
+                viewModel.previousButtonClickedOrBackPressed(reflection)
             }
             // 이전 화면으로 이동
             finish()
