@@ -43,6 +43,7 @@ class TodayDiaryThoughtActivity : AppCompatActivity() {
                             uiState.thought?.let {
                                 if (it != "") {
                                     binding.RecordThoughtUserInput.setText(it)
+                                    binding.RecordThoughtUserInput.setSelection(it.length) // 커서를 문자열 끝으로 이동
                                 }
                             }
                         }

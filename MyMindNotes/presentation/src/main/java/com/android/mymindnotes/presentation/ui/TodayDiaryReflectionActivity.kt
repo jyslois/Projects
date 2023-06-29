@@ -53,6 +53,7 @@ class TodayDiaryReflectionActivity : AppCompatActivity() {
                                 if (it != "") {
                                     // 만약 회고가 저장된 상태라면 화면에 뿌리기
                                     binding.RecordReflectionUserInput.setText(it)
+                                    binding.RecordReflectionUserInput.setSelection(it.length) // 커서를 문자열 끝으로 이동
                                 }
                             }
                         }

@@ -46,6 +46,7 @@ class TraumaDiarySituationActivity : AppCompatActivity() {
                             uiState.situation?.let {
                                 if (it != "") {
                                     binding.RecordSituationUserInput.setText(it)
+                                    binding.RecordSituationUserInput.setSelection(it.length) // 커서를 문자열 끝으로 이동
                                 }
                             }
                         }

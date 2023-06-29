@@ -132,6 +132,7 @@ class TraumaDiaryEmotionActivity : AppCompatActivity() {
     private fun updateEmotionText(emotionText: String?) {
         emotionText?.let {
             binding.RecordEmotionUserInput.setText(it)
+            binding.RecordEmotionUserInput.setSelection(it.length) // 커서를 문자열 끝으로 이동
         }
     }
 
