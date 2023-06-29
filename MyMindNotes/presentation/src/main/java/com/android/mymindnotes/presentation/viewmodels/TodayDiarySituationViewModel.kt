@@ -5,9 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiarySituationUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiarySituationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,15 +17,16 @@ class TodayDiarySituationViewModel @Inject constructor(
 ): ViewModel() {
 
     sealed class TodayDiarySituationUiState {
-        data class Success(val situationResult: String?): TodayDiarySituationUiState()
+        object Loading: TodayDiarySituationUiState()
+        data class Success(val situation: String?): TodayDiarySituationUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<TodayDiarySituationUiState>()
-    val uiState: SharedFlow<TodayDiarySituationUiState> = _uiState
+    private val _uiState = MutableStateFlow<TodayDiarySituationUiState>(TodayDiarySituationUiState.Loading)
+    val uiState: StateFlow<TodayDiarySituationUiState> = _uiState
 
     // Save Method
-    suspend fun saveSituation(situation: String) {
+    suspend fun nextOrPreviousButtonClickedOrBackPressedOrPaused(situation: String) {
         saveTodayDiarySituationUseCase(situation)
     }
 

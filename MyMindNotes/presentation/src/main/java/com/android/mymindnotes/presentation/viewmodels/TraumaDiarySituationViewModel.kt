@@ -6,9 +6,8 @@ import com.android.mymindnotes.domain.usecases.diary.trauma.ClearTraumaDiaryTemp
 import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiarySituationUseCase
 import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiarySituationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,22 +20,24 @@ class TraumaDiarySituationViewModel @Inject constructor(
 
 
     sealed class TraumaDiarySituationUiState {
-        data class Success(val situationResult: String?): TraumaDiarySituationUiState()
+        object Loading: TraumaDiarySituationUiState()
+        data class Success(val situation: String?): TraumaDiarySituationUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<TraumaDiarySituationUiState>()
-    val uiState: SharedFlow<TraumaDiarySituationUiState> = _uiState
+    private val _uiState = MutableStateFlow<TraumaDiarySituationUiState>(TraumaDiarySituationUiState.Loading)
+    val uiState: StateFlow<TraumaDiarySituationUiState> = _uiState
 
 
     // Save Method
-    suspend fun saveSituation(situation: String) {
+    suspend fun nextButtonClicked(situation: String) {
         saveTraumaDiarySituationUseCase(situation)
+        _uiState.emit(TraumaDiarySituationUiState.Success(situation))
     }
 
 
     // Clear Methods
-    suspend fun clearTraumaDiaryTempRecords() {
+    suspend fun onBackPressed() {
         clearTraumaDiaryTempRecordsUseCase()
     }
 

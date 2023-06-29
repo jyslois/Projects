@@ -35,6 +35,31 @@ class TraumaDiarySituationActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.diarybackground1).into(binding.background)
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        // 만약 상황이 저장된 상태라면 화면에 뿌리기
+                        is TraumaDiarySituationViewModel.TraumaDiarySituationUiState.Success -> {
+                            uiState.situation?.let {
+                                if (it != "") {
+                                    binding.RecordSituationUserInput.setText(it)
+                                }
+                            }
+                        }
+
+                        is TraumaDiarySituationViewModel.TraumaDiarySituationUiState.Loading -> {
+
+                        }
+                    }
+                }
+
+
+            }
+
+        }
 
         // 팁 버튼 클릭
         binding.RecordSituationTips.setOnClickListener {
@@ -49,7 +74,7 @@ class TraumaDiarySituationActivity : AppCompatActivity() {
                     dialog("상황을 작성해 주세요.")
                 } else {
                     // 상황 저장
-                    viewModel.saveSituation(situation)
+                    viewModel.nextButtonClicked(situation)
                     // 다음 화면으로 이동
                     val intent = Intent(applicationContext, TraumaDiaryThoughtActivity::class.java)
                     startActivity(intent)
@@ -57,27 +82,7 @@ class TraumaDiarySituationActivity : AppCompatActivity() {
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-
-                        // 만약 상황이 저장된 상태라면 화면에 뿌리기
-                        is TraumaDiarySituationViewModel.TraumaDiarySituationUiState.Success -> {
-                            uiState.situationResult?.let {
-                                if (it != "") {
-                                    binding.RecordSituationUserInput.setText(it)
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-            }
-
-        }
     }
 
 
@@ -87,7 +92,7 @@ class TraumaDiarySituationActivity : AppCompatActivity() {
             if (which == DialogInterface.BUTTON_NEGATIVE) {
                 // 기록 삭제
                 lifecycleScope.launch {
-                    viewModel.clearTraumaDiaryTempRecords()
+                    viewModel.onBackPressed()
                 }
                 finish()
             }
