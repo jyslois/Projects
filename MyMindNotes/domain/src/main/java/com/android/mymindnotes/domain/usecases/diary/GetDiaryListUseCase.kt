@@ -7,7 +7,6 @@ import javax.inject.Inject
 class GetDiaryListUseCase @Inject constructor(
     private val diaryRepository: DiaryRepository
 ) {
-    // 에러 메시지
 
 //    suspend fun getDiaryList(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
 

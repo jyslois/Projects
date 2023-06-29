@@ -35,29 +35,6 @@ class AccountSettingActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainpagebackground2).into(binding.background)
 
-        // 버튼 클릭 이벤트 함수 콜
-        // 비밀번호 변경 클릭
-        binding.changePasswordButton.setOnClickListener {
-            startActivity<ChangePasswordActivity>()
-        }
-
-        // 닉네임 변경 버튼 클릭
-        binding.changeNicknameButton.setOnClickListener { view: View? ->
-            startActivity<ChangeNicknameActivity>()
-        }
-
-        // 로그아웃 버튼 클릭
-        binding.logoutButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.logoutButtonClicked()
-            }
-        }
-
-        // 계정 탈퇴 버튼 클릭
-        binding.withdrawalButton.setOnClickListener {
-            withdrawDialog()
-        }
-
 
         // 플로우 구독
         lifecycleScope.launch {
@@ -103,6 +80,31 @@ class AccountSettingActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+        // 버튼 클릭 이벤트 함수 콜
+        // 비밀번호 변경 클릭
+        binding.changePasswordButton.setOnClickListener {
+            startActivity<ChangePasswordActivity>()
+        }
+
+        // 닉네임 변경 버튼 클릭
+        binding.changeNicknameButton.setOnClickListener { view: View? ->
+            startActivity<ChangeNicknameActivity>()
+        }
+
+        // 로그아웃 버튼 클릭
+        binding.logoutButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.logoutButtonClicked()
+            }
+        }
+
+        // 계정 탈퇴 버튼 클릭
+        binding.withdrawalButton.setOnClickListener {
+            withdrawDialog()
+        }
+
 
     }
 
