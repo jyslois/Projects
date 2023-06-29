@@ -32,6 +32,28 @@ class TodayDiaryThoughtActivity : AppCompatActivity() {
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(com.android.mymindnotes.presentation.R.drawable.diarybackground1).into(binding.background)
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+
+                        // 만약 생각이 저장된 상태라면 화면에 뿌리기
+                        is TodayDiaryThoughtViewModel.TodayDiaryThoughtUiState.Success -> {
+                            uiState.thought?.let {
+                                if (it != "") {
+                                    binding.RecordThoughtUserInput.setText(it)
+                                }
+                            }
+                        }
+
+                        is TodayDiaryThoughtViewModel.TodayDiaryThoughtUiState.Loading -> {
+
+                        }
+                    }
+                }
+            }
+        }
 
         // 팁 버튼 클릭
         binding.RecordThoughtTips.setOnClickListener {
@@ -46,7 +68,7 @@ class TodayDiaryThoughtActivity : AppCompatActivity() {
                     dialog("생각을 작성해 주세요.")
                 } else {
                     // 상황 저장
-                    viewModel.saveThought(thought)
+                    viewModel.nextOrPreviousButtonClickedOrBackPressedOrOnPause(thought)
                     // 다음 화면으로 이동
                     val intent = Intent(applicationContext, TodayDiaryReflectionActivity::class.java)
                     startActivity(intent)
@@ -60,31 +82,14 @@ class TodayDiaryThoughtActivity : AppCompatActivity() {
                 val thought = binding.RecordThoughtUserInput.text.toString()
                 if (thought != "") {
                     // 상황 저장
-                    viewModel.saveThought(thought)
+                    viewModel.nextOrPreviousButtonClickedOrBackPressedOrOnPause(thought)
                 }
                 // 이전 화면으로 이동
                 finish()
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-
-                        // 만약 생각이 저장된 상태라면 화면에 뿌리기
-                        is TodayDiaryThoughtViewModel.TodayDiaryThoughtUiState.Success -> {
-                            uiState.thoughtResult?.let {
-                                if (it != "") {
-                                    binding.RecordThoughtUserInput.setText(it)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
     }
 
@@ -115,7 +120,7 @@ class TodayDiaryThoughtActivity : AppCompatActivity() {
             val thought = binding.RecordThoughtUserInput.text.toString()
             if (thought != "") {
                 // 생각 저장
-                viewModel.saveThought(thought)
+                viewModel.nextOrPreviousButtonClickedOrBackPressedOrOnPause(thought)
             }
             // 이전 화면으로 이동
             finish()
@@ -128,7 +133,7 @@ class TodayDiaryThoughtActivity : AppCompatActivity() {
             val thought = binding.RecordThoughtUserInput.text.toString()
             if (thought != "") {
                 // 생각 저장
-                viewModel.saveThought(thought)
+                viewModel.nextOrPreviousButtonClickedOrBackPressedOrOnPause(thought)
             }
         }
     }

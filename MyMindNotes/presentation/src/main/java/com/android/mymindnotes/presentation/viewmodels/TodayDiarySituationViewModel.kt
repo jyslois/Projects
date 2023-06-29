@@ -28,6 +28,7 @@ class TodayDiarySituationViewModel @Inject constructor(
     // Save Method
     suspend fun nextOrPreviousButtonClickedOrBackPressedOrPaused(situation: String) {
         saveTodayDiarySituationUseCase(situation)
+        _uiState.emit(TodayDiarySituationUiState.Success(situation))
     }
 
     init {

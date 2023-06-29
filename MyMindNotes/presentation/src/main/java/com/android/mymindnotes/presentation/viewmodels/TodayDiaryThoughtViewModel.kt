@@ -5,9 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiaryThoughtUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryThoughtUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,16 +17,18 @@ class TodayDiaryThoughtViewModel @Inject constructor(
 ): ViewModel() {
 
     sealed class TodayDiaryThoughtUiState {
-        data class Success(val thoughtResult: String?): TodayDiaryThoughtUiState()
+        object Loading: TodayDiaryThoughtUiState()
+        data class Success(val thought: String?): TodayDiaryThoughtUiState()
     }
 
     // ui상태
-    private val _uiState = MutableSharedFlow<TodayDiaryThoughtUiState>()
-    val uiState: SharedFlow<TodayDiaryThoughtUiState> = _uiState
+    private val _uiState = MutableStateFlow<TodayDiaryThoughtUiState>(TodayDiaryThoughtUiState.Loading)
+    val uiState: StateFlow<TodayDiaryThoughtUiState> = _uiState
 
     // Save Method
-    suspend fun saveThought(thought: String) {
+    suspend fun nextOrPreviousButtonClickedOrBackPressedOrOnPause(thought: String) {
         saveTodayDiaryThoughtUseCase(thought)
+        _uiState.emit(TodayDiaryThoughtUiState.Success(thought))
     }
 
     init {

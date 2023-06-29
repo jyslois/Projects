@@ -41,6 +41,7 @@ class TodayDiaryReflectionViewModel @Inject constructor(
 
     suspend fun previousButtonClickedOrBackPressed(reflection: String) {
         saveTodayDiaryReflectionUseCase(reflection)
+        _uiState.value = TodayDiaryReflectionUiState.Success(reflection)
     }
 
 

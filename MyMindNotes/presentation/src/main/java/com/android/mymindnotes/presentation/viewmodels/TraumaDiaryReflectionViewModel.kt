@@ -40,6 +40,7 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
 
     suspend fun previousButtonClickedOrBackPressed(reflection: String) {
         saveTraumaDiaryReflectionUseCase(reflection)
+        _uiState.value = TraumaDiaryReflectionUiState.Success(reflection)
     }
 
     // (서버) 일기 저장 함수 호출
