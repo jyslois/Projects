@@ -3,8 +3,11 @@ package com.android.mymindnotes.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.today.ClearTodayDiaryTempRecordsUseCase
-import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiaryEmotionPartsUseCase
-import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryEmotionPartsUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiaryEmotionTextUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiaryEmotionUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryEmotionColorUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryEmotionTextUseCase
+import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryEmotionUseCase
 import com.android.mymindnotes.presentation.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodayDiaryEmotionViewModel @Inject constructor(
-    private val saveTodayDiaryEmotionPartsUseCase: SaveTodayDiaryEmotionPartsUseCase,
-    private val getTodayDiaryEmotionPartsUseCase: GetTodayDiaryEmotionPartsUseCase,
+    private val saveTodayDiaryEmotionUseCase: SaveTodayDiaryEmotionUseCase,
+    private val saveTodayDiaryEmotionColorUseCase: SaveTodayDiaryEmotionColorUseCase,
+    private val saveTodayDiaryEmotionTextUseCase: SaveTodayDiaryEmotionTextUseCase,
+    private val getTodayDiaryEmotionUseCase: GetTodayDiaryEmotionUseCase,
+    private val getTodayDiaryEmotionTextUseCase: GetTodayDiaryEmotionTextUseCase,
     private val clearTodayDiaryTempRecordsUseCase: ClearTodayDiaryTempRecordsUseCase
 ) : ViewModel() {
 
@@ -36,47 +42,47 @@ class TodayDiaryEmotionViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            saveTodayDiaryEmotionPartsUseCase.saveEmotionText(emotionText)
+            saveTodayDiaryEmotionTextUseCase(emotionText)
 
             when (chosenEmotionId) {
                 R.id.happinessButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.orange_happiness)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("기쁨")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.orange_happiness)
+                    saveTodayDiaryEmotionUseCase("기쁨")
                 }
 
                 R.id.anticipationButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.green_anticipation)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("기대")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.green_anticipation)
+                    saveTodayDiaryEmotionUseCase("기대")
                 }
 
                 R.id.trustButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.darkblue_trust)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("신뢰")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.darkblue_trust)
+                    saveTodayDiaryEmotionUseCase("신뢰")
                 }
 
                 R.id.surpriseButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.yellow_surprise)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("놀람")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.yellow_surprise)
+                    saveTodayDiaryEmotionUseCase("놀람")
                 }
 
                 R.id.sadnessButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.grey_sadness)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("슬픔")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.grey_sadness)
+                    saveTodayDiaryEmotionUseCase("슬픔")
                 }
 
                 R.id.disgustButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.brown_disgust)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("혐오")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.brown_disgust)
+                    saveTodayDiaryEmotionUseCase("혐오")
                 }
 
                 R.id.fearButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.black_fear)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("공포")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.black_fear)
+                    saveTodayDiaryEmotionUseCase("공포")
                 }
 
                 R.id.angerButton -> {
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotionColor(R.drawable.red_anger)
-                    saveTodayDiaryEmotionPartsUseCase.saveEmotion("분노")
+                    saveTodayDiaryEmotionColorUseCase(R.drawable.red_anger)
+                    saveTodayDiaryEmotionUseCase("분노")
                 }
             }
         }
@@ -92,8 +98,8 @@ class TodayDiaryEmotionViewModel @Inject constructor(
 
     suspend fun getEmotionTempRecords() {
         combine(
-            getTodayDiaryEmotionPartsUseCase.getEmotion(),
-            getTodayDiaryEmotionPartsUseCase.getEmotionText()
+            getTodayDiaryEmotionUseCase(),
+            getTodayDiaryEmotionTextUseCase()
         ) { emotion, emotionText ->
             TodayDiaryEmotionUiState.Success(emotion, emotionText)
         }.collect {

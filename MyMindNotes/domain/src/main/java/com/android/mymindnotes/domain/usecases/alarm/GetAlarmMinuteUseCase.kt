@@ -4,12 +4,13 @@ import com.android.mymindnotes.data.repositoryInterfaces.MemberSharedPreferences
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAlarmTimeUseCase @Inject constructor(
+class GetAlarmMinuteUseCase @Inject constructor(
     private val repository: MemberSharedPreferencesRepository
 ) {
-//    // time 가져오기
-//    suspend fun getTime(): Flow<String?> = repository.getTime()
 
-    suspend operator fun invoke(): Flow<String?> = repository.getTime()
-    
+//    // 분 불러오기
+//    suspend fun getMinute(): Flow<Int> = repository.getMinute()
+
+    suspend operator fun invoke(): Flow<Int> = repository.getMinute()
+
 }

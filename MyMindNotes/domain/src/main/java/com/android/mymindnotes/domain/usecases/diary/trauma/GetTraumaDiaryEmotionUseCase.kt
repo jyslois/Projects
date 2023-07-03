@@ -4,16 +4,15 @@ import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiarySharedPrefer
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetTraumaDiaryEmotionPartsUseCase @Inject constructor(
+class GetTraumaDiaryEmotionUseCase @Inject constructor(
     private val repository: TraumaDiarySharedPreferencesRepository
 ) {
 
-    suspend fun getEmotion(): Flow<String?> {
-        return repository.getEmotion()
-    }
+//    suspend fun getEmotion(): Flow<String?> {
+//        return repository.getEmotion()
+//    }
 
-    suspend fun getEmotionText(): Flow<String?> {
-        return repository.getEmotionText()
-    }
+    suspend operator fun invoke(): Flow<String?> = repository.getEmotion()
+
 
 }

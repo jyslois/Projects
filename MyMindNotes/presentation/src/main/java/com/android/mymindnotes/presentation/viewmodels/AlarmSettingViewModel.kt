@@ -2,8 +2,12 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.mymindnotes.domain.usecases.alarm.GetAlarmHourUseCase
+import com.android.mymindnotes.domain.usecases.alarm.GetAlarmMinuteUseCase
 import com.android.mymindnotes.domain.usecases.alarm.GetAlarmStateUseCase
 import com.android.mymindnotes.domain.usecases.alarm.GetAlarmTimeUseCase
+import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmHourUseCase
+import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmMinuteUseCase
 import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmStateUseCase
 import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmTimeUseCase
 import com.android.mymindnotes.domain.usecases.alarm.SaveRebootAlarmTimeUseCase
@@ -27,7 +31,11 @@ class AlarmSettingViewModel @Inject constructor(
     private val getAlarmStateUseCase: GetAlarmStateUseCase,
     private val saveAlarmStateUseCase: SaveAlarmStateUseCase,
     private val getAlarmTimeUseCase: GetAlarmTimeUseCase,
+    private val getAlarmHourUseCase: GetAlarmHourUseCase,
+    private val getAlarmMinuteUseCase: GetAlarmMinuteUseCase,
     private val saveAlarmTimeUseCase: SaveAlarmTimeUseCase,
+    private val saveAlarmHourUseCase: SaveAlarmHourUseCase,
+    private val saveAlarmMinuteUseCase: SaveAlarmMinuteUseCase,
 
     private val saveRebootAlarmTimeUseCase: SaveRebootAlarmTimeUseCase,
     private val setAlarmUseCase: SetAlarmUseCase,
@@ -51,9 +59,9 @@ class AlarmSettingViewModel @Inject constructor(
 
 
     suspend fun alarmSwitchChanged(isChecked: Boolean) {
-        val time = getAlarmTimeUseCase.getTime().first() // 저장한 알람 시간 불러오기
-        val hour = getAlarmTimeUseCase.getHour().first()
-        val minute = getAlarmTimeUseCase.getMinute().first()
+        val time = getAlarmTimeUseCase().first() // 저장한 알람 시간 불러오기
+        val hour = getAlarmHourUseCase().first()
+        val minute = getAlarmMinuteUseCase().first()
 
         // switch가 on만 됐을 때 (지정한 알람 시간이 없을 때)
         if(isChecked && time.isNullOrEmpty()) {
@@ -75,9 +83,9 @@ class AlarmSettingViewModel @Inject constructor(
     fun alarmDialogueSet(time: String, hourOfDay: Int, min: Int, minute: Int) {
         // store Selected time
         viewModelScope.launch {
-            saveAlarmTimeUseCase.saveTime(time)
-            saveAlarmTimeUseCase.saveHour(hourOfDay)
-            saveAlarmTimeUseCase.saveMinute(min)
+            saveAlarmTimeUseCase(time)
+            saveAlarmHourUseCase(hourOfDay)
+            saveAlarmMinuteUseCase(min)
 
             // // Delete time in sharedPrefenreces to reset alarm on boot
             clearTimeSettingsUseCase()
