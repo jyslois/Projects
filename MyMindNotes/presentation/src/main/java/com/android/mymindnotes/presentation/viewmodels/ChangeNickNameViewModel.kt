@@ -13,14 +13,13 @@ class ChangeNickNameViewModel @Inject constructor(
     private val changeNickNameUseCase: ChangeNickNameUseCase,
     private val checkNickNameDuplicateUseCase: CheckNickNameDuplicateUseCase
 
-): ViewModel() {
+) : ViewModel() {
 
     sealed class ChangeNickNameUiState {
         object Loading : ChangeNickNameUiState()
-
-        object NickNameDuplicateChecked: ChangeNickNameUiState()
-        object NickNameChanged: ChangeNickNameUiState()
-        data class Error(val error: String): ChangeNickNameUiState()
+        object NickNameDuplicateChecked : ChangeNickNameUiState()
+        object NickNameChanged : ChangeNickNameUiState()
+        data class Error(val error: String) : ChangeNickNameUiState()
     }
 
     // ui상태
@@ -30,33 +29,31 @@ class ChangeNickNameViewModel @Inject constructor(
 
     // (서버) 닉네임 중복 체크
     suspend fun checkNickNameButtonClicked(nickName: String) {
-        try {
-            checkNickNameDuplicateUseCase(nickName).collect {
-                if (it["code"].toString().toDouble() == 1003.0) {
-                    _uiState.value = ChangeNickNameUiState.Error(it["msg"] as String)
-                } else if (it["code"].toString().toDouble() == 1002.0) {
-                    _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked
-                }
-            }
-        } catch(e: Exception) {
-            _uiState.value = ChangeNickNameUiState.Error("닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")
 
+        checkNickNameDuplicateUseCase(nickName).collect { result ->
+            when (result) {
+                is CheckNickNameDuplicateUseCase.NickNameCheckResult.NotDuplicate ->
+                    _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked
+
+                is CheckNickNameDuplicateUseCase.NickNameCheckResult.Error ->
+                    _uiState.value = ChangeNickNameUiState.Error(result.message)
+            }
         }
         _uiState.value = ChangeNickNameUiState.Loading
+
     }
 
     // (서버) 닉네임 변경
     suspend fun changeNickNameButtonClicked(nickName: String) {
-        try {
-            changeNickNameUseCase(nickName).collect {
-                if (it["code"].toString().toDouble() == 3001.0) {
-                    _uiState.value = ChangeNickNameUiState.Error(it["msg"] as String)
-                } else if (it["code"].toString().toDouble() == 3000.0) {
+
+        changeNickNameUseCase(nickName).collect { result ->
+            when (result) {
+                is ChangeNickNameUseCase.NickNameChangeResult.NickNameChanged ->
                     _uiState.value = ChangeNickNameUiState.NickNameChanged
-                }
+
+                is ChangeNickNameUseCase.NickNameChangeResult.Error ->
+                    _uiState.value = ChangeNickNameUiState.Error(result.message)
             }
-        } catch(e: Exception) {
-            _uiState.value = ChangeNickNameUiState.Error("닉네임 변경 실패. 인터넷 연결을 확인해 주세요.")
         }
         _uiState.value = ChangeNickNameUiState.Loading
     }

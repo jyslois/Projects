@@ -30,11 +30,11 @@ class JoinViewModel @Inject constructor(
 ) : ViewModel() {
 
     sealed class JoinUiState {
-        object Loading: JoinUiState()
-        object EmailDuplicateCheckSucceed: JoinUiState()
-        object NicknameDuplicateCheckSucceed: JoinUiState()
-        object JoinSucceed: JoinUiState()
-        data class Error(val error: String): JoinUiState()
+        object Loading : JoinUiState()
+        object EmailDuplicateCheckSucceed : JoinUiState()
+        object NicknameDuplicateCheckSucceed : JoinUiState()
+        object JoinSucceed : JoinUiState()
+        data class Error(val error: String) : JoinUiState()
     }
 
     // ui상태
@@ -62,24 +62,29 @@ class JoinViewModel @Inject constructor(
 
     // (서버) 닉네임 중복 체크 함수 호출
     suspend fun checkNickNameButtonClicked(nickNameInput: String) {
-        try {
-            checkNickNameDuplicateUseCase(nickNameInput).collect {
-                if (it["code"].toString().toDouble() == 1003.0) {
-                    _uiState.value = JoinUiState.Error(it["msg"] as String)
-                } else if (it["code"].toString().toDouble() == 1002.0) {
-                    _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed
-                }
-            }
-        } catch (e: Exception) {
-            _uiState.value = JoinUiState.Error("닉네임 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-        }
+        // (서버) 닉네임 중복 체크
+        checkNickNameDuplicateUseCase(nickNameInput).collect { result ->
+            when (result) {
+                is CheckNickNameDuplicateUseCase.NickNameCheckResult.NotDuplicate -> _uiState.value =
+                    JoinUiState.NicknameDuplicateCheckSucceed
 
+                is CheckNickNameDuplicateUseCase.NickNameCheckResult.Error -> _uiState.value =
+                    JoinUiState.Error(result.message)
+            }
+        }
         _uiState.value = JoinUiState.Loading
+
+
     }
 
 
     // (서버) 회원가입 함수 호출
-    suspend fun joinButtonClicked(email: String, nickname: String, password: String, birthyear: Int) {
+    suspend fun joinButtonClicked(
+        email: String,
+        nickname: String,
+        password: String,
+        birthyear: Int
+    ) {
         try {
             joinUseCase(email, nickname, password, birthyear).collect {
                 if (it["code"].toString().toDouble() == 2001.0) {
