@@ -2,6 +2,8 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.mymindnotes.domain.usecases.alarm.SuccessResult
+import com.android.mymindnotes.domain.usecases.alarm.ChangeAlarmSwitchUseCase
 import com.android.mymindnotes.domain.usecases.alarm.GetAlarmHourUseCase
 import com.android.mymindnotes.domain.usecases.alarm.GetAlarmMinuteUseCase
 import com.android.mymindnotes.domain.usecases.alarm.GetAlarmStateUseCase
@@ -15,6 +17,7 @@ import com.android.mymindnotes.domain.usecases.alarm.SetAlarmUseCase
 import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.ClearAlarmSettingsUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
+import com.bumptech.glide.Glide.init
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +31,8 @@ class AlarmSettingViewModel @Inject constructor(
     private val clearAlarmSettingsUseCase: ClearAlarmSettingsUseCase,
     private var clearTimeSettingsUseCase: ClearTimeSettingsUseCase,
 
+    private val changeAlarmSwitchUseCase: ChangeAlarmSwitchUseCase,
+
     private val getAlarmStateUseCase: GetAlarmStateUseCase,
     private val saveAlarmStateUseCase: SaveAlarmStateUseCase,
     private val getAlarmTimeUseCase: GetAlarmTimeUseCase,
@@ -40,8 +45,6 @@ class AlarmSettingViewModel @Inject constructor(
     private val saveRebootAlarmTimeUseCase: SaveRebootAlarmTimeUseCase,
     private val setAlarmUseCase: SetAlarmUseCase,
     private val stopAlarmUseCase: StopAlarmUseCase,
-
-
     ): ViewModel() {
 
     // ui 상태를 나타내는 sealed 클래스
@@ -59,24 +62,23 @@ class AlarmSettingViewModel @Inject constructor(
 
 
     suspend fun alarmSwitchChanged(isChecked: Boolean) {
-        val time = getAlarmTimeUseCase().first() // 저장한 알람 시간 불러오기
-        val hour = getAlarmHourUseCase().first()
-        val minute = getAlarmMinuteUseCase().first()
 
-        // switch가 on만 됐을 때 (지정한 알람 시간이 없을 때)
-        if(isChecked && time.isNullOrEmpty()) {
-            saveAlarmStateUseCase(true) // 상태 저장
-            _uiState.value = AlarmSettingUiState.AlarmSwitchedOn
-            // 이미 지정한 알람 시간이 있을 때
-        } else if(isChecked && !time.isNullOrEmpty()) {
-            saveAlarmStateUseCase(true)
-            _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(time, hour, minute)
-            // Off일 때
-        } else {
-            clearAlarmSettingsUseCase()
-            clearTimeSettingsUseCase()
-            stopAlarmUseCase()
-            _uiState.value = AlarmSettingUiState.AlarmSwitchedOff
+        changeAlarmSwitchUseCase(isChecked).collect { successResult ->
+            when (successResult) {
+                is SuccessResult.AlarmSwitchedOn -> {
+                    _uiState.value = AlarmSettingUiState.AlarmSwitchedOn
+                }
+                is SuccessResult.AlarmTime -> {
+                    _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(
+                        successResult.time,
+                        successResult.hour,
+                        successResult.minute
+                    )
+                }
+                is SuccessResult.AlarmSwitchedOff -> {
+                    _uiState.value = AlarmSettingUiState.AlarmSwitchedOff
+                }
+            }
         }
     }
 
@@ -106,7 +108,7 @@ class AlarmSettingViewModel @Inject constructor(
             saveRebootAlarmTimeUseCase(calendar.timeInMillis)
             setAlarmUseCase(calendar)
 
-            _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(time, hourOfDay, minute)
+            _uiState.value = AlarmSettingViewModel.AlarmSettingUiState.AlarmSwitchedOnWithTime(time, hourOfDay, minute)
         }
 
     }

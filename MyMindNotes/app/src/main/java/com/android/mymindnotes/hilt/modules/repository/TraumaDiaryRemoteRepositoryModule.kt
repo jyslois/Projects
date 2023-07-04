@@ -1,6 +1,6 @@
 package com.android.mymindnotes.hilt.modules.repository
 
-import com.android.mymindnotes.data.repositoryImpls.TraumaDiaryRemoteRemoteRepositoryImpl
+import com.android.mymindnotes.data.repositoryImpls.TraumaDiaryRemoteRepositoryImpl
 import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRemoteRepository
 import dagger.Binds
 import dagger.Module
@@ -10,10 +10,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class TraumaDiaryRepositoryModule {
+abstract class TraumaDiaryRemoteRepositoryModule {
     @Singleton
     @Binds
-    abstract fun bindTraumaDiaryRepository (
-        traumaDiaryRemoteRepositoryImpl: TraumaDiaryRemoteRemoteRepositoryImpl
+    abstract fun bindTraumaDiaryRemoteRepository (
+        traumaDiaryRemoteRepositoryImpl: TraumaDiaryRemoteRepositoryImpl
     ): TraumaDiaryRemoteRepository
 }

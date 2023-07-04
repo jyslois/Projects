@@ -9,12 +9,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class DiaryRemoteDataSourceInterface @Inject constructor(
+class DiaryRemoteDataSource @Inject constructor(
     private val getDiaryListApi: GetDiaryListApi,
     private val deleteDiaryApi: DeleteDiaryApi,
     private val updateDiaryApi: UpdateDiaryApi,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-): DiaryDataSourceInterface {
+): DiaryRemoteDataSourceInterface {
 
     // 일기 리스트 가져오기
     override suspend fun getDiaryList(userIndex: Int): Flow<Map<String, Object>> = flow {
@@ -38,7 +38,7 @@ class DiaryRemoteDataSourceInterface @Inject constructor(
 
 }
 
-interface DiaryDataSourceInterface {
+interface DiaryRemoteDataSourceInterface {
     suspend fun getDiaryList(userIndex: Int): Flow<Map<String, Object>>
     suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>>
     suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<Map<String, Object>>

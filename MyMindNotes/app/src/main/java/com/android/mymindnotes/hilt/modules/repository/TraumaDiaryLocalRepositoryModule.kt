@@ -10,10 +10,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class TraumaDiarySharedPreferencesRepositoryModule {
+abstract class TraumaDiaryLocalRepositoryModule {
     @Singleton
     @Binds
-    abstract fun bindTraumaDiarySharedPreferencesRepository(
-        sharedPreferencesRepositoryImpl: TraumaDiaryLocalRepositoryImpl
+    abstract fun bindTraumaDiaryLocalRepository(
+        traumaDiaryLocalRepositoryImpl: TraumaDiaryLocalRepositoryImpl
     ): TraumaDiaryLocalRepository
 }

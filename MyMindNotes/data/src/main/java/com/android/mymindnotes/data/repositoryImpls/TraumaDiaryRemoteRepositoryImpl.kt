@@ -7,7 +7,7 @@ import com.android.mymindnotes.data.dataSources.TraumaDiaryLocalDataSourceInterf
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class TraumaDiaryRemoteRemoteRepositoryImpl @Inject constructor(
+class TraumaDiaryRemoteRepositoryImpl @Inject constructor(
     private val diaryDataSource: TraumaDiaryRemoteDataSourceInterface,
     private val memberLocalDataSource: MemberLocalDataSourceInterface,
     private val diarySharedPreferencesDataSource: TraumaDiaryLocalDataSourceInterface

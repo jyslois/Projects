@@ -10,10 +10,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class TodayDiarySharedPreferencesRepositoryModule {
+abstract class TodayDiaryLocalRepositoryModule {
     @Singleton
     @Binds
-    abstract fun bindDiarySharedPreferencesRepository(
-        sharedPreferencesRepositoryImpl: TodayDiaryLocalRepositoryImpl
+    abstract fun bindTodayDiaryLocalRepository(
+        todayDiaryLocalRepositoryImpl: TodayDiaryLocalRepositoryImpl
     ): TodayDiaryLocalRepository
 }
