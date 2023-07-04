@@ -1,13 +1,13 @@
 package com.android.mymindnotes.data.repositoryImpls
 
-import com.android.mymindnotes.data.dataSources.TodayDiarySharedPreferencesDataSource
-import com.android.mymindnotes.data.repositoryInterfaces.TodayDiarySharedPreferencesRepository
+import com.android.mymindnotes.data.dataSources.TodayDiaryLocalDataSourceInterface
+import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryLocalRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class TodayDiarySharedPreferencesRepositoryImpl @Inject constructor(
-    private val dataSource: TodayDiarySharedPreferencesDataSource
-): TodayDiarySharedPreferencesRepository {
+class TodayDiaryLocalRepositoryImpl @Inject constructor(
+    private val dataSource: TodayDiaryLocalDataSourceInterface
+): TodayDiaryLocalRepository {
 
     // Save Methods
     override suspend fun saveEmotionColor(color: Int) {

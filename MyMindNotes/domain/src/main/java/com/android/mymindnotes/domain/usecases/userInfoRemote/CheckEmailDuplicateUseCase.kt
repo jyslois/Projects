@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CheckEmailDuplicateUseCase @Inject constructor(
-    private val repository: MemberRepository
+    private val repository: MemberRemoteRepository
 ) {
 
 //    // 이메일

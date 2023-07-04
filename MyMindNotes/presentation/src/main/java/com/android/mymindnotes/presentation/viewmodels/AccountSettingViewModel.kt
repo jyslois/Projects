@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,14 +18,14 @@ class AccountSettingViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
     private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
-    ) : ViewModel() {
+) : ViewModel() {
 
     sealed class AccountSettingUiState {
-        object Loading: AccountSettingUiState()
-        data class Success(val userInfo: Map<String, Object>?): AccountSettingUiState()
-        object Logout: AccountSettingUiState()
-        object Withdraw: AccountSettingUiState()
-        data class Error(val errorMessage: String): AccountSettingUiState()
+        object Loading : AccountSettingUiState()
+        data class Success(val userInfo: Map<String, Object>?) : AccountSettingUiState()
+        object Logout : AccountSettingUiState()
+        object Withdraw : AccountSettingUiState()
+        data class Error(val errorMessage: String) : AccountSettingUiState()
     }
 
     // ui상태
@@ -41,21 +42,24 @@ class AccountSettingViewModel @Inject constructor(
     }
 
 
-
     // (서버) 회원 탈퇴를 위한 함수 콜
     suspend fun deleteUserButtonClicked() {
 
-        val resultState = deleteUserUseCase()
-        if (resultState == "Success") {
-            // ui 상태 변경
-            _uiState.value = AccountSettingUiState.Withdraw
-        } else if (resultState == "Error") {
-            _uiState.value = AccountSettingUiState.Error("회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")
-            _uiState.value = AccountSettingUiState.Loading
+        deleteUserUseCase().collect {
+            when {
+                it.isSuccess ->
+                    // ui 상태 변경
+                    _uiState.value = AccountSettingUiState.Withdraw
+
+                it.isFailure -> {
+                    _uiState.value = AccountSettingUiState.Error(it.exceptionOrNull()?.message ?: "회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")
+                    _uiState.value = AccountSettingUiState.Loading
+                }
+
+            }
         }
 
     }
-
 
     // collect & emit
     init {
@@ -63,8 +67,9 @@ class AccountSettingViewModel @Inject constructor(
             try {
                 val userInfo = getUserInfoUseCase().first()
                 _uiState.value = AccountSettingUiState.Success(userInfo)
-            } catch(e: Exception) {
-                _uiState.value = AccountSettingUiState.Error("회원 정보를 불러오는 데 실패했습니다. 인터넷 연결을 확인해 주세요.")
+            } catch (e: Exception) {
+                _uiState.value =
+                    AccountSettingUiState.Error("회원 정보를 불러오는 데 실패했습니다. 인터넷 연결을 확인해 주세요.")
                 _uiState.value = AccountSettingUiState.Loading
             }
         }

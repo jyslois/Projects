@@ -1,10 +1,10 @@
 package com.android.mymindnotes.domain.usecases.diary.trauma
 
-import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiarySharedPreferencesRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryLocalRepository
 import javax.inject.Inject
 
 class SaveTraumaDiaryTypeUseCase @Inject constructor(
-    private val repository: TraumaDiarySharedPreferencesRepository
+    private val repository: TraumaDiaryLocalRepository
 ) {
 
 //    suspend fun saveType(type: String) {

@@ -1,7 +1,7 @@
 package com.android.mymindnotes.hilt.modules.repository
 
-import com.android.mymindnotes.data.repositoryImpls.TraumaDiaryRepositoryImpl
-import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRepository
+import com.android.mymindnotes.data.repositoryImpls.TraumaDiaryRemoteRemoteRepositoryImpl
+import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRemoteRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ abstract class TraumaDiaryRepositoryModule {
     @Singleton
     @Binds
     abstract fun bindTraumaDiaryRepository (
-        traumaDiaryRepositoryImpl: TraumaDiaryRepositoryImpl
-    ): TraumaDiaryRepository
+        traumaDiaryRemoteRepositoryImpl: TraumaDiaryRemoteRemoteRepositoryImpl
+    ): TraumaDiaryRemoteRepository
 }

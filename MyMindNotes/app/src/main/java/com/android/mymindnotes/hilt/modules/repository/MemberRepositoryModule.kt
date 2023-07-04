@@ -1,7 +1,7 @@
 package com.android.mymindnotes.hilt.modules.repository
 
-import com.android.mymindnotes.data.repositoryImpls.MemberRepositoryImpl
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
+import com.android.mymindnotes.data.repositoryImpls.MemberRemoteRepositoryImpl
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ abstract class MemberRepositoryModule {
     @Singleton
     @Binds // Repository 인스턴스를 생성할 때 같은 주소를 가르키도록 설정하여 중복 생성을 막기 위해서 사용
     abstract fun bindMemberRepository (
-        memberRepositoryImpl: MemberRepositoryImpl
-    ): MemberRepository
+        memberRemoteRepositoryImpl: MemberRemoteRepositoryImpl
+    ): MemberRemoteRepository
 }

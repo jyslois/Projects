@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class MemberDataSource @Inject constructor(
+class MemberRemoteDataSource @Inject constructor(
     private val loginApi: LoginApi,
     private val checkEmailApi: CheckEmailApi,
     private val checkNickNameApi: CheckNickNameApi,
@@ -22,37 +22,37 @@ class MemberDataSource @Inject constructor(
     private val changePasswordApi: ChangePasswordApi,
     private val changeToTempPasswordApi: ChangeToTempPasswordApi,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) {
+): MemberRemoteDataSourceInterface {
 
     // (서버) 회원 정보 가져오기
-    suspend fun getUserInfo(userIndex: Int): Flow<Map<String, Object>> = flow {
+    override suspend fun getUserInfo(userIndex: Int): Flow<Map<String, Object>> = flow {
         val result = getUserInfoApi.getUserInfo(userIndex)
         emit(result)
     }.flowOn(ioDispatcher)
 
 
     // 로그인
-    suspend fun loginResultFlow(email: String, password: String): Flow<Map<String, Object>> = flow {
+    override suspend fun loginResultFlow(email: String, password: String): Flow<Map<String, Object>> = flow {
         val user = UserInfoLogin(email, password)
         val result = loginApi.login(user)
         emit(result)
     }.flowOn(ioDispatcher)
 
     // 이메일 중복 체크
-    suspend fun emailCheckFlow(emailInput: String): Flow<Map<String, Object>> = flow {
+    override suspend fun emailCheckFlow(emailInput: String): Flow<Map<String, Object>> = flow {
         val result = checkEmailApi.checkEmail(emailInput)
         emit(result)
     }.flowOn(ioDispatcher)
 
     // 닉네임 중복 체크
-    suspend fun nickNameCheckFlow(nickNameInput: String): Flow<Map<String, Object>> = flow {
+    override suspend fun nickNameCheckFlow(nickNameInput: String): Flow<Map<String, Object>> = flow {
         val result = checkNickNameApi.checkNickname(nickNameInput)
         emit(result)
     }.flowOn(ioDispatcher)
 
 
     // 회원가입
-    suspend fun joinResultFlow(
+    override suspend fun joinResultFlow(
         email: String,
         nickname: String,
         password: String,
@@ -69,14 +69,14 @@ class MemberDataSource @Inject constructor(
     }.flowOn(ioDispatcher)
 
     // 회원탈퇴
-    suspend fun deleteUserResultFlow(userIndex: Int): Flow<Map<String, Object>> = flow {
+    override suspend fun deleteUserResultFlow(userIndex: Int): Flow<Map<String, Object>> = flow {
         val result = deleteUserApi.deleteUser(userIndex)
         emit(result)
     }.flowOn(ioDispatcher)
 
     // 회원 정보 수정
     // 닉네임 수정
-    suspend fun changeNickNameFlow(userIndex: Int, nickName: String): Flow<Map<String, Object>> =
+    override suspend fun changeNickNameFlow(userIndex: Int, nickName: String): Flow<Map<String, Object>> =
         flow {
             val user = ChangeUserNickname(
                 userIndex,
@@ -88,7 +88,7 @@ class MemberDataSource @Inject constructor(
 
 
     // 비밀번호 수정
-    suspend fun changePasswordFlow(
+    override suspend fun changePasswordFlow(
         userIndex: Int,
         password: String,
         originalPassword: String
@@ -101,10 +101,10 @@ class MemberDataSource @Inject constructor(
 
 
     // 임시 비밀번호로 비밀번호 수정
-    suspend fun changeToTemporaryPasswordFlow(
+    override suspend fun changeToTemporaryPasswordFlow(
         email: String,
         randomPassword: String
-    ): Flow<Map<String, Object>> = flow<Map<String, Object>> {
+    ): Flow<Map<String, Object>> = flow {
         val user =
             ChangeToTemporaryPassword(
                 email,
@@ -115,4 +115,28 @@ class MemberDataSource @Inject constructor(
     }.flowOn(ioDispatcher)
 
 
+}
+
+interface MemberRemoteDataSourceInterface {
+    suspend fun getUserInfo(userIndex: Int): Flow<Map<String, Object>>
+    suspend fun loginResultFlow(email: String, password: String): Flow<Map<String, Object>>
+    suspend fun emailCheckFlow(emailInput: String): Flow<Map<String, Object>>
+    suspend fun nickNameCheckFlow(nickNameInput: String): Flow<Map<String, Object>>
+    suspend fun joinResultFlow(
+        email: String,
+        nickname: String,
+        password: String,
+        birthyear: Int
+    ): Flow<Map<String, Object>>
+    suspend fun deleteUserResultFlow(userIndex: Int): Flow<Map<String, Object>>
+    suspend fun changeNickNameFlow(userIndex: Int, nickName: String): Flow<Map<String, Object>>
+    suspend fun changePasswordFlow(
+        userIndex: Int,
+        password: String,
+        originalPassword: String
+    ): Flow<Map<String, Object>>
+    suspend fun changeToTemporaryPasswordFlow(
+        email: String,
+        randomPassword: String
+    ): Flow<Map<String, Object>>
 }

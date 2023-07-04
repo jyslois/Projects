@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases.diary.trauma
 
-import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiarySharedPreferencesRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryLocalRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetTraumaDiaryEmotionUseCase @Inject constructor(
-    private val repository: TraumaDiarySharedPreferencesRepository
+    private val repository: TraumaDiaryLocalRepository
 ) {
 
 //    suspend fun getEmotion(): Flow<String?> {

@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class LogInUseCase @Inject constructor(
-    private val repository: MemberRepository
+    private val repository: MemberRemoteRepository
 ) {
 
 //    suspend fun login(email: String, password: String): Flow<Map<String, Object>> {

@@ -1,7 +1,7 @@
 package com.android.mymindnotes.hilt.modules.repository
 
-import com.android.mymindnotes.data.repositoryImpls.DiaryRepositoryImpl
-import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
+import com.android.mymindnotes.data.repositoryImpls.DiaryRemoteRepositoryImpl
+import com.android.mymindnotes.data.repositoryInterfaces.DiaryRemoteRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ abstract class DiaryRepositoryModule {
     @Singleton
     @Binds
     abstract fun bindDiaryRepository (
-        diaryRepositoryImpl: DiaryRepositoryImpl
-    ): DiaryRepository
+        diaryRepositoryImpl: DiaryRemoteRepositoryImpl
+    ): DiaryRemoteRepository
 }

@@ -1,9 +1,8 @@
 package com.android.mymindnotes.data.repositoryInterfaces
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
 
-interface DiaryRepository {
+interface DiaryRemoteRepository {
     // Get DiaryList
     suspend fun getDiaryList(): Flow<Map<String, Object>>
 

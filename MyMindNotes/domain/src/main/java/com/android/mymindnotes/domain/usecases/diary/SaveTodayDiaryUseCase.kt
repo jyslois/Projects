@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases.diary
 
-import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryRemoteRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SaveTodayDiaryUseCase @Inject constructor(
-    private val repository: TodayDiaryRepository
+    private val repository: TodayDiaryRemoteRepository
 ) {
 
 //    // (서버) 일기 저장

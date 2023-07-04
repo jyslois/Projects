@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class JoinUseCase @Inject constructor(
-    private val repository: MemberRepository
+    private val repository: MemberRemoteRepository
 ) {
 
 //    // (서버) 회원 가입 함수 호출

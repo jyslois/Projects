@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases.diary
 
-import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRemoteRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SaveTraumaDiaryUseCase @Inject constructor(
-    private val repository: TraumaDiaryRepository
+    private val repository: TraumaDiaryRemoteRepository
 ) {
 //    // (서버) 일기 저장
 //    suspend fun saveDiary(): Flow<Map<String, Object>> {

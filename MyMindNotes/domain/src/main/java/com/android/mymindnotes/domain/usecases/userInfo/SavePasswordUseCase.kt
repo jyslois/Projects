@@ -1,10 +1,10 @@
 package com.android.mymindnotes.domain.usecases.userInfo
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberSharedPreferencesRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberLocalRepository
 import javax.inject.Inject
 
 class SavePasswordUseCase @Inject constructor(
-    private val repository: MemberSharedPreferencesRepository
+    private val repository: MemberLocalRepository
 ) {
 //    suspend fun savePassword(password: String?) {
 //        repository.savePassword(password)

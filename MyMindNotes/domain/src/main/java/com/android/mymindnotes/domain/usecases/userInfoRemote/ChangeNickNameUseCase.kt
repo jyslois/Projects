@@ -1,16 +1,13 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
 import com.android.mymindnotes.core.hilt.coroutineModules.MainDispatcherCoroutineScope
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ChangeNickNameUseCase @Inject constructor(
-    private val repository: MemberRepository,
+    private val repository: MemberRemoteRepository,
     @MainDispatcherCoroutineScope private val mainDispatcherCoroutineScope: CoroutineScope
 ) {
 

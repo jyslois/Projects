@@ -2,7 +2,7 @@ package com.android.mymindnotes.data.repositoryInterfaces
 
 import kotlinx.coroutines.flow.*
 
-interface MemberRepository {
+interface MemberRemoteRepository {
     // Get User Info
     suspend fun getUserInfo(): Flow<Map<String, Object>>
 

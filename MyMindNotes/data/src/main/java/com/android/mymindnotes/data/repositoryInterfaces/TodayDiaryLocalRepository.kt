@@ -2,14 +2,14 @@ package com.android.mymindnotes.data.repositoryInterfaces
 
 import kotlinx.coroutines.flow.Flow
 
-interface TraumaDiarySharedPreferencesRepository {
+interface TodayDiaryLocalRepository {
 
     // save methods
     suspend fun saveEmotionColor(color: Int)
     suspend fun saveEmotion(emotion: String?)
     suspend fun saveEmotionText(emotionText: String?)
     suspend fun saveSituation(situation: String)
-    suspend fun saveThought(thought: String?)
+    suspend fun saveThought(thought: String)
     suspend fun saveReflection(reflection: String?)
     suspend fun saveType(type: String)
     suspend fun saveDate(date: String)
@@ -22,7 +22,6 @@ interface TraumaDiarySharedPreferencesRepository {
     suspend fun getThought(): Flow<String?>
     suspend fun getReflection(): Flow<String?>
 
-    // clear method
-    suspend fun clearTraumaDiaryTempRecords()
-
+    // clear methods
+    suspend fun clearTodayDiaryTempRecords()
 }

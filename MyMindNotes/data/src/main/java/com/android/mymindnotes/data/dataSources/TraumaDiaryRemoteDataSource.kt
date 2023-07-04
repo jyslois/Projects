@@ -7,13 +7,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class TraumaDiaryDataSource @Inject constructor(
+class TraumaDiaryRemoteDataSource @Inject constructor(
     private val saveDiaryApi: SaveDiaryApi,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) {
+): TraumaDiaryRemoteDataSourceInterface {
 
     // (서버) 일기 저장하기
-    suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<Map<String, Object>> = flow {
+    override suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<Map<String, Object>> = flow {
         val userDiary = UserDiary(
             userIndex,
             type,
@@ -29,5 +29,8 @@ class TraumaDiaryDataSource @Inject constructor(
         emit(result)
     }.flowOn(ioDispatcher)
 
+}
 
+interface TraumaDiaryRemoteDataSourceInterface {
+    suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<Map<String, Object>>
 }

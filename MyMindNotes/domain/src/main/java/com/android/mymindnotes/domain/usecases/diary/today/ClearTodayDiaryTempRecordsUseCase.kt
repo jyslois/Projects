@@ -1,10 +1,10 @@
 package com.android.mymindnotes.domain.usecases.diary.today
 
-import com.android.mymindnotes.data.repositoryInterfaces.TodayDiarySharedPreferencesRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryLocalRepository
 import javax.inject.Inject
 
 class ClearTodayDiaryTempRecordsUseCase @Inject constructor(
-    private val repository: TodayDiarySharedPreferencesRepository
+    private val repository: TodayDiaryLocalRepository
 ) {
 
 //    // Clear Method
