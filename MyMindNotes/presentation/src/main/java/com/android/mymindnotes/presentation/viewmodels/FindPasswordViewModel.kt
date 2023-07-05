@@ -5,19 +5,18 @@ import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangeToTemporaryP
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class FindPasswordViewModel @Inject constructor(
     private val changeToTemporaryPasswordUseCase: ChangeToTemporaryPasswordUseCase
-): ViewModel() {
+) : ViewModel() {
 
 
     sealed class FindPasswordUiState {
-        object Loading: FindPasswordUiState()
-        data class Success(val successMessage: String?): FindPasswordUiState()
-        data class Error(val error: String?): FindPasswordUiState()
+        object Loading : FindPasswordUiState()
+        data class Success(val successMessage: String?) : FindPasswordUiState()
+        data class Error(val error: String?) : FindPasswordUiState()
     }
 
     // ui상태
@@ -27,20 +26,17 @@ class FindPasswordViewModel @Inject constructor(
 
     // (서버) 임시 비밀번호로 비밀번호 변경하기
     suspend fun sendEmailButtonClicked(email: String, randomPassword: String) {
-        try {
-            changeToTemporaryPasswordUseCase(email, randomPassword).collect {
-                if (it["code"].toString().toDouble() == 3007.0) {
-                    _uiState.value = FindPasswordUiState.Error(it["msg"] as String?)
-                } else if (it["code"].toString().toDouble() == 3006.0) {
-                    // 전송 완료 알림 띄우기
-                    _uiState.value = FindPasswordUiState.Success(it["msg"] as String?)
-                }
-            }
-        } catch (e: Exception) {
-            _uiState.value = FindPasswordUiState.Error("비밀번호 발송에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-        }
-        _uiState.value = FindPasswordUiState.Loading
-    }
 
+        changeToTemporaryPasswordUseCase(email, randomPassword).collect { result ->
+            when (result) {
+                is ChangeToTemporaryPasswordUseCase.ChangeToTemporaryPasswordResult.Success -> _uiState.value =
+                    FindPasswordUiState.Success(result.message)
+
+                is ChangeToTemporaryPasswordUseCase.ChangeToTemporaryPasswordResult.Error -> _uiState.value =
+                    FindPasswordUiState.Error(result.message)
+            }
+            _uiState.value = FindPasswordUiState.Loading
+        }
+    }
 
 }

@@ -10,12 +10,12 @@ import javax.inject.Inject
 @HiltViewModel
 class DiaryResultEditViewModel @Inject constructor(
     private val updateDiaryUseCase: UpdateDiaryUseCase
-): ViewModel() {
+) : ViewModel() {
 
     sealed class DiaryResultEditUiState {
-        object Loading: DiaryResultEditUiState()
-        object Success:  DiaryResultEditUiState()
-        data class Error(val error: String):  DiaryResultEditUiState()
+        object Loading : DiaryResultEditUiState()
+        object Success : DiaryResultEditUiState()
+        data class Error(val error: String) : DiaryResultEditUiState()
     }
 
     // ui상태
@@ -32,30 +32,25 @@ class DiaryResultEditViewModel @Inject constructor(
         emotionDescription: String?,
         reflection: String?
     ) {
-        try {
-            updateDiaryUseCase(
-                diaryNumber,
-                situation,
-                thought,
-                emotion,
-                emotionDescription,
-                reflection
-            ).collect {
-                if (it["code"].toString().toDouble() == 8001.0) {
 
-                    _uiState.value = DiaryResultEditUiState.Error(it["msg"] as String)
+        updateDiaryUseCase(
+            diaryNumber,
+            situation,
+            thought,
+            emotion,
+            emotionDescription,
+            reflection
+        ).collect { result ->
+
+            when (result) {
+                is UpdateDiaryUseCase.UpdateDiaryResult.Success ->
+                    _uiState.value = DiaryResultEditUiState.Success
+
+                is UpdateDiaryUseCase.UpdateDiaryResult.Error -> {
+                    _uiState.value = DiaryResultEditUiState.Error(result.message)
                     _uiState.value = DiaryResultEditUiState.Loading
-
-                } else if (it["code"].toString().toDouble() == 8000.0) {
-
-                    _uiState.emit(DiaryResultEditUiState.Success)
                 }
             }
-        } catch(e: Exception) {
-            _uiState.value = DiaryResultEditUiState.Error("일기 수정 실패. 인터넷 연결을 확인해 주세요.")
-            _uiState.value = DiaryResultEditUiState.Loading
         }
     }
-
-
 }

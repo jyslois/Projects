@@ -1,24 +1,21 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.domain.usecases.userInfo.SavePasswordUseCase
 import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
-    private val savePasswordUseCase: SavePasswordUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase
-): ViewModel() {
+) : ViewModel() {
 
     sealed class ChangePasswordUiState {
         object Loading : ChangePasswordUiState()
-        object Success: ChangePasswordUiState()
-        data class Error(val error: String): ChangePasswordUiState()
+        object Success : ChangePasswordUiState()
+        data class Error(val error: String) : ChangePasswordUiState()
     }
 
     // ui상태
@@ -28,24 +25,20 @@ class ChangePasswordViewModel @Inject constructor(
 
     // (서버) 비밀번호 변경
     suspend fun changePasswordButtonClicked(password: String, originalPassword: String) {
-        try {
-            changePasswordUseCase(password, originalPassword).collect {
-                if (it["code"].toString()
-                        .toDouble() == 3005.0 || it["code"].toString()
-                        .toDouble() == 3003.0
-                ) {
-                    _uiState.value = ChangePasswordUiState.Error(it["msg"] as String)
-                    _uiState.value = ChangePasswordUiState.Loading
-                } else if (it["code"].toString().toDouble() == 3002.0) {
-                    savePasswordUseCase(password)
+
+        changePasswordUseCase(password, originalPassword).collect { result ->
+            when (result) {
+                is ChangePasswordUseCase.PasswordChangeResult.Success -> {
                     _uiState.value = ChangePasswordUiState.Success
                 }
+
+                is ChangePasswordUseCase.PasswordChangeResult.Error -> {
+                    _uiState.value = ChangePasswordUiState.Error(result.message)
+                    _uiState.value = ChangePasswordUiState.Loading
+                }
             }
-        } catch (e: Exception) {
-            _uiState.value = ChangePasswordUiState.Error("비밀번호 변경 실패. 인터넷 연결을 확인해 주세요.")
-            _uiState.value = ChangePasswordUiState.Loading
         }
+
+
     }
-
-
 }

@@ -2,6 +2,8 @@ package com.android.mymindnotes.domain.usecases.diary
 
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRemoteRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UpdateDiaryUseCase @Inject constructor(
@@ -26,6 +28,27 @@ class UpdateDiaryUseCase @Inject constructor(
         emotion: String,
         emotionDescription: String?,
         reflection: String?
-    ): Flow<Map<String, Object>> = diaryRepository.updateDiary(diaryNumber, situation, thought, emotion, emotionDescription, reflection)
+    ): Flow<UpdateDiaryResult> {
+        return diaryRepository.updateDiary(
+            diaryNumber,
+            situation,
+            thought,
+            emotion,
+            emotionDescription,
+            reflection
+        ).map { response ->
+            when (response["code"].toString().toDouble()) {
+                8001.0 -> UpdateDiaryResult.Error(response["msg"] as String)
+                8000.0 -> UpdateDiaryResult.Success
+                else -> UpdateDiaryResult.Error("일기 변경 중 오류 발생")
+            }
+        }.catch {
+            emit(UpdateDiaryResult.Error("일기 수정 실패. 인터넷 연결을 확인해 주세요."))
+        }
+    }
 
+    sealed class UpdateDiaryResult {
+        object Success : UpdateDiaryResult()
+        data class Error(val message: String) : UpdateDiaryResult()
+    }
 }

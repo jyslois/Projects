@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,34 +31,42 @@ class DiaryResultViewModel @Inject constructor(
 
     // 다이어리 리스트 불러오기
     suspend fun getDiaryList() {
-        try {
-            getDiaryListUseCase().collect {
-                if (it["code"].toString().toDouble() == 7000.0) {
+
+        getDiaryListUseCase().collect {
+            when {
+                it.isSuccess -> {
                     val gson = Gson()
                     val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                    val jsonResult = gson.toJson(it["diaryList"])
+                    val jsonResult = gson.toJson(it.getOrNull())
                     val diaryList: ArrayList<UserDiary>? = gson.fromJson(jsonResult, type)
                     _uiState.value = DiaryResultUiState.Success(diaryList)
                 }
+
+                it.isFailure -> {
+                    _uiState.value = DiaryResultUiState.Error(
+                        it.exceptionOrNull()?.message
+                            ?: "일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요."
+                    )
+                    _uiState.value = DiaryResultUiState.Loading
+                }
             }
-        } catch (e: Exception) {
-            _uiState.value = DiaryResultUiState.Error("일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
-            _uiState.value = DiaryResultUiState.Loading
         }
 
     }
 
     // 일기 삭제하기
     suspend fun deleteDiaryButtonClicked(diaryNumber: Int) {
-        try {
-            deleteDiaryUseCase(diaryNumber).collect {
-                if (it["code"].toString().toDouble() == 9000.0) {
-                    _uiState.value = DiaryResultUiState.Finish
+
+        deleteDiaryUseCase(diaryNumber).collect {
+            when {
+                it.isSuccess -> _uiState.value = DiaryResultUiState.Finish
+                it.isFailure -> {
+                    _uiState.value = DiaryResultUiState.Error(
+                        it.exceptionOrNull()?.message ?: "일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요."
+                    )
+                    _uiState.value = DiaryResultUiState.Loading
                 }
             }
-        } catch (e: Exception) {
-            _uiState.value = DiaryResultUiState.Error("일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
-            _uiState.value = DiaryResultUiState.Loading
         }
 
     }

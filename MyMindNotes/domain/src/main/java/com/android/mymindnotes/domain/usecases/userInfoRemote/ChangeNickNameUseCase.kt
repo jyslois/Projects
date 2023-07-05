@@ -15,11 +15,6 @@ class ChangeNickNameUseCase @Inject constructor(
 //        return repository.changeNickName(nickName)
 //    }
 
-    sealed class NickNameChangeResult {
-        object NickNameChanged : NickNameChangeResult()
-        data class Error(val message: String) : NickNameChangeResult()
-    }
-
     suspend operator fun invoke(nickName: String): Flow<NickNameChangeResult> {
         return repository.changeNickName(nickName).map { response ->
             when (response["code"].toString().toDouble()) {
@@ -31,4 +26,10 @@ class ChangeNickNameUseCase @Inject constructor(
             emit(NickNameChangeResult.Error("닉네임 변경 실패. 인터넷 연결을 확인해 주세요."))
         }
     }
+
+    sealed class NickNameChangeResult {
+        object NickNameChanged : NickNameChangeResult()
+        data class Error(val message: String) : NickNameChangeResult()
+    }
+
 }

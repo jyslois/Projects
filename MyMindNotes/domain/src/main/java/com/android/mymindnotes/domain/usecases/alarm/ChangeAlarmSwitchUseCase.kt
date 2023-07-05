@@ -44,10 +44,11 @@ class ChangeAlarmSwitchUseCase @Inject constructor(
 
         emit(result)
     }
-}
 
-sealed class SuccessResult {
-    object AlarmSwitchedOn : SuccessResult()
-    data class AlarmTime(val time: String, val hour: Int, val minute: Int) : SuccessResult()
-    object AlarmSwitchedOff : SuccessResult()
+
+    sealed class SuccessResult {
+        object AlarmSwitchedOn : SuccessResult()
+        data class AlarmTime(val time: String, val hour: Int, val minute: Int) : SuccessResult()
+        object AlarmSwitchedOff : SuccessResult()
+    }
 }

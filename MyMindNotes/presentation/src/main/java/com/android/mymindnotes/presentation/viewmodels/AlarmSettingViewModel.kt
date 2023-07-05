@@ -2,23 +2,14 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.alarm.SuccessResult
 import com.android.mymindnotes.domain.usecases.alarm.ChangeAlarmSwitchUseCase
 import com.android.mymindnotes.domain.usecases.alarm.GetAlarmStateUseCase
-import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmHourUseCase
-import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmMinuteUseCase
-import com.android.mymindnotes.domain.usecases.alarm.SaveAlarmTimeUseCase
-import com.android.mymindnotes.domain.usecases.alarm.SaveRebootAlarmTimeUseCase
 import com.android.mymindnotes.domain.usecases.alarm.SetAlarmDialogueUseCase
-import com.android.mymindnotes.domain.usecases.alarm.SetAlarmUseCase
-import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
-import com.android.mymindnotes.domain.usecases.userInfo.ClearTimeSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,17 +37,17 @@ class AlarmSettingViewModel @Inject constructor(
 
         changeAlarmSwitchUseCase(isChecked).collect {
             when (it) {
-                is SuccessResult.AlarmSwitchedOn -> {
+                is ChangeAlarmSwitchUseCase.SuccessResult.AlarmSwitchedOn -> {
                     _uiState.value = AlarmSettingUiState.AlarmSwitchedOn
                 }
-                is SuccessResult.AlarmTime -> {
+                is ChangeAlarmSwitchUseCase.SuccessResult.AlarmTime -> {
                     _uiState.value = AlarmSettingUiState.AlarmSwitchedOnWithTime(
                         it.time,
                         it.hour,
                         it.minute
                     )
                 }
-                is SuccessResult.AlarmSwitchedOff -> {
+                is ChangeAlarmSwitchUseCase.SuccessResult.AlarmSwitchedOff -> {
                     _uiState.value = AlarmSettingUiState.AlarmSwitchedOff
                 }
             }
