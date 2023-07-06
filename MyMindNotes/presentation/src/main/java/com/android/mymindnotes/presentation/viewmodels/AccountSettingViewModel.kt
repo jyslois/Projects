@@ -8,7 +8,6 @@ import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +20,7 @@ class AccountSettingViewModel @Inject constructor(
 
     sealed class AccountSettingUiState {
         object Loading : AccountSettingUiState()
-        data class Success(val userInfo: Map<String, Object>?) : AccountSettingUiState()
+        data class Success(val nickName: String, val email: String, val birthyear: String) : AccountSettingUiState()
         object Logout : AccountSettingUiState()
         object Withdraw : AccountSettingUiState()
         data class Error(val errorMessage: String) : AccountSettingUiState()
@@ -46,12 +45,12 @@ class AccountSettingViewModel @Inject constructor(
 
         deleteUserUseCase().collect {
             when {
-                it.isSuccess ->
-                    // ui 상태 변경
-                    _uiState.value = AccountSettingUiState.Withdraw
+                it.isSuccess -> _uiState.value = AccountSettingUiState.Withdraw
 
                 it.isFailure -> {
-                    _uiState.value = AccountSettingUiState.Error(it.exceptionOrNull()?.message ?: "회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")
+                    _uiState.value = AccountSettingUiState.Error(
+                        it.exceptionOrNull()?.message ?: "회원 탈퇴 실패. 인터넷 연결을 확인해 주세요."
+                    )
                     _uiState.value = AccountSettingUiState.Loading
                 }
 
@@ -63,13 +62,21 @@ class AccountSettingViewModel @Inject constructor(
     // collect & emit
     init {
         viewModelScope.launch {
-            try {
-                val userInfo = getUserInfoUseCase().first()
-                _uiState.value = AccountSettingUiState.Success(userInfo)
-            } catch (e: Exception) {
-                _uiState.value =
-                    AccountSettingUiState.Error("회원 정보를 불러오는 데 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                _uiState.value = AccountSettingUiState.Loading
+
+            getUserInfoUseCase().collect {
+                when {
+                    it.isSuccess -> {
+                        val userInfo = it.getOrThrow()
+                        _uiState.value = AccountSettingUiState.Success(userInfo.nickname, userInfo.email, userInfo.birthyear)
+                    }
+
+                    it.isFailure -> {
+                        _uiState.value = AccountSettingUiState.Error(
+                            it.exceptionOrNull()?.message ?: "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요."
+                        )
+                        _uiState.value = AccountSettingUiState.Loading
+                    }
+                }
             }
         }
     }

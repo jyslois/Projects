@@ -10,7 +10,6 @@ class UpdateDiaryUseCase @Inject constructor(
     private val diaryRepository: DiaryRemoteRepository
 ) {
 
-
 //    // Update Diary
 //    suspend fun updateDiary(
 //        diaryNumber: Int,
@@ -28,7 +27,7 @@ class UpdateDiaryUseCase @Inject constructor(
         emotion: String,
         emotionDescription: String?,
         reflection: String?
-    ): Flow<UpdateDiaryResult> {
+    ): Flow<Result<String>> {
         return diaryRepository.updateDiary(
             diaryNumber,
             situation,
@@ -38,17 +37,13 @@ class UpdateDiaryUseCase @Inject constructor(
             reflection
         ).map { response ->
             when (response["code"].toString().toDouble()) {
-                8001.0 -> UpdateDiaryResult.Error(response["msg"] as String)
-                8000.0 -> UpdateDiaryResult.Success
-                else -> UpdateDiaryResult.Error("일기 변경 중 오류 발생")
+                8001.0 -> Result.failure(RuntimeException(response["msg"] as String))
+                8000.0 -> Result.success("Success")
+                else -> Result.failure(RuntimeException("일기 변경 중 오류 발생"))
             }
         }.catch {
-            emit(UpdateDiaryResult.Error("일기 수정 실패. 인터넷 연결을 확인해 주세요."))
+            emit(Result.failure(RuntimeException("일기 수정 실패. 인터넷 연결을 확인해 주세요.")))
         }
     }
 
-    sealed class UpdateDiaryResult {
-        object Success : UpdateDiaryResult()
-        data class Error(val message: String) : UpdateDiaryResult()
-    }
 }

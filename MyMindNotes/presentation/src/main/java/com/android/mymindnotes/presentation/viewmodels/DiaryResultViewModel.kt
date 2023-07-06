@@ -43,10 +43,8 @@ class DiaryResultViewModel @Inject constructor(
                 }
 
                 it.isFailure -> {
-                    _uiState.value = DiaryResultUiState.Error(
-                        it.exceptionOrNull()?.message
-                            ?: "일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요."
-                    )
+                    _uiState.value = DiaryResultUiState.Error(it.exceptionOrNull()?.message ?: "일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+
                     _uiState.value = DiaryResultUiState.Loading
                 }
             }
@@ -60,10 +58,10 @@ class DiaryResultViewModel @Inject constructor(
         deleteDiaryUseCase(diaryNumber).collect {
             when {
                 it.isSuccess -> _uiState.value = DiaryResultUiState.Finish
+
                 it.isFailure -> {
-                    _uiState.value = DiaryResultUiState.Error(
-                        it.exceptionOrNull()?.message ?: "일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요."
-                    )
+                    _uiState.value = DiaryResultUiState.Error(it.exceptionOrNull()?.message ?: "일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+
                     _uiState.value = DiaryResultUiState.Loading
                 }
             }

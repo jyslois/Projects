@@ -14,22 +14,16 @@ class ChangeNickNameUseCase @Inject constructor(
 //    suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> {
 //        return repository.changeNickName(nickName)
 //    }
-
-    suspend operator fun invoke(nickName: String): Flow<NickNameChangeResult> {
+    suspend operator fun invoke(nickName: String): Flow<Result<String>> {
         return repository.changeNickName(nickName).map { response ->
             when (response["code"].toString().toDouble()) {
-                3001.0 -> NickNameChangeResult.Error(response["msg"] as String)
-                3000.0 -> NickNameChangeResult.NickNameChanged
-                else -> NickNameChangeResult.Error("닉네임 변경 중 오류 발생")
+                3001.0 -> Result.failure(RuntimeException(response["msg"] as String))
+                3000.0 -> Result.success("Success")
+                else -> Result.failure(RuntimeException("닉네임 변경 중 오류 발생."))
             }
         }.catch {
-            emit(NickNameChangeResult.Error("닉네임 변경 실패. 인터넷 연결을 확인해 주세요."))
+            emit(Result.failure(RuntimeException("닉네임 변경 실패. 인터넷 연결을 확인해 주세요.")))
         }
-    }
-
-    sealed class NickNameChangeResult {
-        object NickNameChanged : NickNameChangeResult()
-        data class Error(val message: String) : NickNameChangeResult()
     }
 
 }

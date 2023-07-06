@@ -30,29 +30,24 @@ class ChangeNickNameViewModel @Inject constructor(
     // (서버) 닉네임 중복 체크
     suspend fun checkNickNameButtonClicked(nickName: String) {
 
-        checkNickNameDuplicateUseCase(nickName).collect { result ->
-            when (result) {
-                is CheckNickNameDuplicateUseCase.NickNameCheckResult.NotDuplicate ->
-                    _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked
+        checkNickNameDuplicateUseCase(nickName).collect {
+            when {
+                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked
 
-                is CheckNickNameDuplicateUseCase.NickNameCheckResult.Error ->
-                    _uiState.value = ChangeNickNameUiState.Error(result.message)
+                it.isFailure -> _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")
             }
         }
         _uiState.value = ChangeNickNameUiState.Loading
-
     }
 
     // (서버) 닉네임 변경
     suspend fun changeNickNameButtonClicked(nickName: String) {
 
-        changeNickNameUseCase(nickName).collect { result ->
-            when (result) {
-                is ChangeNickNameUseCase.NickNameChangeResult.NickNameChanged ->
-                    _uiState.value = ChangeNickNameUiState.NickNameChanged
+        changeNickNameUseCase(nickName).collect {
+            when {
+                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameChanged
 
-                is ChangeNickNameUseCase.NickNameChangeResult.Error ->
-                    _uiState.value = ChangeNickNameUiState.Error(result.message)
+                it.isFailure -> _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 변경 실패. 인터넷 연결을 확인해 주세요.")
             }
         }
         _uiState.value = ChangeNickNameUiState.Loading

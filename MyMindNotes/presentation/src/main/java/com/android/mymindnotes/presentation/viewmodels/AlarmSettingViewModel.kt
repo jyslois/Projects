@@ -16,7 +16,7 @@ import javax.inject.Inject
 class AlarmSettingViewModel @Inject constructor(
     private val changeAlarmSwitchUseCase: ChangeAlarmSwitchUseCase,
     private val setAlarmDialogueUseCase: SetAlarmDialogueUseCase,
-    private val getAlarmStateUseCase: GetAlarmStateUseCase,
+    private val getAlarmStateUseCase: GetAlarmStateUseCase
     ): ViewModel() {
 
     // ui 상태를 나타내는 sealed 클래스

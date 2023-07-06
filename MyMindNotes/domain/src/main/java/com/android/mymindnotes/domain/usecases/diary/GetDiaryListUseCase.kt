@@ -12,7 +12,7 @@ class GetDiaryListUseCase @Inject constructor(
 
 //    suspend fun getDiaryList(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
 
-    suspend operator fun invoke(): Flow<Result<Any?>> {
+    suspend operator fun invoke(): Flow<Result<Object?>> {
         return diaryRepository.getDiaryList().map {
             Result.success(it["diaryList"])
         }.catch {

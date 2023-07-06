@@ -32,30 +32,28 @@ class JoinViewModel @Inject constructor(
     // 이메일 중복 체크 함수 호출
     suspend fun checkEmailButtonClicked(emailInput: String) {
 
-        checkEmailDuplicateUseCase(emailInput).collect { result ->
-            when (result) {
-                is CheckEmailDuplicateUseCase.CheckEmailDuplicateResult.Success ->
-                    _uiState.value = JoinUiState.EmailDuplicateCheckSucceed
-                is CheckEmailDuplicateUseCase.CheckEmailDuplicateResult.Error ->
-                    _uiState.value = JoinUiState.Error(result.message)
+        checkEmailDuplicateUseCase(emailInput).collect {
+            when {
+                it.isSuccess -> _uiState.value = JoinUiState.EmailDuplicateCheckSucceed
+
+                it.isFailure -> _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "이메일 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요.")
             }
-            _uiState.value = JoinUiState.Loading
         }
+        _uiState.value = JoinUiState.Loading
     }
 
 
     // (서버) 닉네임 중복 체크 함수 호출
     suspend fun checkNickNameButtonClicked(nickNameInput: String) {
         // (서버) 닉네임 중복 체크
-        checkNickNameDuplicateUseCase(nickNameInput).collect { result ->
-            when (result) {
-                is CheckNickNameDuplicateUseCase.NickNameCheckResult.NotDuplicate ->
-                    _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed
-                is CheckNickNameDuplicateUseCase.NickNameCheckResult.Error ->
-                    _uiState.value = JoinUiState.Error(result.message)
+        checkNickNameDuplicateUseCase(nickNameInput).collect {
+            when {
+                it.isSuccess -> _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed
+
+                it.isFailure -> _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")
             }
-            _uiState.value = JoinUiState.Loading
         }
+        _uiState.value = JoinUiState.Loading
     }
 
 
@@ -67,13 +65,14 @@ class JoinViewModel @Inject constructor(
         birthyear: Int
     ) {
 
-        joinUseCase(email, nickname, password, birthyear).collect { result ->
-            when (result) {
-                is JoinUseCase.JoinResult.Success ->  _uiState.value = JoinUiState.JoinSucceed
-                is JoinUseCase.JoinResult.Error -> _uiState.value = JoinUiState.Error(result.message)
+        joinUseCase(email, nickname, password, birthyear).collect {
+            when {
+                it.isSuccess -> _uiState.value = JoinUiState.JoinSucceed
+
+                it.isFailure ->  _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요.")
             }
-            _uiState.value = JoinUiState.Loading
         }
+        _uiState.value = JoinUiState.Loading
     }
 
 }

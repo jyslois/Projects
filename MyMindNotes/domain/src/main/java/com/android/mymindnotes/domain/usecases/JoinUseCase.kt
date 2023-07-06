@@ -27,10 +27,10 @@ class JoinUseCase @Inject constructor(
 //        return repository.join(email, nickname, password, birthyear)
 //    }
 
-    suspend operator fun invoke(email: String, nickname: String, password: String, birthyear: Int): Flow<JoinResult> {
+    suspend operator fun invoke(email: String, nickname: String, password: String, birthyear: Int): Flow<Result<String>> {
         return repository.join(email, nickname, password, birthyear).map { response ->
             when (response["code"].toString().toDouble()) {
-                2001.0 -> JoinResult.Error(response["msg"] as String)
+                2001.0 -> Result.failure(RuntimeException(response["msg"] as String))
                 2000.0 -> {
                     // 회원 번호 저장
                     saveUserIndexUseCase(response["user_index"].toString().toDouble().toInt())
@@ -45,20 +45,14 @@ class JoinUseCase @Inject constructor(
                     // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
                     saveFirstTimeStateUseCase(true)
 
-                    JoinResult.Success
+                    Result.success("Success")
                 }
-                else -> JoinResult.Error("회원가입 중 오류 발생")
+                else -> Result.failure(RuntimeException("회원가입 중 오류 발생"))
 
             }
         }.catch {
-            emit(JoinResult.Error("회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요."))
+            emit(Result.failure(RuntimeException("회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
         }
     }
-
-    sealed class JoinResult {
-        object Success: JoinResult()
-        data class Error(val message: String): JoinResult()
-    }
-
 
 }

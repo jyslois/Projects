@@ -40,17 +40,18 @@ class DiaryResultEditViewModel @Inject constructor(
             emotion,
             emotionDescription,
             reflection
-        ).collect { result ->
+        ).collect {
 
-            when (result) {
-                is UpdateDiaryUseCase.UpdateDiaryResult.Success ->
-                    _uiState.value = DiaryResultEditUiState.Success
+            when {
+                it.isSuccess -> _uiState.value = DiaryResultEditUiState.Success
 
-                is UpdateDiaryUseCase.UpdateDiaryResult.Error -> {
-                    _uiState.value = DiaryResultEditUiState.Error(result.message)
+                it.isFailure -> {
+                    _uiState.value = DiaryResultEditUiState.Error(it.exceptionOrNull()?.message ?: "일기 수정 실패. 인터넷 연결을 확인해 주세요.")
+
                     _uiState.value = DiaryResultEditUiState.Loading
                 }
             }
+
         }
     }
 }

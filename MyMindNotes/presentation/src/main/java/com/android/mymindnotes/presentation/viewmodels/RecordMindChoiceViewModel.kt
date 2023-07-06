@@ -26,14 +26,16 @@ class RecordMindChoiceViewModel @Inject constructor (
 
     fun getNickNameFromUserInfo() {
         viewModelScope.launch {
-            try {
-                getUserInfoUseCase().collect {
-                    val nickName = it["nickname"] as String
-                    _uiState.value = RecordMindChoiceUiState.Success(nickName)
+
+            getUserInfoUseCase().collect {
+                when {
+                    it.isSuccess -> _uiState.value = RecordMindChoiceUiState.Success(it.getOrThrow().nickname)
+
+                    it.isFailure -> {
+                        _uiState.value = RecordMindChoiceUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                        _uiState.value = RecordMindChoiceUiState.Loading
+                    }
                 }
-            } catch(e: Exception) {
-                _uiState.value = RecordMindChoiceUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
-                _uiState.value = RecordMindChoiceUiState.Loading
             }
         }
     }

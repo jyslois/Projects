@@ -16,20 +16,15 @@ class CheckNickNameDuplicateUseCase @Inject constructor(
 //        return repository.checkNickName(nickNameInput)
 //    }
 
-    sealed class NickNameCheckResult {
-        object NotDuplicate : NickNameCheckResult()
-        data class Error(val message: String) : NickNameCheckResult()
-    }
-
-    suspend operator fun invoke(nickNameInput: String): Flow<NickNameCheckResult> {
+    suspend operator fun invoke(nickNameInput: String): Flow<Result<String>> {
         return repository.checkNickName(nickNameInput).map { response ->
             when(response["code"].toString().toDouble()) {
-                1003.0 -> NickNameCheckResult.Error(response["msg"] as String)
-                1002.0 -> NickNameCheckResult.NotDuplicate
-                else -> NickNameCheckResult.Error("닉네임 체크 중 오류 발생")
+                1003.0 -> Result.failure(RuntimeException(response["msg"] as String))
+                1002.0 -> Result.success("Success")
+                else -> Result.failure(RuntimeException("닉네임 체크 중 오류 발생"))
             }
         }.catch {
-            emit(NickNameCheckResult.Error("닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요."))
+            emit(Result.failure(RuntimeException("닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")))
         }
     }
 }

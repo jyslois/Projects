@@ -26,14 +26,13 @@ class ChangePasswordViewModel @Inject constructor(
     // (서버) 비밀번호 변경
     suspend fun changePasswordButtonClicked(password: String, originalPassword: String) {
 
-        changePasswordUseCase(password, originalPassword).collect { result ->
-            when (result) {
-                is ChangePasswordUseCase.PasswordChangeResult.Success -> {
-                    _uiState.value = ChangePasswordUiState.Success
-                }
+        changePasswordUseCase(password, originalPassword).collect {
+            when {
+                it.isSuccess -> _uiState.value = ChangePasswordUiState.Success
 
-                is ChangePasswordUseCase.PasswordChangeResult.Error -> {
-                    _uiState.value = ChangePasswordUiState.Error(result.message)
+                it.isFailure -> {
+                    _uiState.value = ChangePasswordUiState.Error(it.exceptionOrNull()?.message ?: "비밀번호 변경 실패. 인터넷 연결을 확인해 주세요.")
+
                     _uiState.value = ChangePasswordUiState.Loading
                 }
             }

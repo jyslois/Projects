@@ -51,15 +51,10 @@ class AccountSettingActivity : AppCompatActivity() {
                             }
 
                             is AccountSettingViewModel.AccountSettingUiState.Success -> {
-                                // 성공 상태 처리
-                                // userInfo가 null이 아닌 경우 처리
-                                uiState.userInfo?.let { userInfo ->
-                                    // 회원 정보 업데이트
-                                    // 이메일, 닉네임, 생년 세팅
-                                    binding.email.text = userInfo["email"] as String?
-                                    binding.nickname.text = userInfo["nickname"] as String?
-                                    binding.birthyear.text = userInfo["birthyear"]?.toString()?.toDouble()?.toInt()?.toString()
-                                }
+
+                                binding.nickname.text = uiState.nickName
+                                binding.email.text = uiState.email
+                                binding.birthyear.text = uiState.birthyear
 
                             }
 
