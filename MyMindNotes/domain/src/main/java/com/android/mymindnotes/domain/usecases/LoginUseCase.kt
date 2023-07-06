@@ -20,10 +20,10 @@ class LoginUseCase @Inject constructor(
 //        return repository.login(email, password)
 //    }
 
-    suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<LoginResult> {
+    suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<Result<String>> {
         return repository.login(email, password).map { response ->
             when (response["code"].toString().toDouble()) {
-                5001.0, 5003.0, 5005.0 -> LoginResult.Error(response["msg"] as String)
+                5001.0, 5003.0, 5005.0 -> Result.failure(RuntimeException(response["msg"] as String))
                 5000.0 -> {
                     // 로그인 성공
                     if (isAutoLoginChecked) {
@@ -41,18 +41,13 @@ class LoginUseCase @Inject constructor(
 
                     // 회원 번호 저장
                     saveUserIndexUseCase(response["user_index"].toString().toDouble().toInt())
-                    LoginResult.Success
+                    Result.success("Success")
                 }
-                else -> LoginResult.Error("로그인 중 오류 발생")
+                else -> Result.failure(RuntimeException("로그인 중 오류 발생"))
             }
         }.catch {
-            emit(LoginResult.Error("로그인에 실패했습니다. 인터넷 연결을 확인해 주세요."))
+            emit(Result.failure(RuntimeException("로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
         }
-    }
-
-    sealed class LoginResult {
-        data class Error(val message: String): LoginResult()
-        object Success: LoginResult()
     }
 
 }

@@ -44,11 +44,12 @@ class LoginViewModel @Inject constructor(
     // 로그인
     suspend fun loginButtonClicked(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean) {
 
-        loginUseCase(email, password, isAutoLoginChecked, isAutoSaveChecked).collect { result ->
-            when (result) {
-                is LoginUseCase.LoginResult.Success -> _uiState.value = LoginUiState.LoginSucceed
-                is LoginUseCase.LoginResult.Error -> {
-                    _uiState.value = LoginUiState.Error(result.message)
+        loginUseCase(email, password, isAutoLoginChecked, isAutoSaveChecked).collect {
+            when {
+                it.isSuccess ->  _uiState.value = LoginUiState.LoginSucceed
+
+                it.isFailure -> {
+                    _uiState.value = LoginUiState.Error(it.exceptionOrNull()?.message ?: "로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")
                     _uiState.value = LoginUiState.Loading
                 }
             }

@@ -37,9 +37,7 @@ class MainPageViewModel @Inject constructor(
                 it.isSuccess -> _uiState.value = MainPageUiState.Success(it.getOrThrow().nickname)
 
                 it.isFailure -> {
-                    _uiState.value = MainPageUiState.Error(
-                        it.exceptionOrNull()?.message ?: "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요."
-                    )
+                    _uiState.value = MainPageUiState.Error(it.exceptionOrNull()?.message ?: "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
                     _uiState.value = MainPageUiState.Loading
                 }
             }

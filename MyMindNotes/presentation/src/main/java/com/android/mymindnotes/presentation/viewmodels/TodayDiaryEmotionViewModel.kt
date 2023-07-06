@@ -29,13 +29,11 @@ class TodayDiaryEmotionViewModel @Inject constructor(
 
     sealed class TodayDiaryEmotionUiState {
         object Loading : TodayDiaryEmotionUiState()
-        data class Success(val emotion: String?, val emotionText: String?) :
-            TodayDiaryEmotionUiState()
+        data class Success(val emotion: String?, val emotionText: String?) : TodayDiaryEmotionUiState()
     }
 
     // ui상태
-    private val _uiState =
-        MutableStateFlow<TodayDiaryEmotionUiState>(TodayDiaryEmotionUiState.Loading)
+    private val _uiState = MutableStateFlow<TodayDiaryEmotionUiState>(TodayDiaryEmotionUiState.Loading)
     val uiState: StateFlow<TodayDiaryEmotionUiState> = _uiState
 
     fun nextButtonClicked(chosenEmotionId: Int, emotionText: String?) {
