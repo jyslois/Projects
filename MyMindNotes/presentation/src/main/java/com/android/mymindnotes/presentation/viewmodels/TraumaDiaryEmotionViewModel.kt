@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiaryEmotionTextUseCase
 import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiaryEmotionUseCase
-import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryEmotionColorUseCase
-import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryEmotionTextUseCase
 import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryEmotionUseCase
 import com.android.mymindnotes.presentation.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class TraumaDiaryEmotionViewModel @Inject constructor(
     private val saveTraumaDiaryEmotionUseCase: SaveTraumaDiaryEmotionUseCase,
-    private val saveTraumaDiaryEmotionColorUseCase: SaveTraumaDiaryEmotionColorUseCase,
-    private val saveTraumaDiaryEmotionTextUseCase: SaveTraumaDiaryEmotionTextUseCase,
     private val getTraumaDiaryEmotionUseCase: GetTraumaDiaryEmotionUseCase,
     private val getTraumaDiaryEmotionTextUseCase: GetTraumaDiaryEmotionTextUseCase
 ): ViewModel() {
@@ -37,49 +33,53 @@ class TraumaDiaryEmotionViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            saveTraumaDiaryEmotionTextUseCase(emotionText)
+            lateinit var emotion: String
+            var emotionColor = 0
 
             when (chosenEmotionId) {
                 R.id.happinessButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.orange_happiness)
-                    saveTraumaDiaryEmotionUseCase("기쁨")
+                    emotionColor = R.drawable.orange_happiness
+                    emotion = "기쁨"
                 }
 
                 R.id.anticipationButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.green_anticipation)
-                    saveTraumaDiaryEmotionUseCase("기대")
+                    emotionColor = R.drawable.green_anticipation
+                    emotion = "기대"
                 }
 
                 R.id.trustButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.darkblue_trust)
-                    saveTraumaDiaryEmotionUseCase("신뢰")
+                    emotionColor = R.drawable.darkblue_trust
+                    emotion = "신뢰"
                 }
 
                 R.id.surpriseButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.yellow_surprise)
-                    saveTraumaDiaryEmotionUseCase("놀람")
+                    emotionColor = R.drawable.yellow_surprise
+                    emotion = "놀람"
                 }
 
                 R.id.sadnessButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.grey_sadness)
-                    saveTraumaDiaryEmotionUseCase("슬픔")
+                    emotionColor = R.drawable.grey_sadness
+                    emotion = "슬픔"
                 }
 
                 R.id.disgustButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.brown_disgust)
-                    saveTraumaDiaryEmotionUseCase("혐오")
+                    emotionColor = R.drawable.brown_disgust
+                    emotion = "혐오"
                 }
 
                 R.id.fearButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.black_fear)
-                    saveTraumaDiaryEmotionUseCase("공포")
+                    emotionColor = R.drawable.black_fear
+                    emotion = "공포"
                 }
 
                 R.id.angerButton -> {
-                    saveTraumaDiaryEmotionColorUseCase(R.drawable.red_anger)
-                    saveTraumaDiaryEmotionUseCase("분노")
+                    emotionColor = R.drawable.red_anger
+                    emotion = "분노"
                 }
             }
+
+            saveTraumaDiaryEmotionUseCase(emotion, emotionColor, emotionText)
+
         }
     }
 

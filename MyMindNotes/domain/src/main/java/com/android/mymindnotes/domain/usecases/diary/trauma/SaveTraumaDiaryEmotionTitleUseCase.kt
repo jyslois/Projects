@@ -3,7 +3,7 @@ package com.android.mymindnotes.domain.usecases.diary.trauma
 import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryLocalRepository
 import javax.inject.Inject
 
-class SaveTraumaDiaryEmotionUseCase @Inject constructor(
+class SaveTraumaDiaryEmotionTitleUseCase @Inject constructor(
     private val repository: TraumaDiaryLocalRepository
 ) {
 

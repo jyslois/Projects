@@ -93,8 +93,7 @@ class TraumaDiaryEmotionActivity : AppCompatActivity() {
                 viewModel.nextOrPreviousButtonClickedOrPaused(chosenEmotionId, emotionText)
 
                 // 다음 화면으로 이동
-                val intent =
-                    Intent(applicationContext, TraumaDiaryReflectionActivity::class.java)
+                val intent = Intent(applicationContext, TraumaDiaryReflectionActivity::class.java)
                 startActivity(intent)
             }
 

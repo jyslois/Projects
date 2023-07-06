@@ -96,8 +96,7 @@ class TodayDiaryEmotionActivity : AppCompatActivity() {
                 viewModel.nextButtonClicked(chosenEmotionId, emotionText)
 
                 // 다음 화면 이동
-                val intent =
-                    Intent(applicationContext, TodayDiarySituationActivity::class.java)
+                val intent = Intent(applicationContext, TodayDiarySituationActivity::class.java)
                 startActivity(intent)
             }
 
