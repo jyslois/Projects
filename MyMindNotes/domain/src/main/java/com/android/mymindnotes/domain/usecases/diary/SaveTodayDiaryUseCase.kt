@@ -9,7 +9,6 @@ import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryTypeUse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class SaveTodayDiaryUseCase @Inject constructor(
@@ -28,12 +27,12 @@ class SaveTodayDiaryUseCase @Inject constructor(
 
     suspend operator fun invoke(reflection: String?, type: String, date: String, day: String): Flow<Result<String>> {
 
-        return repository.saveDiary().onEach {
-            saveTodayDiaryReflectionUseCase(reflection)
-            saveTodayDiaryTypeUseCase(type)
-            saveTodayDiaryRecordDateUseCase(date)
-            saveTodayDiaryRecordDayUseCase(day)
-        }.map {
+        saveTodayDiaryReflectionUseCase(reflection)
+        saveTodayDiaryTypeUseCase(type)
+        saveTodayDiaryRecordDateUseCase(date)
+        saveTodayDiaryRecordDayUseCase(day)
+
+        return repository.saveDiary().map {
             when (it["code"].toString().toDouble()) {
                 6001.0 -> Result.failure(RuntimeException(it["msg"] as String))
                 6000.0 -> {
