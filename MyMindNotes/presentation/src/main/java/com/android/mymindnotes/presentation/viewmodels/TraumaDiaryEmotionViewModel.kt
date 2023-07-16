@@ -33,7 +33,7 @@ class TraumaDiaryEmotionViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            lateinit var emotion: String
+            var emotion: String? = null
             var emotionColor = 0
 
             when (chosenEmotionId) {

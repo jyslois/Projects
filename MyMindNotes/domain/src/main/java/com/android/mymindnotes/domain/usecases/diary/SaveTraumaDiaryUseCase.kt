@@ -1,6 +1,6 @@
 package com.android.mymindnotes.domain.usecases.diary
 
-import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRepository
 import com.android.mymindnotes.domain.usecases.diary.trauma.ClearTraumaDiaryTempRecordsUseCase
 import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryRecordDateUseCase
 import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryRecordDayUseCase
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SaveTraumaDiaryUseCase @Inject constructor(
-    private val repository: TraumaDiaryRemoteRepository,
+    private val traumaDiaryRepository: TraumaDiaryRepository,
     private val saveTraumaDiaryReflectionUseCase: SaveTraumaDiaryReflectionUseCase,
     private val saveTraumaDiaryTypeUseCase: SaveTraumaDiaryTypeUseCase,
     private val saveTraumaDiaryRecordDateUseCase: SaveTraumaDiaryRecordDateUseCase,
@@ -32,7 +32,7 @@ class SaveTraumaDiaryUseCase @Inject constructor(
         saveTraumaDiaryRecordDateUseCase(date)
         saveTraumaDiaryRecordDayUseCase(day)
 
-        return repository.saveDiary().map {
+        return traumaDiaryRepository.saveDiary().map {
             when (it["code"].toString().toDouble()) {
                 6001.0 -> Result.failure(RuntimeException(it["msg"] as String))
                 6000.0 -> {
