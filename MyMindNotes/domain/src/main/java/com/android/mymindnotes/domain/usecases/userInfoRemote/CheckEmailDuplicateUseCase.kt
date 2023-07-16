@@ -1,13 +1,13 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CheckEmailDuplicateUseCase @Inject constructor(
-    private val repository: MemberRemoteRepository
+    private val memberRepository: MemberRepository
 ) {
 
 //    // 이메일
@@ -17,7 +17,7 @@ class CheckEmailDuplicateUseCase @Inject constructor(
 //    }
 
     suspend operator fun invoke(emailInput: String): Flow<Result<String>> {
-        return repository.checkEmail(emailInput).map { response ->
+        return memberRepository.checkEmail(emailInput).map { response ->
             when (response["code"].toString().toDouble()) {
                 1001.0 -> Result.failure(RuntimeException(response["msg"] as String))
                 1000.0 -> Result.success("Success")

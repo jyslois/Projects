@@ -1,6 +1,6 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import com.android.mymindnotes.domain.usecases.alarm.StopAlarmUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.ClearLoginStatesUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.ClearAlarmSettingsUseCase
@@ -13,7 +13,7 @@ import java.lang.RuntimeException
 import javax.inject.Inject
 
 class DeleteUserUseCase @Inject constructor(
-    private val memberRemoteRepository: MemberRemoteRepository,
+    private val memberRepository: MemberRepository,
     private val clearAlarmSettingsUseCase: ClearAlarmSettingsUseCase,
     private val clearTimeSettingsUseCase: ClearTimeSettingsUseCase,
     private val clearLoginStatesUseCase: ClearLoginStatesUseCase,
@@ -27,7 +27,7 @@ class DeleteUserUseCase @Inject constructor(
 
     suspend operator fun invoke(): Flow<Result<String>> {
 
-        return memberRemoteRepository.deleteUser().onEach { // onEach(): Flow가 방출하는 각 항목(즉, 회원 탈퇴 결과)에 대해 지정된 작업을 수행
+        return memberRepository.deleteUser().onEach { // onEach(): Flow가 방출하는 각 항목(즉, 회원 탈퇴 결과)에 대해 지정된 작업을 수행
             // onEach를 사용한 이유는 deleteUser() 함수가 반환한 Flow의 각 항목에 대해 아래의 작업을 수행하기 위함이다. 즉, 회원 탈퇴가 성공적으로 수행될 때마다 아래의 작업들이 실행될 것이다.
             // 알람 삭제
             stopAlarmUseCase()

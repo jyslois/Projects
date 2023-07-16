@@ -1,15 +1,15 @@
 package com.android.mymindnotes.data.repositoryImpls
 
 import com.android.mymindnotes.data.dataSources.DiaryRemoteDataSourceInterface
-import com.android.mymindnotes.data.repositoryInterfaces.DiaryRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class DiaryRemoteRepositoryImpl @Inject constructor(
+class DiaryRepositoryImpl @Inject constructor(
     private val diaryRemoteDataSource: DiaryRemoteDataSourceInterface,
     private val memberLocalDataSource: MemberLocalDataSourceInterface
-): DiaryRemoteRepository {
+): DiaryRepository {
 
 
     // Get Diary List

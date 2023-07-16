@@ -1,10 +1,10 @@
 package com.android.mymindnotes.domain.usecases.loginStates
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberLocalRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import javax.inject.Inject
 
 class ClearLoginStatesUseCase @Inject constructor(
-    private val repository: MemberLocalRepository
+    private val repository: MemberRepository
 ) {
 //    suspend fun clearLoginStates() {
 //        repository.clearAutoSaveSharedPreferences()

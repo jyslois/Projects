@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases.alarm
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberLocalRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetAlarmHourUseCase @Inject constructor(
-    private val repository: MemberLocalRepository
+    private val repository: MemberRepository
 ) {
 
 //    // 시간 불러오기

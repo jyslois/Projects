@@ -1,13 +1,13 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetUserInfoUseCase @Inject constructor(
-    private val memberRemoteRepository: MemberRemoteRepository
+    private val memberRepository: MemberRepository
 ) {
 
 
@@ -15,7 +15,7 @@ class GetUserInfoUseCase @Inject constructor(
 //    suspend fun getUserInfo(): Flow<Map<String, Object>> = memberRemoteRepository.getUserInfo()
 
     suspend operator fun invoke(): Flow<Result<UserInfo>> {
-        return memberRemoteRepository.getUserInfo().map { response ->
+        return memberRepository.getUserInfo().map { response ->
             val nickname = response["nickname"] as String
             val email = response["email"] as String
             val birthyear = response["birthyear"].toString().toDouble().toInt().toString()

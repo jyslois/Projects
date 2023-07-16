@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases.userInfo
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberLocalRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetIdUseCase @Inject constructor(
-    private val repository: MemberLocalRepository
+    private val repository: MemberRepository
 ) {
 //    suspend fun getId(): Flow<String?> {
 //        return repository.getId()

@@ -1,13 +1,13 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ChangeNickNameUseCase @Inject constructor(
-    private val repository: MemberRemoteRepository
+    private val memberRepository: MemberRepository
 ) {
 
 //    // 닉네임 바꾸기
@@ -15,7 +15,7 @@ class ChangeNickNameUseCase @Inject constructor(
 //        return repository.changeNickName(nickName)
 //    }
     suspend operator fun invoke(nickName: String): Flow<Result<String>> {
-        return repository.changeNickName(nickName).map { response ->
+        return memberRepository.changeNickName(nickName).map { response ->
             when (response["code"].toString().toDouble()) {
                 3001.0 -> Result.failure(RuntimeException(response["msg"] as String))
                 3000.0 -> Result.success("Success")

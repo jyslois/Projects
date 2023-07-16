@@ -1,6 +1,6 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import com.android.mymindnotes.domain.usecases.userInfo.SavePasswordUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ChangePasswordUseCase @Inject constructor(
-    private val repository: MemberRemoteRepository,
+    private val memberRepository: MemberRepository,
     private val savePasswordUseCase: SavePasswordUseCase
 ) {
 
@@ -18,7 +18,7 @@ class ChangePasswordUseCase @Inject constructor(
 //    }
 
     suspend operator fun invoke(password: String, originalPassword: String): Flow<Result<String>> {
-        return repository.changePassword(password, originalPassword).map { response ->
+        return memberRepository.changePassword(password, originalPassword).map { response ->
             when (response["code"].toString().toDouble()) {
                 3005.0, 3003.0 -> Result.failure(RuntimeException(response["msg"] as String))
                 3002.0 -> {

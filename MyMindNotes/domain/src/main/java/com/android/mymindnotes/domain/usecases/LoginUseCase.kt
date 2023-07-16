@@ -1,6 +1,6 @@
 package com.android.mymindnotes.domain.usecases
 
-import com.android.mymindnotes.data.repositoryInterfaces.MemberRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.SaveIdAndPasswordUseCase
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
-    private val repository: MemberRemoteRepository,
+    private val memberRepository: MemberRepository,
     private val saveIdAndPasswordUseCase: SaveIdAndPasswordUseCase,
     private val saveUserIndexUseCase: SaveUserIndexUseCase,
     private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
@@ -21,7 +21,7 @@ class LoginUseCase @Inject constructor(
 //    }
 
     suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<Result<String>> {
-        return repository.login(email, password).map { response ->
+        return memberRepository.login(email, password).map { response ->
             when (response["code"].toString().toDouble()) {
                 5001.0, 5003.0, 5005.0 -> Result.failure(RuntimeException(response["msg"] as String))
                 5000.0 -> {
