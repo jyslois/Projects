@@ -1,6 +1,6 @@
 package com.android.mymindnotes.domain.usecases.diary
 
-import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryRemoteRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryRepository
 import com.android.mymindnotes.domain.usecases.diary.today.ClearTodayDiaryTempRecordsUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryRecordDateUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryRecordDayUseCase
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SaveTodayDiaryUseCase @Inject constructor(
-    private val repository: TodayDiaryRemoteRepository,
+    private val todayDiaryRepository: TodayDiaryRepository,
     private val saveTodayDiaryReflectionUseCase: SaveTodayDiaryReflectionUseCase,
     private val saveTodayDiaryTypeUseCase: SaveTodayDiaryTypeUseCase,
     private val saveTodayDiaryRecordDateUseCase: SaveTodayDiaryRecordDateUseCase,
@@ -32,7 +32,7 @@ class SaveTodayDiaryUseCase @Inject constructor(
         saveTodayDiaryRecordDateUseCase(date)
         saveTodayDiaryRecordDayUseCase(day)
 
-        return repository.saveDiary().map {
+        return todayDiaryRepository.saveDiary().map {
             when (it["code"].toString().toDouble()) {
                 6001.0 -> Result.failure(RuntimeException(it["msg"] as String))
                 6000.0 -> {

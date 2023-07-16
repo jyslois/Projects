@@ -2,8 +2,9 @@ package com.android.mymindnotes.data.repositoryInterfaces
 
 import kotlinx.coroutines.flow.Flow
 
-interface TodayDiaryLocalRepository {
+interface TodayDiaryRepository {
 
+    // 로컬
     // save methods
     suspend fun saveEmotionColor(color: Int)
     suspend fun saveEmotion(emotion: String?)
@@ -24,4 +25,8 @@ interface TodayDiaryLocalRepository {
 
     // clear methods
     suspend fun clearTodayDiaryTempRecords()
+
+    // 서버
+    // 일기 저장
+    suspend fun saveDiary(): Flow<Map<String, Object>>
 }

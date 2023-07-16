@@ -1,11 +1,11 @@
 package com.android.mymindnotes.domain.usecases.diary.today
 
-import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryLocalRepository
+import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetTodayDiaryThoughtUseCase @Inject constructor(
-    private val repository: TodayDiaryLocalRepository
+    private val repository: TodayDiaryRepository
 ) {
 
 //    suspend fun getThought(): Flow<String?> {
