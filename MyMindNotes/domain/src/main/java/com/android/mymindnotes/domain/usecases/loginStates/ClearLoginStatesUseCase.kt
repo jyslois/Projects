@@ -7,10 +7,10 @@ class ClearLoginStatesUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
 //    suspend fun clearLoginStates() {
-//        repository.clearAutoSaveSharedPreferences()
+//        repository.clearLoginStatesRelatedKeys()
 //    }
 
     suspend operator fun invoke() {
-        repository.clearAutoSaveSharedPreferences()
+        repository.clearLoginStatesRelatedKeys()
     }
 }

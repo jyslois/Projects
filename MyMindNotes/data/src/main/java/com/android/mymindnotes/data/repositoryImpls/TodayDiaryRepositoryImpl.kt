@@ -73,7 +73,7 @@ class TodayDiaryRepositoryImpl @Inject constructor(
     // 서버
     // 일기 저장하기
     override suspend fun saveDiary(): Flow<Map<String, Object>> {
-        var userIndex = memberLocalDataSource.getUserIndexfromUserSharedPreferences().first()
+        val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         val type = todayDiaryLocalDataSource.getType.first()
         val date = todayDiaryLocalDataSource.getDate.first()
         val day = todayDiaryLocalDataSource.getDay.first()

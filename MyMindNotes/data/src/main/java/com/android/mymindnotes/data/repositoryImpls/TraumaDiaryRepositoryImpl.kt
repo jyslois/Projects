@@ -73,7 +73,7 @@ class TraumaDiaryRepositoryImpl @Inject constructor(
     // 서버
     // 일기 저장하기
     override suspend fun saveDiary(): Flow<Map<String, Object>> {
-        val userIndex = memberLocalDataSource.getUserIndexfromUserSharedPreferences().first()
+        val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         val type = traumaDiaryLocalDataSource.getType.first()
         val date = traumaDiaryLocalDataSource.getDate.first()
         val day = traumaDiaryLocalDataSource.getDay.first()

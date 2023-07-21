@@ -1,43 +1,40 @@
 package com.android.mymindnotes.data.dataSources
 
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.android.mymindnotes.core.hilt.coroutineModules.IoDispatcher
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaDate
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaDay
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaEmotion
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaEmotionColor
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaEmotionText
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaReflection
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaSituation
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaThought
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.TraumaType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TraumaDiaryLocalDataSource @Inject constructor(
-    @TraumaEmotion private val emotion_sharedPreferences: SharedPreferences,
-    @TraumaEmotionText private val emotionText_sharedPreferences: SharedPreferences,
-    @TraumaSituation private val situation_sharedPreferences: SharedPreferences,
-    @TraumaThought private val thought_sharedPreferences: SharedPreferences,
-    @TraumaReflection private val reflection_sharedPreferences: SharedPreferences,
-    @TraumaType private val type_sharedPreferences: SharedPreferences,
-    @TraumaEmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
-    @TraumaDate private val date_sharedPreferences: SharedPreferences,
-    @TraumaDay private val day_sharedPreferences: SharedPreferences,
+    private val dataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-): TraumaDiaryLocalDataSourceInterface {
+) : TraumaDiaryLocalDataSourceInterface {
+
+    // DataStore Keys (TraumaDiary에 해당하는 DataStore keys)
+    private val traumaEmotionColorKey = intPreferencesKey("traumaEmotionColor")
+    private val traumaEmotionKey = stringPreferencesKey("traumaEmotion")
+    private val traumaEmotionTextKey = stringPreferencesKey("traumaEmotionDescription")
+    private val traumaSituationKey = stringPreferencesKey("traumaSituation")
+    private val traumaThoughtKey = stringPreferencesKey("traumaThought")
+    private val traumaReflectionKey = stringPreferencesKey("traumaReflection")
+    private val traumaTypeKey = stringPreferencesKey("traumaType")
+    private val traumaDateKey = stringPreferencesKey("traumaDate")
+    private val traumaDayKey = stringPreferencesKey("traumaDay")
+
     // Save methods
     // EmotionColor
-    override suspend fun saveEmotionColor(color: Int) {
+    override suspend fun saveEmotionColor(color: Int?) {
         withContext(ioDispatcher) {
-            if (color == null) {
-                emotionColor_sharedPreferences.edit().putInt("emotionColor", -1).commit()
-            } else {
-                emotionColor_sharedPreferences.edit().putInt("emotionColor", color).commit()
+            dataStore.edit { preferences ->
+                preferences[traumaEmotionColorKey] = color ?: -1
             }
         }
     }
@@ -45,132 +42,147 @@ class TraumaDiaryLocalDataSource @Inject constructor(
     // Emotion
     override suspend fun saveEmotion(emotion: String?) {
         withContext(ioDispatcher) {
-            emotion_sharedPreferences.edit().putString("emotion", emotion).commit()
+            dataStore.edit { preferences ->
+                emotion?.let { preferences[traumaEmotionKey] = it }
+            }
         }
     }
 
     // EmotionText
     override suspend fun saveEmotionText(emotionText: String?) {
         withContext(ioDispatcher) {
-            emotionText_sharedPreferences.edit().putString("emotionDescription", emotionText).commit()
+            dataStore.edit { preferences ->
+                emotionText?.let { preferences[traumaEmotionTextKey] = it }
+            }
         }
     }
 
     // Situation
-    override suspend fun saveSituation(situation: String) {
+    override suspend fun saveSituation(situation: String?) {
         withContext(ioDispatcher) {
-            situation_sharedPreferences.edit().putString("situation", situation).commit()
+            dataStore.edit { preferences ->
+                situation?.let { preferences[traumaSituationKey] = it }
+            }
         }
     }
 
     // Thought
     override suspend fun saveThought(thought: String?) {
         withContext(ioDispatcher) {
-            thought_sharedPreferences.edit().putString("thought", thought).commit()
+            dataStore.edit { preferences ->
+                thought?.let { preferences[traumaThoughtKey] = it }
+            }
         }
     }
 
     // Reflection
     override suspend fun saveReflection(reflection: String?) {
         withContext(ioDispatcher) {
-            reflection_sharedPreferences.edit().putString("reflection", reflection).commit()
+            dataStore.edit { preferences ->
+                reflection?.let { preferences[traumaReflectionKey] = it }
+            }
         }
     }
 
     // Type
     override suspend fun saveType(type: String) {
         withContext(ioDispatcher) {
-            type_sharedPreferences.edit().putString("type", type).commit()
+            dataStore.edit { preferences ->
+                preferences[traumaTypeKey] = type
+            }
         }
     }
 
     // Date
     override suspend fun saveDate(date: String) {
         withContext(ioDispatcher) {
-            date_sharedPreferences.edit().putString("date", date).commit()
+            dataStore.edit { preferences ->
+                preferences[traumaDateKey] = date
+            }
         }
     }
 
     // Day
     override suspend fun saveDay(day: String) {
         withContext(ioDispatcher) {
-            day_sharedPreferences.edit().putString("day", day).commit()
+            dataStore.edit { preferences ->
+                preferences[traumaDayKey] = day
+            }
         }
     }
 
     // Get methods
     // Emotion
-    override val getEmotion: Flow<String?> = flow {
-        val emotion = emotion_sharedPreferences.getString("emotion", "")
-        emit(emotion)
+    override val getEmotion: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaEmotionKey]
     }.flowOn(ioDispatcher)
 
     // EmotionText
-    override val getEmotionText: Flow<String?> = flow {
-        val emotionText = emotionText_sharedPreferences.getString("emotionDescription", "")
-        emit(emotionText)
+    override val getEmotionText: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaEmotionTextKey]
     }.flowOn(ioDispatcher)
+
 
     // Situation
-    override val getSituation: Flow<String?> = flow {
-        val situation = situation_sharedPreferences.getString("situation", "")
-        emit(situation)
+    override val getSituation: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaSituationKey]
     }.flowOn(ioDispatcher)
+
 
     // Thought
-    override val getThought: Flow<String?> = flow {
-        val thought = thought_sharedPreferences.getString("thought", "")
-        emit(thought)
+    override val getThought: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaThoughtKey]
     }.flowOn(ioDispatcher)
 
+
     // Reflection
-    override val getReflection: Flow<String?> = flow {
-        val reflection = reflection_sharedPreferences.getString("reflection", "")
-        emit(reflection)
+    override val getReflection: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaReflectionKey]
     }.flowOn(ioDispatcher)
+
 
     // Type
     // Reflection
-    override val getType: Flow<String?> = flow {
-        val type = type_sharedPreferences.getString("type", "")
-        emit(type)
+    override val getType: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaTypeKey]
     }.flowOn(ioDispatcher)
 
     // Date
-    override val getDate: Flow<String?> = flow {
-        val date = date_sharedPreferences.getString("date", "")
-        emit(date)
+    override val getDate: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaDateKey]
     }.flowOn(ioDispatcher)
 
     // Day
-    override val getDay: Flow<String?> = flow {
-        val day = day_sharedPreferences.getString("day", "")
-        emit(day)
+    override val getDay: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[traumaDayKey]
     }.flowOn(ioDispatcher)
+
 
 
     // Clear methods
     override suspend fun clearTraumaDiaryTempRecords() {
         withContext(ioDispatcher) {
-            emotionColor_sharedPreferences.edit().clear().apply()
-            emotion_sharedPreferences.edit().clear().apply()
-            emotionText_sharedPreferences.edit().clear().apply()
-            situation_sharedPreferences.edit().clear().apply()
-            thought_sharedPreferences.edit().clear().apply()
-            reflection_sharedPreferences.edit().clear().apply()
-            type_sharedPreferences.edit().clear().apply()
-            date_sharedPreferences.edit().clear().apply()
-            day_sharedPreferences.edit().clear().commit()
+            dataStore.edit { preferences ->
+                preferences.remove(traumaEmotionColorKey)
+                preferences.remove(traumaEmotionKey)
+                preferences.remove(traumaEmotionTextKey)
+                preferences.remove(traumaSituationKey)
+                preferences.remove(traumaThoughtKey)
+                preferences.remove(traumaReflectionKey)
+                preferences.remove(traumaTypeKey)
+                preferences.remove(traumaDateKey)
+                preferences.remove(traumaDayKey)
+            }
         }
     }
 
 }
 
 interface TraumaDiaryLocalDataSourceInterface {
-    suspend fun saveEmotionColor(color: Int)
+    suspend fun saveEmotionColor(color: Int?)
     suspend fun saveEmotion(emotion: String?)
     suspend fun saveEmotionText(emotionText: String?)
-    suspend fun saveSituation(situation: String)
+    suspend fun saveSituation(situation: String?)
     suspend fun saveThought(thought: String?)
     suspend fun saveReflection(reflection: String?)
     suspend fun saveType(type: String)

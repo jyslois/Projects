@@ -94,21 +94,11 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // 클릭 이벤트
-
-        // 아이디/비밀번호 저장 체크 박스 클릭 시
-        autoSave.setOnClickListener {
-
-            viewModel.autoSaveBoxClicked(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
-
-        }
-
         // 자동 로그인 체크 박스 클릭 시
         autoLogin.setOnClickListener {
             lifecycleScope.launch {
                 // 만약 체크 박스가 체크되어 있다면
                 if (autoLogin.isChecked) {
-                    // autoSave 박스도 자동으로 체크해 주기
-                    autoSave.isChecked = true
                     viewModel.autoSaveBoxClicked(
                         autoSave.isChecked,
                         autoLogin.isChecked,

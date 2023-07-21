@@ -47,7 +47,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         alarmManagerHelper.stopAlarm()
 
-        // 부팅시 알람 재설정을 위한 sharedPrefenreces의 시간 삭제하기
+        // 부팅시 알람 재설정을 위한 시간 삭제하기
         mainDispatcherCoroutineScope.launch {
             clearTimeSettingsUseCase()
         }
@@ -57,7 +57,7 @@ class AlarmReceiver : BroadcastReceiver() {
         calendar.add(Calendar.DATE, 1)
         alarmManagerHelper.setAlarm(calendar)
 
-        // 부팅시 알람 재설정을 위해 sharedPrefenreces에 calendar의 time 저장
+        // 부팅시 알람 재설정을 위해 calendar의 time 저장
         mainDispatcherCoroutineScope.launch {
             saveRebootAlarmTimeUseCase(calendar.timeInMillis)
         }

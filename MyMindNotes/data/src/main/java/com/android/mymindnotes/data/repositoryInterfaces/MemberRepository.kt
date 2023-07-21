@@ -32,9 +32,9 @@ interface MemberRepository {
     suspend fun saveRebootTime(time: Long)
 
     // clear SharedPreferences
-    suspend fun clearAutoSaveSharedPreferences()
-    suspend fun clearAlarmSharedPreferences()
-    suspend fun clearTimeSharedPreferences()
+    suspend fun clearLoginStatesRelatedKeys()
+    suspend fun clearAlarmRelatedKeys()
+    suspend fun clearRebootTimeKey()
 
 
     // Remote

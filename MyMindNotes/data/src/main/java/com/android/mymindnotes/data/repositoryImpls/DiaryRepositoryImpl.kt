@@ -14,7 +14,7 @@ class DiaryRepositoryImpl @Inject constructor(
     // Remote
     // Get Diary List
     override suspend fun getDiaryList(): Flow<Map<String, Object>> {
-        val userIndex = memberLocalDataSource.getUserIndexfromUserSharedPreferences().first()
+        val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         return diaryRemoteDataSource.getDiaryList(userIndex)
     }
 

@@ -1,44 +1,40 @@
 package com.android.mymindnotes.data.dataSources
 
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.android.mymindnotes.core.hilt.coroutineModules.IoDispatcher
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Date
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Day
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Emotion
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.EmotionColor
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.EmotionText
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Reflection
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Situation
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Thought
-import com.android.mymindnotes.core.hilt.sharedpreferencesModule.Type
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TodayDiaryLocalDataSource @Inject constructor(
-    @Emotion private val emotion_sharedPreferences: SharedPreferences,
-    @EmotionText private val emotionText_sharedPreferences: SharedPreferences,
-    @Situation private val situation_sharedPreferences: SharedPreferences,
-    @Thought private val thought_sharedPreferences: SharedPreferences,
-    @Reflection private val reflection_sharedPreferences: SharedPreferences,
-    @Type private val type_sharedPreferences: SharedPreferences,
-    @EmotionColor private val emotionColor_sharedPreferences: SharedPreferences,
-    @Date private val date_sharedPreferences: SharedPreferences,
-    @Day private val day_sharedPreferences: SharedPreferences,
+    private val dataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-    ): TodayDiaryLocalDataSourceInterface {
+) : TodayDiaryLocalDataSourceInterface {
+
+    // DataStore Keys
+    private val todayEmotionColorKey = intPreferencesKey("todayEmotionColor")
+    private val todayEmotionKey = stringPreferencesKey("todayEmotion")
+    private val todayEmotionTextKey = stringPreferencesKey("todayEmotionDescription")
+    private val todaySituationKey = stringPreferencesKey("todaySituation")
+    private val todayThoughtKey = stringPreferencesKey("todayThought")
+    private val todayReflectionKey = stringPreferencesKey("todayReflection")
+    private val todayTypeKey = stringPreferencesKey("todayType")
+    private val todayDateKey = stringPreferencesKey("todayDate")
+    private val todayDayKey = stringPreferencesKey("todayDay")
 
     // Save methods
     // EmotionColor
-    override suspend fun saveEmotionColor(color: Int) {
+    override suspend fun saveEmotionColor(color: Int?) {
         withContext(ioDispatcher) {
-            if (color == null) {
-                emotionColor_sharedPreferences.edit().putInt("emotionColor", -1).commit()
-            } else {
-                emotionColor_sharedPreferences.edit().putInt("emotionColor", color).commit()
+            dataStore.edit { preferences ->
+                preferences[todayEmotionColorKey] = color ?: -1
             }
         }
     }
@@ -46,129 +42,142 @@ class TodayDiaryLocalDataSource @Inject constructor(
     // Emotion
     override suspend fun saveEmotion(emotion: String?) {
         withContext(ioDispatcher) {
-            emotion_sharedPreferences.edit().putString("emotion", emotion).commit()
+            dataStore.edit { preferences ->
+                emotion?.let { preferences[todayEmotionKey] = it }
+            }
         }
     }
 
     // EmotionText
     override suspend fun saveEmotionText(emotionText: String?) {
         withContext(ioDispatcher) {
-            emotionText_sharedPreferences.edit().putString("emotionDescription", emotionText).commit()
+            dataStore.edit { preferences ->
+                emotionText?.let { preferences[todayEmotionTextKey] = it }
+            }
         }
     }
 
     // Situation
     override suspend fun saveSituation(situation: String?) {
         withContext(ioDispatcher) {
-            situation_sharedPreferences.edit().putString("situation", situation).commit()
+            dataStore.edit { preferences ->
+                situation?.let { preferences[todaySituationKey] = it }
+            }
         }
     }
 
     // Thought
     override suspend fun saveThought(thought: String?) {
         withContext(ioDispatcher) {
-            thought_sharedPreferences.edit().putString("thought", thought).commit()
+            dataStore.edit { preferences ->
+                thought?.let { preferences[todayThoughtKey] = it }
+            }
         }
     }
 
     // Reflection
     override suspend fun saveReflection(reflection: String?) {
         withContext(ioDispatcher) {
-            reflection_sharedPreferences.edit().putString("reflection", reflection).commit()
+            dataStore.edit { preferences ->
+                reflection?.let { preferences[todayReflectionKey] = it }
+            }
         }
     }
 
     // Type
     override suspend fun saveType(type: String) {
         withContext(ioDispatcher) {
-            type_sharedPreferences.edit().putString("type", type).commit()
+            dataStore.edit { preferences ->
+                preferences[todayTypeKey] = type
+            }
         }
     }
 
     // Date
     override suspend fun saveDate(date: String) {
         withContext(ioDispatcher) {
-            date_sharedPreferences.edit().putString("date", date).commit()
+            dataStore.edit { preferences ->
+                preferences[todayDateKey] = date
+            }
         }
     }
 
     // Day
     override suspend fun saveDay(day: String) {
         withContext(ioDispatcher) {
-            day_sharedPreferences.edit().putString("day", day).commit()
+            dataStore.edit { preferences ->
+                preferences[todayDayKey] = day
+            }
         }
     }
 
     // Get methods
     // Emotion
-    override val getEmotion: Flow<String?> = flow {
-        val emotion = emotion_sharedPreferences.getString("emotion", "")
-        emit(emotion)
-    }.flowOn(ioDispatcher)
+    override val getEmotion: Flow<String?> =
+        dataStore.data.map { preferences ->
+            preferences[todayEmotionKey]
+        }.flowOn(ioDispatcher)
+
 
     // EmotionText
-    override val getEmotionText: Flow<String?> = flow {
-        val emotionText = emotionText_sharedPreferences.getString("emotionDescription", "")
-        emit(emotionText)
-    }.flowOn(ioDispatcher)
+    override val getEmotionText: Flow<String?> =
+        dataStore.data.map { preferences ->
+            preferences[todayEmotionTextKey]
+        }.flowOn(ioDispatcher)
 
     // Situation
-    override val getSituation: Flow<String?> = flow {
-        val situation = situation_sharedPreferences.getString("situation", "")
-        emit(situation)
+    override val getSituation: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[todaySituationKey]
     }.flowOn(ioDispatcher)
 
     // Thought
-    override val getThought: Flow<String?> = flow {
-        val thought = thought_sharedPreferences.getString("thought", "")
-        emit(thought)
+    override val getThought: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[todayThoughtKey]
     }.flowOn(ioDispatcher)
 
     // Reflection
-    override val getReflection: Flow<String?> = flow {
-        val reflection = reflection_sharedPreferences.getString("reflection", "")
-        emit(reflection)
+    override val getReflection: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[todayReflectionKey]
     }.flowOn(ioDispatcher)
 
     // Type
     // Reflection
-    override val getType: Flow<String?> = flow {
-        val type = type_sharedPreferences.getString("type", "")
-        emit(type)
+    override val getType: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[todayTypeKey]
     }.flowOn(ioDispatcher)
 
     // Date
-    override val getDate: Flow<String?> = flow {
-        val date = date_sharedPreferences.getString("date", "")
-        emit(date)
+    override val getDate: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[todayDateKey]
     }.flowOn(ioDispatcher)
 
     // Day
-    override val getDay: Flow<String?> = flow {
-        val day = day_sharedPreferences.getString("day", "")
-        emit(day)
+    override val getDay: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[todayDayKey]
     }.flowOn(ioDispatcher)
 
 
     // Clear method
     override suspend fun clearTodayDiaryTempRecords() {
         withContext(ioDispatcher) {
-            emotionColor_sharedPreferences.edit().clear().apply()
-            emotion_sharedPreferences.edit().clear().apply()
-            emotionText_sharedPreferences.edit().clear().apply()
-            situation_sharedPreferences.edit().clear().apply()
-            thought_sharedPreferences.edit().clear().apply()
-            reflection_sharedPreferences.edit().clear().apply()
-            type_sharedPreferences.edit().clear().apply()
-            date_sharedPreferences.edit().clear().apply()
-            day_sharedPreferences.edit().clear().commit()
+            dataStore.edit { preferences ->
+                preferences.remove(todayEmotionColorKey)
+                preferences.remove(todayEmotionKey)
+                preferences.remove(todayEmotionTextKey)
+                preferences.remove(todaySituationKey)
+                preferences.remove(todayThoughtKey)
+                preferences.remove(todayReflectionKey)
+                preferences.remove(todayTypeKey)
+                preferences.remove(todayDateKey)
+                preferences.remove(todayDayKey)
+            }
         }
     }
 
 }
 
 interface TodayDiaryLocalDataSourceInterface {
-    suspend fun saveEmotionColor(color: Int)
+    suspend fun saveEmotionColor(color: Int?)
     suspend fun saveEmotion(emotion: String?)
     suspend fun saveEmotionText(emotionText: String?)
     suspend fun saveSituation(situation: String?)
