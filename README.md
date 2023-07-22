@@ -120,7 +120,7 @@ Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presen
   + 의존성
     + Retrofit2, Gson Converter, OkHttp3, Logging-Interceptor, Hilt
   + 구성: 하나 이상의 모듈에서 공통적으로 사용되는 코드들
-    + Hilt: CoroutineDispatcherModules, CoroutineScopeModules, SharedPreferencesModule
+    + Hilt: CoroutineDispatcherModules, CoroutineScopeModules
     + Model: UserDiary
     + Network: RetrofitService
 
