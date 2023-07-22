@@ -73,7 +73,6 @@ class LoginActivity : AppCompatActivity() {
                             email.setText(uiState.id)
                             password.setText(uiState.password)
 
-
                         }
 
                         // 로그인 성공 시
@@ -96,19 +95,9 @@ class LoginActivity : AppCompatActivity() {
         // 클릭 이벤트
         // 자동 로그인 체크 박스 클릭 시
         autoLogin.setOnClickListener {
-            lifecycleScope.launch {
-                // 만약 체크 박스가 체크되어 있다면
-                if (autoLogin.isChecked) {
-                    viewModel.autoSaveBoxClicked(
-                        autoSave.isChecked,
-                        autoLogin.isChecked,
-                        email.text.toString(),
-                        password.text.toString()
-                    )
-                } else {
-                    // 체크되어 있지 않다면 상태 저장
-                    viewModel.autoLoginBoxUnChecked()
-                }
+            // 만약 체크 박스가 체크되어 있다면
+            if (autoLogin.isChecked) {
+                autoSave.isChecked = true // 아이디/비밀번호 저장도 체크표시 해 주기
             }
         }
 
@@ -176,7 +165,12 @@ class LoginActivity : AppCompatActivity() {
             // 만약 체크 박스가 체크되어 있다면
             if (autoSave.isChecked) {
                 // 상태 저장
-                viewModel.autoSaveBoxClicked(autoSave.isChecked, autoLogin.isChecked, email.text.toString(), password.text.toString())
+                viewModel.autoSaveBoxClicked(
+                    autoSave.isChecked,
+                    autoLogin.isChecked,
+                    email.text.toString(),
+                    password.text.toString()
+                )
             } else {
                 // 체크되어 있지 않다면 아이디와 비밀번호 값을 null 저장
                 viewModel.autoSaveBoxClicked(false, false, null, null)

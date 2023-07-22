@@ -6,7 +6,6 @@ import com.android.mymindnotes.domain.usecases.LoginUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.ChangeAutoSaveBoxStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.GetAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.GetAutoSaveStateUseCase
-import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.GetIdUseCase
 import com.android.mymindnotes.domain.usecases.userInfo.GetPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +21,6 @@ class LoginViewModel @Inject constructor(
     private val getIdUseCase: GetIdUseCase,
     private val getPasswordUseCase: GetPasswordUseCase,
     private val getAutoLoginStateUseCase: GetAutoLoginStateUseCase,
-    private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
     private val getAutoSaveStateUseCase: GetAutoSaveStateUseCase,
     private val changeAutoSaveBoxStateUseCase: ChangeAutoSaveBoxStateUseCase
 ) : ViewModel() {
@@ -59,12 +57,6 @@ class LoginViewModel @Inject constructor(
     fun autoSaveBoxClicked(isAutoSaveChecked: Boolean, isAutoLoginChecked: Boolean, id: String?, password: String?) {
         viewModelScope.launch {
             changeAutoSaveBoxStateUseCase(isAutoSaveChecked, isAutoLoginChecked, id, password)
-        }
-    }
-
-    fun autoLoginBoxUnChecked() {
-        viewModelScope.launch {
-            saveAutoLoginStateUseCase(false)
         }
     }
 
