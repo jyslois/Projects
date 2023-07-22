@@ -106,7 +106,7 @@ Clean Architecture는 도메인(비즈니스 로직)을 중심으로 설계된�
 ## Android Developers 권장 앱 아키텍처에 따른 계층 모듈화 (Modularization by Layer) 
 Android Developers가 권장하는 앱 아키텍처의 의존성 방향(**Presentation -> Domain -> Data**)를 따르는 아키텍처 계층을 기반으로 모듈화했다.
 
-![image](https://github.com/jyslois/Projects/assets/106723882/1b81b1ff-c7a7-462d-b0a6-c19968a479aa)
+![image](https://github.com/jyslois/Projects/assets/106723882/36c211dd-7003-48c2-bef4-cf389ab6e2a0)
 
 + **app module**: 앱 구조와 앱 수준의 설정을 담당한다. 앱의 초기화, 구성 및 설정과 같은 앱 전반적인 기능을 처리하고, 다른 모듈들을 연결하여 앱의 동작을 조정한다.
   + 의존성
