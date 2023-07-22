@@ -1,4 +1,4 @@
-package com.android.mymindnotes.core.hilt.sharedpreferencesModule
+package com.android.mymindnotes.hilt.modules
 
 import android.content.Context
 import androidx.datastore.core.DataStore
