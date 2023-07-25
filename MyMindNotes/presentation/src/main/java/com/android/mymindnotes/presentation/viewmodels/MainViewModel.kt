@@ -25,14 +25,14 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<MainUiState> = _uiState
 
 
-    fun getAutoLoginState() {
+    fun checkAndUpdateAutoLoginState() {
         Log.e("순서", "(뷰모델) 뷰모델 생성 및 함수 호출")
         viewModelScope.launch {
             launch {
                 // useCase의 getAutoLogin() 함수에 return된 Flow의 Boolean 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
                 getAutoLoginStateUseCase().collect {
+                    Log.e("순서", "(뷰모델) 데이터 가져오기")
                     if (it) {
-                        Log.e("순서", "(뷰모델) 데이터 가져오기")
                         _uiState.emit(MainUiState.AutoLogin)
                     }
                 }

@@ -23,16 +23,17 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         Log.e("순서", "(Activity) onCreate() 시작")
+        super.onCreate(savedInstanceState)
 
-        viewModel.getAutoLoginState()
+        viewModel.checkAndUpdateAutoLoginState()
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        Log.e("순서", "(Activity) UI 랜더링")
+        setContentView(binding.root)
 
         // gif 이미지를 이미지뷰에 띄우기
         Glide.with(this).load(R.drawable.mainbackground2).into(binding.background)
-
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -41,14 +42,11 @@ class MainActivity : AppCompatActivity() {
                     viewModel.uiState.collect { uiState ->
                         when (uiState) {
                             is MainViewModel.MainUiState.Loading -> {
-                                Log.e("순서", "(Activity) UI 랜더링")
-
                             }
 
                             is MainViewModel.MainUiState.AutoLogin -> {
 
-                                val intent =
-                                    Intent(applicationContext, MainPageActivity::class.java)
+                                val intent = Intent(applicationContext, MainPageActivity::class.java)
                                 startActivity(intent)
                                 Log.e("순서", "(Activity) 화면 전환")
 
