@@ -1,5 +1,6 @@
 package com.android.mymindnotes.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.mymindnotes.domain.usecases.loginStates.GetAutoLoginStateUseCase
@@ -14,7 +15,6 @@ class MainViewModel @Inject constructor(
     private val getAutoLoginStateUseCase: GetAutoLoginStateUseCase
 ): ViewModel() {
 
-
     sealed class MainUiState {
         object Loading: MainUiState()
         object AutoLogin: MainUiState()
@@ -25,20 +25,19 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<MainUiState> = _uiState
 
 
-    // ViewModel instance가 만들어질 때,
-    init {
+    fun getAutoLoginState() {
+        Log.e("순서", "(뷰모델) 뷰모델 생성 및 함수 호출")
         viewModelScope.launch {
             launch {
                 // useCase의 getAutoLogin() 함수에 return된 Flow의 Boolean 값을 관찰해서 viewModel의 SharedFlow에 방출하기.
                 getAutoLoginStateUseCase().collect {
                     if (it) {
+                        Log.e("순서", "(뷰모델) 데이터 가져오기")
                         _uiState.emit(MainUiState.AutoLogin)
                     }
                 }
             }
         }
     }
-
-
 
 }
