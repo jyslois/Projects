@@ -35,6 +35,13 @@ android {
     viewBinding {
         enabled = true
     }
+
+    testOptions {
+        unitTests {
+            // 테스트가 리소스에 의존한다면 앱의 build.gradle 파일에서 includeAndroidResources 옵션을 사용 설정. 그러면 단위 테스트가 컴파일된 버전의 리소스에 액세스할 수 있으므로 더 빠르고 정확하게 테스트를 실행할 수 있다.
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -70,4 +77,8 @@ dependencies {
 
     // Mockito
     testImplementation 'org.mockito:mockito-core:5.4.0'
+
+    // Robolectric
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.9'
 }
