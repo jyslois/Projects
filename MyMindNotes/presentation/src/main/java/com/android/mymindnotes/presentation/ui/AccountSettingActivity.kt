@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -84,7 +83,7 @@ class AccountSettingActivity : AppCompatActivity() {
         }
 
         // 닉네임 변경 버튼 클릭
-        binding.changeNicknameButton.setOnClickListener { view: View? ->
+        binding.changeNicknameButton.setOnClickListener {
             startActivity<ChangeNicknameActivity>()
         }
 
@@ -112,7 +111,7 @@ class AccountSettingActivity : AppCompatActivity() {
     }
 
     // 탈퇴 시 확인 다이얼로그
-    var dialogListener = DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+    var dialogListener = DialogInterface.OnClickListener { _: DialogInterface?, which: Int ->
         // 탈퇴 눌렀을 때 이벤트 처리
         if (which == DialogInterface.BUTTON_NEGATIVE) {
             lifecycleScope.launch {

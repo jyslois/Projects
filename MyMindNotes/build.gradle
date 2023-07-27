@@ -6,8 +6,18 @@ plugins {
     id 'com.google.dagger.hilt.android' version '2.44' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
     id 'org.jetbrains.kotlin.jvm' version '1.8.20' apply false
+    // Test Coverage - JaCoCo
+    id 'jacoco'
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// 해당 프로젝트 안의 모든 모듈에서 적용
+subprojects {
+    jacoco {
+        toolVersion = "0.8.9"
+        reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+    }
 }
