@@ -6,6 +6,7 @@ import com.android.mymindnotes.domain.usecases.userInfoRemote.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class RecordMindChoiceViewModel @Inject constructor (
 
     // ui상태
     private val _uiState = MutableStateFlow<RecordMindChoiceUiState>(RecordMindChoiceUiState.Loading)
-    val uiState: StateFlow<RecordMindChoiceUiState> = _uiState
+    val uiState: StateFlow<RecordMindChoiceUiState> = _uiState.asStateFlow()
 
     fun getNickNameFromUserInfo() {
         viewModelScope.launch {

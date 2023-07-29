@@ -8,6 +8,7 @@ import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryRefle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,7 +29,7 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<TraumaDiaryReflectionUiState>(TraumaDiaryReflectionUiState.Loading)
-    val uiState: StateFlow<TraumaDiaryReflectionUiState> = _uiState
+    val uiState: StateFlow<TraumaDiaryReflectionUiState> = _uiState.asStateFlow()
 
     suspend fun previousButtonClickedOrBackPressed(reflection: String) {
         saveTraumaDiaryReflectionUseCase(reflection)

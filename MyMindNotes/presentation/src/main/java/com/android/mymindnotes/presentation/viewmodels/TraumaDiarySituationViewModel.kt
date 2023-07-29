@@ -8,6 +8,7 @@ import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiarySitua
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class TraumaDiarySituationViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<TraumaDiarySituationUiState>(TraumaDiarySituationUiState.Loading)
-    val uiState: StateFlow<TraumaDiarySituationUiState> = _uiState
+    val uiState: StateFlow<TraumaDiarySituationUiState> = _uiState.asStateFlow()
 
 
     // Save Method

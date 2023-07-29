@@ -7,6 +7,7 @@ import com.android.mymindnotes.domain.usecases.userInfoRemote.CheckNickNameDupli
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,7 @@ class JoinViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<JoinUiState>(JoinUiState.Loading)
-    val uiState: StateFlow<JoinUiState> = _uiState
+    val uiState: StateFlow<JoinUiState> = _uiState.asStateFlow()
 
 
     // 이메일 중복 체크 함수 호출

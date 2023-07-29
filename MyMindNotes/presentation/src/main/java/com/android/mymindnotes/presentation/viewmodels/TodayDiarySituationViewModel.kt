@@ -7,6 +7,7 @@ import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiarySituati
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class TodayDiarySituationViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<TodayDiarySituationUiState>(TodayDiarySituationUiState.Loading)
-    val uiState: StateFlow<TodayDiarySituationUiState> = _uiState
+    val uiState: StateFlow<TodayDiarySituationUiState> = _uiState.asStateFlow()
 
     // Save Method
     suspend fun nextOrPreviousButtonClickedOrBackPressedOrPaused(situation: String) {

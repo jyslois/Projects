@@ -11,6 +11,7 @@ import com.android.mymindnotes.domain.usecases.userInfo.GetPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,7 +37,7 @@ class LoginViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Loading)
-    val uiState: StateFlow<LoginUiState> = _uiState
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
 
     // 로그인

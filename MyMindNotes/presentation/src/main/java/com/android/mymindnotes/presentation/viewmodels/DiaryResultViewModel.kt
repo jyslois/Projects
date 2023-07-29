@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,7 @@ class DiaryResultViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<DiaryResultUiState>(DiaryResultUiState.Loading)
-    val uiState: StateFlow<DiaryResultUiState> = _uiState
+    val uiState: StateFlow<DiaryResultUiState> = _uiState.asStateFlow()
 
 
     // 다이어리 리스트 불러오기

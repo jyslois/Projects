@@ -5,6 +5,7 @@ import com.android.mymindnotes.domain.usecases.userInfoRemote.ChangeToTemporaryP
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +22,7 @@ class FindPasswordViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<FindPasswordUiState>(FindPasswordUiState.Loading)
-    val uiState: StateFlow<FindPasswordUiState> = _uiState
+    val uiState: StateFlow<FindPasswordUiState> = _uiState.asStateFlow()
 
 
     // (서버) 임시 비밀번호로 비밀번호 변경하기

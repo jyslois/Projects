@@ -9,6 +9,7 @@ import com.android.mymindnotes.presentation.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +28,7 @@ class TraumaDiaryEmotionViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<TraumaDiaryEmotionUiState>(TraumaDiaryEmotionUiState.Loading)
-    val uiState: StateFlow<TraumaDiaryEmotionUiState> = _uiState
+    val uiState: StateFlow<TraumaDiaryEmotionUiState> = _uiState.asStateFlow()
 
     fun nextOrPreviousButtonClickedOrPaused(chosenEmotionId: Int, emotionText: String?) {
 

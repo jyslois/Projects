@@ -8,6 +8,7 @@ import com.android.mymindnotes.domain.usecases.userInfo.SaveFirstTimeStateUseCas
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class MainPageViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<MainPageUiState>(MainPageUiState.Loading)
-    val uiState: StateFlow<MainPageUiState> = _uiState
+    val uiState: StateFlow<MainPageUiState> = _uiState.asStateFlow()
 
     suspend fun getNickNameFromUserInfo() {
 

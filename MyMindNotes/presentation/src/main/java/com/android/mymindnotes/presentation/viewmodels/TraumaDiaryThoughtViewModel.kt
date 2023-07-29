@@ -7,6 +7,7 @@ import com.android.mymindnotes.domain.usecases.diary.trauma.SaveTraumaDiaryThoug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class TraumaDiaryThoughtViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<TraumaDiaryThoughtUiState>(TraumaDiaryThoughtUiState.Loading)
-    val uiState: StateFlow<TraumaDiaryThoughtUiState> = _uiState
+    val uiState: StateFlow<TraumaDiaryThoughtUiState> = _uiState.asStateFlow()
 
     // Save Method
     suspend fun previousOrNextButtonClickedOrBackPressed(thought: String) {

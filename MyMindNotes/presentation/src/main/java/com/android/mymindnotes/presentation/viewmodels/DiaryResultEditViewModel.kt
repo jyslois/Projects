@@ -5,6 +5,7 @@ import com.android.mymindnotes.domain.usecases.diary.UpdateDiaryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +21,7 @@ class DiaryResultEditViewModel @Inject constructor(
 
     // ui상태
     private val _uiState = MutableStateFlow<DiaryResultEditUiState>(DiaryResultEditUiState.Loading)
-    val uiState: StateFlow<DiaryResultEditUiState> = _uiState
+    val uiState: StateFlow<DiaryResultEditUiState> = _uiState.asStateFlow()
 
 
     // (네트워크) 일기 수정
