@@ -65,7 +65,7 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
 
-    // JUnit 5
+    // JUnit
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
@@ -74,8 +74,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test:rules:1.5.0'
 
-    // Mockito
-    testImplementation 'org.mockito:mockito-core:5.4.0'
+    // MockK
+    testImplementation("io.mockk:mockk:1.13.5")
 
     // Robolectric
     testImplementation 'org.robolectric:robolectric:4.9'
