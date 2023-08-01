@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.android.mymindnotes.core.model.Diary
 import com.android.mymindnotes.presentation.databinding.ActivitySituationFragmentBinding
-import com.android.mymindnotes.core.model.UserDiary
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ class SituationFragment @Inject constructor(
         binding.content.text = arguments?.getString("situation")
     }
 
-    fun refreshData(diary: UserDiary) {
+    fun refreshData(diary: Diary) {
         binding.content.text = diary.situation
     }
 

@@ -38,7 +38,7 @@ android {
 dependencies {
     // Retrofit 설치
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    // gson converter (Retrofit은 requestbody 타입만 취급 가능하므로 다른 타입도 취급 가능하게 하려면 추가해야 함)
+    // Gson converter (Retrofit은 requestbody 타입만 취급 가능하므로 다른 타입도 취급 가능하게 하려면 추가해야 함)
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // okhttp3 설치
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'

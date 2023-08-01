@@ -17,9 +17,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.android.mymindnotes.*
+import com.android.mymindnotes.core.model.Diary
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityDiaryResultBinding
-import com.android.mymindnotes.core.model.UserDiary
 import com.android.mymindnotes.presentation.viewmodels.DiaryResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -162,33 +162,33 @@ class DiaryResultActivity : AppCompatActivity() {
     }
 
     // 데이터 새로고침 -  refreshing the data of each fragment
-    private fun sendFragmentsData(diary: UserDiary) {
+    private fun sendFragmentsData(diary: Diary) {
         val fragments = supportFragmentManager.fragments
         for (index in fragments.indices) {
             when (val fragment = fragments[index]) {
                 is SituationFragment -> {
                     fragment.refreshData(diary)
                     // 재새팅
-                    situation = diary.getSituation()
+                    situation = diary.situation
                 }
 
                 is ThoughtFragment -> {
                     fragment.refreshData(diary)
                     // 재새팅
-                    thought = diary.getThought()
+                    thought = diary.thought
                 }
 
                 is EmotionFragment -> {
                     fragment.refreshData(diary)
                     // 재새팅
-                    emotion = diary.getEmotion()
-                    emotionDescription = diary.getEmotionDescription()
+                    emotion = diary.emotion
+                    emotionDescription = diary.emotionDescription
                 }
 
                 is ReflectionFragment -> {
                     fragment.refreshData(diary)
                     // 재새팅
-                    reflection = diary.getReflection()
+                    reflection = diary.reflection
                 }
             }
         }

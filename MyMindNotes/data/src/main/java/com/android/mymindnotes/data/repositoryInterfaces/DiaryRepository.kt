@@ -1,10 +1,11 @@
 package com.android.mymindnotes.data.repositoryInterfaces
 
+import com.android.mymindnotes.core.model.DiaryListResponse
 import kotlinx.coroutines.flow.Flow
 
 interface DiaryRepository {
-    // Get DiaryList
-    suspend fun getDiaryList(): Flow<Map<String, Object>>
+    // Get DiaryListResponse
+    suspend fun getDiaryList(): Flow<DiaryListResponse>
 
     // delete Diary
     suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>>

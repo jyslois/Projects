@@ -3,6 +3,7 @@ package com.android.mymindnotes.data.repositoryImpls
 import com.android.mymindnotes.data.dataSources.DiaryRemoteDataSourceInterface
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
+import com.android.mymindnotes.core.model.DiaryListResponse
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ class DiaryRepositoryImpl @Inject constructor(
 
     // Remote
     // Get Diary List
-    override suspend fun getDiaryList(): Flow<Map<String, Object>> {
+    override suspend fun getDiaryList(): Flow<DiaryListResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         return diaryRemoteDataSource.getDiaryList(userIndex)
     }

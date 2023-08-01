@@ -14,16 +14,15 @@ import androidx.annotation.RequiresApi
 import android.os.Build
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.android.mymindnotes.core.model.Diary
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityDiaryBinding
 import com.android.mymindnotes.presentation.databinding.DiaryitemBinding
-import com.android.mymindnotes.core.model.UserDiary
 import com.android.mymindnotes.presentation.viewmodels.DiaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -34,7 +33,7 @@ class DiaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDiaryBinding
 
     // 오리지날 리스트와 리사이클러뷰, 어뎁터
-    var recordList: ArrayList<UserDiary>? = ArrayList<UserDiary>()
+    var recordList: ArrayList<Diary>? = ArrayList<Diary>()
     private var adapter: DiaryAdaptor? = null
     private var linearLayoutManager: LinearLayoutManager = LinearLayoutManager(this)
 
@@ -45,9 +44,9 @@ class DiaryActivity : AppCompatActivity() {
     var emotionColorNumber = 0
 
     // 정렬을 위한 리스트
-    var emotionRecordList = ArrayList<UserDiary>()
-    var traumaRecordList = ArrayList<UserDiary>()
-    var singleEmotionList = ArrayList<UserDiary>()
+    var emotionRecordList = ArrayList<Diary>()
+    var traumaRecordList = ArrayList<Diary>()
+    var singleEmotionList = ArrayList<Diary>()
 
     // 위의 리스트의 요소들이 오리지날 리스트의 어떤 인덱스에 위치했었는지를 저장해주기 위한 리스트(다음 화면으로 올바른 인덱스를 넘겨주어서 오리지날 리스트를 수정할 수 있도록)
     var indexListEmotion = ArrayList<Int>()
@@ -221,7 +220,7 @@ class DiaryActivity : AppCompatActivity() {
 
     private fun updateSingleEmotionList() {
         singleEmotionList.clear()
-        recordList?.filterTo(singleEmotionList) { it.getEmotion() == singleEmotion }
+        recordList?.filterTo(singleEmotionList) { it.emotion == singleEmotion }
     }
     private fun resetFilterFlags() {
         binding.sortEmotionButton.text = "감정별"
@@ -233,7 +232,7 @@ class DiaryActivity : AppCompatActivity() {
         indexListTrauma.clear()
     }
 
-    private fun filterList(type: String, filteredRecordList: ArrayList<UserDiary>, indexList: ArrayList<Int>) {
+    private fun filterList(type: String, filteredRecordList: ArrayList<Diary>, indexList: ArrayList<Int>) {
         filteredRecordList.clear()
         indexList.clear()
 
@@ -285,7 +284,7 @@ class DiaryActivity : AppCompatActivity() {
 
         recordList?.let { list ->
             for ((index, record) in list.withIndex()) {
-                if (record.getEmotion() == emotion) {
+                if (record.emotion == emotion) {
                     singleEmotionList.add(record)
                     indexListSingleEmotion.add(index)
                 }
@@ -302,12 +301,12 @@ class DiaryActivity : AppCompatActivity() {
 
     // viewHolder을 생성하며, 배열에 저장되어 있는 데이터와 recyclerView를 연결시켜 주어서, 데이터를 RecyclerView에서 목록으로 볼 수 있게 한다.
     private inner class DiaryAdaptor(  // 항목 구성 데이터
-        private var recordList: ArrayList<UserDiary>?
+        private var recordList: ArrayList<Diary>?
     ) : RecyclerView.Adapter<ViewHolder>() {
 
         // 데이터셋을 업데이트하기 위한 메서드
         @SuppressLint("NotifyDataSetChanged")
-        fun updateItemList(arrayList: ArrayList<UserDiary>?) {
+        fun updateItemList(arrayList: ArrayList<Diary>?) {
             this.recordList = arrayList
             notifyDataSetChanged()
         }
@@ -325,7 +324,7 @@ class DiaryActivity : AppCompatActivity() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
             // 감정 아이콘 세팅
-            val emotion = recordList!![position].getEmotion()
+            val emotion = recordList!![position].emotion
             emotionColorNumber = when (emotion) {
                 "기쁨" -> R.drawable.orange_happiness
                 "기대" -> R.drawable.green_anticipation
@@ -340,7 +339,7 @@ class DiaryActivity : AppCompatActivity() {
             viewHolder.binding.emotionCircle.setImageResource(emotionColorNumber)
 
             // 날짜 세팅
-            date = recordList!![position].getDate() + " " + recordList!![position].getDay()
+            date = recordList!![position].date + " " + recordList!![position].day
 
             viewHolder.binding.date.text = date
 
@@ -348,12 +347,12 @@ class DiaryActivity : AppCompatActivity() {
             viewHolder.binding.emotionWord.text = emotion
 
             // 상황 세팅
-            val situation = recordList!![position].getSituation()
+            val situation = recordList!![position].situation
 
             viewHolder.binding.situation.text = situation
 
             // 타입 세팅
-            val type = recordList!![position].getType()
+            val type = recordList!![position].type
 
             viewHolder.binding.type.text = type
 
@@ -361,20 +360,20 @@ class DiaryActivity : AppCompatActivity() {
             viewHolder.binding.root.setOnClickListener {
 
                 val intent = Intent(applicationContext, DiaryResultActivity::class.java)
-                intent.putExtra("type", recordList!![position].getType())
+                intent.putExtra("type", recordList!![position].type)
                 intent.putExtra(
                     "date",
-                    recordList!![position].getDate() + " " + recordList!![position].getDay()
+                    recordList!![position].date + " " + recordList!![position].day
                 )
-                intent.putExtra("situation", recordList!![position].getSituation())
-                intent.putExtra("thought", recordList!![position].getThought())
-                intent.putExtra("emotion", recordList!![position].getEmotion())
+                intent.putExtra("situation", recordList!![position].situation)
+                intent.putExtra("thought", recordList!![position].thought)
+                intent.putExtra("emotion", recordList!![position].emotion)
                 intent.putExtra(
                     "emotionDescription",
-                    recordList!![position].getEmotionDescription()
+                    recordList!![position].emotionDescription
                 )
-                intent.putExtra("reflection", recordList!![position].getReflection())
-                intent.putExtra("diaryNumber", recordList!![position].getDiary_number())
+                intent.putExtra("reflection", recordList!![position].reflection)
+                intent.putExtra("diaryNumber", recordList!![position].diaryNumber)
 
                 // 오리지날 리스트의 몇 번째 인덱스에 새로운 리스트의 요소가 있나
                 // 이미 새로운 리스트를 만들 때, 오리지날 리스트의 몇 번째 인덱스의 것인지를 저장해 두었다.

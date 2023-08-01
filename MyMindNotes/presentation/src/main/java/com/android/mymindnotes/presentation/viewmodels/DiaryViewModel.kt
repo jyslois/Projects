@@ -2,10 +2,8 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.core.model.UserDiary
+import com.android.mymindnotes.core.model.Diary
 import com.android.mymindnotes.domain.usecases.diary.GetDiaryListUseCase
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +18,7 @@ class DiaryViewModel @Inject constructor(
 
     sealed class DiaryUiState {
         object Loading: DiaryUiState()
-        data class Success(val diaryList: ArrayList<UserDiary>?): DiaryUiState()
+        data class Success(val diaryList: ArrayList<Diary>?): DiaryUiState()
         data class Error(val error: String): DiaryUiState()
     }
 
@@ -35,11 +33,7 @@ class DiaryViewModel @Inject constructor(
         getDiaryListUseCase().collect {
             when {
                 it.isSuccess -> {
-                    val gson = Gson()
-                    val type = object : TypeToken<List<UserDiary?>?>() {}.type
-                    val jsonResult = gson.toJson(it.getOrNull())
-                    val diaryList: ArrayList<UserDiary>? = gson.fromJson(jsonResult, type)
-                    _uiState.value = DiaryUiState.Success(diaryList)
+                    _uiState.value = DiaryUiState.Success(it.getOrNull()?.diaryList)
                 }
 
                 it.isFailure -> {

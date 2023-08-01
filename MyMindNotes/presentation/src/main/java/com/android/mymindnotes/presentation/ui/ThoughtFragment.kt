@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.android.mymindnotes.core.model.Diary
 import com.android.mymindnotes.presentation.databinding.ActivityThoughtFragmentBinding
-import com.android.mymindnotes.core.model.UserDiary
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ class ThoughtFragment @Inject constructor(
         binding.content.text = arguments?.getString("thought")
     }
 
-    fun refreshData(diary: UserDiary) {
+    fun refreshData(diary: Diary) {
         binding.content.text = diary.thought
     }
 
