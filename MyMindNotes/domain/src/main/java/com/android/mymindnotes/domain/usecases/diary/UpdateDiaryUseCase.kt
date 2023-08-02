@@ -36,9 +36,9 @@ class UpdateDiaryUseCase @Inject constructor(
             emotionDescription,
             reflection
         ).map { response ->
-            when (response["code"].toString().toDouble()) {
-                8001.0 -> Result.failure(RuntimeException(response["msg"] as String))
-                8000.0 -> Result.success("Success")
+            when (response.code) {
+                8001 -> Result.failure(RuntimeException(response.message))
+                8000 -> Result.success("Success")
                 else -> Result.failure(RuntimeException("일기 변경 중 오류 발생"))
             }
         }.catch {

@@ -7,6 +7,7 @@ import com.android.mymindnotes.data.retrofit.model.diary.DiaryEdit
 import com.android.mymindnotes.core.hilt.coroutineModules.IoDispatcher
 import com.android.mymindnotes.core.model.DeleteDiaryResponse
 import com.android.mymindnotes.core.model.DiaryListResponse
+import com.android.mymindnotes.core.model.UpdateDiaryResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -32,7 +33,7 @@ class DiaryRemoteDataSource @Inject constructor(
     }.flowOn(ioDispatcher)
 
     // 일기 수정하기
-    override suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<Map<String, Object>> = flow {
+    override suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<UpdateDiaryResponse> = flow {
         val diary = DiaryEdit(situation, thought, emotion, emotionDescription, reflection)
         val result = updateDiaryApi.updateDiary(diaryNumber, diary)
         emit(result)
@@ -43,6 +44,6 @@ class DiaryRemoteDataSource @Inject constructor(
 interface DiaryRemoteDataSourceInterface {
     suspend fun getDiaryList(userIndex: Int): Flow<DiaryListResponse>
     suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse>
-    suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<Map<String, Object>>
+    suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<UpdateDiaryResponse>
 
 }

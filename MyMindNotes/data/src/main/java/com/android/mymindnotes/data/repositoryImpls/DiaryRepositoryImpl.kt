@@ -5,6 +5,7 @@ import com.android.mymindnotes.data.dataSources.DiaryRemoteDataSourceInterface
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
 import com.android.mymindnotes.core.model.DiaryListResponse
+import com.android.mymindnotes.core.model.UpdateDiaryResponse
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -31,7 +32,7 @@ class DiaryRepositoryImpl @Inject constructor(
         emotion: String,
         emotionDescription: String?,
         reflection: String?
-    ): Flow<Map<String, Object>> = diaryRemoteDataSource.updateDiary(diaryNumber, situation, thought, emotion, emotionDescription, reflection)
+    ): Flow<UpdateDiaryResponse> = diaryRemoteDataSource.updateDiary(diaryNumber, situation, thought, emotion, emotionDescription, reflection)
 
 
 }

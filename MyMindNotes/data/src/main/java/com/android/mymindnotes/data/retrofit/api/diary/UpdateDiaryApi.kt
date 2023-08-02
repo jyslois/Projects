@@ -1,5 +1,6 @@
 package com.android.mymindnotes.data.retrofit.api.diary
 
+import com.android.mymindnotes.core.model.UpdateDiaryResponse
 import retrofit2.http.PUT
 import com.android.mymindnotes.data.retrofit.model.diary.DiaryEdit
 import retrofit2.http.Body
@@ -10,5 +11,5 @@ interface UpdateDiaryApi {
     suspend fun updateDiary(
         @Path("diary_number") diary_number: Int,
         @Body diaryEdit: DiaryEdit
-    ): Map<String, Object>
+    ): UpdateDiaryResponse
 }
