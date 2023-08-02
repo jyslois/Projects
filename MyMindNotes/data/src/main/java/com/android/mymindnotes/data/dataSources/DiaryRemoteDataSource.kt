@@ -5,6 +5,7 @@ import com.android.mymindnotes.data.retrofit.api.diary.UpdateDiaryApi
 import com.android.mymindnotes.data.retrofit.api.user.GetDiaryListApi
 import com.android.mymindnotes.data.retrofit.model.diary.DiaryEdit
 import com.android.mymindnotes.core.hilt.coroutineModules.IoDispatcher
+import com.android.mymindnotes.core.model.DeleteDiaryResponse
 import com.android.mymindnotes.core.model.DiaryListResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
@@ -25,7 +26,7 @@ class DiaryRemoteDataSource @Inject constructor(
 
 
     // 일기 삭제하기
-    override suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = flow {
+    override suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse> = flow {
         val result = deleteDiaryApi.deleteDiary(diaryNumber)
         emit(result)
     }.flowOn(ioDispatcher)
@@ -41,7 +42,7 @@ class DiaryRemoteDataSource @Inject constructor(
 
 interface DiaryRemoteDataSourceInterface {
     suspend fun getDiaryList(userIndex: Int): Flow<DiaryListResponse>
-    suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>>
+    suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse>
     suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<Map<String, Object>>
 
 }

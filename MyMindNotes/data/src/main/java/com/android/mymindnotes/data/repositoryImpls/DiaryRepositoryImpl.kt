@@ -1,5 +1,6 @@
 package com.android.mymindnotes.data.repositoryImpls
 
+import com.android.mymindnotes.core.model.DeleteDiaryResponse
 import com.android.mymindnotes.data.dataSources.DiaryRemoteDataSourceInterface
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
@@ -20,7 +21,7 @@ class DiaryRepositoryImpl @Inject constructor(
     }
 
     // Delete Diary
-    override suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = diaryRemoteDataSource.deleteDiary(diaryNumber)
+    override suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse> = diaryRemoteDataSource.deleteDiary(diaryNumber)
 
     // Update Diary
     override suspend fun updateDiary(
