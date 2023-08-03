@@ -1,13 +1,13 @@
 package com.android.mymindnotes.data.repositoryInterfaces
 
 import com.android.mymindnotes.core.dto.DeleteDiaryResponse
-import com.android.mymindnotes.core.dto.DiaryListResponse
+import com.android.mymindnotes.core.dto.GetDiaryListResponse
 import com.android.mymindnotes.core.dto.UpdateDiaryResponse
 import kotlinx.coroutines.flow.Flow
 
 interface DiaryRepository {
-    // Get DiaryListResponse
-    suspend fun getDiaryList(): Flow<DiaryListResponse>
+    // Get GetDiaryListResponse
+    suspend fun getDiaryList(): Flow<GetDiaryListResponse>
 
     // delete Diary
     suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse>

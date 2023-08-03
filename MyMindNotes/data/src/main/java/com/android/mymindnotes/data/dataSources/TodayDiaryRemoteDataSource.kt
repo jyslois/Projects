@@ -1,5 +1,6 @@
 package com.android.mymindnotes.data.dataSources
 
+import com.android.mymindnotes.core.dto.SaveDiaryResponse
 import com.android.mymindnotes.data.retrofit.api.diary.SaveDiaryApi
 import com.android.mymindnotes.core.hilt.coroutineModules.IoDispatcher
 import com.android.mymindnotes.core.dto.UserDiary
@@ -13,7 +14,7 @@ class TodayDiaryRemoteDataSource @Inject constructor(
 ): TodayDiaryRemoteDataSourceInterface {
 
     // (서버) 일기 저장하기
-    override suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<Map<String, Object>> = flow {
+    override suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<SaveDiaryResponse> = flow {
         val userDiary = UserDiary(
             userIndex,
             type,
@@ -32,5 +33,5 @@ class TodayDiaryRemoteDataSource @Inject constructor(
 }
 
 interface TodayDiaryRemoteDataSourceInterface {
-    suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<Map<String, Object>>
+    suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<SaveDiaryResponse>
 }

@@ -1,7 +1,7 @@
 package com.android.mymindnotes.domain.usecases.diary
 
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
-import com.android.mymindnotes.core.dto.DiaryListResponse
+import com.android.mymindnotes.core.dto.GetDiaryListResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -13,7 +13,7 @@ class GetDiaryListUseCase @Inject constructor(
 
 //    suspend fun getDiaryList(): Flow<Map<String, Object>> = diaryRepository.getDiaryList()
 
-    suspend operator fun invoke(): Flow<Result<DiaryListResponse>> {
+    suspend operator fun invoke(): Flow<Result<GetDiaryListResponse>> {
         return diaryRepository.getDiaryList().map {
             Result.success(it)
         }.catch {

@@ -4,7 +4,7 @@ import com.android.mymindnotes.core.dto.DeleteDiaryResponse
 import com.android.mymindnotes.data.dataSources.DiaryRemoteDataSourceInterface
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
-import com.android.mymindnotes.core.dto.DiaryListResponse
+import com.android.mymindnotes.core.dto.GetDiaryListResponse
 import com.android.mymindnotes.core.dto.UpdateDiaryResponse
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -16,7 +16,7 @@ class DiaryRepositoryImpl @Inject constructor(
 
     // Remote
     // Get Diary List
-    override suspend fun getDiaryList(): Flow<DiaryListResponse> {
+    override suspend fun getDiaryList(): Flow<GetDiaryListResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         return diaryRemoteDataSource.getDiaryList(userIndex)
     }

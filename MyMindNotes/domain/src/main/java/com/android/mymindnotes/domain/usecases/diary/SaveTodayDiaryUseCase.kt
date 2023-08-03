@@ -33,9 +33,9 @@ class SaveTodayDiaryUseCase @Inject constructor(
         saveTodayDiaryRecordDayUseCase(day)
 
         return todayDiaryRepository.saveDiary().map {
-            when (it["code"].toString().toDouble()) {
-                6001.0 -> Result.failure(RuntimeException(it["msg"] as String))
-                6000.0 -> {
+            when (it.code) {
+                6001 -> Result.failure(RuntimeException(it.msg))
+                6000 -> {
                     clearTodayDiaryTempRecordsUseCase()
                     Result.success("Success")
                 }

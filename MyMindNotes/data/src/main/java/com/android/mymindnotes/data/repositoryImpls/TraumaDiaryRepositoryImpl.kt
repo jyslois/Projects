@@ -1,5 +1,6 @@
 package com.android.mymindnotes.data.repositoryImpls
 
+import com.android.mymindnotes.core.dto.SaveDiaryResponse
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
 import com.android.mymindnotes.data.dataSources.TraumaDiaryLocalDataSourceInterface
 import com.android.mymindnotes.data.dataSources.TraumaDiaryRemoteDataSourceInterface
@@ -72,7 +73,7 @@ class TraumaDiaryRepositoryImpl @Inject constructor(
 
     // 서버
     // 일기 저장하기
-    override suspend fun saveDiary(): Flow<Map<String, Object>> {
+    override suspend fun saveDiary(): Flow<SaveDiaryResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         val type = traumaDiaryLocalDataSource.getType.first()
         val date = traumaDiaryLocalDataSource.getDate.first()

@@ -1,5 +1,6 @@
 package com.android.mymindnotes.data.repositoryInterfaces
 
+import com.android.mymindnotes.core.dto.SaveDiaryResponse
 import kotlinx.coroutines.flow.Flow
 
 interface TraumaDiaryRepository {
@@ -29,6 +30,6 @@ interface TraumaDiaryRepository {
 
     // 서버
     // 일기 저장
-    suspend fun saveDiary(): Flow<Map<String, Object>>
+    suspend fun saveDiary(): Flow<SaveDiaryResponse>
 
 }
