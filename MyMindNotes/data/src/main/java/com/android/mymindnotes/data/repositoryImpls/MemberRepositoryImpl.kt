@@ -1,5 +1,13 @@
 package com.android.mymindnotes.data.repositoryImpls
 
+import com.android.mymindnotes.core.dto.ChangeNicknameResponse
+import com.android.mymindnotes.core.dto.ChangePasswordResponse
+import com.android.mymindnotes.core.dto.ChangeToTemporaryPasswordResponse
+import com.android.mymindnotes.core.dto.DeleteUserResponse
+import com.android.mymindnotes.core.dto.DuplicateCheckResponse
+import com.android.mymindnotes.core.dto.GetUserInfoResponse
+import com.android.mymindnotes.core.dto.JoinResponse
+import com.android.mymindnotes.core.dto.LoginResponse
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
 import com.android.mymindnotes.data.dataSources.MemberRemoteDataSourceInterface
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
@@ -127,46 +135,46 @@ class MemberRepositoryImpl @Inject constructor(
 
     // Remote
     // 로그인
-    override suspend fun login(email: String, password: String): Flow<Map<String, Object>> = memberRemoteDataSource.loginResultFlow(email, password)
+    override suspend fun login(email: String, password: String): Flow<LoginResponse> = memberRemoteDataSource.loginResultFlow(email, password)
 
     // 아이디, 비밀번호 중복 체크
     // 이메일 중복 체크
-    override suspend fun checkEmail(emailInput: String): Flow<Map<String, Object>> = memberRemoteDataSource.emailCheckFlow(emailInput)
+    override suspend fun checkEmail(emailInput: String): Flow<DuplicateCheckResponse> = memberRemoteDataSource.emailCheckFlow(emailInput)
 
     // 닉네임 중복 체크
-    override suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>> = memberRemoteDataSource.nickNameCheckFlow(nickNameInput)
+    override suspend fun checkNickName(nickNameInput: String): Flow<DuplicateCheckResponse> = memberRemoteDataSource.nickNameCheckFlow(nickNameInput)
 
     // 회원가입
-    override suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>> = memberRemoteDataSource.joinResultFlow(email, nickname, password, birthyear)
+    override suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<JoinResponse> = memberRemoteDataSource.joinResultFlow(email, nickname, password, birthyear)
 
     // 회원탈퇴
-    override suspend fun deleteUser(): Flow<Map<String, Object>> {
+    override suspend fun deleteUser(): Flow<DeleteUserResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         return memberRemoteDataSource.deleteUserResultFlow(userIndex)
     }
 
     // 회원 정보 가져오기
     // (서버) 회원 정보 가져오기
-    override suspend fun getUserInfo(): Flow<Map<String, Object>> {
+    override suspend fun getUserInfo(): Flow<GetUserInfoResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         return memberRemoteDataSource.getUserInfo(userIndex)
     }
 
     // 회원 정보 수정
     // 닉네임 수정
-    override suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> {
+    override suspend fun changeNickName(nickName: String): Flow<ChangeNicknameResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         return memberRemoteDataSource.changeNickNameFlow(userIndex, nickName)
     }
 
     // 비밀번호 수정
-    override suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>> {
+    override suspend fun changePassword(password: String, originalPassword: String): Flow<ChangePasswordResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
         return memberRemoteDataSource.changePasswordFlow(userIndex, password, originalPassword)
     }
 
     // 임시 비밀번호로 비밀번호 수정
-    override suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>> = memberRemoteDataSource.changeToTemporaryPasswordFlow(email, randomPassword)
+    override suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<ChangeToTemporaryPasswordResponse> = memberRemoteDataSource.changeToTemporaryPasswordFlow(email, randomPassword)
 
 
 }

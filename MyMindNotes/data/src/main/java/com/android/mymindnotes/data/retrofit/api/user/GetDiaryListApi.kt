@@ -1,6 +1,6 @@
 package com.android.mymindnotes.data.retrofit.api.user
 
-import com.android.mymindnotes.core.model.DiaryListResponse
+import com.android.mymindnotes.core.dto.DiaryListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

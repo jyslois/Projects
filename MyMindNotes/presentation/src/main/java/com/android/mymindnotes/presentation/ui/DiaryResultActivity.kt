@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.android.mymindnotes.*
-import com.android.mymindnotes.core.model.Diary
+import com.android.mymindnotes.core.dto.Diary
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityDiaryResultBinding
 import com.android.mymindnotes.presentation.viewmodels.DiaryResultViewModel

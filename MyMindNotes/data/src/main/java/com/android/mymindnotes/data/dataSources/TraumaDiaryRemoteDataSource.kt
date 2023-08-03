@@ -2,7 +2,7 @@ package com.android.mymindnotes.data.dataSources
 
 import com.android.mymindnotes.data.retrofit.api.diary.SaveDiaryApi
 import com.android.mymindnotes.core.hilt.coroutineModules.IoDispatcher
-import com.android.mymindnotes.core.model.UserDiary
+import com.android.mymindnotes.core.dto.UserDiary
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

@@ -21,7 +21,7 @@ class AccountSettingViewModel @Inject constructor(
 
     sealed class AccountSettingUiState {
         object Loading : AccountSettingUiState()
-        data class Success(val nickName: String, val email: String, val birthyear: String) : AccountSettingUiState()
+        data class Success(val nickName: String, val email: String, val birthyear: Int) : AccountSettingUiState()
         object Logout : AccountSettingUiState()
         object Withdraw : AccountSettingUiState()
         data class Error(val errorMessage: String) : AccountSettingUiState()

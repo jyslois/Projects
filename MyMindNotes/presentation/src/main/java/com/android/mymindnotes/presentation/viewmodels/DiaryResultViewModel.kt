@@ -1,7 +1,7 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.core.model.Diary
+import com.android.mymindnotes.core.dto.Diary
 import com.android.mymindnotes.domain.usecases.diary.DeleteDiaryUseCase
 import com.android.mymindnotes.domain.usecases.diary.GetDiaryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

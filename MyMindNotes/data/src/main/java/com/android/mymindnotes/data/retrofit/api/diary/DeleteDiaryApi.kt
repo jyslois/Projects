@@ -1,6 +1,6 @@
 package com.android.mymindnotes.data.retrofit.api.diary
 
-import com.android.mymindnotes.core.model.DeleteDiaryResponse
+import com.android.mymindnotes.core.dto.DeleteDiaryResponse
 import retrofit2.http.DELETE
 import retrofit2.http.Path
 

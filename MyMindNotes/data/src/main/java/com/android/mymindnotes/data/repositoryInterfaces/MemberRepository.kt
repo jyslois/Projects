@@ -1,5 +1,13 @@
 package com.android.mymindnotes.data.repositoryInterfaces
 
+import com.android.mymindnotes.core.dto.ChangeNicknameResponse
+import com.android.mymindnotes.core.dto.ChangePasswordResponse
+import com.android.mymindnotes.core.dto.ChangeToTemporaryPasswordResponse
+import com.android.mymindnotes.core.dto.DeleteUserResponse
+import com.android.mymindnotes.core.dto.DuplicateCheckResponse
+import com.android.mymindnotes.core.dto.GetUserInfoResponse
+import com.android.mymindnotes.core.dto.JoinResponse
+import com.android.mymindnotes.core.dto.LoginResponse
 import kotlinx.coroutines.flow.*
 
 interface MemberRepository {
@@ -39,28 +47,28 @@ interface MemberRepository {
 
     // Remote
     // Get User Info
-    suspend fun getUserInfo(): Flow<Map<String, Object>>
+    suspend fun getUserInfo(): Flow<GetUserInfoResponse>
 
     // Log in & Log out
-    suspend fun login(email: String, password: String): Flow<Map<String, Object>>
+    suspend fun login(email: String, password: String): Flow<LoginResponse>
 
     // Email & Nickname Duplicate Check
-    suspend fun checkEmail(emailInput: String): Flow<Map<String, Object>>
-    suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>>
+    suspend fun checkEmail(emailInput: String): Flow<DuplicateCheckResponse>
+    suspend fun checkNickName(nickNameInput: String): Flow<DuplicateCheckResponse>
 
     // Join
-    suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<Map<String, Object>>
+    suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<JoinResponse>
 
     // Delete
-    suspend fun deleteUser(): Flow<Map<String, Object>>
+    suspend fun deleteUser(): Flow<DeleteUserResponse>
 
     // change NickName
-    suspend fun changeNickName(nickName: String): Flow<Map<String, Object>>
+    suspend fun changeNickName(nickName: String): Flow<ChangeNicknameResponse>
 
     // change Password
-    suspend fun changePassword(password: String, originalPassword: String): Flow<Map<String, Object>>
+    suspend fun changePassword(password: String, originalPassword: String): Flow<ChangePasswordResponse>
 
     // change to TemporaryPassword
-    suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<Map<String, Object>>
+    suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<ChangeToTemporaryPasswordResponse>
 
 }

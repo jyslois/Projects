@@ -1,4 +1,4 @@
-package com.android.mymindnotes.core.model;
+package com.android.mymindnotes.core.dto;
 
 public class UserDiary {
     public int diary_number;

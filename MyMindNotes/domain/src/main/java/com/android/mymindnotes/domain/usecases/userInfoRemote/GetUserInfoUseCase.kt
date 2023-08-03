@@ -16,9 +16,9 @@ class GetUserInfoUseCase @Inject constructor(
 
     suspend operator fun invoke(): Flow<Result<UserInfo>> {
         return memberRepository.getUserInfo().map { response ->
-            val nickname = response["nickname"] as String
-            val email = response["email"] as String
-            val birthyear = response["birthyear"].toString().toDouble().toInt().toString()
+            val nickname = response.nickname
+            val email = response.email
+            val birthyear = response.birthyear
             Result.success(UserInfo(nickname, email, birthyear))
         }.catch {
             emit(Result.failure(RuntimeException("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
@@ -26,4 +26,4 @@ class GetUserInfoUseCase @Inject constructor(
     }
 }
 
-data class UserInfo(val nickname: String, val email: String, val birthyear: String)
+data class UserInfo(val nickname: String, val email: String, val birthyear: Int)

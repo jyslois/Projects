@@ -53,7 +53,7 @@ class AccountSettingActivity : AppCompatActivity() {
 
                                 binding.nickname.text = uiState.nickName
                                 binding.email.text = uiState.email
-                                binding.birthyear.text = uiState.birthyear
+                                binding.birthyear.text = uiState.birthyear.toString()
 
                             }
 

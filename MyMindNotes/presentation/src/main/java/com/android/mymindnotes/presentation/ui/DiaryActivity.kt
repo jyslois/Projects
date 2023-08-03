@@ -19,7 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.android.mymindnotes.core.model.Diary
+import com.android.mymindnotes.core.dto.Diary
 import com.android.mymindnotes.presentation.R
 import com.android.mymindnotes.presentation.databinding.ActivityDiaryBinding
 import com.android.mymindnotes.presentation.databinding.DiaryitemBinding

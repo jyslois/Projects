@@ -1,5 +1,6 @@
 package com.android.mymindnotes.data.retrofit.api.user
 
+import com.android.mymindnotes.core.dto.DuplicateCheckResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -8,5 +9,5 @@ interface CheckEmailApi {
     @GET("/api/member/checkEmail/{email}")
     suspend fun checkEmail(
         @Path("email") email: String
-    ): Map<String, Object>
+    ): DuplicateCheckResponse
 }

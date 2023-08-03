@@ -19,9 +19,9 @@ class ChangePasswordUseCase @Inject constructor(
 
     suspend operator fun invoke(password: String, originalPassword: String): Flow<Result<String>> {
         return memberRepository.changePassword(password, originalPassword).map { response ->
-            when (response["code"].toString().toDouble()) {
-                3005.0, 3003.0 -> Result.failure(RuntimeException(response["msg"] as String))
-                3002.0 -> {
+            when (response.code) {
+                3005, 3003 -> Result.failure(RuntimeException(response.msg))
+                3002 -> {
                     savePasswordUseCase(password)
                     Result.success("Success")
                 }

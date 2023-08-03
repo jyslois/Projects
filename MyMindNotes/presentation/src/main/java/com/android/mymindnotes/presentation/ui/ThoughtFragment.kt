@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.android.mymindnotes.core.model.Diary
+import com.android.mymindnotes.core.dto.Diary
 import com.android.mymindnotes.presentation.databinding.ActivityThoughtFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

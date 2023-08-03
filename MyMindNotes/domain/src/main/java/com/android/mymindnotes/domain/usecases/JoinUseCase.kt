@@ -29,11 +29,11 @@ class JoinUseCase @Inject constructor(
 
     suspend operator fun invoke(email: String, nickname: String, password: String, birthyear: Int): Flow<Result<String>> {
         return memberRepository.join(email, nickname, password, birthyear).map { response ->
-            when (response["code"].toString().toDouble()) {
-                2001.0 -> Result.failure(RuntimeException(response["msg"] as String))
-                2000.0 -> {
+            when (response.code) {
+                2001 -> Result.failure(RuntimeException(response.msg))
+                2000 -> {
                     // 회원 번호 저장
-                    saveUserIndexUseCase(response["user_index"].toString().toDouble().toInt())
+                    saveUserIndexUseCase(response.userIndex)
 
                     // 아이디와 비밀번호 저장
                     saveIdAndPasswordUseCase(email, password)

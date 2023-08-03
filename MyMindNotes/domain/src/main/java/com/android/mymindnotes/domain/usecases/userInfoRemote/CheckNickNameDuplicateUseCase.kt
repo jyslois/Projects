@@ -18,9 +18,9 @@ class CheckNickNameDuplicateUseCase @Inject constructor(
 
     suspend operator fun invoke(nickNameInput: String): Flow<Result<String>> {
         return memberRepository.checkNickName(nickNameInput).map { response ->
-            when(response["code"].toString().toDouble()) {
-                1003.0 -> Result.failure(RuntimeException(response["msg"] as String))
-                1002.0 -> Result.success("Success")
+            when(response.code) {
+                1003 -> Result.failure(RuntimeException(response.msg))
+                1002 -> Result.success("Success")
                 else -> Result.failure(RuntimeException("닉네임 체크 중 오류 발생"))
             }
         }.catch {

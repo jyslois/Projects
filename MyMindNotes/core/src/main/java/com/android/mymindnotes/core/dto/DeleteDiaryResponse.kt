@@ -1,4 +1,4 @@
-package com.android.mymindnotes.core.model
+package com.android.mymindnotes.core.dto
 
 
 import com.google.gson.annotations.SerializedName

@@ -18,9 +18,9 @@ class CheckEmailDuplicateUseCase @Inject constructor(
 
     suspend operator fun invoke(emailInput: String): Flow<Result<String>> {
         return memberRepository.checkEmail(emailInput).map { response ->
-            when (response["code"].toString().toDouble()) {
-                1001.0 -> Result.failure(RuntimeException(response["msg"] as String))
-                1000.0 -> Result.success("Success")
+            when (response.code) {
+                1001 -> Result.failure(RuntimeException(response.msg))
+                1000 -> Result.success("Success")
                 else -> Result.failure(RuntimeException("이메일 중복 체크 중 오류 발생"))
             }
         }.catch {

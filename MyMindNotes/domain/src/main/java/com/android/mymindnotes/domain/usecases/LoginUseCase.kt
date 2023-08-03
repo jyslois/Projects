@@ -22,9 +22,9 @@ class LoginUseCase @Inject constructor(
 
     suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<Result<String>> {
         return memberRepository.login(email, password).map { response ->
-            when (response["code"].toString().toDouble()) {
-                5001.0, 5003.0, 5005.0 -> Result.failure(RuntimeException(response["msg"] as String))
-                5000.0 -> {
+            when (response.code) {
+                5001, 5003, 5005 -> Result.failure(RuntimeException(response.msg))
+                5000 -> {
                     // 로그인 성공
                     if (isAutoLoginChecked) {
                         // MainActivity에서의 자동 로그인을 위한 상태 저장
@@ -40,7 +40,7 @@ class LoginUseCase @Inject constructor(
                     }
 
                     // 회원 번호 저장
-                    saveUserIndexUseCase(response["user_index"].toString().toDouble().toInt())
+                    saveUserIndexUseCase(response.userIndex)
                     Result.success("Success")
                 }
                 else -> Result.failure(RuntimeException("로그인 중 오류 발생"))

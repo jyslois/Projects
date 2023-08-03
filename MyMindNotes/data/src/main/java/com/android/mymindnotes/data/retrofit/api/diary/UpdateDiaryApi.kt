@@ -1,8 +1,8 @@
 package com.android.mymindnotes.data.retrofit.api.diary
 
-import com.android.mymindnotes.core.model.UpdateDiaryResponse
+import com.android.mymindnotes.core.dto.UpdateDiaryResponse
 import retrofit2.http.PUT
-import com.android.mymindnotes.data.retrofit.model.diary.DiaryEdit
+import com.android.mymindnotes.core.dto.DiaryEdit
 import retrofit2.http.Body
 import retrofit2.http.Path
 

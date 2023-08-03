@@ -1,7 +1,7 @@
 package com.android.mymindnotes.domain.usecases.diary
 
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
-import com.android.mymindnotes.core.model.DiaryListResponse
+import com.android.mymindnotes.core.dto.DiaryListResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

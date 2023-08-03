@@ -21,10 +21,10 @@ class ChangeToTemporaryPasswordUseCase @Inject constructor(
         randomPassword: String
     ): Flow<Result<String>> {
         return memberRepository.changeToTemporaryPassword(email, randomPassword).map { response ->
-            when (response["code"].toString().toDouble()) {
-                3007.0 -> Result.failure(RuntimeException(response["msg"] as String))
-                3006.0 -> Result.success(response["msg"] as String)
-                else -> Result.failure(RuntimeException("임시 비밀번호 발송 중 오류 방생"))
+            when (response.code) {
+                3007 -> Result.failure(RuntimeException(response.msg))
+                3006 -> Result.success(response.msg)
+                else -> Result.failure(RuntimeException("임시 비밀번호 발송 중 오류 발생"))
             }
         }.catch {
             emit(Result.failure(RuntimeException("임시 비밀번호 발송에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
