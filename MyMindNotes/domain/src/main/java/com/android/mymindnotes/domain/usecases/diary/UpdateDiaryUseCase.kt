@@ -37,7 +37,7 @@ class UpdateDiaryUseCase @Inject constructor(
             reflection
         ).map { response ->
             when (response.code) {
-                8001 -> Result.failure(RuntimeException(response.message))
+                8001 -> Result.failure(RuntimeException(response.msg))
                 8000 -> Result.success("Success")
                 else -> Result.failure(RuntimeException("일기 변경 중 오류 발생"))
             }

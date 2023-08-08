@@ -19,7 +19,7 @@ class ChangeToTemporaryPasswordUseCase @Inject constructor(
     suspend operator fun invoke(
         email: String,
         randomPassword: String
-    ): Flow<Result<String>> {
+    ): Flow<Result<String?>> {
         return memberRepository.changeToTemporaryPassword(email, randomPassword).map { response ->
             when (response.code) {
                 3007 -> Result.failure(RuntimeException(response.msg))

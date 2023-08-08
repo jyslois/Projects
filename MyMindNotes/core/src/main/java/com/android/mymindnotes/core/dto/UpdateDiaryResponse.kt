@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UpdateDiaryResponse(
     @SerializedName("code")
-    val code: Int,
+    override val code: Int? = 1,
     @SerializedName("msg")
-    val message: String
-)
+    override val msg: String? = null
+): Response

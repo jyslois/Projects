@@ -45,5 +45,4 @@ interface DiaryRemoteDataSourceInterface {
     suspend fun getDiaryList(userIndex: Int): Flow<GetDiaryListResponse>
     suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse>
     suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<UpdateDiaryResponse>
-
 }

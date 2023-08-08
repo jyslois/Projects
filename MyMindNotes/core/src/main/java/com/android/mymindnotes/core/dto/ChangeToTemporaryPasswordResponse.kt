@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ChangeToTemporaryPasswordResponse(
     @SerializedName("code")
-    val code: Int,
+    override val code: Int? = 1,
     @SerializedName("msg")
-    val msg: String
-)
+    override val msg: String? = null
+): Response

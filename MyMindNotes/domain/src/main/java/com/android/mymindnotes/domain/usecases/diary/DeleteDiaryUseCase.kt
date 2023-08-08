@@ -14,8 +14,11 @@ class DeleteDiaryUseCase @Inject constructor(
 //    suspend fun deleteDiary(diaryNumber: Int): Flow<Map<String, Object>> = diaryRepository.deleteDiary(diaryNumber)
 
     suspend operator fun invoke(diaryNumber: Int): Flow<Result<String>> {
-        return diaryRepository.deleteDiary(diaryNumber).map {
-            Result.success("Success")
+        return diaryRepository.deleteDiary(diaryNumber).map { response ->
+            when (response.code) {
+                9000 -> Result.success("Success")
+                else -> Result.failure(RuntimeException("일기 삭제 중 오류 발생."))
+            }
         }.catch {
             emit(Result.failure(RuntimeException("일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")))
         }

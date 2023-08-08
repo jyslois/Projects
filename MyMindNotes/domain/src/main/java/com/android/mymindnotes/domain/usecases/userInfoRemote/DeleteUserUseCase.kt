@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import java.lang.RuntimeException
 import javax.inject.Inject
+import kotlin.RuntimeException
 
 class DeleteUserUseCase @Inject constructor(
     private val memberRepository: MemberRepository,
@@ -38,8 +38,12 @@ class DeleteUserUseCase @Inject constructor(
             // 모든 상태 저장 설정 지우기
             clearLoginStatesUseCase()
 
-        }.map {
-            Result.success("Success")
+        }.map { response ->
+            when (response.code) {
+                4000 -> Result.success("Success")
+                else -> Result.failure(RuntimeException("회원 탈퇴 중 오류 발생."))
+            }
+
         }.catch {
             emit(Result.failure(RuntimeException("회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")))
         }
