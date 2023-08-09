@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
         object Loading: LoginUiState()
         data class Succeed(val autoSaveState: Boolean, val autoLoginState: Boolean, val id: String?, val password: String?): LoginUiState()
 
-        object LoginSucceed: LoginUiState()
+        data class LoginSucceed(val msg: String?): LoginUiState()
         data class Error(val error: String): LoginUiState()
     }
 
@@ -45,7 +45,7 @@ class LoginViewModel @Inject constructor(
 
         loginUseCase(email, password, isAutoLoginChecked, isAutoSaveChecked).collect {
             when {
-                it.isSuccess ->  _uiState.value = LoginUiState.LoginSucceed
+                it.isSuccess ->  _uiState.value = LoginUiState.LoginSucceed(it.getOrNull())
 
                 it.isFailure -> {
                     _uiState.value = LoginUiState.Error(it.exceptionOrNull()?.message ?: "로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")

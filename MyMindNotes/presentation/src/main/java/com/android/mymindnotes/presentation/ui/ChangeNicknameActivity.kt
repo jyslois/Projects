@@ -54,14 +54,14 @@ class ChangeNicknameActivity : AppCompatActivity() {
 
                         // 닉네임 중복 체크 결과
                         is ChangeNickNameViewModel.ChangeNickNameUiState.NickNameDuplicateChecked -> {
-                            confirmNicknameDialog()
+                            confirmNicknameDialog(uiState.msg)
                         }
 
                         // 닉네임 수정 결과
                         is ChangeNickNameViewModel.ChangeNickNameUiState.NickNameChanged -> {
                             Toast.makeText(
                                 applicationContext,
-                                "닉네임이 변경되었습니다.",
+                                uiState.msg,
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
@@ -154,9 +154,9 @@ class ChangeNicknameActivity : AppCompatActivity() {
     }
 
     // 닉네임 중복 체크 확인완료 dialogue
-    private fun confirmNicknameDialog() {
+    private fun confirmNicknameDialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("사용 가능한 닉네임입니다.")
+        builder.setMessage(msg)
         builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()

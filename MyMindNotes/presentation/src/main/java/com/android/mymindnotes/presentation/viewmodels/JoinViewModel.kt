@@ -19,9 +19,9 @@ class JoinViewModel @Inject constructor(
 
     sealed class JoinUiState {
         object Loading : JoinUiState()
-        object EmailDuplicateCheckSucceed : JoinUiState()
-        object NicknameDuplicateCheckSucceed : JoinUiState()
-        object JoinSucceed : JoinUiState()
+        data class EmailDuplicateCheckSucceed(val msg: String?) : JoinUiState()
+        data class NicknameDuplicateCheckSucceed(val msg: String?) : JoinUiState()
+        data class JoinSucceed(val msg: String?) : JoinUiState()
         data class Error(val error: String) : JoinUiState()
     }
 
@@ -35,7 +35,7 @@ class JoinViewModel @Inject constructor(
 
         checkEmailDuplicateUseCase(emailInput).collect {
             when {
-                it.isSuccess -> _uiState.value = JoinUiState.EmailDuplicateCheckSucceed
+                it.isSuccess -> _uiState.value = JoinUiState.EmailDuplicateCheckSucceed(it.getOrNull())
 
                 it.isFailure -> _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "이메일 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요.")
             }
@@ -49,7 +49,7 @@ class JoinViewModel @Inject constructor(
         // (서버) 닉네임 중복 체크
         checkNickNameDuplicateUseCase(nickNameInput).collect {
             when {
-                it.isSuccess -> _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed
+                it.isSuccess -> _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed(it.getOrNull())
 
                 it.isFailure -> _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")
             }
@@ -68,7 +68,7 @@ class JoinViewModel @Inject constructor(
 
         joinUseCase(email, nickname, password, birthyear).collect {
             when {
-                it.isSuccess -> _uiState.value = JoinUiState.JoinSucceed
+                it.isSuccess -> _uiState.value = JoinUiState.JoinSucceed(it.getOrNull())
 
                 it.isFailure ->  _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요.")
             }

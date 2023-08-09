@@ -16,11 +16,11 @@ class CheckEmailDuplicateUseCase @Inject constructor(
 //        return repository.checkEmail(emailInput)
 //    }
 
-    suspend operator fun invoke(emailInput: String): Flow<Result<String>> {
+    suspend operator fun invoke(emailInput: String): Flow<Result<String?>> {
         return memberRepository.checkEmail(emailInput).map { response ->
             when (response.code) {
                 1001 -> Result.failure(RuntimeException(response.msg))
-                1000 -> Result.success("Success")
+                1000 -> Result.success(response.msg)
                 else -> Result.failure(RuntimeException("이메일 중복 체크 중 오류 발생"))
             }
         }.catch {

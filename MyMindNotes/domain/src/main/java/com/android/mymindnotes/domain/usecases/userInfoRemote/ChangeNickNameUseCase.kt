@@ -14,11 +14,11 @@ class ChangeNickNameUseCase @Inject constructor(
 //    suspend fun changeNickName(nickName: String): Flow<Map<String, Object>> {
 //        return repository.changeNickName(nickName)
 //    }
-    suspend operator fun invoke(nickName: String): Flow<Result<String>> {
+    suspend operator fun invoke(nickName: String): Flow<Result<String?>> {
         return memberRepository.changeNickName(nickName).map { response ->
             when (response.code) {
                 3001 -> Result.failure(RuntimeException(response.msg))
-                3000 -> Result.success("Success")
+                3000 -> Result.success(response.msg)
                 else -> Result.failure(RuntimeException("닉네임 변경 중 오류 발생."))
             }
         }.catch {

@@ -15,7 +15,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     sealed class ChangePasswordUiState {
         object Loading : ChangePasswordUiState()
-        object Success : ChangePasswordUiState()
+        data class Success(val msg: String?) : ChangePasswordUiState()
         data class Error(val error: String) : ChangePasswordUiState()
     }
 
@@ -29,7 +29,7 @@ class ChangePasswordViewModel @Inject constructor(
 
         changePasswordUseCase(password, originalPassword).collect {
             when {
-                it.isSuccess -> _uiState.value = ChangePasswordUiState.Success
+                it.isSuccess -> _uiState.value = ChangePasswordUiState.Success(it.getOrNull())
 
                 it.isFailure -> {
                     _uiState.value = ChangePasswordUiState.Error(it.exceptionOrNull()?.message ?: "비밀번호 변경 실패. 인터넷 연결을 확인해 주세요.")

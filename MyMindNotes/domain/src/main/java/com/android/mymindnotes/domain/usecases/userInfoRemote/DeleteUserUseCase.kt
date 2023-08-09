@@ -25,7 +25,7 @@ class DeleteUserUseCase @Inject constructor(
 //        return memberRemoteRepository.deleteUser()
 //    }
 
-    suspend operator fun invoke(): Flow<Result<String>> {
+    suspend operator fun invoke(): Flow<Result<String?>> {
 
         return memberRepository.deleteUser().onEach { // onEach(): Flow가 방출하는 각 항목(즉, 회원 탈퇴 결과)에 대해 지정된 작업을 수행
             // onEach를 사용한 이유는 deleteUser() 함수가 반환한 Flow의 각 항목에 대해 아래의 작업을 수행하기 위함이다. 즉, 회원 탈퇴가 성공적으로 수행될 때마다 아래의 작업들이 실행될 것이다.
@@ -40,7 +40,7 @@ class DeleteUserUseCase @Inject constructor(
 
         }.map { response ->
             when (response.code) {
-                4000 -> Result.success("Success")
+                4000 -> Result.success(response.msg)
                 else -> Result.failure(RuntimeException("회원 탈퇴 중 오류 발생."))
             }
 

@@ -23,7 +23,7 @@ class AccountSettingViewModel @Inject constructor(
         object Loading : AccountSettingUiState()
         data class Success(val nickName: String, val email: String, val birthyear: Int) : AccountSettingUiState()
         object Logout : AccountSettingUiState()
-        object Withdraw : AccountSettingUiState()
+        data class Withdraw(val msg: String?) : AccountSettingUiState()
         data class Error(val errorMessage: String) : AccountSettingUiState()
     }
 
@@ -46,7 +46,7 @@ class AccountSettingViewModel @Inject constructor(
 
         deleteUserUseCase().collect {
             when {
-                it.isSuccess -> _uiState.value = AccountSettingUiState.Withdraw
+                it.isSuccess -> _uiState.value = AccountSettingUiState.Withdraw(it.getOrNull())
 
                 it.isFailure -> {
                     _uiState.value = AccountSettingUiState.Error(

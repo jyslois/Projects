@@ -27,7 +27,7 @@ class JoinUseCase @Inject constructor(
 //        return repository.join(email, nickname, password, birthyear)
 //    }
 
-    suspend operator fun invoke(email: String, nickname: String, password: String, birthyear: Int): Flow<Result<String>> {
+    suspend operator fun invoke(email: String, nickname: String, password: String, birthyear: Int): Flow<Result<String?>> {
         return memberRepository.join(email, nickname, password, birthyear).map { response ->
             when (response.code) {
                 2001 -> Result.failure(RuntimeException(response.msg))
@@ -45,7 +45,7 @@ class JoinUseCase @Inject constructor(
                     // 회원가입 후 최초 로그인시 알람 설정 다이얼로그를 띄우기 위한 sharedPreferences
                     saveFirstTimeStateUseCase(true)
 
-                    Result.success("Success")
+                    Result.success(response.msg)
                 }
                 else -> Result.failure(RuntimeException("회원가입 중 오류 발생"))
 

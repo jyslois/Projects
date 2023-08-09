@@ -50,9 +50,7 @@ class FindPasswordActivity : AppCompatActivity() {
                         }
 
                         is FindPasswordViewModel.FindPasswordUiState.Success -> {
-                            uiState.successMessage?.let {
-                                dialog(it)
-                            }
+                            dialog(uiState.msg)
                         }
 
                         is FindPasswordViewModel.FindPasswordUiState.Error -> {

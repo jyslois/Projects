@@ -57,8 +57,13 @@ class AccountSettingActivity : AppCompatActivity() {
 
                             }
 
-                            is AccountSettingViewModel.AccountSettingUiState.Logout, AccountSettingViewModel.AccountSettingUiState.Withdraw -> {
-                                // 로그아웃이나 회원탈퇴 시에 메인 화면으로 전환
+                            is AccountSettingViewModel.AccountSettingUiState.Withdraw -> {
+                                // 회원탈퇴 시에 메인 화면으로 전환
+                                startActivity<MainActivity>()
+                            }
+
+                            is AccountSettingViewModel.AccountSettingUiState.Logout -> {
+                                // 로그아웃 시에 메인 화면으로 전환
                                 startActivity<MainActivity>()
                             }
 

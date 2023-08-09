@@ -54,7 +54,7 @@ class ChangePasswordActivity : AppCompatActivity() {
 
                             Toast.makeText(
                                 applicationContext,
-                                "비밀번호가 변경되었습니다.",
+                                uiState.msg,
                                 Toast.LENGTH_SHORT
                             ).show()
                             // 화면 전환

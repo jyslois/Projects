@@ -17,13 +17,13 @@ class ChangePasswordUseCase @Inject constructor(
 //        return repository.changePassword(password, originalPassword)
 //    }
 
-    suspend operator fun invoke(password: String, originalPassword: String): Flow<Result<String>> {
+    suspend operator fun invoke(password: String, originalPassword: String): Flow<Result<String?>> {
         return memberRepository.changePassword(password, originalPassword).map { response ->
             when (response.code) {
                 3005, 3003 -> Result.failure(RuntimeException(response.msg))
                 3002 -> {
                     savePasswordUseCase(password)
-                    Result.success("Success")
+                    Result.success(response.msg)
                 }
                 else -> Result.failure(RuntimeException("비밀번호 변경 중 오류 발생"))
             }

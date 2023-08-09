@@ -58,12 +58,12 @@ class JoinActivity : AppCompatActivity() {
 
                         // 이메일 중복 체크 결과 플로우 구독
                         is JoinViewModel.JoinUiState.EmailDuplicateCheckSucceed -> {
-                            confirmEmailDialog()
+                            confirmEmailDialog(uiState.msg)
                         }
 
                         // 닉네임 중복 체크 결과 플로우 구독
                         is JoinViewModel.JoinUiState.NicknameDuplicateCheckSucceed -> {
-                            confirmNicknameDialog()
+                            confirmNicknameDialog(uiState.msg)
                         }
 
                         // 회원가입 결과 플로우 구독
@@ -200,9 +200,9 @@ class JoinActivity : AppCompatActivity() {
 
 
     // 이메일 중복 체크 확인완료 dialogue
-    private fun confirmEmailDialog() {
+    private fun confirmEmailDialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("사용 가능한 이메일입니다.")
+        builder.setMessage(msg)
         builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()
@@ -212,9 +212,9 @@ class JoinActivity : AppCompatActivity() {
     }
 
     // 닉네임 중복 체크 확인완료 dialogue
-    private fun confirmNicknameDialog() {
+    private fun confirmNicknameDialog(msg: String?) {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("사용 가능한 닉네임입니다.")
+        builder.setMessage(msg)
         builder.setPositiveButton("확인", null)
         alertDialog = builder.show()
         alertDialog.show()

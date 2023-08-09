@@ -18,8 +18,8 @@ class ChangeNickNameViewModel @Inject constructor(
 
     sealed class ChangeNickNameUiState {
         object Loading : ChangeNickNameUiState()
-        object NickNameDuplicateChecked : ChangeNickNameUiState()
-        object NickNameChanged : ChangeNickNameUiState()
+        data class NickNameDuplicateChecked(val msg: String?) : ChangeNickNameUiState()
+        data class NickNameChanged(val msg: String?) : ChangeNickNameUiState()
         data class Error(val error: String) : ChangeNickNameUiState()
     }
 
@@ -33,7 +33,7 @@ class ChangeNickNameViewModel @Inject constructor(
 
         checkNickNameDuplicateUseCase(nickName).collect {
             when {
-                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked
+                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked(it.getOrNull())
 
                 it.isFailure -> _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")
             }
@@ -46,7 +46,7 @@ class ChangeNickNameViewModel @Inject constructor(
 
         changeNickNameUseCase(nickName).collect {
             when {
-                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameChanged
+                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameChanged(it.getOrNull())
 
                 it.isFailure -> _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 변경 실패. 인터넷 연결을 확인해 주세요.")
             }

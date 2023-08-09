@@ -20,7 +20,7 @@ class LoginUseCase @Inject constructor(
 //        return repository.login(email, password)
 //    }
 
-    suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<Result<String>> {
+    suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<Result<String?>> {
         return memberRepository.login(email, password).map { response ->
             when (response.code) {
                 5001, 5003, 5005 -> Result.failure(RuntimeException(response.msg))
@@ -41,7 +41,7 @@ class LoginUseCase @Inject constructor(
 
                     // 회원 번호 저장
                     saveUserIndexUseCase(response.userIndex)
-                    Result.success("Success")
+                    Result.success(response.msg)
                 }
                 else -> Result.failure(RuntimeException("로그인 중 오류 발생"))
             }

@@ -16,7 +16,7 @@ class FindPasswordViewModel @Inject constructor(
 
     sealed class FindPasswordUiState {
         object Loading : FindPasswordUiState()
-        data class Success(val successMessage: String?) : FindPasswordUiState()
+        data class Success(val msg: String?) : FindPasswordUiState()
         data class Error(val error: String?) : FindPasswordUiState()
     }
 
