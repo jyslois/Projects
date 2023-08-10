@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class GetUserInfoResponse(
     @SerializedName("code")
-    override val code: Int? = 1,
+    override val code: Int?,
     @SerializedName("msg")
-    override val msg: String? = null,
+    override val msg: String?,
     @SerializedName("birthyear")
     val birthyear: Int,
     @SerializedName("email")
