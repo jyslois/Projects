@@ -8,7 +8,9 @@ import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TodayDiaryRepositoryImpl @Inject constructor(
     private val todayDiaryLocalDataSource: TodayDiaryLocalDataSourceInterface,
     private val todayDiaryRemoteDataSource: TodayDiaryRemoteDataSourceInterface,

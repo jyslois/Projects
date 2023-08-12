@@ -8,7 +8,9 @@ import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TraumaDiaryRepositoryImpl @Inject constructor(
     private val traumaDiaryLocalDataSource: TraumaDiaryLocalDataSourceInterface,
     private val traumaDiaryRemoteDataSource: TraumaDiaryRemoteDataSourceInterface,

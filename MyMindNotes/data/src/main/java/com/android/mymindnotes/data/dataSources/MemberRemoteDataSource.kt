@@ -18,7 +18,9 @@ import com.android.mymindnotes.core.hilt.coroutineModules.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class MemberRemoteDataSource @Inject constructor(
     private val loginApi: LoginApi,
     private val checkEmailApi: CheckEmailApi,

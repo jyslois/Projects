@@ -8,7 +8,9 @@ import com.android.mymindnotes.core.dto.GetDiaryListResponse
 import com.android.mymindnotes.core.dto.UpdateDiaryResponse
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class DiaryRepositoryImpl @Inject constructor(
     private val diaryRemoteDataSource: DiaryRemoteDataSourceInterface,
     private val memberLocalDataSource: MemberLocalDataSourceInterface

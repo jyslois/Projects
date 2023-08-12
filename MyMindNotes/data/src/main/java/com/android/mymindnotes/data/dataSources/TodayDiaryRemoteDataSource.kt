@@ -7,7 +7,9 @@ import com.android.mymindnotes.core.dto.UserDiary
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TodayDiaryRemoteDataSource @Inject constructor(
     private val saveDiaryApi: SaveDiaryApi,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher

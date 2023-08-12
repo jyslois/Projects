@@ -11,7 +11,9 @@ import com.android.mymindnotes.core.dto.UpdateDiaryResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class DiaryRemoteDataSource @Inject constructor(
     private val getDiaryListApi: GetDiaryListApi,
     private val deleteDiaryApi: DeleteDiaryApi,

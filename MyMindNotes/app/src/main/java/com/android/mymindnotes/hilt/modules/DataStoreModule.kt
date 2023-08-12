@@ -10,6 +10,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 @InstallIn(SingletonComponent::class)
@@ -33,6 +34,7 @@ object DataStoreModule {
     )
 
     // 하나의 DataStore 인스턴스를 제공
+    @Singleton
     @Provides
     fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> = context.dataStore
 
