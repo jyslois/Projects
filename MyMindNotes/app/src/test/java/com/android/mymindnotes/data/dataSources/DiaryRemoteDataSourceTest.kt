@@ -43,31 +43,31 @@ class DiaryRemoteDataSourceTest {
 
     @After
     fun tearDown() {
-        // Fake API의 상태를 기본 상태(NORMAL)로 초기화
-        fakeGetDiaryListApi.currentResponseType = FakeGetDiaryListApi.ResponseType.NORMAL
-        fakeDeleteDiaryApi.currentResponseType = FakeDeleteDiaryApi.ResponseType.NORMAL
-        fakeUpdateDiaryApi.currentResponseType = FakeUpdateDiaryApi.ResponseType.NORMAL
+
     }
 
     @Test
-    fun `getDiaryList NormalResponse`() = runTest(ioDispatcher) {
+    fun `using fake class and spyk to test getDiaryList NormalResponse`() = runTest(ioDispatcher) {
         // Given
-        fakeGetDiaryListApi.currentResponseType = FakeGetDiaryListApi.ResponseType.NORMAL
         val expectedDiaryList = arrayListOf(
             Diary("2023-01-01", "월요일", 1, "행복", "정말 좋은 하루", "좋은 일이 많았다.", "집에서 휴식", "좋은 생각", "오늘의 마음 일기", 1),
             Diary("2023-01-02", "화요일", 2, "공포", "무서웠다", "힘들었다.", "동물원에서 키가 큰 기린을 봤다", "목이 정말 기네", "트라우마 일기", 1)
         )
+        val response = GetDiaryListResponse(code = 7000, msg = "일기 목록을 성공적으로 불러왔습니다", diaryList = expectedDiaryList)
+        coEvery { spyGetDiaryListApi.getAllDiary(1) } returns response
 
         // When
-        val returnedDiaryList = diaryRemoteDataSource.getDiaryList(1).first().diaryList
+        val returnedDiaryList = diaryRemoteDataSource.getDiaryList(1)
 
         // Then
-        assertEquals("반환된 일기 목록이 예상과 다릅니다.", expectedDiaryList, returnedDiaryList)
+        returnedDiaryList.collect {
+            assertEquals("반환된 일기 목록이 예상과 다릅니다.", expectedDiaryList, it.diaryList)
+        }
         coVerify { spyGetDiaryListApi.getAllDiary(1) }
     }
 
     @Test
-    fun `111getDiaryList_NormalResponse`() = runTest(ioDispatcher) {
+    fun `using mockk to test getDiaryList_NormalResponse`() = runTest(ioDispatcher) {
         // Given
         val getDiaryListApi = mockk<GetDiaryListApi>()
         diaryRemoteDataSource = DiaryRemoteDataSource(
@@ -89,17 +89,16 @@ class DiaryRemoteDataSourceTest {
 
         // Then
         // 정상적으로 데이터가 반환되었는지 확인
-        coVerify { getDiaryListApi.getAllDiary(1) }
         returnedDiaryList.collect {
             assertEquals(7000, it.code)
             assertEquals("반환된 일기 목록이 예상과 다릅니다.", expectedDiaryList, it.diaryList)
         }
+        coVerify { getDiaryListApi.getAllDiary(1) }
     }
 
     @Test
     fun getDiaryList_EmptyResponse() = runTest(ioDispatcher) {
-        // 상태를 EMPTY로 설정
-        fakeGetDiaryListApi.currentResponseType = FakeGetDiaryListApi.ResponseType.EMPTY
+
 
         val response = diaryRemoteDataSource.getDiaryList(1).first()
 
@@ -109,8 +108,7 @@ class DiaryRemoteDataSourceTest {
 
     @Test
     fun getDiaryList_ErrorResponse(): Unit = runTest(ioDispatcher) {
-        // 상태를 ERROR로 설정
-        fakeGetDiaryListApi.currentResponseType = FakeGetDiaryListApi.ResponseType.ERROR
+
 
         // 예외가 발생하는지 확인
 //        assertFailsWith<Exception> {
