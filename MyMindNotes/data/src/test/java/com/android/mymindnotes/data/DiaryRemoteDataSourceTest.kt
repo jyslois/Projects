@@ -1,10 +1,11 @@
-package com.android.mymindnotes.data.dataSources
+package com.android.mymindnotes.data
 
 import com.android.mymindnotes.core.dto.DeleteDiaryResponse
 import com.android.mymindnotes.core.dto.Diary
 import com.android.mymindnotes.core.dto.DiaryEdit
 import com.android.mymindnotes.core.dto.GetDiaryListResponse
 import com.android.mymindnotes.core.dto.UpdateDiaryResponse
+import com.android.mymindnotes.data.dataSources.DiaryRemoteDataSource
 import com.android.mymindnotes.data.retrofit.api.diary.DeleteDiaryApi
 import com.android.mymindnotes.data.retrofit.api.diary.UpdateDiaryApi
 import com.android.mymindnotes.data.retrofit.api.user.GetDiaryListApi

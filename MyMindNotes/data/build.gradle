@@ -88,4 +88,10 @@ dependencies {
 
     // Espresso
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Test 어노테이션과 단언(assertions)
+    testImplementation "org.jetbrains.kotlin:kotlin-test:1.9.0"
+
+    // Coroutine Test
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 }
