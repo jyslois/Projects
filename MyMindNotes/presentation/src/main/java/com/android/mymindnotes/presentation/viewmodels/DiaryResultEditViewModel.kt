@@ -15,7 +15,7 @@ class DiaryResultEditViewModel @Inject constructor(
 
     sealed class DiaryResultEditUiState {
         object Loading : DiaryResultEditUiState()
-        object Success : DiaryResultEditUiState()
+        data class Success(val msg: String?) : DiaryResultEditUiState()
         data class Error(val error: String) : DiaryResultEditUiState()
     }
 
@@ -44,7 +44,7 @@ class DiaryResultEditViewModel @Inject constructor(
         ).collect {
 
             when {
-                it.isSuccess -> _uiState.value = DiaryResultEditUiState.Success
+                it.isSuccess -> _uiState.value = DiaryResultEditUiState.Success(it.getOrNull())
 
                 it.isFailure -> {
                     _uiState.value = DiaryResultEditUiState.Error(it.exceptionOrNull()?.message ?: "일기 수정 실패. 인터넷 연결을 확인해 주세요.")
