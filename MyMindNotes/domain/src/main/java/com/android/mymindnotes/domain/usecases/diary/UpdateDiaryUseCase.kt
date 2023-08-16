@@ -1,5 +1,6 @@
 package com.android.mymindnotes.domain.usecases.diary
 
+import com.android.mymindnotes.core.dto.DiaryEdit
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -28,13 +29,10 @@ class UpdateDiaryUseCase @Inject constructor(
         emotionDescription: String?,
         reflection: String?
     ): Flow<Result<String?>> {
+        val diary = DiaryEdit(situation, thought, emotion, emotionDescription, reflection)
         return diaryRepository.updateDiary(
             diaryNumber,
-            situation,
-            thought,
-            emotion,
-            emotionDescription,
-            reflection
+            diary
         ).map { response ->
             when (response.code) {
                 8000 -> Result.success(response.msg)

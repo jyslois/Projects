@@ -35,8 +35,7 @@ class DiaryRemoteDataSource @Inject constructor(
     }.flowOn(ioDispatcher)
 
     // 일기 수정하기
-    override suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<UpdateDiaryResponse> = flow {
-        val diary = DiaryEdit(situation, thought, emotion, emotionDescription, reflection)
+    override suspend fun updateDiary(diaryNumber: Int, diary: DiaryEdit): Flow<UpdateDiaryResponse> = flow {
         val result = updateDiaryApi.updateDiary(diaryNumber, diary)
         emit(result)
     }.flowOn(ioDispatcher)
@@ -46,5 +45,5 @@ class DiaryRemoteDataSource @Inject constructor(
 interface DiaryRemoteDataSourceInterface {
     suspend fun getDiaryList(userIndex: Int): Flow<GetDiaryListResponse>
     suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse>
-    suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<UpdateDiaryResponse>
+    suspend fun updateDiary(diaryNumber: Int, diary: DiaryEdit): Flow<UpdateDiaryResponse>
 }

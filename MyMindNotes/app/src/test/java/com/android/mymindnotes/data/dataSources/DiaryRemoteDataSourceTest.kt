@@ -65,7 +65,7 @@ class DiaryRemoteDataSourceTest {
         // Then
         returnedResponse.collect {
             assertEquals(7000, it.code)
-            assertEquals("반환된 일기 목록이 예상과 다릅니다.", expectedDiaryList, it.diaryList)
+            assertEquals("반환된 일기 목록이 예상된 목록과 다릅니다. 예상: ${expectedDiaryList}, 반환: ${it.diaryList}", expectedDiaryList, it.diaryList)
         }
         coVerify { mockGetDiaryListApi.getAllDiary(1) }
     }
@@ -100,7 +100,6 @@ class DiaryRemoteDataSourceTest {
         }
         coVerify { mockGetDiaryListApi.getAllDiary(1) }
     }
-
 
 
     @Test
@@ -143,7 +142,7 @@ class DiaryRemoteDataSourceTest {
         coEvery { mockUpdateDiaryApi.updateDiary(diary_number = 1, diaryEdit = diaryEdit) } returns expectedResponse
 
         // When
-        val returnedResponse = diaryRemoteDataSource.updateDiary(diaryNumber = 1, situation = "상황 수정", thought = "생각 수정", emotion = "기쁨", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
+        val returnedResponse = diaryRemoteDataSource.updateDiary(diaryNumber = 1, diary = diaryEdit)
 
         // Then
         returnedResponse.collect {
@@ -153,22 +152,35 @@ class DiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun updateDiary_InvalidResponse() = runTest(ioDispatcher) {
+    fun `test updateDiary_InvalidResponse`() = runTest(ioDispatcher) {
+        // Given
+        val expectedResponse = UpdateDiaryResponse(code = 8001, msg = "형식을 준수하지 않아 일기 수정에 실패하였습니다.")
+        val diaryEdit = DiaryEdit(situation = "상황 수정", thought = "생각 수정", emotion = "", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
+        coEvery { mockUpdateDiaryApi.updateDiary(diary_number = 1, diaryEdit = diaryEdit) } returns expectedResponse
 
+        // When
+        val returnedResponse = diaryRemoteDataSource.updateDiary(diaryNumber = 1, diary = diaryEdit)
 
-        // 반한된 코드가 8001인지 확인
-        val expectedCode = 8001
-        val returnedCode = diaryRemoteDataSource.updateDiary(1, "", "", "기쁨", "", "맛있어서 행복한 하루").first().code
-
-        assertEquals("반환된 코드($returnedCode)가 예상 코드($expectedCode)와 다릅니다.", expectedCode, returnedCode)
+        // Then
+        returnedResponse.collect {
+            assertEquals("반환된 코드(${it.code})가 예상 코드(${expectedResponse.code})와 다릅니다.", expectedResponse.code, it.code)
+        }
+        coVerify { mockUpdateDiaryApi.updateDiary(1, diaryEdit) }
     }
 
     @Test
-    fun updateDiary_ErrorResponse() = runTest(ioDispatcher) {
+    fun `test updateDiary_ErrorResponse`() = runTest(ioDispatcher) {
+        // Given
+        val diaryEdit = DiaryEdit(situation = "상황 수정", thought = "생각 수정", emotion = "기쁨", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
+        coEvery { mockUpdateDiaryApi.updateDiary(diary_number = 1, diaryEdit = diaryEdit) } throws RuntimeException("오류 발생")
 
-        // 예외가 발생했는지 확인
-        assertFailsWith<Exception> {
-            diaryRemoteDataSource.updateDiary(1, "점심으로 타코를 먹었다", "왜 이렇게 맛있지", "기쁨", "", "맛있어서 행복한 하루").first()
+        // When
+        val returnedResponse = diaryRemoteDataSource.updateDiary(diaryNumber = 1, diary = diaryEdit)
+
+        // Then
+        assertFailsWith<RuntimeException> {
+            returnedResponse.first()
         }
+        coVerify { mockUpdateDiaryApi.updateDiary(1, diaryEdit) }
     }
 }
