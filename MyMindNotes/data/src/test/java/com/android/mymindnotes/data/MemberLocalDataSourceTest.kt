@@ -573,10 +573,10 @@ class MemberLocalDataSourceTest {
         val time = fakeDataStore.getValue(timeKey, "")
         val hour = fakeDataStore.getValue(hourKey, 22)
         val minute = fakeDataStore.getValue(minuteKey, 0)
-        assertFalse("AlarmKey가 제거되지 않았습니다.", alarmState)
-        assertEquals("TimeKey가 제거되지 않았습니다.", "", time)
-        assertEquals("HourKey가 제거되지 않았습니다.", 22, hour)
-        assertEquals("MinuteKey가 제거되지 않았습니다.", 0, minute)
+        assertFalse("alarmKey가 제거되지 않았습니다.", alarmState)
+        assertEquals("timeKey가 제거되지 않았습니다.", "", time)
+        assertEquals("hourKey가 제거되지 않았습니다.", 22, hour)
+        assertEquals("minuteKey가 제거되지 않았습니다.", 0, minute)
     }
 
     // Test for clearRebootTimeKey
@@ -591,7 +591,7 @@ class MemberLocalDataSourceTest {
 
         // Then
         val rebootTime = fakeDataStore.getValue(rebootTimeKey, 0L)
-        assertEquals("RebootTimeKey가 제거되지 않았습니다.", 0L, rebootTime)
+        assertEquals("rebootTimeKey가 제거되지 않았습니다.", 0L, rebootTime)
     }
 
 }
