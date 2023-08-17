@@ -43,7 +43,7 @@ class TodayDiaryLocalDataSourceTest {
         fakeDataStore.clear()
     }
 
-    // Save Methods
+    // Test Save Methods
     // saveEmotionColor
     @Test
     fun saveEmotionColor_SavesExpectedColor() = runTest(ioDispatcher) {
@@ -83,7 +83,7 @@ class TodayDiaryLocalDataSourceTest {
 
         // Then
         val savedEmotionText = fakeDataStore.getValue(todayEmotionTextKey, "")
-        assertEquals("저장해야 하는 감정 텍스트($expectedEmotionText)와 실제로 저장된 감정 텍스트($savedEmotionText)가 다릅니다.", expectedEmotionText, savedEmotionText)
+        assertEquals("저장해야 하는 감정 설명($expectedEmotionText)과 실제로 저장된 감정 설명($savedEmotionText)이 다릅니다.", expectedEmotionText, savedEmotionText)
     }
 
     // saveSituation
@@ -171,7 +171,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
 
-   // Get Methods
+   // Test Get Methods
    // getEmotion
    @Test
    fun getEmotion_ReturnsExpectedEmotion() = runTest(ioDispatcher) {
@@ -356,7 +356,8 @@ class TodayDiaryLocalDataSourceTest {
         assertNull("반환된 요일($returnedDay)이 기본값인 null이 아닙니다.", returnedDay)
     }
 
-    // Test for clearTodayDiaryTempRecords
+    // Test Clear Method
+    // clearTodayDiaryTempRecords
     @Test
     fun clearTodayDiaryTempRecords_RemovesExpectedKeys() = runTest(ioDispatcher) {
         // Given
@@ -364,7 +365,7 @@ class TodayDiaryLocalDataSourceTest {
         val initialEmotion = "기쁨"
         val initialEmotionText = "꽉 찬 행복을 느꼈다"
         val initialSituation = "맛있는 타코를 먹었다"
-        val initialThought = "타고 정말 맛있다"
+        val initialThought = "타코 정말 맛있다"
         val initialReflection = "맛있는 음식을 더 자주 먹어야지!"
         val initialType = "오늘의 마음 일기"
         val initialDate = "2023-08-17"
