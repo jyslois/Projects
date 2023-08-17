@@ -130,7 +130,7 @@ class MemberLocalDataSource @Inject constructor(
 
 
     // FirstTime 저장하기
-    override suspend fun saveFirstTimeToDataAStore(state: Boolean) {
+    override suspend fun saveFirstTimeToDataStore(state: Boolean) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
                 preferences[firstTimeKey] = state
@@ -169,6 +169,14 @@ class MemberLocalDataSource @Inject constructor(
         }
     }
 
+
+    // hour 가져오기
+    override val getHourFromDataStore: Flow<Int> =
+        dataStore.data.map { preferences ->
+            preferences[hourKey] ?: 22
+        }.flowOn(ioDispatcher)
+
+
     // hour 저장하기
     override suspend fun saveHourToDataStore(hour: Int) {
         withContext(ioDispatcher) {
@@ -177,12 +185,6 @@ class MemberLocalDataSource @Inject constructor(
             }
         }
     }
-
-    // hour 가져오기
-    override val getHourToDataStore: Flow<Int> =
-        dataStore.data.map { preferences ->
-            preferences[hourKey] ?: 22
-        }.flowOn(ioDispatcher)
 
 
     // minute 저장하기
@@ -195,7 +197,7 @@ class MemberLocalDataSource @Inject constructor(
     }
 
     // minute 가져오기
-    override val getMinuteToDataStore: Flow<Int> =
+    override val getMinuteFromDataStore: Flow<Int> =
         dataStore.data.map { preferences ->
             preferences[minuteKey] ?: 0
         }.flowOn(ioDispatcher)
@@ -273,17 +275,16 @@ interface MemberLocalDataSourceInterface {
 
 
     val getFirstTimeFromDataStore: Flow<Boolean>
-    suspend fun saveFirstTimeToDataAStore(state: Boolean)
+    suspend fun saveFirstTimeToDataStore(state: Boolean)
     val getAlarmStateFromDataStore: Flow<Boolean>
     suspend fun saveAlarmStateToDataStore(state: Boolean)
     val getTimeFromDataStore: Flow<String?>
     suspend fun saveTimeToDataStore(time: String)
+    val getHourFromDataStore: Flow<Int>
     suspend fun saveHourToDataStore(hour: Int)
-    val getHourToDataStore: Flow<Int>
     suspend fun saveMinuteToDataStore(minute: Int)
-    val getMinuteToDataStore: Flow<Int>
+    val getMinuteFromDataStore: Flow<Int>
     val getRebootTimeFromDataStore: Flow<Long>
-
     suspend fun saveRebootTimeToDataStore(time: Long)
     suspend fun clearLoginStatesRelatedKeys()
     suspend fun clearAlarmRelatedKeys()

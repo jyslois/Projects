@@ -70,7 +70,7 @@ class MemberRepositoryImpl @Inject constructor(
 
     // FirstTime 저장하기
     override suspend fun saveFirstTime(state: Boolean) {
-        memberLocalDataSource.saveFirstTimeToDataAStore(state)
+        memberLocalDataSource.saveFirstTimeToDataStore(state)
     }
 
     // Alarm
@@ -96,7 +96,7 @@ class MemberRepositoryImpl @Inject constructor(
     }
 
     // 시간 가져오기
-    override suspend fun getHour(): Flow<Int> = memberLocalDataSource.getHourToDataStore
+    override suspend fun getHour(): Flow<Int> = memberLocalDataSource.getHourFromDataStore
 
 
     // 분 저장하기
@@ -105,7 +105,7 @@ class MemberRepositoryImpl @Inject constructor(
     }
 
     // 분 가져오기
-    override suspend fun getMinute(): Flow<Int> = memberLocalDataSource.getMinuteToDataStore
+    override suspend fun getMinute(): Flow<Int> = memberLocalDataSource.getMinuteFromDataStore
 
     // Reboot를 위한 시간 저장하기
     override suspend fun saveRebootTime(time: Long) {
