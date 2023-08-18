@@ -2,12 +2,17 @@ package com.android.mymindnotes.data.repositoryImpls
 
 import com.android.mymindnotes.core.dto.ChangeNicknameResponse
 import com.android.mymindnotes.core.dto.ChangePasswordResponse
+import com.android.mymindnotes.core.dto.ChangeToTemporaryPassword
 import com.android.mymindnotes.core.dto.ChangeToTemporaryPasswordResponse
+import com.android.mymindnotes.core.dto.ChangeUserNickname
+import com.android.mymindnotes.core.dto.ChangeUserPassword
 import com.android.mymindnotes.core.dto.DeleteUserResponse
 import com.android.mymindnotes.core.dto.DuplicateCheckResponse
 import com.android.mymindnotes.core.dto.GetUserInfoResponse
 import com.android.mymindnotes.core.dto.JoinResponse
 import com.android.mymindnotes.core.dto.LoginResponse
+import com.android.mymindnotes.core.dto.UserInfo
+import com.android.mymindnotes.core.dto.UserInfoLogin
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
 import com.android.mymindnotes.data.dataSources.MemberRemoteDataSourceInterface
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
@@ -31,7 +36,8 @@ class MemberRepositoryImpl @Inject constructor(
 
     // AutoLoginCheck
     // AutoLoginCheck 가져오기
-    override suspend fun getAutoLoginCheck(): Flow<Boolean> = memberLocalDataSource.getAutoLoginCheckFromDataStore
+    override suspend fun getAutoLoginCheck(): Flow<Boolean> =
+        memberLocalDataSource.getAutoLoginCheckFromDataStore
 
     // AutoLoginCheck 저장하기
     override suspend fun saveAutoLoginCheck(state: Boolean) {
@@ -40,7 +46,8 @@ class MemberRepositoryImpl @Inject constructor(
 
     // AutoSaveCheck
     // AutoSaveCheck 가져오기
-    override suspend fun getAutoSaveCheck(): Flow<Boolean> = memberLocalDataSource.getAutoSaveCheckFromDataStore
+    override suspend fun getAutoSaveCheck(): Flow<Boolean> =
+        memberLocalDataSource.getAutoSaveCheckFromDataStore
 
     // AutoSaveCheck 저장하기
     override suspend fun saveAutoSaveCheck(state: Boolean) {
@@ -52,7 +59,8 @@ class MemberRepositoryImpl @Inject constructor(
     override suspend fun getId(): Flow<String?> = memberLocalDataSource.getIdFromDataStore
 
     // Password 가져오기
-    override suspend fun getPassword(): Flow<String?> = memberLocalDataSource.getPasswordFromDataStore
+    override suspend fun getPassword(): Flow<String?> =
+        memberLocalDataSource.getPasswordFromDataStore
 
     // Id와 Password 저장하기
     override suspend fun saveIdAndPassword(id: String?, password: String?) {
@@ -66,7 +74,8 @@ class MemberRepositoryImpl @Inject constructor(
 
     // FirstTime - 최초 로그인 여부
     // FirstTime 가져오기
-    override suspend fun getFirstTime(): Flow<Boolean> = memberLocalDataSource.getFirstTimeFromDataStore
+    override suspend fun getFirstTime(): Flow<Boolean> =
+        memberLocalDataSource.getFirstTimeFromDataStore
 
     // FirstTime 저장하기
     override suspend fun saveFirstTime(state: Boolean) {
@@ -75,7 +84,8 @@ class MemberRepositoryImpl @Inject constructor(
 
     // Alarm
     // alarm 상태 가져오기
-    override suspend fun getAlarmState(): Flow<Boolean> = memberLocalDataSource.getAlarmStateFromDataStore
+    override suspend fun getAlarmState(): Flow<Boolean> =
+        memberLocalDataSource.getAlarmStateFromDataStore
 
     // time 가져오기
     override suspend fun getTime(): Flow<String?> = memberLocalDataSource.getTimeFromDataStore
@@ -113,7 +123,8 @@ class MemberRepositoryImpl @Inject constructor(
     }
 
     // Reboot 시간 가져오기
-    override suspend fun getRebootTime(): Flow<Long> = memberLocalDataSource.getRebootTimeFromDataStore
+    override suspend fun getRebootTime(): Flow<Long> =
+        memberLocalDataSource.getRebootTimeFromDataStore
 
 
     // Clear Preferences
@@ -135,22 +146,28 @@ class MemberRepositoryImpl @Inject constructor(
 
     // Remote
     // 로그인
-    override suspend fun login(email: String, password: String): Flow<LoginResponse> = memberRemoteDataSource.loginResultFlow(email, password)
+    override suspend fun login(userInfoLogin: UserInfoLogin): Flow<LoginResponse> {
+        return memberRemoteDataSource.login(userInfoLogin)
+    }
+
 
     // 아이디, 비밀번호 중복 체크
     // 이메일 중복 체크
-    override suspend fun checkEmail(emailInput: String): Flow<DuplicateCheckResponse> = memberRemoteDataSource.emailCheckFlow(emailInput)
+    override suspend fun checkEmail(emailInput: String): Flow<DuplicateCheckResponse> =
+        memberRemoteDataSource.emailDuplicateCheck(emailInput)
 
     // 닉네임 중복 체크
-    override suspend fun checkNickName(nickNameInput: String): Flow<DuplicateCheckResponse> = memberRemoteDataSource.nickNameCheckFlow(nickNameInput)
+    override suspend fun checkNickName(nickNameInput: String): Flow<DuplicateCheckResponse> =
+        memberRemoteDataSource.nickNameDuplicateCheck(nickNameInput)
 
     // 회원가입
-    override suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<JoinResponse> = memberRemoteDataSource.joinResultFlow(email, nickname, password, birthyear)
+    override suspend fun join(userInfo: UserInfo): Flow<JoinResponse> =
+        memberRemoteDataSource.join(userInfo)
 
     // 회원탈퇴
     override suspend fun deleteUser(): Flow<DeleteUserResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
-        return memberRemoteDataSource.deleteUserResultFlow(userIndex)
+        return memberRemoteDataSource.deleteUser(userIndex)
     }
 
     // 회원 정보 가져오기
@@ -164,17 +181,23 @@ class MemberRepositoryImpl @Inject constructor(
     // 닉네임 수정
     override suspend fun changeNickName(nickName: String): Flow<ChangeNicknameResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
-        return memberRemoteDataSource.changeNickNameFlow(userIndex, nickName)
+        val nicknameInfo = ChangeUserNickname(userIndex, nickName)
+        return memberRemoteDataSource.changeNickName(nicknameInfo)
     }
 
     // 비밀번호 수정
-    override suspend fun changePassword(password: String, originalPassword: String): Flow<ChangePasswordResponse> {
+    override suspend fun changePassword(
+        password: String,
+        originalPassword: String
+    ): Flow<ChangePasswordResponse> {
         val userIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
-        return memberRemoteDataSource.changePasswordFlow(userIndex, password, originalPassword)
+        val passwordInfo = ChangeUserPassword(userIndex, password, originalPassword)
+        return memberRemoteDataSource.changePassword(passwordInfo)
     }
 
     // 임시 비밀번호로 비밀번호 수정
-    override suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<ChangeToTemporaryPasswordResponse> = memberRemoteDataSource.changeToTemporaryPasswordFlow(email, randomPassword)
+    override suspend fun changeToTemporaryPassword(temporaryPasswordInfo: ChangeToTemporaryPassword): Flow<ChangeToTemporaryPasswordResponse> =
+        memberRemoteDataSource.changeToTemporaryPassword(temporaryPasswordInfo)
 
 
 }

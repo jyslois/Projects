@@ -2,12 +2,15 @@ package com.android.mymindnotes.data.repositoryInterfaces
 
 import com.android.mymindnotes.core.dto.ChangeNicknameResponse
 import com.android.mymindnotes.core.dto.ChangePasswordResponse
+import com.android.mymindnotes.core.dto.ChangeToTemporaryPassword
 import com.android.mymindnotes.core.dto.ChangeToTemporaryPasswordResponse
 import com.android.mymindnotes.core.dto.DeleteUserResponse
 import com.android.mymindnotes.core.dto.DuplicateCheckResponse
 import com.android.mymindnotes.core.dto.GetUserInfoResponse
 import com.android.mymindnotes.core.dto.JoinResponse
 import com.android.mymindnotes.core.dto.LoginResponse
+import com.android.mymindnotes.core.dto.UserInfo
+import com.android.mymindnotes.core.dto.UserInfoLogin
 import kotlinx.coroutines.flow.*
 
 interface MemberRepository {
@@ -50,14 +53,14 @@ interface MemberRepository {
     suspend fun getUserInfo(): Flow<GetUserInfoResponse>
 
     // Log in & Log out
-    suspend fun login(email: String, password: String): Flow<LoginResponse>
+    suspend fun login(userInfoLogin: UserInfoLogin): Flow<LoginResponse>
 
     // Email & Nickname Duplicate Check
     suspend fun checkEmail(emailInput: String): Flow<DuplicateCheckResponse>
     suspend fun checkNickName(nickNameInput: String): Flow<DuplicateCheckResponse>
 
     // Join
-    suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<JoinResponse>
+    suspend fun join(userInfo: UserInfo): Flow<JoinResponse>
 
     // Delete
     suspend fun deleteUser(): Flow<DeleteUserResponse>
@@ -69,6 +72,6 @@ interface MemberRepository {
     suspend fun changePassword(password: String, originalPassword: String): Flow<ChangePasswordResponse>
 
     // change to TemporaryPassword
-    suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<ChangeToTemporaryPasswordResponse>
+    suspend fun changeToTemporaryPassword(temporaryPasswordInfo: ChangeToTemporaryPassword): Flow<ChangeToTemporaryPasswordResponse>
 
 }

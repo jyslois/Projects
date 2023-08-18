@@ -1,5 +1,6 @@
 package com.android.mymindnotes.domain.usecases
 
+import com.android.mymindnotes.core.dto.UserInfoLogin
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
@@ -21,7 +22,8 @@ class LoginUseCase @Inject constructor(
 //    }
 
     suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<Result<String?>> {
-        return memberRepository.login(email, password).map { response ->
+        val userInfoLogin = UserInfoLogin(email, password)
+        return memberRepository.login(userInfoLogin).map { response ->
             when (response.code) {
                 5001, 5003, 5005 -> Result.failure(RuntimeException(response.msg))
                 5000 -> {
@@ -40,7 +42,7 @@ class LoginUseCase @Inject constructor(
                     }
 
                     // 회원 번호 저장
-                    saveUserIndexUseCase(response.userIndex)
+                    response.userIndex?.let { saveUserIndexUseCase(it) }
                     Result.success(response.msg)
                 }
                 else -> Result.failure(RuntimeException("로그인 중 오류 발생"))

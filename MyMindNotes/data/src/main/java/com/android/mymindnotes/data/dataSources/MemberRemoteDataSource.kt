@@ -42,85 +42,56 @@ class MemberRemoteDataSource @Inject constructor(
 
 
     // 로그인
-    override suspend fun loginResultFlow(email: String, password: String): Flow<LoginResponse> = flow {
-        val user = UserInfoLogin(email, password)
-        val result = loginApi.login(user)
+    override suspend fun login(userInfoLogin: UserInfoLogin): Flow<LoginResponse> = flow {
+        val result = loginApi.login(userInfoLogin)
         emit(result)
     }.flowOn(ioDispatcher)
 
     // 이메일 중복 체크
-    override suspend fun emailCheckFlow(emailInput: String): Flow<DuplicateCheckResponse> = flow {
+    override suspend fun emailDuplicateCheck(emailInput: String): Flow<DuplicateCheckResponse> = flow {
         val result = checkEmailApi.checkEmail(emailInput)
         emit(result)
     }.flowOn(ioDispatcher)
 
     // 닉네임 중복 체크
-    override suspend fun nickNameCheckFlow(nickNameInput: String): Flow<DuplicateCheckResponse> = flow {
+    override suspend fun nickNameDuplicateCheck(nickNameInput: String): Flow<DuplicateCheckResponse> = flow {
         val result = checkNickNameApi.checkNickname(nickNameInput)
         emit(result)
     }.flowOn(ioDispatcher)
 
 
     // 회원가입
-    override suspend fun joinResultFlow(
-        email: String,
-        nickname: String,
-        password: String,
-        birthyear: Int
-    ): Flow<JoinResponse> = flow {
-        val user = UserInfo(
-            email,
-            nickname,
-            password,
-            birthyear
-        )
-        val result = joinApi.addUser(user)
+    override suspend fun join(userInfo: UserInfo): Flow<JoinResponse> = flow {
+        val result = joinApi.addUser(userInfo)
         emit(result)
     }.flowOn(ioDispatcher)
 
     // 회원탈퇴
-    override suspend fun deleteUserResultFlow(userIndex: Int): Flow<DeleteUserResponse> = flow {
+    override suspend fun deleteUser(userIndex: Int): Flow<DeleteUserResponse> = flow {
         val result = deleteUserApi.deleteUser(userIndex)
         emit(result)
     }.flowOn(ioDispatcher)
 
     // 회원 정보 수정
     // 닉네임 수정
-    override suspend fun changeNickNameFlow(userIndex: Int, nickName: String): Flow<ChangeNicknameResponse> =
+    override suspend fun changeNickName(nicknameInfo: ChangeUserNickname): Flow<ChangeNicknameResponse> =
         flow {
-            val user = ChangeUserNickname(
-                userIndex,
-                nickName
-            )
-            val result = changeNicknameApi.updateUserNickname(user)
+            val result = changeNicknameApi.updateUserNickname(nicknameInfo)
             emit(result)
         }.flowOn(ioDispatcher)
 
 
     // 비밀번호 수정
-    override suspend fun changePasswordFlow(
-        userIndex: Int,
-        password: String,
-        originalPassword: String
-    ): Flow<ChangePasswordResponse> = flow {
-        val user = ChangeUserPassword(userIndex, password, originalPassword)
-        val result = changePasswordApi.updateUserPassword(user)
+    override suspend fun changePassword(passwordInfo: ChangeUserPassword): Flow<ChangePasswordResponse> = flow {
+        val result = changePasswordApi.updateUserPassword(passwordInfo)
         emit(result)
     }.flowOn(ioDispatcher)
 
 
 
     // 임시 비밀번호로 비밀번호 수정
-    override suspend fun changeToTemporaryPasswordFlow(
-        email: String,
-        randomPassword: String
-    ): Flow<ChangeToTemporaryPasswordResponse> = flow {
-        val user =
-            ChangeToTemporaryPassword(
-                email,
-                randomPassword
-            )
-        val result = changeToTempPasswordApi.toTemPassword(user)
+    override suspend fun changeToTemporaryPassword(temporaryPasswordInfo: ChangeToTemporaryPassword): Flow<ChangeToTemporaryPasswordResponse> = flow {
+        val result = changeToTempPasswordApi.toTemPassword(temporaryPasswordInfo)
         emit(result)
     }.flowOn(ioDispatcher)
 
@@ -129,24 +100,12 @@ class MemberRemoteDataSource @Inject constructor(
 
 interface MemberRemoteDataSourceInterface {
     suspend fun getUserInfo(userIndex: Int): Flow<GetUserInfoResponse>
-    suspend fun loginResultFlow(email: String, password: String): Flow<LoginResponse>
-    suspend fun emailCheckFlow(emailInput: String): Flow<DuplicateCheckResponse>
-    suspend fun nickNameCheckFlow(nickNameInput: String): Flow<DuplicateCheckResponse>
-    suspend fun joinResultFlow(
-        email: String,
-        nickname: String,
-        password: String,
-        birthyear: Int
-    ): Flow<JoinResponse>
-    suspend fun deleteUserResultFlow(userIndex: Int): Flow<DeleteUserResponse>
-    suspend fun changeNickNameFlow(userIndex: Int, nickName: String): Flow<ChangeNicknameResponse>
-    suspend fun changePasswordFlow(
-        userIndex: Int,
-        password: String,
-        originalPassword: String
-    ): Flow<ChangePasswordResponse>
-    suspend fun changeToTemporaryPasswordFlow(
-        email: String,
-        randomPassword: String
-    ): Flow<ChangeToTemporaryPasswordResponse>
+    suspend fun login(userInfoLogin: UserInfoLogin): Flow<LoginResponse>
+    suspend fun emailDuplicateCheck(emailInput: String): Flow<DuplicateCheckResponse>
+    suspend fun nickNameDuplicateCheck(nickNameInput: String): Flow<DuplicateCheckResponse>
+    suspend fun join(userInfo: UserInfo): Flow<JoinResponse>
+    suspend fun deleteUser(userIndex: Int): Flow<DeleteUserResponse>
+    suspend fun changeNickName(nicknameInfo: ChangeUserNickname): Flow<ChangeNicknameResponse>
+    suspend fun changePassword(passwordInfo: ChangeUserPassword): Flow<ChangePasswordResponse>
+    suspend fun changeToTemporaryPassword(temporaryPasswordInfo: ChangeToTemporaryPassword): Flow<ChangeToTemporaryPasswordResponse>
 }

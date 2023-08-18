@@ -1,5 +1,6 @@
 package com.android.mymindnotes.domain.usecases.userInfoRemote
 
+import com.android.mymindnotes.core.dto.ChangeToTemporaryPassword
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -20,7 +21,9 @@ class ChangeToTemporaryPasswordUseCase @Inject constructor(
         email: String,
         randomPassword: String
     ): Flow<Result<String?>> {
-        return memberRepository.changeToTemporaryPassword(email, randomPassword).map { response ->
+        val temporaryPasswordInfo = ChangeToTemporaryPassword(email, randomPassword)
+
+        return memberRepository.changeToTemporaryPassword(temporaryPasswordInfo).map { response ->
             when (response.code) {
                 3007 -> Result.failure(RuntimeException(response.msg))
                 3006 -> Result.success(response.msg)

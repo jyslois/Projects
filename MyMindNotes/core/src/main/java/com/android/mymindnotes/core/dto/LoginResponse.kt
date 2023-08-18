@@ -9,7 +9,7 @@ data class LoginResponse(
     @SerializedName("msg")
     override val msg: String?,
     @SerializedName("nickname")
-    val nickname: String,
+    val nickname: String? = null,
     @SerializedName("user_index")
-    val userIndex: Int
+    val userIndex: Int? = null
 ): Response

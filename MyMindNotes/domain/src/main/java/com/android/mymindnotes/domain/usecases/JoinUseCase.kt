@@ -1,5 +1,6 @@
 package com.android.mymindnotes.domain.usecases
 
+import com.android.mymindnotes.core.dto.UserInfo
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
@@ -28,12 +29,18 @@ class JoinUseCase @Inject constructor(
 //    }
 
     suspend operator fun invoke(email: String, nickname: String, password: String, birthyear: Int): Flow<Result<String?>> {
-        return memberRepository.join(email, nickname, password, birthyear).map { response ->
+        val userInfo = UserInfo(
+            email,
+            nickname,
+            password,
+            birthyear
+        )
+        return memberRepository.join(userInfo).map { response ->
             when (response.code) {
                 2001 -> Result.failure(RuntimeException(response.msg))
                 2000 -> {
                     // 회원 번호 저장
-                    saveUserIndexUseCase(response.userIndex)
+                    response.userIndex?.let { saveUserIndexUseCase(it) }
 
                     // 아이디와 비밀번호 저장
                     saveIdAndPasswordUseCase(email, password)

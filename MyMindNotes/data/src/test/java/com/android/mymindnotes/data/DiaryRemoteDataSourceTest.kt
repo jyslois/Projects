@@ -58,7 +58,7 @@ class DiaryRemoteDataSourceTest {
             Diary("2023-01-01", "월요일", 1, "행복", "정말 좋은 하루", "좋은 일이 많았다.", "집에서 휴식", "좋은 생각", "오늘의 마음 일기", 1),
             Diary("2023-01-02", "화요일", 2, "공포", "무서웠다", "힘들었다.", "동물원에서 키가 큰 기린을 봤다", "목이 정말 기네", "트라우마 일기", 1)
         )
-        val expectedResponse = GetDiaryListResponse(code = 7000, msg = "일기 목록을 성공적으로 불러왔습니다.", diaryList = expectedDiaryList)
+        val expectedResponse = GetDiaryListResponse(code = 7000, msg = "일기목록을 성공적으로 불러왔습니다.", diaryList = expectedDiaryList)
         coEvery { mockGetDiaryListApi.getAllDiary(1) } returns expectedResponse
 
         // When
@@ -66,8 +66,8 @@ class DiaryRemoteDataSourceTest {
 
         // Then
         returnedResponse.collect {
-            assertEquals(7000, it.code)
-            assertEquals("반환된 일기 목록이 예상된 목록과 다릅니다. 예상: ${expectedDiaryList}, 반환: ${it.diaryList}", expectedDiaryList, it.diaryList)
+            assertEquals("반환된 코드(${it.code})가 예상(${expectedResponse.code})과 다릅니다.", expectedResponse.code, it.code)
+            assertEquals("반환된 일기 목록이 예상된 목록과 다릅니다. 예상: ${expectedResponse.diaryList}, 반환: ${it.diaryList}", expectedResponse.diaryList, it.diaryList)
         }
         coVerify { mockGetDiaryListApi.getAllDiary(1) }
     }
@@ -75,7 +75,7 @@ class DiaryRemoteDataSourceTest {
     @Test
     fun getDiaryList_ReturnsEmptyDiaryList() = runTest(ioDispatcher) {
         // Given
-        val expectedResponse = GetDiaryListResponse(code = 7000, msg = "일기 목록을 성공적으로 불러왔습니다.", diaryList = arrayListOf())
+        val expectedResponse = GetDiaryListResponse(code = 7000, msg = "일기목록을 성공적으로 불러왔습니다.", diaryList = arrayListOf())
         coEvery { mockGetDiaryListApi.getAllDiary(1) } returns expectedResponse
 
         // When
@@ -91,7 +91,7 @@ class DiaryRemoteDataSourceTest {
     @Test
     fun getDiaryList_ThrowsRuntimeException(): Unit = runTest(ioDispatcher) {
         // Given
-        coEvery { mockGetDiaryListApi.getAllDiary(1) } throws RuntimeException("오류 발생")
+        coEvery { mockGetDiaryListApi.getAllDiary(1) } throws RuntimeException("일기목록 불러오던 중 오류 발생")
 
         // When
         val returnedResponse = diaryRemoteDataSource.getDiaryList(1)
@@ -124,7 +124,7 @@ class DiaryRemoteDataSourceTest {
     @Test
     fun deleteDiary_ThrowsRuntimeException() = runTest(ioDispatcher) {
         // Given
-        coEvery { mockDeleteDiaryApi.deleteDiary(1) } throws RuntimeException("오류 발생")
+        coEvery { mockDeleteDiaryApi.deleteDiary(1) } throws RuntimeException("일기 삭제 중 오류 발생")
 
         // When
         val returnedResponse = diaryRemoteDataSource.deleteDiary(1)
@@ -156,7 +156,7 @@ class DiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun updateDiary_ReturnsFailureUpdateCode() = runTest(ioDispatcher) {
+    fun updateDiary_ReturnsUnsuccesfulUpdateCode() = runTest(ioDispatcher) {
         // Given
         val expectedResponse = UpdateDiaryResponse(code = 8001, msg = "형식을 준수하지 않아 일기 수정에 실패하였습니다.")
         val diaryEdit = DiaryEdit(situation = "상황 수정", thought = "생각 수정", emotion = "", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
@@ -176,7 +176,7 @@ class DiaryRemoteDataSourceTest {
     fun updateDiary_ThrowsRuntimeException() = runTest(ioDispatcher) {
         // Given
         val diaryEdit = DiaryEdit(situation = "상황 수정", thought = "생각 수정", emotion = "기쁨", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
-        coEvery { mockUpdateDiaryApi.updateDiary(diary_number = 1, diaryEdit = diaryEdit) } throws RuntimeException("오류 발생")
+        coEvery { mockUpdateDiaryApi.updateDiary(diary_number = 1, diaryEdit = diaryEdit) } throws RuntimeException("일기 수정 중 오류 발생")
 
         // When
         val returnedResponse = diaryRemoteDataSource.updateDiary(diaryNumber = 1, diary = diaryEdit)
