@@ -16,24 +16,13 @@ class TodayDiaryRemoteDataSource @Inject constructor(
 ): TodayDiaryRemoteDataSourceInterface {
 
     // (서버) 일기 저장하기
-    override suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<SaveDiaryResponse> = flow {
-        val userDiary = UserDiary(
-            userIndex,
-            type,
-            date,
-            day,
-            situation,
-            thought,
-            emotion,
-            emotionText,
-            reflection
-        )
-        val result = saveDiaryApi.addDiary(userDiary)
+    override suspend fun saveDiary(diaryInfo: UserDiary): Flow<SaveDiaryResponse> = flow {
+        val result = saveDiaryApi.addDiary(diaryInfo)
         emit(result)
     }.flowOn(ioDispatcher)
 
 }
 
 interface TodayDiaryRemoteDataSourceInterface {
-    suspend fun saveDiary(userIndex: Int, type: String?, date: String?, day: String?, situation: String?, thought: String?, emotion: String?, emotionText: String?, reflection: String?): Flow<SaveDiaryResponse>
+    suspend fun saveDiary(diaryInfo: UserDiary): Flow<SaveDiaryResponse>
 }

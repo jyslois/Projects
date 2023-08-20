@@ -1,6 +1,7 @@
 package com.android.mymindnotes.data.repositoryImpls
 
 import com.android.mymindnotes.core.dto.SaveDiaryResponse
+import com.android.mymindnotes.core.dto.UserDiary
 import com.android.mymindnotes.data.dataSources.MemberLocalDataSourceInterface
 import com.android.mymindnotes.data.dataSources.TodayDiaryLocalDataSourceInterface
 import com.android.mymindnotes.data.dataSources.TodayDiaryRemoteDataSourceInterface
@@ -85,7 +86,8 @@ class TodayDiaryRepositoryImpl @Inject constructor(
         val emotion = todayDiaryLocalDataSource.getEmotion.first()
         val emotionText = todayDiaryLocalDataSource.getEmotionText.first()
         val reflection = todayDiaryLocalDataSource.getReflection.first()
-        return todayDiaryRemoteDataSource.saveDiary(userIndex, type, date, day, situation, thought, emotion, emotionText, reflection)
+        val diaryInfo = UserDiary(userIndex, type, date, day, situation, thought, emotion, emotionText, reflection)
+        return todayDiaryRemoteDataSource.saveDiary(diaryInfo)
     }
 
 }
