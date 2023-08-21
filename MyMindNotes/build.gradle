@@ -1,4 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.jacocoVersion = "0.8.9"
+    dependencies {
+        classpath "org.jacoco:org.jacoco.core:$jacocoVersion"
+    }
+}
+
 plugins {
     id 'com.android.application' version '8.1.0' apply false
     id 'com.android.library' version '8.1.0' apply false
@@ -12,12 +19,4 @@ plugins {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-// 해당 프로젝트 안의 모든 모듈에서 적용
-subprojects {
-    jacoco {
-        toolVersion = "0.8.9"
-        reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
-    }
 }
