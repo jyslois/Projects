@@ -20,7 +20,7 @@ import org.junit.Test
 class MemberLocalDataSourceTest {
     private lateinit var memberLocalDataSource: MemberLocalDataSource
     private val fakeDataStore = FakeDataStore()
-    private val ioDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     // DataStore keys
     private val userIndexKey = intPreferencesKey("userindex")
@@ -39,7 +39,7 @@ class MemberLocalDataSourceTest {
     fun setUp() {
         memberLocalDataSource = MemberLocalDataSource(
             dataStore = fakeDataStore,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = testDispatcher
         )
     }
 
@@ -51,7 +51,7 @@ class MemberLocalDataSourceTest {
     // UserIndex
     // getUserIndexFromDataStore - 데이터 스토어에서 사용자 인덱스를 불러올 때, 저장된 값이 올바르게 반환되는지 확인
     @Test
-    fun getUserIndexFromDataStore_ReturnsExpectedUserIndex() = runTest(ioDispatcher) {
+    fun getUserIndexFromDataStore_ReturnsExpectedUserIndex() = runTest(testDispatcher) {
         // Given
         val expectedUserIndex = 42
         fakeDataStore.setValue(userIndexKey, expectedUserIndex)
@@ -69,7 +69,7 @@ class MemberLocalDataSourceTest {
 
     // 데이터 스토어에 사용자 인덱스가 저장되어 있지 않을 때, 함수가 기본값을 올바르게 반환하는지 확인
     @Test
-    fun getUserIndexFromDataStore_ReturnsDefaultValueWhenNoUserIndex() = runTest(ioDispatcher) {
+    fun getUserIndexFromDataStore_ReturnsDefaultValueWhenNoUserIndex() = runTest(testDispatcher) {
         // When
         val returnedUserIndex = memberLocalDataSource.getUserIndexFromDataStore.first()
 
@@ -83,7 +83,7 @@ class MemberLocalDataSourceTest {
 
     // saveUserIndexToDataStore - 함수가 주어진 사용자 인덱스를 올바르게 데이터 스토어에 저장하는지 확인
     @Test
-    fun saveUserIndexToDataStore_SavesExpectedUserIndex() = runTest(ioDispatcher) {
+    fun saveUserIndexToDataStore_SavesExpectedUserIndex() = runTest(testDispatcher) {
         // Given
         val expectedUserIndex = 42
 
@@ -98,7 +98,7 @@ class MemberLocalDataSourceTest {
     // AutoLoginCheck
     // getAutoLoginCheckFromDataStore
     @Test
-    fun getAutoLoginCheckFromDataStore_ReturnsExpectedState() = runTest(ioDispatcher) {
+    fun getAutoLoginCheckFromDataStore_ReturnsExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedState = true
         fakeDataStore.setValue(autoLoginCheckKey, expectedState)
@@ -115,7 +115,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getAutoLoginCheckFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(ioDispatcher) {
+    fun getAutoLoginCheckFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedState = memberLocalDataSource.getAutoLoginCheckFromDataStore.first()
 
@@ -129,7 +129,7 @@ class MemberLocalDataSourceTest {
 
     // saveAutoLoginCheckToDataStore
     @Test
-    fun saveAutoLoginCheckToDataStore_SavesExpectedState() = runTest(ioDispatcher) {
+    fun saveAutoLoginCheckToDataStore_SavesExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedState = true
 
@@ -144,7 +144,7 @@ class MemberLocalDataSourceTest {
     // AutoSaveCheck
     // getAutoSaveCheckFromDataStore
     @Test
-    fun getAutoSaveCheckFromDataStore_ReturnsExpectedState() = runTest(ioDispatcher) {
+    fun getAutoSaveCheckFromDataStore_ReturnsExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedAutoSaveCheck = true
         fakeDataStore.setValue(autoSaveCheckKey, expectedAutoSaveCheck)
@@ -161,7 +161,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getAutoSaveCheckFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(ioDispatcher) {
+    fun getAutoSaveCheckFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedAutoSaveCheck = memberLocalDataSource.getAutoSaveCheckFromDataStore.first()
 
@@ -175,7 +175,7 @@ class MemberLocalDataSourceTest {
 
     // saveAutoSaveCheck
     @Test
-    fun saveAutoSaveCheckToDataStore_SavesExpectedState() = runTest(ioDispatcher) {
+    fun saveAutoSaveCheckToDataStore_SavesExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedAutoSaveCheck = true
 
@@ -194,7 +194,7 @@ class MemberLocalDataSourceTest {
     // Id & Password
     // getIdFromDataStore
     @Test
-    fun getIdFromDataStore_ReturnsExpectedId() = runTest(ioDispatcher) {
+    fun getIdFromDataStore_ReturnsExpectedId() = runTest(testDispatcher) {
         // Given
         val expectedId = "testId@hotmail.com"
         fakeDataStore.setValue(idKey, expectedId)
@@ -211,7 +211,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getIdFromDataStore_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getIdFromDataStore_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedId = memberLocalDataSource.getIdFromDataStore.first()
 
@@ -221,7 +221,7 @@ class MemberLocalDataSourceTest {
 
     // getPasswordFromDataStore
     @Test
-    fun getPasswordFromDataStore_ReturnsExpectedPassword() = runTest(ioDispatcher) {
+    fun getPasswordFromDataStore_ReturnsExpectedPassword() = runTest(testDispatcher) {
         // Given
         val expectedPassword = "testPassword11"
         fakeDataStore.setValue(passwordKey, expectedPassword)
@@ -238,7 +238,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getPasswordFromDataStore_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getPasswordFromDataStore_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedPassword = memberLocalDataSource.getPasswordFromDataStore.first()
 
@@ -248,7 +248,7 @@ class MemberLocalDataSourceTest {
 
     // saveIdAndPasswordToDataStore
     @Test
-    fun saveIdAndPasswordToDataStore_SavesExpectedIdAndPassword() = runTest(ioDispatcher) {
+    fun saveIdAndPasswordToDataStore_SavesExpectedIdAndPassword() = runTest(testDispatcher) {
         // Given
         val expectedId = "testId@hotmail.com"
         val expectedPassword = "testPassword11"
@@ -265,7 +265,7 @@ class MemberLocalDataSourceTest {
 
     // savePasswordToDataStore
     @Test
-    fun savePasswordToDataStore_SavesExpectedPassword() = runTest(ioDispatcher) {
+    fun savePasswordToDataStore_SavesExpectedPassword() = runTest(testDispatcher) {
         // Given
         val expectedPassword = "testPassword11"
 
@@ -280,7 +280,7 @@ class MemberLocalDataSourceTest {
     // FirstTime (최초 로그인 여부)
     // getFirstTimeFromDataStore
     @Test
-    fun getFirstTimeFromDataStore_ReturnsExpectedState() = runTest(ioDispatcher) {
+    fun getFirstTimeFromDataStore_ReturnsExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedFirstTime = true
         fakeDataStore.setValue(firstTimeKey, expectedFirstTime)
@@ -297,7 +297,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getFirstTimeFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(ioDispatcher) {
+    fun getFirstTimeFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedFirstTime = memberLocalDataSource.getFirstTimeFromDataStore.first()
 
@@ -307,7 +307,7 @@ class MemberLocalDataSourceTest {
 
     // saveFirstTimeToDataStore
     @Test
-    fun saveFirstTimeToDataAStore_SavesExpectedState() = runTest(ioDispatcher) {
+    fun saveFirstTimeToDataAStore_SavesExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedFirstTime = true
 
@@ -322,7 +322,7 @@ class MemberLocalDataSourceTest {
     // Alarm
     // getAlarmStateFromDataStore
     @Test
-    fun getAlarmStateFromDataStore_ReturnsExpectedState() = runTest(ioDispatcher) {
+    fun getAlarmStateFromDataStore_ReturnsExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedAlarmState = true
         fakeDataStore.setValue(alarmKey, expectedAlarmState)
@@ -339,7 +339,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getAlarmStateFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(ioDispatcher) {
+    fun getAlarmStateFromDataStore_ReturnsDefaultStateWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedAlarmState = memberLocalDataSource.getAlarmStateFromDataStore.first()
 
@@ -349,7 +349,7 @@ class MemberLocalDataSourceTest {
 
     // saveAlarmStateToDaTaStore
     @Test
-    fun saveAlarmStateToDataStore_SavesExpectedState() = runTest(ioDispatcher) {
+    fun saveAlarmStateToDataStore_SavesExpectedState() = runTest(testDispatcher) {
         // Given
         val expectedAlarmState = true
 
@@ -363,7 +363,7 @@ class MemberLocalDataSourceTest {
 
     // getTimeFromDataStore
     @Test
-    fun getTimeFromDataStore_ReturnsExpectedTime() = runTest(ioDispatcher) {
+    fun getTimeFromDataStore_ReturnsExpectedTime() = runTest(testDispatcher) {
         // Given
         val expectedTime = "12:34"
         fakeDataStore.setValue(timeKey, expectedTime)
@@ -380,7 +380,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getTimeFromDataStore_ReturnsDefaultTimeWhenNoData() = runTest(ioDispatcher) {
+    fun getTimeFromDataStore_ReturnsDefaultTimeWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedTime = memberLocalDataSource.getTimeFromDataStore.first()
 
@@ -390,7 +390,7 @@ class MemberLocalDataSourceTest {
 
     // saveTimeToDataStore
     @Test
-    fun saveTimeToDataStore_SavesExpectedTime() = runTest(ioDispatcher) {
+    fun saveTimeToDataStore_SavesExpectedTime() = runTest(testDispatcher) {
         // Given
         val expectedTime = "12:34"
 
@@ -404,7 +404,7 @@ class MemberLocalDataSourceTest {
 
     // getHourFromDataStore
     @Test
-    fun getHourFromDataStore_ReturnsExpectedHour() = runTest(ioDispatcher) {
+    fun getHourFromDataStore_ReturnsExpectedHour() = runTest(testDispatcher) {
         // Given
         val expectedHour = 11
         fakeDataStore.setValue(hourKey, expectedHour)
@@ -421,7 +421,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getHourFromDataStore_ReturnsDefaultHourWhenNoData() = runTest(ioDispatcher) {
+    fun getHourFromDataStore_ReturnsDefaultHourWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedHour = memberLocalDataSource.getHourFromDataStore.first()
 
@@ -431,7 +431,7 @@ class MemberLocalDataSourceTest {
 
     // saveHourToDataStore
     @Test
-    fun saveHourToDataStore_SavesExpectedHour() = runTest(ioDispatcher) {
+    fun saveHourToDataStore_SavesExpectedHour() = runTest(testDispatcher) {
         // Given
         val expectedHour = 15
 
@@ -445,7 +445,7 @@ class MemberLocalDataSourceTest {
 
     // saveMinuteToDataStore
     @Test
-    fun saveMinuteToDataStore_SavesExpectedMinute() = runTest(ioDispatcher) {
+    fun saveMinuteToDataStore_SavesExpectedMinute() = runTest(testDispatcher) {
         // Given
         val expectedMinute = 30
 
@@ -459,7 +459,7 @@ class MemberLocalDataSourceTest {
 
     // getMinuteFromDataStore
     @Test
-    fun getMinuteFromDataStore_ReturnsExpectedMinute() = runTest(ioDispatcher) {
+    fun getMinuteFromDataStore_ReturnsExpectedMinute() = runTest(testDispatcher) {
         // Given
         val expectedMinute = 30
         fakeDataStore.setValue(minuteKey, expectedMinute)
@@ -476,7 +476,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getMinuteFromDataStore_ReturnsDefaultMinuteWhenNoData() = runTest(ioDispatcher) {
+    fun getMinuteFromDataStore_ReturnsDefaultMinuteWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedMinute = memberLocalDataSource.getMinuteFromDataStore.first()
 
@@ -486,7 +486,7 @@ class MemberLocalDataSourceTest {
 
     // getRebootTimeFromDataStore
     @Test
-    fun getRebootTimeFromDataStore_ReturnsExpectedTime() = runTest(ioDispatcher) {
+    fun getRebootTimeFromDataStore_ReturnsExpectedTime() = runTest(testDispatcher) {
         // Given
         val expectedTime = 1626300000L
         fakeDataStore.setValue(rebootTimeKey, expectedTime)
@@ -503,7 +503,7 @@ class MemberLocalDataSourceTest {
     }
 
     @Test
-    fun getRebootTimeFromDataStore_ReturnsDefaultTimeWhenNoData() = runTest(ioDispatcher) {
+    fun getRebootTimeFromDataStore_ReturnsDefaultTimeWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedTime = memberLocalDataSource.getRebootTimeFromDataStore.first()
 
@@ -513,7 +513,7 @@ class MemberLocalDataSourceTest {
 
     // saveRebootTimeToDataStore
     @Test
-    fun saveRebootTimeToDataStore_SavesExpectedTime() = runTest(ioDispatcher) {
+    fun saveRebootTimeToDataStore_SavesExpectedTime() = runTest(testDispatcher) {
         // Given
         val expectedTime = 1626300000L
 
@@ -527,7 +527,7 @@ class MemberLocalDataSourceTest {
 
     // Test for clearLoginStatesRelatedKeys
     @Test
-    fun clearLoginStatesRelatedKeys_RemovesExpectedKeys() = runTest(ioDispatcher) {
+    fun clearLoginStatesRelatedKeys_RemovesExpectedKeys() = runTest(testDispatcher) {
         // Given
         val initialAutoLoginCheck = true
         val initialAutoSaveCheck = true
@@ -554,7 +554,7 @@ class MemberLocalDataSourceTest {
 
     // Test for clearAlarmRelatedKeys
     @Test
-    fun clearAlarmRelatedKeys_RemovesExpectedKeys() = runTest(ioDispatcher) {
+    fun clearAlarmRelatedKeys_RemovesExpectedKeys() = runTest(testDispatcher) {
         // Given
         val initialAlarmState = true
         val initialTime = "12:34"
@@ -581,7 +581,7 @@ class MemberLocalDataSourceTest {
 
     // Test for clearRebootTimeKey
     @Test
-    fun clearRebootTimeKey_RemovesExpectedKey() = runTest(ioDispatcher) {
+    fun clearRebootTimeKey_RemovesExpectedKey() = runTest(testDispatcher) {
         // Given
         val initialRebootTime = 1626300000L
         fakeDataStore.setValue(rebootTimeKey, initialRebootTime)

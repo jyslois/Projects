@@ -17,7 +17,7 @@ import org.junit.Test
 class TodayDiaryLocalDataSourceTest {
     private lateinit var todayDiaryLocalDataSource: TodayDiaryLocalDataSource
     private val fakeDataStore = FakeDataStore()
-    private val ioDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     // DataStore Keys
     private val todayEmotionColorKey = intPreferencesKey("todayEmotionColor")
@@ -34,7 +34,7 @@ class TodayDiaryLocalDataSourceTest {
     fun setUp() {
         todayDiaryLocalDataSource = TodayDiaryLocalDataSource(
             dataStore = fakeDataStore,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = testDispatcher
         )
     }
 
@@ -46,7 +46,7 @@ class TodayDiaryLocalDataSourceTest {
     // Test Save Methods
     // saveEmotionColor
     @Test
-    fun saveEmotionColor_SavesExpectedColor() = runTest(ioDispatcher) {
+    fun saveEmotionColor_SavesExpectedColor() = runTest(testDispatcher) {
         // Given
         val expectedColor = 0xFF5737
 
@@ -60,7 +60,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveEmotion
     @Test
-    fun saveEmotion_SavesExpectedEmotion() = runTest(ioDispatcher) {
+    fun saveEmotion_SavesExpectedEmotion() = runTest(testDispatcher) {
         // Given
         val expectedEmotion = "기쁨"
 
@@ -74,7 +74,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveEmotionText
     @Test
-    fun saveEmotionText_SavesExpectedEmotionText() = runTest(ioDispatcher) {
+    fun saveEmotionText_SavesExpectedEmotionText() = runTest(testDispatcher) {
         // Given
         val expectedEmotionText = "꽉 찬 행복을 느꼈다"
 
@@ -88,7 +88,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveSituation
     @Test
-    fun saveSituation_SavesExpectedSituation() = runTest(ioDispatcher) {
+    fun saveSituation_SavesExpectedSituation() = runTest(testDispatcher) {
         // Given
         val expectedSituation = "맛있는 타코를 먹었다"
 
@@ -102,7 +102,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveThought
     @Test
-    fun saveThought_SavesExpectedThought() = runTest(ioDispatcher) {
+    fun saveThought_SavesExpectedThought() = runTest(testDispatcher) {
         // Given
         val expectedThought = "타코 정말 맛있다"
 
@@ -116,7 +116,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveReflection
     @Test
-    fun saveReflection_SavesExpectedReflection() = runTest(ioDispatcher) {
+    fun saveReflection_SavesExpectedReflection() = runTest(testDispatcher) {
         // Given
         val expectedReflection = "맛있는 음식을 더 자주 먹어야지!"
 
@@ -130,7 +130,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveType
     @Test
-    fun saveType_SavesExpectedType() = runTest(ioDispatcher) {
+    fun saveType_SavesExpectedType() = runTest(testDispatcher) {
         // Given
         val expectedType = "오늘의 마음 일기"
 
@@ -144,7 +144,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveDate
     @Test
-    fun saveDate_SavesExpectedDate() = runTest(ioDispatcher) {
+    fun saveDate_SavesExpectedDate() = runTest(testDispatcher) {
         // Given
         val expectedDate = "2023-08-17"
 
@@ -158,7 +158,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // saveDay
     @Test
-    fun saveDay_SavesExpectedDay() = runTest(ioDispatcher) {
+    fun saveDay_SavesExpectedDay() = runTest(testDispatcher) {
         // Given
         val expectedDay = "목요일"
 
@@ -174,7 +174,7 @@ class TodayDiaryLocalDataSourceTest {
    // Test Get Methods
    // getEmotion
    @Test
-   fun getEmotion_ReturnsExpectedEmotion() = runTest(ioDispatcher) {
+   fun getEmotion_ReturnsExpectedEmotion() = runTest(testDispatcher) {
        // Given
        val expectedEmotion = "기쁨"
        fakeDataStore.setValue(todayEmotionKey, expectedEmotion)
@@ -187,7 +187,7 @@ class TodayDiaryLocalDataSourceTest {
    }
 
     @Test
-    fun getEmotion_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getEmotion_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedEmotion = todayDiaryLocalDataSource.getEmotion.first()
 
@@ -197,7 +197,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // getEmotionText
     @Test
-    fun getEmotionText_ReturnsExpectedEmotionText() = runTest(ioDispatcher) {
+    fun getEmotionText_ReturnsExpectedEmotionText() = runTest(testDispatcher) {
         // Given
         val expectedEmotionText = "꽉 찬 행복을 느꼈다"
         fakeDataStore.setValue(todayEmotionTextKey, expectedEmotionText)
@@ -210,7 +210,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getEmotionText_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getEmotionText_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedEmotionText = todayDiaryLocalDataSource.getEmotionText.first()
 
@@ -220,7 +220,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // getSituation
     @Test
-    fun getSituation_ReturnsExpectedSituation() = runTest(ioDispatcher) {
+    fun getSituation_ReturnsExpectedSituation() = runTest(testDispatcher) {
         // Given
         val expectedSituation = "맛있는 타코를 먹었다"
         fakeDataStore.setValue(todaySituationKey, expectedSituation)
@@ -233,7 +233,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getSituation_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getSituation_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedSituation = todayDiaryLocalDataSource.getSituation.first()
 
@@ -243,7 +243,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // getThought
     @Test
-    fun getThought_ReturnsExpectedThought() = runTest(ioDispatcher) {
+    fun getThought_ReturnsExpectedThought() = runTest(testDispatcher) {
         // Given
         val expectedThought = "타코 정말 맛있다."
         fakeDataStore.setValue(todayThoughtKey, expectedThought)
@@ -256,7 +256,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getThought_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getThought_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedThought = todayDiaryLocalDataSource.getThought.first()
 
@@ -266,7 +266,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // getReflection
     @Test
-    fun getReflection_ReturnsExpectedReflection() = runTest(ioDispatcher) {
+    fun getReflection_ReturnsExpectedReflection() = runTest(testDispatcher) {
         // Given
         val expectedReflection = "맛있는 음식을 더 자주 먹어야지!"
         fakeDataStore.setValue(todayReflectionKey, expectedReflection)
@@ -279,7 +279,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getReflection_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getReflection_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedReflection = todayDiaryLocalDataSource.getReflection.first()
 
@@ -289,7 +289,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // getType
     @Test
-    fun getType_ReturnsExpectedType() = runTest(ioDispatcher) {
+    fun getType_ReturnsExpectedType() = runTest(testDispatcher) {
         // Given
         val expectedType = "오늘의 마음 일기"
         fakeDataStore.setValue(todayTypeKey, expectedType)
@@ -302,7 +302,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getType_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getType_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedType = todayDiaryLocalDataSource.getType.first()
 
@@ -312,7 +312,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // getDate
     @Test
-    fun getDate_ReturnsExpectedDate() = runTest(ioDispatcher) {
+    fun getDate_ReturnsExpectedDate() = runTest(testDispatcher) {
         // Given
         val expectedDate = "2023-08-17"
         fakeDataStore.setValue(todayDateKey, expectedDate)
@@ -325,7 +325,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getDate_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getDate_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedDate = todayDiaryLocalDataSource.getDate.first()
 
@@ -335,7 +335,7 @@ class TodayDiaryLocalDataSourceTest {
 
     // getDay
     @Test
-    fun getDay_ReturnsExpectedDay() = runTest(ioDispatcher) {
+    fun getDay_ReturnsExpectedDay() = runTest(testDispatcher) {
         // Given
         val expectedDay = "목요일"
         fakeDataStore.setValue(todayDayKey, expectedDay)
@@ -348,7 +348,7 @@ class TodayDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getDay_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getDay_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedDay = todayDiaryLocalDataSource.getDay.first()
 
@@ -359,7 +359,7 @@ class TodayDiaryLocalDataSourceTest {
     // Test Clear Method
     // clearTodayDiaryTempRecords
     @Test
-    fun clearTodayDiaryTempRecords_RemovesExpectedKeys() = runTest(ioDispatcher) {
+    fun clearTodayDiaryTempRecords_RemovesExpectedKeys() = runTest(testDispatcher) {
         // Given
         val initialEmotionColor = 0xFF5737
         val initialEmotion = "기쁨"

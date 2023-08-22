@@ -32,7 +32,7 @@ class DiaryRemoteDataSourceTest {
     private val mockGetDiaryListApi = mockk<GetDiaryListApi>()
     private val mockDeleteDiaryApi = mockk<DeleteDiaryApi>()
     private val mockUpdateDiaryApi = mockk<UpdateDiaryApi>()
-    private val ioDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
@@ -40,7 +40,7 @@ class DiaryRemoteDataSourceTest {
             getDiaryListApi = mockGetDiaryListApi,
             deleteDiaryApi =  mockDeleteDiaryApi,
             updateDiaryApi = mockUpdateDiaryApi,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = testDispatcher
 
         )
     }
@@ -52,7 +52,7 @@ class DiaryRemoteDataSourceTest {
 
     // getDiaryList()
     @Test
-    fun getDiaryList_ReturnsExpectedDiaryList() = runTest(ioDispatcher) {
+    fun getDiaryList_ReturnsExpectedDiaryList() = runTest(testDispatcher) {
         // Given
         val expectedDiaryList = arrayListOf(
             Diary("2023-01-01", "월요일", 1, "행복", "정말 좋은 하루", "좋은 일이 많았다.", "집에서 휴식", "좋은 생각", "오늘의 마음 일기", 1),
@@ -73,7 +73,7 @@ class DiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun getDiaryList_ReturnsEmptyDiaryList() = runTest(ioDispatcher) {
+    fun getDiaryList_ReturnsEmptyDiaryList() = runTest(testDispatcher) {
         // Given
         val expectedResponse = GetDiaryListResponse(code = 7000, msg = "일기목록을 성공적으로 불러왔습니다.", diaryList = arrayListOf())
         coEvery { mockGetDiaryListApi.getAllDiary(1) } returns expectedResponse
@@ -89,7 +89,7 @@ class DiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun getDiaryList_ThrowsRuntimeException(): Unit = runTest(ioDispatcher) {
+    fun getDiaryList_ThrowsRuntimeException(): Unit = runTest(testDispatcher) {
         // Given
         coEvery { mockGetDiaryListApi.getAllDiary(1) } throws RuntimeException("일기목록 불러오던 중 오류 발생")
 
@@ -106,7 +106,7 @@ class DiaryRemoteDataSourceTest {
 
     // deleteDiary()
     @Test
-    fun deleteDiary_ReturnsSuccessfulDeletionCode() = runTest(ioDispatcher) {
+    fun deleteDiary_ReturnsSuccessfulDeletionCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = DeleteDiaryResponse(code = 9000, msg = "일기를 삭제했습니다.")
         coEvery { mockDeleteDiaryApi.deleteDiary(1) } returns expectedResponse
@@ -122,7 +122,7 @@ class DiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun deleteDiary_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun deleteDiary_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         coEvery { mockDeleteDiaryApi.deleteDiary(1) } throws RuntimeException("일기 삭제 중 오류 발생")
 
@@ -139,7 +139,7 @@ class DiaryRemoteDataSourceTest {
 
     // updateDiary()
     @Test
-    fun updateDiary_ReturnsSuccessfulUpdateCode() = runTest(ioDispatcher) {
+    fun updateDiary_ReturnsSuccessfulUpdateCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = UpdateDiaryResponse(code = 8000, msg = "일기를 수정하였습니다.")
         val diaryEdit = DiaryEdit(situation = "상황 수정", thought = "생각 수정", emotion = "기쁨", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
@@ -156,7 +156,7 @@ class DiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun updateDiary_ReturnsUnsuccesfulUpdateCode() = runTest(ioDispatcher) {
+    fun updateDiary_ReturnsUnsuccesfulUpdateCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = UpdateDiaryResponse(code = 8001, msg = "형식을 준수하지 않아 일기 수정에 실패하였습니다.")
         val diaryEdit = DiaryEdit(situation = "상황 수정", thought = "생각 수정", emotion = "", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
@@ -173,7 +173,7 @@ class DiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun updateDiary_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun updateDiary_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val diaryEdit = DiaryEdit(situation = "상황 수정", thought = "생각 수정", emotion = "기쁨", emotionDescription = "감정 설명 수정", reflection = "회고 수정")
         coEvery { mockUpdateDiaryApi.updateDiary(diary_number = 1, diaryEdit = diaryEdit) } throws RuntimeException("일기 수정 중 오류 발생")

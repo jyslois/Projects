@@ -49,7 +49,7 @@ class MemberRemoteDataSourceTest {
     private val mockChangeNicknameApi = mockk<ChangeNicknameApi>()
     private val mockChangePasswordApi = mockk<ChangePasswordApi>()
     private val mockChangeToTempPasswordApi = mockk<ChangeToTempPasswordApi>()
-    private val ioDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
@@ -63,7 +63,7 @@ class MemberRemoteDataSourceTest {
             changeNicknameApi = mockChangeNicknameApi,
             changePasswordApi = mockChangePasswordApi,
             changeToTempPasswordApi = mockChangeToTempPasswordApi,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = testDispatcher
         )
     }
 
@@ -74,7 +74,7 @@ class MemberRemoteDataSourceTest {
 
     // getUserInfo
     @Test
-    fun getUserInfo_ReturnsExpectedUserInfo() = runTest(ioDispatcher) {
+    fun getUserInfo_ReturnsExpectedUserInfo() = runTest(testDispatcher) {
         // Given
         val expectedResponse = GetUserInfoResponse(code = 5002, msg = "회원 정보를 성공적으로 가져왔습니다.", birthyear = 1991, email = "seolois@hotmail.com", nickname = "로이스")
         coEvery { mockGetUserInfoApi.getUserInfo(1) } returns expectedResponse
@@ -90,7 +90,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun getUserInfo_ThrowsRuntimeException(): Unit = runTest(ioDispatcher) {
+    fun getUserInfo_ThrowsRuntimeException(): Unit = runTest(testDispatcher) {
         // Given
         coEvery { mockGetUserInfoApi.getUserInfo(1) } throws RuntimeException("회원정보 불러오던 중 오류 발생")
 
@@ -106,7 +106,7 @@ class MemberRemoteDataSourceTest {
 
     // login
     @Test
-    fun login_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun login_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = LoginResponse(code = 5000, msg = "로그인에 성공했습니다.", nickname = "로이스", userIndex = 1)
         val userInfoLogin = UserInfoLogin("test@test.com", "password11")
@@ -123,7 +123,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun login_ReturnsUnsuccessfulLoginCode() = runTest(ioDispatcher) {
+    fun login_ReturnsUnsuccessfulLoginCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = LoginResponse(code = 5001, msg = "가입되지 않은 이메일입니다.")
         val userInfoLogin = UserInfoLogin("non@test.com", "wrongPassword")
@@ -140,7 +140,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun login_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun login_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val userInfoLogin = UserInfoLogin("test@test.com", "password11")
         coEvery { mockLoginApi.login(userInfoLogin) } throws RuntimeException("로그인 시도 중 오류 발생")
@@ -157,7 +157,7 @@ class MemberRemoteDataSourceTest {
 
     // emailDuplicateCheck
     @Test
-    fun emailDuplicateCheck_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun emailDuplicateCheck_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = DuplicateCheckResponse(code = 1000, msg = "사용 가능한 이메일입니다")
         val emailInput = "test@test.com"
@@ -174,7 +174,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun emailDuplicateCheck_ReturnsUnsuccessfulDuplicateCheckCode() = runTest(ioDispatcher) {
+    fun emailDuplicateCheck_ReturnsUnsuccessfulDuplicateCheckCode() = runTest(testDispatcher) {
         // Given
         val unsuccessfulResponse = DuplicateCheckResponse(code = 1001, msg = "이미 가입된 이메일입니다")
         val emailInput = "test@test.com"
@@ -191,7 +191,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun emailDuplicateCheck_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun emailDuplicateCheck_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val emailInput = "test@test.com"
         coEvery { mockCheckEmailApi.checkEmail(emailInput) } throws RuntimeException("이메일 중복 체크 중 오류 발생")
@@ -209,7 +209,7 @@ class MemberRemoteDataSourceTest {
 
     // nickNameDuplicateCheck
     @Test
-    fun nickNameDuplicateCheck_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun nickNameDuplicateCheck_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = DuplicateCheckResponse(code = 1002, msg = "사용 가능한 닉네임입니다")
         val nicknameInput = "로이스"
@@ -226,7 +226,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun nickNameDuplicateCheck_ReturnsUnsuccessfulDuplicateCheckCode() = runTest(ioDispatcher) {
+    fun nickNameDuplicateCheck_ReturnsUnsuccessfulDuplicateCheckCode() = runTest(testDispatcher) {
         // Given
         val unsuccessfulResponse = DuplicateCheckResponse(code = 1003, msg = "이미 사용 중인 닉네임입니다")
         val nicknameInput = "로이스"
@@ -243,7 +243,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun nickNameDuplicateCheck_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun nickNameDuplicateCheck_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val nicknameInput = "로이스"
         coEvery { mockCheckNickNameApi.checkNickname(nicknameInput) } throws RuntimeException("닉네임 중복 체크 중 오류 발생")
@@ -260,7 +260,7 @@ class MemberRemoteDataSourceTest {
 
     // join
     @Test
-    fun join_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun join_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = JoinResponse(2000, "회원 가입 성공! 환영합니다")
         val userInfo = UserInfo("test@test.com", "로이스", "password11", 1991)
@@ -277,7 +277,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun join_ReturnsUnsuccessfulJoinCode() = runTest(ioDispatcher) {
+    fun join_ReturnsUnsuccessfulJoinCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = JoinResponse(code = 2001, msg = "회원 가입 양식을 다시 한 번 확인해 주세요")
         val userInfo = UserInfo("test@test.com", "로이스", "0", 1991)
@@ -294,7 +294,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun join_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun join_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val userInfo = UserInfo("test@test.com", "로이스", "password11", 1991)
         coEvery { mockJoinApi.addUser(userInfo) } throws RuntimeException("회원 가입 시도 중 오류 발생")
@@ -311,7 +311,7 @@ class MemberRemoteDataSourceTest {
 
     // deleteUser
     @Test
-    fun deleteUser_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun deleteUser_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = DeleteUserResponse(code = 4000, msg = "회원 탈퇴 완료")
         val userIndex = 1
@@ -328,7 +328,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun deleteUser_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun deleteUser_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val userIndex = 1
         coEvery { mockDeleteUserApi.deleteUser(userIndex) } throws RuntimeException("회원 탈퇴 시도 중 오류 발생")
@@ -345,7 +345,7 @@ class MemberRemoteDataSourceTest {
 
     // changeNickName
     @Test
-    fun changeNickName_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun changeNickName_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = ChangeNicknameResponse(code = 3000, msg = "닉네임이 변경되었습니다")
         val userIndex = 1
@@ -364,7 +364,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun changeNickName_ReturnsUnsuccessfulCode() = runTest(ioDispatcher) {
+    fun changeNickName_ReturnsUnsuccessfulCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = ChangeNicknameResponse(code = 3001, msg = "닉네임 양식을 다시 한 번 확인해 주세요.")
         val userIndex = 1
@@ -383,7 +383,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun changeNickName_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun changeNickName_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val userIndex = 1
         val newNickName = "로이스"
@@ -402,7 +402,7 @@ class MemberRemoteDataSourceTest {
 
     // changePassword
     @Test
-    fun changePassword_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun changePassword_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = ChangePasswordResponse(code = 3002, msg = "비밀번호가 변경되었습니다")
         val userIndex = 1
@@ -422,7 +422,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun changePassword_ReturnsUnsuccessfulCode() = runTest(ioDispatcher) {
+    fun changePassword_ReturnsUnsuccessfulCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = ChangePasswordResponse(code = 3005, msg = "기존 비밀번호를 확인해 주세요")
         val userIndex = 1
@@ -442,7 +442,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun changePassword_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun changePassword_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val userIndex = 1
         val newPassword = "newPassword123"
@@ -462,7 +462,7 @@ class MemberRemoteDataSourceTest {
 
     // changeToTemporaryPassword
     @Test
-    fun changeToTemporaryPassword_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun changeToTemporaryPassword_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = ChangeToTemporaryPasswordResponse(code = 3006, msg = "임시 비밀번호로 비밀번호 변경 완료")
         val email = "test@test.com"
@@ -481,7 +481,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun changeToTemporaryPassword_ReturnsUnsuccessfulCode() = runTest(ioDispatcher) {
+    fun changeToTemporaryPassword_ReturnsUnsuccessfulCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = ChangeToTemporaryPasswordResponse(code = 3007, msg = "가입되어 있지 않은 이메일입니다")
         val email = "notexisting@test.com"
@@ -500,7 +500,7 @@ class MemberRemoteDataSourceTest {
     }
 
     @Test
-    fun changeToTemporaryPassword_ThrowsRuntimeException() = runTest(ioDispatcher) {
+    fun changeToTemporaryPassword_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
         val email = "test@test.com"
         val randomPassword = "RandomTempPassword123"

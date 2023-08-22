@@ -22,13 +22,13 @@ import kotlin.test.assertFailsWith
 class TodayDiaryRemoteDataSourceTest {
     private lateinit var todayDiaryRemoteDataSource: TodayDiaryRemoteDataSource
     private val mockSaveDiaryApi = mockk<SaveDiaryApi>()
-    private val ioDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
         todayDiaryRemoteDataSource = TodayDiaryRemoteDataSource(
             saveDiaryApi = mockSaveDiaryApi,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = testDispatcher
         )
     }
 
@@ -39,7 +39,7 @@ class TodayDiaryRemoteDataSourceTest {
 
     // saveDiary
     @Test
-    fun saveDiary_ReturnsExpectedResponse() = runTest(ioDispatcher) {
+    fun saveDiary_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
         val expectedResponse = SaveDiaryResponse(code = 6000, msg = "일기 저장 성공")
         val diaryInfo = UserDiary(
@@ -70,7 +70,7 @@ class TodayDiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun saveDiary_ReturnsUnsuccuesfulCode() = runTest(ioDispatcher) {
+    fun saveDiary_ReturnsUnsuccuesfulCode() = runTest(testDispatcher) {
         // Given
         val expectedResponse = SaveDiaryResponse(code = 6001, msg = "일기 양식을 준수하지 않아서 일기가 저장되지 않았습니다.")
         val diaryInfo = UserDiary(
@@ -101,7 +101,7 @@ class TodayDiaryRemoteDataSourceTest {
     }
 
     @Test
-    fun saveDiary_ReturnsRuntimeException() = runTest(ioDispatcher) {
+    fun saveDiary_ReturnsRuntimeException() = runTest(testDispatcher) {
         // Given
         val diaryInfo = UserDiary(
             user_index = 1,

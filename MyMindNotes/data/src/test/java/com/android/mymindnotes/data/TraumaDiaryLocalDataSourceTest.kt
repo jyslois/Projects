@@ -15,7 +15,7 @@ import org.junit.Test
 class TraumaDiaryLocalDataSourceTest {
     private lateinit var traumaDiaryLocalDataSource: TraumaDiaryLocalDataSource
     private val fakeDataStore = FakeDataStore()
-    private val ioDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     // DataStore Keys (TraumaDiary에 해당하는 DataStore keys)
     private val traumaEmotionColorKey = intPreferencesKey("traumaEmotionColor")
@@ -32,7 +32,7 @@ class TraumaDiaryLocalDataSourceTest {
     fun setUp() {
         traumaDiaryLocalDataSource = TraumaDiaryLocalDataSource(
             dataStore = fakeDataStore,
-            ioDispatcher = ioDispatcher
+            ioDispatcher = testDispatcher
         )
     }
 
@@ -44,7 +44,7 @@ class TraumaDiaryLocalDataSourceTest {
     // Test Save Methods
     // saveEmotionColor
     @Test
-    fun saveEmotionColor_SavesExpectedColor() = runTest(ioDispatcher) {
+    fun saveEmotionColor_SavesExpectedColor() = runTest(testDispatcher) {
         // Given
         val expectedColor = 0xFF5737
 
@@ -58,7 +58,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveEmotion
     @Test
-    fun saveEmotion_SavesExpectedEmotion() = runTest(ioDispatcher) {
+    fun saveEmotion_SavesExpectedEmotion() = runTest(testDispatcher) {
         // Given
         val expectedEmotion = "공포"
 
@@ -72,7 +72,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveEmotionText
     @Test
-    fun saveEmotionText_SavesExpectedEmotionText() = runTest(ioDispatcher) {
+    fun saveEmotionText_SavesExpectedEmotionText() = runTest(testDispatcher) {
         // Given
         val expectedEmotionText = "무섭다"
 
@@ -86,7 +86,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveSituation
     @Test
-    fun saveSituation_SavesExpectedSituation() = runTest(ioDispatcher) {
+    fun saveSituation_SavesExpectedSituation() = runTest(testDispatcher) {
         // Given
         val expectedSituation = "공포스러운 경험"
 
@@ -100,7 +100,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveThought
     @Test
-    fun saveThought_SavesExpectedThought() = runTest(ioDispatcher) {
+    fun saveThought_SavesExpectedThought() = runTest(testDispatcher) {
         // Given
         val expectedThought = "다치면 어떡하지?"
 
@@ -114,7 +114,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveReflection
     @Test
-    fun saveReflection_SavesExpectedReflection() = runTest(ioDispatcher) {
+    fun saveReflection_SavesExpectedReflection() = runTest(testDispatcher) {
         // Given
         val expectedReflection = "왜 오늘 땀이 났는지 이제 이해가 간다"
 
@@ -128,7 +128,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveType
     @Test
-    fun saveType_SavesExpectedType() = runTest(ioDispatcher) {
+    fun saveType_SavesExpectedType() = runTest(testDispatcher) {
         // Given
         val expectedType = "트라우마 일기"
 
@@ -142,7 +142,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveDate
     @Test
-    fun saveDate_SavesExpectedDate() = runTest(ioDispatcher) {
+    fun saveDate_SavesExpectedDate() = runTest(testDispatcher) {
         // Given
         val expectedDate = "2023-08-18"
 
@@ -156,7 +156,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // saveDay
     @Test
-    fun saveDay_SavesExpectedDay() = runTest(ioDispatcher) {
+    fun saveDay_SavesExpectedDay() = runTest(testDispatcher) {
         // Given
         val expectedDay = "금요일"
 
@@ -171,7 +171,7 @@ class TraumaDiaryLocalDataSourceTest {
     // Test Get Methods
     // getEmotion
     @Test
-    fun getEmotion_ReturnsExpectedEmotion() = runTest(ioDispatcher) {
+    fun getEmotion_ReturnsExpectedEmotion() = runTest(testDispatcher) {
         // Given
         val expectedEmotion = "공포"
         fakeDataStore.setValue(traumaEmotionKey, expectedEmotion)
@@ -184,7 +184,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getEmotion_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getEmotion_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedEmotion = traumaDiaryLocalDataSource.getEmotion.first()
 
@@ -194,7 +194,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // getEmotionText
     @Test
-    fun getEmotionText_ReturnsExpectedEmotionText() = runTest(ioDispatcher) {
+    fun getEmotionText_ReturnsExpectedEmotionText() = runTest(testDispatcher) {
         // Given
         val expectedEmotionText = "무섭다"
         fakeDataStore.setValue(traumaEmotionTextKey, expectedEmotionText)
@@ -207,7 +207,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getEmotionText_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getEmotionText_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedEmotionText = traumaDiaryLocalDataSource.getEmotionText.first()
 
@@ -217,7 +217,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // getSituation
     @Test
-    fun getSituation_ReturnsExpectedSituation() = runTest(ioDispatcher) {
+    fun getSituation_ReturnsExpectedSituation() = runTest(testDispatcher) {
         // Given
         val expectedSituation = "공포스러운 경험"
         fakeDataStore.setValue(traumaSituationKey, expectedSituation)
@@ -230,7 +230,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getSituation_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getSituation_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedSituation = traumaDiaryLocalDataSource.getSituation.first()
 
@@ -240,7 +240,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // getThought
     @Test
-    fun getThought_ReturnsExpectedThought() = runTest(ioDispatcher) {
+    fun getThought_ReturnsExpectedThought() = runTest(testDispatcher) {
         // Given
         val expectedThought = "다치면 어떡하지?"
         fakeDataStore.setValue(traumaThoughtKey, expectedThought)
@@ -253,7 +253,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getThought_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getThought_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedThought = traumaDiaryLocalDataSource.getThought.first()
 
@@ -263,7 +263,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // getReflection
     @Test
-    fun getReflection_ReturnsExpectedReflection() = runTest(ioDispatcher) {
+    fun getReflection_ReturnsExpectedReflection() = runTest(testDispatcher) {
         // Given
         val expectedReflection = "왜 오늘 땀이 났는지 이제 이해가 간다"
         fakeDataStore.setValue(traumaReflectionKey, expectedReflection)
@@ -276,7 +276,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getReflection_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getReflection_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedReflection = traumaDiaryLocalDataSource.getReflection.first()
 
@@ -286,7 +286,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // getType
     @Test
-    fun getType_ReturnsExpectedType() = runTest(ioDispatcher) {
+    fun getType_ReturnsExpectedType() = runTest(testDispatcher) {
         // Given
         val expectedType = "트라우마 일기"
         fakeDataStore.setValue(traumaTypeKey, expectedType)
@@ -299,7 +299,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getType_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getType_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedType = traumaDiaryLocalDataSource.getType.first()
 
@@ -309,7 +309,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // getDate
     @Test
-    fun getDate_ReturnsExpectedDate() = runTest(ioDispatcher) {
+    fun getDate_ReturnsExpectedDate() = runTest(testDispatcher) {
         // Given
         val expectedDate = "2023-08-18"
         fakeDataStore.setValue(traumaDateKey, expectedDate)
@@ -322,7 +322,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getDate_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getDate_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedDate = traumaDiaryLocalDataSource.getDate.first()
 
@@ -332,7 +332,7 @@ class TraumaDiaryLocalDataSourceTest {
 
     // getDay
     @Test
-    fun getDay_ReturnsExpectedDay() = runTest(ioDispatcher) {
+    fun getDay_ReturnsExpectedDay() = runTest(testDispatcher) {
         // Given
         val expectedDay = "금요일"
         fakeDataStore.setValue(traumaDayKey, expectedDay)
@@ -345,7 +345,7 @@ class TraumaDiaryLocalDataSourceTest {
     }
 
     @Test
-    fun getDay_ReturnsDefaultValueWhenNoData() = runTest(ioDispatcher) {
+    fun getDay_ReturnsDefaultValueWhenNoData() = runTest(testDispatcher) {
         // When
         val returnedDay = traumaDiaryLocalDataSource.getDay.first()
 
@@ -356,7 +356,7 @@ class TraumaDiaryLocalDataSourceTest {
     // Test Clear Methods
     // clearTraumaDiaryTempRecords
     @Test
-    fun clearTraumaDiaryTempRecords_RemovesExpectedKeys() = runTest(ioDispatcher) {
+    fun clearTraumaDiaryTempRecords_RemovesExpectedKeys() = runTest(testDispatcher) {
         // Given
         val initialEmotionColor = 0xFF5737
         val initialEmotion = "공포"
