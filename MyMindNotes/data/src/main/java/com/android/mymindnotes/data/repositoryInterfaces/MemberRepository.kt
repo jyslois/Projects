@@ -9,8 +9,6 @@ import com.android.mymindnotes.core.dto.DuplicateCheckResponse
 import com.android.mymindnotes.core.dto.GetUserInfoResponse
 import com.android.mymindnotes.core.dto.JoinResponse
 import com.android.mymindnotes.core.dto.LoginResponse
-import com.android.mymindnotes.core.dto.UserInfo
-import com.android.mymindnotes.core.dto.UserInfoLogin
 import kotlinx.coroutines.flow.*
 
 interface MemberRepository {
@@ -53,14 +51,14 @@ interface MemberRepository {
     suspend fun getUserInfo(): Flow<GetUserInfoResponse>
 
     // Log in & Log out
-    suspend fun login(userInfoLogin: UserInfoLogin): Flow<LoginResponse>
+    suspend fun login(email: String, password: String): Flow<LoginResponse>
 
     // Email & Nickname Duplicate Check
     suspend fun checkEmail(emailInput: String): Flow<DuplicateCheckResponse>
     suspend fun checkNickName(nickNameInput: String): Flow<DuplicateCheckResponse>
 
     // Join
-    suspend fun join(userInfo: UserInfo): Flow<JoinResponse>
+    suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<JoinResponse>
 
     // Delete
     suspend fun deleteUser(): Flow<DeleteUserResponse>

@@ -1,6 +1,5 @@
 package com.android.mymindnotes.domain.usecases
 
-import com.android.mymindnotes.core.dto.UserInfoLogin
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoLoginStateUseCase
 import com.android.mymindnotes.domain.usecases.loginStates.SaveAutoSaveStateUseCase
@@ -17,38 +16,38 @@ class LoginUseCase @Inject constructor(
     private val saveAutoSaveStateUseCase: SaveAutoSaveStateUseCase
 ) {
 
-//    suspend fun login(email: String, password: String): Flow<Map<String, Object>> {
-//        return repository.login(email, password)
-//    }
 
     suspend operator fun invoke(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean): Flow<Result<String?>> {
-        val userInfoLogin = UserInfoLogin(email, password)
-        return memberRepository.login(userInfoLogin).map { response ->
-            when (response.code) {
-                5001, 5003, 5005 -> Result.failure(RuntimeException(response.msg))
-                5000 -> {
-                    // 로그인 성공
-                    if (isAutoLoginChecked) {
-                        // MainActivity에서의 자동 로그인을 위한 상태 저장
-                        saveAutoLoginStateUseCase(true)
-                    }
 
-                    if (isAutoSaveChecked) {
-                        saveAutoSaveStateUseCase(true)
-                        saveIdAndPasswordUseCase(email, password)
-                    } else {
-                        saveAutoSaveStateUseCase(false)
-                        saveIdAndPasswordUseCase(null, null)
-                    }
+        return flow {
+            try {
+                val response = memberRepository.login(email, password).first()
 
-                    // 회원 번호 저장
-                    response.userIndex?.let { saveUserIndexUseCase(it) }
-                    Result.success(response.msg)
+                when (response.code) {
+                    5001, 5003, 5005 -> emit(Result.failure(RuntimeException(response.msg)))
+                    5000 -> {
+                        // 로그인 성공
+                        if (isAutoLoginChecked) {
+                            // MainActivity에서의 자동 로그인을 위한 상태 저장
+                            saveAutoLoginStateUseCase(true)
+                        }
+
+                        if (isAutoSaveChecked) {
+                            saveAutoSaveStateUseCase(true)
+                            saveIdAndPasswordUseCase(email, password)
+                        } else {
+                            saveAutoSaveStateUseCase(false)
+                            saveIdAndPasswordUseCase(null, null)
+                        }
+
+                        // 회원 번호 저장
+                        response.userIndex?.let { saveUserIndexUseCase(it) }
+                        emit(Result.success(response.msg))
+                    }
                 }
-                else -> Result.failure(RuntimeException("로그인 중 오류 발생"))
+            } catch (e: Exception) {
+                emit(Result.failure(RuntimeException(e.message ?: "로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
             }
-        }.catch {
-            emit(Result.failure(RuntimeException("로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
         }
     }
 

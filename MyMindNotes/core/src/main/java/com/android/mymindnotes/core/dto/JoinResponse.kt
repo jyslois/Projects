@@ -9,5 +9,5 @@ data class JoinResponse(
     @SerializedName("msg")
     override val msg: String? = null,
     @SerializedName("user_index")
-    val userIndex: Int
+    val userIndex: Int? = null
 ): Response

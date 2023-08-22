@@ -146,7 +146,8 @@ class MemberRepositoryImpl @Inject constructor(
 
     // Remote
     // 로그인
-    override suspend fun login(userInfoLogin: UserInfoLogin): Flow<LoginResponse> {
+    override suspend fun login(email: String, password: String): Flow<LoginResponse> {
+        val userInfoLogin = UserInfoLogin(email, password)
         return memberRemoteDataSource.login(userInfoLogin)
     }
 
@@ -161,8 +162,10 @@ class MemberRepositoryImpl @Inject constructor(
         memberRemoteDataSource.nickNameDuplicateCheck(nickNameInput)
 
     // 회원가입
-    override suspend fun join(userInfo: UserInfo): Flow<JoinResponse> =
-        memberRemoteDataSource.join(userInfo)
+    override suspend fun join(email: String, nickname: String, password: String, birthyear: Int): Flow<JoinResponse> {
+        val userInfo = UserInfo(email, nickname, password, birthyear)
+        return memberRemoteDataSource.join(userInfo)
+    }
 
     // 회원탈퇴
     override suspend fun deleteUser(): Flow<DeleteUserResponse> {
