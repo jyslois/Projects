@@ -39,6 +39,12 @@ android {
                 includeNoLocationClasses = true
             }
         }
+        tasks.withType(Test).tap {
+            configureEach {
+                jacoco.includeNoLocationClasses = true
+                jacoco.excludes = ['jdk.internal.*']
+            }
+        }
     }
 
     compileOptions {
