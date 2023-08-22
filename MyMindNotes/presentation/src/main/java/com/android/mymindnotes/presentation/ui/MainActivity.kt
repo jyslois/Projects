@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
         Log.e("순서", "(Activity) onCreate() 시작")
         super.onCreate(savedInstanceState)
 
-        viewModel.checkAndUpdateAutoLoginState()
+        lifecycleScope.launch {
+            viewModel.checkAndUpdateAutoLoginState()
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         Log.e("순서", "(Activity) UI 랜더링")
