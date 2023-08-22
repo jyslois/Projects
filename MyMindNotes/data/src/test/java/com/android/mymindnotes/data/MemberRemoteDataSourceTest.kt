@@ -76,7 +76,7 @@ class MemberRemoteDataSourceTest {
     @Test
     fun getUserInfo_ReturnsExpectedUserInfo() = runTest(testDispatcher) {
         // Given
-        val expectedResponse = GetUserInfoResponse(code = 5002, msg = "회원 정보를 성공적으로 가져왔습니다.", birthyear = 1991, email = "seolois@hotmail.com", nickname = "로이스")
+        val expectedResponse = GetUserInfoResponse(birthyear = 1991, email = "seolois@hotmail.com", nickname = "로이스")
         coEvery { mockGetUserInfoApi.getUserInfo(1) } returns expectedResponse
 
         // When
@@ -262,7 +262,7 @@ class MemberRemoteDataSourceTest {
     @Test
     fun join_ReturnsExpectedResponse() = runTest(testDispatcher) {
         // Given
-        val expectedResponse = JoinResponse(2000, "회원 가입 성공! 환영합니다")
+        val expectedResponse = JoinResponse(code = 2000, msg = "회원 가입 성공! 환영합니다", userIndex = 1)
         val userInfo = UserInfo("test@test.com", "로이스", "password11", 1991)
         coEvery { mockJoinApi.addUser(userInfo) } returns expectedResponse
 
@@ -279,7 +279,7 @@ class MemberRemoteDataSourceTest {
     @Test
     fun join_ReturnsUnsuccessfulJoinCode() = runTest(testDispatcher) {
         // Given
-        val expectedResponse = JoinResponse(code = 2001, msg = "회원 가입 양식을 다시 한 번 확인해 주세요")
+        val expectedResponse = JoinResponse(code = 2001, msg = "회원 가입 양식을 다시 한 번 확인해 주세요", userIndex = 1)
         val userInfo = UserInfo("test@test.com", "로이스", "0", 1991)
         coEvery { mockJoinApi.addUser(userInfo) } returns expectedResponse
 
