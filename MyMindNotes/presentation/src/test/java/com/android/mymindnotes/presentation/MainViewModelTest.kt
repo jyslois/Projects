@@ -44,6 +44,8 @@ class MainViewModelTest {
 
         // When
         mainViewModel.checkAndUpdateAutoLoginState()
+        // Ensure all coroutines have completed
+        testDispatcher.scheduler.advanceUntilIdle()
 
         // Then
         assertEquals(MainViewModel.MainUiState.AutoLogin, mainViewModel.uiState.value)
@@ -58,6 +60,8 @@ class MainViewModelTest {
 
         // When
         mainViewModel.checkAndUpdateAutoLoginState()
+        // Ensure all coroutines have completed
+        testDispatcher.scheduler.advanceUntilIdle()
 
         // Then
         assertEquals(MainViewModel.MainUiState.Loading, mainViewModel.uiState.value) // mainViewModel의 uiState의 현재 값이 MainViewModel.MainUiState.Loading과 동일한지 확인
