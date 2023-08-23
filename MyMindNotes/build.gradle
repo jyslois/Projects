@@ -15,6 +15,10 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.20' apply false
     // Test Coverage - JaCoCo
     id 'jacoco'
+    // Firebase
+    id 'com.google.gms.google-services' version '4.3.15' apply false
+    // Add the dependency for the Crashlytics Gradle plugin
+    id 'com.google.firebase.crashlytics' version '2.9.8' apply false
 }
 
 task clean(type: Delete) {

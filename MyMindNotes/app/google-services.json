@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "818855521611",
+    "project_id": "mymindnotes-49d1b",
+    "storage_bucket": "mymindnotes-49d1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818855521611:android:0fe3fcab847fe39a228cce",
+        "android_client_info": {
+          "package_name": "com.jys.mymindnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818855521611-csc587hur8k9t2gidqmcahk200cga67r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jys.mymindnotes",
+            "certificate_hash": "314f57d9014d1eaf0bacb957cc16f06e6b8c0517"
+          }
+        },
+        {
+          "client_id": "818855521611-ivdmvahkm8hcb5d2b5d74mr9pkk41479.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdlT-_LnJPSaW4ACyP6Oc4coS1CNwdTq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818855521611-ivdmvahkm8hcb5d2b5d74mr9pkk41479.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
