@@ -44,6 +44,7 @@ class MainViewModelTest {
 
         // When
         mainViewModel.checkAndUpdateAutoLoginState()
+
         // Ensure all coroutines have completed,  현재 테스트 디스패처의 작업 큐에 있는, 즉 실행 대기 중인 모든 코루틴 작업들이 실행되고 완료될 때까지 진행을 일시 중단
         testDispatcher.scheduler.advanceUntilIdle()
 
@@ -60,6 +61,7 @@ class MainViewModelTest {
 
         // When
         mainViewModel.checkAndUpdateAutoLoginState()
+
         // Ensure all coroutines have completed,  현재 테스트 디스패처의 작업 큐에 있는, 즉 실행 대기 중인 모든 코루틴 작업들이 실행되고 완료될 때까지 진행을 일시 중단
         testDispatcher.scheduler.advanceUntilIdle()
 
