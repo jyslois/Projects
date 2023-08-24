@@ -75,7 +75,7 @@ class GetUserInfoUseCaseTest {
             val exception = it.exceptionOrNull()
             assertNotNull(exception) // 예외가 null이 아닌지 확인
             assertTrue(exception is RuntimeException) // 발생한 예외가 RuntimeException인지 확인
-            assertEquals(errorMessage, exception.message, "반환된 예외 메시지(${exception.message})가 예상 예외 메세지(${errorMessage})와 다릅니다") // 예외 메시지가 기대한 메시지와 동일한지 확인
+            assertEquals(errorMessage, exception.message, "반환된 에러 메시지(${exception.message})가 예상 에러 메세지(${errorMessage})와 다릅니다") // 예외 메시지가 기대한 메시지와 동일한지 확인
         }
         coVerify { mockMemberRepository.getUserInfo() } // mock 객체가 getUserInfo()를 한 번 호출했는지 확인
     }

@@ -112,7 +112,7 @@ class LoginUseCaseTest {
             val exception = it.exceptionOrNull()
             assertNotNull(exception)
             assertTrue(exception is RuntimeException)
-            assertEquals(msg, exception.message, "반환된 예외 메시지(${exception.message})가 예상 예외 메세지(${msg})와 다릅니다")
+            assertEquals(msg, exception.message, "반환된 에러 메시지(${exception.message})가 예상 에러 메세지(${msg})와 다릅니다")
         }
         coVerify { mockMemberRepository.login(email, password) }
     }

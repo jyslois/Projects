@@ -119,7 +119,7 @@ class JoinUseCaseTest {
             val exception = it.exceptionOrNull()
             assertNotNull(exception)
             assertTrue(exception is RuntimeException)
-            assertEquals(errorMsg, exception.message, "반환된 예외 메시지(${exception.message})가 예상 예외 메세지(${errorMsg})와 다릅니다")
+            assertEquals(errorMsg, exception.message, "반환된 에러 메시지(${exception.message})가 예상 에러 메세지(${errorMsg})와 다릅니다")
         }
         coVerify { mockMemberRepository.join(email, nickname, password, birthyear) }
     }
