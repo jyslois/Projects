@@ -3,28 +3,24 @@ package com.android.mymindnotes.domain.usecases.userInfoRemote
 import com.android.mymindnotes.data.repositoryInterfaces.MemberRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CheckNickNameDuplicateUseCase @Inject constructor(
     private val memberRepository: MemberRepository
 ) {
-
-//    // 닉네임
-//    // (서버) 닉네임 중복 체크 함수 호출
-//    suspend fun checkNickName(nickNameInput: String): Flow<Map<String, Object>> {
-//        return repository.checkNickName(nickNameInput)
-//    }
-
     suspend operator fun invoke(nickNameInput: String): Flow<Result<String?>> {
-        return memberRepository.checkNickName(nickNameInput).map { response ->
+        return try {
+            val response = memberRepository.checkNickName(nickNameInput).first()
             when(response.code) {
-                1003 -> Result.failure(RuntimeException(response.msg))
-                1002 -> Result.success(response.msg)
-                else -> Result.failure(RuntimeException("닉네임 체크 중 오류 발생"))
+                1003 -> flowOf(Result.failure(RuntimeException(response.msg)))
+                1002 -> flowOf(Result.success(response.msg))
+                else -> flowOf(Result.failure(RuntimeException("닉네임 체크 중 오류 발생")))
             }
-        }.catch {
-            emit(Result.failure(RuntimeException("닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")))
+        } catch(e: Exception) {
+            flowOf(Result.failure(RuntimeException(e.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")))
         }
     }
 }
