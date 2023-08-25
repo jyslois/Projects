@@ -18,7 +18,7 @@ class CheckNickNameDuplicateUseCase @Inject constructor(
                     1002 -> emit(Result.success(response.msg))
                 }
             } catch(e: Exception) {
-                emit(Result.failure(RuntimeException(e.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")))
+                emit(Result.failure(RuntimeException("닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")))
             }
         }
     }

@@ -19,7 +19,7 @@ class CheckEmailDuplicateUseCase @Inject constructor(
                     1000 -> emit(Result.success(response.msg))
                 }
             } catch(e: Exception) {
-                emit(Result.failure(RuntimeException(e.message ?: "이메일 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
+                emit(Result.failure(RuntimeException("이메일 중복 체크 실패. 인터넷 연결을 확인해 주세요.")))
             }
         }
     }

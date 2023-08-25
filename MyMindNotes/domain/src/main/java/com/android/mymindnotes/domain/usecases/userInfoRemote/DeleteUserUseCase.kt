@@ -35,7 +35,7 @@ class DeleteUserUseCase @Inject constructor(
 
                 emit(Result.success(response.msg))
             } catch(e: Exception) {
-                emit(Result.failure(RuntimeException(e.message ?: "회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")))
+                emit(Result.failure(RuntimeException("회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")))
             }
         }
     }

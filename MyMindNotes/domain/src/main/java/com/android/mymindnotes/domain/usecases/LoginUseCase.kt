@@ -46,7 +46,7 @@ class LoginUseCase @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                emit(Result.failure(RuntimeException(e.message ?: "로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
+                emit(Result.failure(RuntimeException("로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
             }
         }
     }

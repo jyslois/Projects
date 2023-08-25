@@ -35,7 +35,7 @@ class SaveUserIndexUseCaseTest {
     @Test
     fun invoke_ReturnsSuccessfulResponse() = runTest {
         // Given
-        coEvery { mockMemberRepository.saveUserIndex(userIndex) } just Runs
+        coEvery { mockMemberRepository.saveUserIndex(any()) } just Runs
 
         // When
         saveUserIndexUseCase(userIndex)

@@ -47,7 +47,7 @@ class JoinUseCase @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                emit(Result.failure(RuntimeException(e.message ?: "회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
+                emit(Result.failure(RuntimeException("회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요.")))
             }
         }
     }

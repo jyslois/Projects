@@ -20,7 +20,7 @@ class GetUserInfoUseCase @Inject constructor(
 
                 emit(Result.success(UserInfo(nickname, email, birthyear))) // UserInfo 객체를 담고 있는 성공한 Result 객체를 flow에 emit한다
             } catch (e: Exception) {
-                emit(Result.failure<UserInfo>(RuntimeException(e.message ?: "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요."))) // RuntimeException 예외를 담고 있는 실패한 Result 객체를 flow에 emit한다
+                emit(Result.failure<UserInfo>(RuntimeException("회원정보를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요."))) // RuntimeException 예외를 담고 있는 실패한 Result 객체를 flow에 emit한다
             }
         }
     }

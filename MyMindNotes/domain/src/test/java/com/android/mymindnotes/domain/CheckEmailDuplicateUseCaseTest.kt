@@ -79,7 +79,7 @@ class CheckEmailDuplicateUseCaseTest {
     @Test
     fun invoke_ThrowsRuntimeException() = runTest(testDispatcher) {
         // Given
-        val errorMsg = "이메일 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요."
+        val errorMsg = "이메일 중복 체크 실패. 인터넷 연결을 확인해 주세요."
         coEvery { mockMemberRepository.checkEmail(email) } throws RuntimeException(errorMsg)
 
         // When
