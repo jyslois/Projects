@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases.diary
+package com.android.mymindnotes.domain.usecases.diaryRemote
 
 import com.android.mymindnotes.data.repositoryInterfaces.DiaryRepository
 import com.android.mymindnotes.core.dto.GetDiaryListResponse

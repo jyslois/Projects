@@ -1,4 +1,4 @@
-package com.android.mymindnotes.domain.usecases.diary
+package com.android.mymindnotes.domain.usecases.diaryRemote
 
 import com.android.mymindnotes.data.repositoryInterfaces.TodayDiaryRepository
 import com.android.mymindnotes.domain.usecases.diary.today.ClearTodayDiaryTempRecordsUseCase

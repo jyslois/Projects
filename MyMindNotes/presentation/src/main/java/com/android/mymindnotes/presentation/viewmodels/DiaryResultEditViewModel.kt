@@ -1,7 +1,7 @@
 package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.android.mymindnotes.domain.usecases.diary.UpdateDiaryUseCase
+import com.android.mymindnotes.domain.usecases.diaryRemote.UpdateDiaryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

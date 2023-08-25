@@ -2,7 +2,7 @@ package com.android.mymindnotes.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.mymindnotes.domain.usecases.diary.SaveTodayDiaryUseCase
+import com.android.mymindnotes.domain.usecases.diaryRemote.SaveTodayDiaryUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.GetTodayDiaryReflectionUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryReflectionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
