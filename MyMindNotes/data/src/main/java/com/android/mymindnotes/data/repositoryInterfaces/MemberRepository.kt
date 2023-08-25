@@ -2,7 +2,6 @@ package com.android.mymindnotes.data.repositoryInterfaces
 
 import com.android.mymindnotes.core.dto.ChangeNicknameResponse
 import com.android.mymindnotes.core.dto.ChangePasswordResponse
-import com.android.mymindnotes.core.dto.ChangeToTemporaryPassword
 import com.android.mymindnotes.core.dto.ChangeToTemporaryPasswordResponse
 import com.android.mymindnotes.core.dto.DeleteUserResponse
 import com.android.mymindnotes.core.dto.DuplicateCheckResponse
@@ -70,6 +69,6 @@ interface MemberRepository {
     suspend fun changePassword(password: String, originalPassword: String): Flow<ChangePasswordResponse>
 
     // change to TemporaryPassword
-    suspend fun changeToTemporaryPassword(temporaryPasswordInfo: ChangeToTemporaryPassword): Flow<ChangeToTemporaryPasswordResponse>
+    suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<ChangeToTemporaryPasswordResponse>
 
 }

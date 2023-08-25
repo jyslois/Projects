@@ -6,10 +6,6 @@ import javax.inject.Inject
 class SaveUserIndexUseCase  @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun saveUserIndex(index: Int) {
-//        repository.saveUserIndex(index)
-//    }
-
     suspend operator fun invoke(index: Int) {
         repository.saveUserIndex(index)
     }

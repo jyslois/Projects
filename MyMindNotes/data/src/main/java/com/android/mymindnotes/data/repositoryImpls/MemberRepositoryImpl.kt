@@ -199,8 +199,10 @@ class MemberRepositoryImpl @Inject constructor(
     }
 
     // 임시 비밀번호로 비밀번호 수정
-    override suspend fun changeToTemporaryPassword(temporaryPasswordInfo: ChangeToTemporaryPassword): Flow<ChangeToTemporaryPasswordResponse> =
-        memberRemoteDataSource.changeToTemporaryPassword(temporaryPasswordInfo)
+    override suspend fun changeToTemporaryPassword(email: String, randomPassword: String): Flow<ChangeToTemporaryPasswordResponse> {
+        val temporaryPasswordInfo = ChangeToTemporaryPassword(email, randomPassword)
+        return memberRemoteDataSource.changeToTemporaryPassword(temporaryPasswordInfo)
+    }
 
 
 }
