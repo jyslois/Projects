@@ -28,10 +28,9 @@ class DiaryRepositoryImpl @Inject constructor(
     override suspend fun deleteDiary(diaryNumber: Int): Flow<DeleteDiaryResponse> = diaryRemoteDataSource.deleteDiary(diaryNumber)
 
     // Update Diary
-    override suspend fun updateDiary(
-        diaryNumber: Int,
-        diary: DiaryEdit
-    ): Flow<UpdateDiaryResponse> = diaryRemoteDataSource.updateDiary(diaryNumber, diary)
-
+    override suspend fun updateDiary(diaryNumber: Int, situation: String, thought: String, emotion: String, emotionDescription: String?, reflection: String?): Flow<UpdateDiaryResponse> {
+        val diary = DiaryEdit(situation, thought, emotion, emotionDescription, reflection)
+        return diaryRemoteDataSource.updateDiary(diaryNumber, diary)
+    }
 
 }

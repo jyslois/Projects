@@ -7,8 +7,8 @@ import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryRecordD
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryReflectionUseCase
 import com.android.mymindnotes.domain.usecases.diary.today.SaveTodayDiaryTypeUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class SaveTodayDiaryUseCase @Inject constructor(
@@ -19,30 +19,26 @@ class SaveTodayDiaryUseCase @Inject constructor(
     private val saveTodayDiaryRecordDayUseCase: SaveTodayDiaryRecordDayUseCase,
     private val clearTodayDiaryTempRecordsUseCase: ClearTodayDiaryTempRecordsUseCase
 ) {
-
-//    // (서버) 일기 저장
-//    suspend fun saveDiary(): Flow<Map<String, Object>> {
-//        return repository.saveDiary()
-//    }
-
-    suspend operator fun invoke(reflection: String?, type: String, date: String, day: String): Flow<Result<String>> {
+    suspend operator fun invoke(reflection: String?, type: String, date: String, day: String): Flow<Result<String?>> {
 
         saveTodayDiaryReflectionUseCase(reflection)
         saveTodayDiaryTypeUseCase(type)
         saveTodayDiaryRecordDateUseCase(date)
         saveTodayDiaryRecordDayUseCase(day)
 
-        return todayDiaryRepository.saveDiary().map {
-            when (it.code) {
-                6001 -> Result.failure(RuntimeException(it.msg))
-                6000 -> {
-                    clearTodayDiaryTempRecordsUseCase()
-                    Result.success("Success")
+        return flow {
+            try {
+                val response = todayDiaryRepository.saveDiary().first()
+                when (response.code) {
+                    6001 -> emit(Result.failure(RuntimeException(response.msg)))
+                    6000 -> {
+                        clearTodayDiaryTempRecordsUseCase()
+                        emit(Result.success(response.msg))
+                    }
                 }
-                else -> Result.failure(RuntimeException("일기 저장 중 오류 발생."))
+            } catch (e: Exception) {
+                emit(Result.failure(RuntimeException("일기 저장에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")))
             }
-        }.catch {
-            emit(Result.failure(RuntimeException("일기 저장에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")))
         }
     }
 
