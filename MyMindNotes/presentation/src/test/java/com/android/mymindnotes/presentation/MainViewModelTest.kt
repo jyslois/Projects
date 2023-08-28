@@ -46,7 +46,7 @@ class MainViewModelTest {
         // When
         mainViewModel.checkAndUpdateAutoLoginState()
 
-        // Ensure all coroutines have completed,  현재 테스트 디스패처의 작업 큐에 있는, 즉 실행 대기 중인 모든 코루틴 작업들이 실행되고 완료될 때까지 대기
+        // Ensure all coroutines have completed,  현재 디스패처의 작업 큐에 있는, 즉 실행 대기 중인 모든 코루틴 작업들이 실행되고 완료될 때까지 대기
         advanceUntilIdle() // 현재 스레드의 디스패처에서 실행되는 함수
         print("확인: " + Thread.currentThread().name)
 
