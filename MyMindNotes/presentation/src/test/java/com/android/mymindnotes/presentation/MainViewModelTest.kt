@@ -39,7 +39,7 @@ class MainViewModelTest {
 
     // GetAutoLoginStateUseCase가 true를 반환할 때 MainUiState.AutoLogin 상태가 발생하는지 확인
     @Test
-    fun checkAndUpdateAutoLoginState_EmitsAutoLoginState() = runTest {
+    fun checkAndUpdateAutoLoginState_EmitsAutoLoginState() = runTest {// 특별한 디스패처를 명시하지 않는 경우 runTest 함수 내에서 기본적으로 사용되는 디스패처는 현재 스레드에서 실행되는 디스패처인 Unconfined 디스패처.
         // Given
         coEvery { mockGetAutoLoginStateUseCase() } returns flowOf(true)
 
@@ -47,7 +47,7 @@ class MainViewModelTest {
         mainViewModel.checkAndUpdateAutoLoginState()
 
         // Ensure all coroutines have completed,  현재 테스트 디스패처의 작업 큐에 있는, 즉 실행 대기 중인 모든 코루틴 작업들이 실행되고 완료될 때까지 대기
-        advanceUntilIdle()
+        advanceUntilIdle() // 현재 스레드의 디스패처에서 실행되는 함수
         print("확인: " + Thread.currentThread().name)
 
         // Then
@@ -57,7 +57,7 @@ class MainViewModelTest {
 
     // GetAutoLoginStateUseCase가 false를 반환할 때 기본 상태인 MainUiState.Loading을 유지하는지 확인
     @Test
-    fun checkAndUpdateAutoLoginState_RetainsLoadingState() = runTest(testDispatcher) {
+    fun checkAndUpdateAutoLoginState_RetainsLoadingState() = runTest(testDispatcher) {// // runTest 함수의 매개변수로 StandardTestDispatcher을 넘겨도 테스트 코드는 현재 스레드에서 진행된다. 일반적으로 테스트 코드를 현재 스레드에서 실행하도록 구성하기 때문.
         // Given
         coEvery { mockGetAutoLoginStateUseCase() } returns flowOf(false)
 
