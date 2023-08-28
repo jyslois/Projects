@@ -57,7 +57,7 @@ class MainViewModelTest {
 
     // GetAutoLoginStateUseCase가 false를 반환할 때 기본 상태인 MainUiState.Loading을 유지하는지 확인
     @Test
-    fun checkAndUpdateAutoLoginState_RetainsLoadingState() = runTest(testDispatcher) {// // runTest 함수의 매개변수로 StandardTestDispatcher을 넘겨도 테스트 코드는 현재 스레드에서 진행된다. 일반적으로 테스트 코드를 현재 스레드에서 실행하도록 구성하기 때문.
+    fun checkAndUpdateAutoLoginState_RetainsLoadingState() = runTest(testDispatcher) { // runTest 함수의 매개변수로 StandardTestDispatcher을 넘겨도 테스트 코드는 현재 스레드에서 진행된다. 일반적으로 테스트 코드를 현재 스레드에서 실행하도록 구성하기 때문.
         // Given
         coEvery { mockGetAutoLoginStateUseCase() } returns flowOf(false)
 
