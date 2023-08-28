@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -38,7 +39,7 @@ class MainViewModelTest {
 
     // GetAutoLoginStateUseCase가 true를 반환할 때 MainUiState.AutoLogin 상태가 발생하는지 확인
     @Test
-    fun checkAndUpdateAutoLoginState_EmitsAutoLoginState() = runTest(testDispatcher) {
+    fun checkAndUpdateAutoLoginState_EmitsAutoLoginState() = runTest {
         // Given
         coEvery { mockGetAutoLoginStateUseCase() } returns flowOf(true)
 
@@ -46,7 +47,8 @@ class MainViewModelTest {
         mainViewModel.checkAndUpdateAutoLoginState()
 
         // Ensure all coroutines have completed,  현재 테스트 디스패처의 작업 큐에 있는, 즉 실행 대기 중인 모든 코루틴 작업들이 실행되고 완료될 때까지 대기
-        testDispatcher.scheduler.advanceUntilIdle()
+        advanceUntilIdle()
+        print("확인: " + Thread.currentThread().name)
 
         // Then
         assertEquals(MainViewModel.MainUiState.AutoLogin, mainViewModel.uiState.value)

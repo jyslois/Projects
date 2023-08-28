@@ -5,9 +5,10 @@ plugins {
     // Hilt
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
-
-    id 'jacoco'
 }
+
+apply from: '../modules.gradle'
+
 
 android {
     namespace 'com.android.mymindnotes.domain'
@@ -26,25 +27,8 @@ android {
             testCoverageEnabled true
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    
-    testOptions {
-        unitTests.includeAndroidResources = true
-        unitTests.returnDefaultValues = true
-
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-            }
-        }
-        tasks.withType(Test).tap {
-            configureEach {
-                jacoco.includeNoLocationClasses = true
-                jacoco.excludes = ['jdk.internal.*']
-            }
         }
     }
 
