@@ -1,8 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-
-    // Hilt
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
 }
@@ -44,59 +42,51 @@ android {
 dependencies {
     implementation(project(":core"))
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation "androidx.core:core-ktx:${coreKtxVersion}"
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
+    implementation "com.google.android.material:material:${materialVersion}"
 
-    // Retrofit 설치
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    // Gson converter
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    // okhttp3 설치
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    // logging-interceptor 설치
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${converterGsonVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}"
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
+    implementation "com.google.dagger:hilt-android:${hiltAndroidVersion}"
+    kapt "com.google.dagger:hilt-compiler:${hiltCompilerVersion}"
 
     // Preference Datastore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:${datastorePreferencesVersion}"
 
     // Tests
-    androidTestImplementation 'androidx.test:core:1.5.0'
+    androidTestImplementation "androidx.test:core:${androidTestCoreVersion}"
 
-    // Assertions
     // Truth
-    testImplementation 'com.google.truth:truth:1.1.3'
-    androidTestImplementation 'com.google.truth:truth:1.1.3'
-    androidTestImplementation 'androidx.test.ext:truth:1.5.0'
+    testImplementation "com.google.truth:truth:${truthVersion}"
+    androidTestImplementation "com.google.truth:truth:${truthVersion}"
+    androidTestImplementation "androidx.test.ext:truth:${truthExtVersion}"
+
     // Hamcrest library
-    testImplementation 'org.hamcrest:hamcrest-library:2.2'
-    androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
+    testImplementation "org.hamcrest:hamcrest-library:${hamcrestLibraryVersion}"
+    androidTestImplementation "org.hamcrest:hamcrest-library:${hamcrestLibraryVersion}"
 
     // JUnit
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterApiVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterEngineVersion}"
+    androidTestImplementation "androidx.test.ext:junit:${androidTestJUnitExtVersion}"
+
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test:runner:1.5.2'
-    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation "androidx.test:runner:${androidTestRunnerVersion}"
+    androidTestImplementation "androidx.test:rules:${androidTestRulesVersion}"
 
     // MockK
-    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation "io.mockk:mockk:${mockkVersion}"
 
-    // Robolectric
-    testImplementation 'org.robolectric:robolectric:4.9'
-
-    // Espresso
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-    // Test 어노테이션과 단언(assertions)
-    testImplementation "org.jetbrains.kotlin:kotlin-test:1.9.0"
+    // Test annotations and assertions
+    testImplementation "org.jetbrains.kotlin:kotlin-test:${kotlinTestVersion}"
 
     // Coroutine Test
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutinesTestVersion}"
 }

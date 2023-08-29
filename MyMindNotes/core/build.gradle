@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    // Hilt
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
 }
@@ -27,7 +26,7 @@ android {
         }
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro' //  Java 어플리케이션의 코드 최적화 및 난독화 도구. 라이브러리 모듈의 경우, 그 모듈을 사용하는 앱이 ProGuard를 적용할 때 문제가 발생하지 않도록 하기 위해 consumerProguardFiles 설정을 사용하여 필요한 ProGuard 규칙을 제공
         }
     }
 
@@ -35,6 +34,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
@@ -43,49 +43,19 @@ android {
 
 dependencies {
     // Retrofit 설치
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    // Gson converter (Retrofit은 requestbody 타입만 취급 가능하므로 다른 타입도 취급 가능하게 하려면 추가해야 함)
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    // Gson converter
+    implementation "com.squareup.retrofit2:converter-gson:${converterGsonVersion}"
     // okhttp3 설치
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
     // logging-interceptor 설치
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}"
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
+    implementation "com.google.dagger:hilt-android:${hiltAndroidVersion}"
+    kapt "com.google.dagger:hilt-compiler:${hiltCompilerVersion}"
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-
-    // Tests
-    androidTestImplementation 'androidx.test:core:1.5.0'
-
-    // Assertions
-    // Truth
-    testImplementation 'com.google.truth:truth:1.1.3'
-    androidTestImplementation 'com.google.truth:truth:1.1.3'
-    androidTestImplementation 'androidx.test.ext:truth:1.5.0'
-    // Hamcrest library
-    testImplementation 'org.hamcrest:hamcrest-library:2.2'
-    androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
-
-    // JUnit
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test:runner:1.5.2'
-    androidTestImplementation 'androidx.test:rules:1.5.0'
-
-    // MockK
-    testImplementation("io.mockk:mockk:1.13.5")
-
-    // Robolectric
-    testImplementation 'org.robolectric:robolectric:4.9'
-
-    // Espresso
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation "androidx.core:core-ktx:${coreKtxVersion}"
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
+    implementation "com.google.android.material:material:${materialVersion}"
 }

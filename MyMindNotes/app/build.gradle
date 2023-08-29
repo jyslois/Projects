@@ -1,10 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt' // Kotlin 플러그인의 일부(org.jetbrains.kotlin:kotlin-gradle-plugin). 주요 플러그인의 일부로 제공되는 추가적인 플러그인들은 별도의 선언 없이 사용 가능
     // Hilt
-    id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
-
     // Add the Google services Gradle plugin
     id 'com.google.gms.google-services'
     // Add the Crashlytics Gradle plugin
@@ -31,14 +30,11 @@ android {
             testCoverageEnabled true
         }
         release {
-            minifyEnabled true
+            minifyEnabled true //  ProGuard가 코드 축소와 난독화를 수행하도록 지시
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
-    viewBinding {
-        enabled = true
-    }
     buildFeatures {
         viewBinding true
     }
@@ -46,6 +42,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     namespace 'com.android.mymindnotes'
@@ -57,47 +57,49 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core"))
 
-
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
-    implementation 'androidx.navigation:navigation-fragment:2.4.1'
-    implementation 'androidx.navigation:navigation-ui:2.4.1'
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewModelKtxVersion"
+    implementation "androidx.navigation:navigation-fragment:$navigationFragmentVersion"
+    implementation "androidx.navigation:navigation-ui:$navigationUiVersion"
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
+    implementation "com.google.dagger:hilt-android:$hiltAndroidVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltCompilerVersion"
 
     // Retrofit 설치
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     // Gson converter
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.retrofit2:converter-gson:$converterGsonVersion"
     // okhttp3 설치
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     // logging-interceptor 설치
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
 
     // Preference Datastore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$datastorePreferencesVersion"
 
     // Test
     testImplementation 'junit:junit:4.13.2'
     implementation "org.jetbrains.kotlin:kotlin-test:1.9.0"
 
+    // Test
+    testImplementation "junit:junit:$junitVersion"
+    implementation "org.jetbrains.kotlin:kotlin-test:$kotlinTestVersion"
+
     // Coroutine Test
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"
 
     // MockK
-    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation "io.mockk:mockk:$mockkVersion"
 
     // Firebase
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
     // Add the dependencies for the Crashlytics and Analytics libraries
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
 }
 
 // Allow references to generated code
