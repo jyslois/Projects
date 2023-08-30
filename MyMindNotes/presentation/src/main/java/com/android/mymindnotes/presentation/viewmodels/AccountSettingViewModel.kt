@@ -19,6 +19,8 @@ class AccountSettingViewModel @Inject constructor(
     private val saveAutoLoginStateUseCase: SaveAutoLoginStateUseCase,
 ) : ViewModel() {
 
+    var errorStateTriggered = false // 테스트용
+
     sealed class AccountSettingUiState {
         object Loading : AccountSettingUiState()
         data class Success(val nickName: String, val email: String, val birthyear: Int) : AccountSettingUiState()
@@ -50,8 +52,14 @@ class AccountSettingViewModel @Inject constructor(
 
                 it.isFailure -> {
                     _uiState.value = AccountSettingUiState.Error(
-                        it.exceptionOrNull()?.message ?: "회원 탈퇴 실패. 인터넷 연결을 확인해 주세요."
+                        "회원 탈퇴 실패. 인터넷 연결을 확인해 주세요."
                     )
+
+                    // 테스트용
+                    if (_uiState.value == AccountSettingUiState.Error("회원 탈퇴 실패. 인터넷 연결을 확인해 주세요.")) {
+                        errorStateTriggered = true
+                    }
+
                     _uiState.value = AccountSettingUiState.Loading
                 }
 
@@ -73,8 +81,13 @@ class AccountSettingViewModel @Inject constructor(
 
                     it.isFailure -> {
                         _uiState.value = AccountSettingUiState.Error(
-                            it.exceptionOrNull()?.message ?: "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요."
+                            "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요."
                         )
+
+                        if (_uiState.value == AccountSettingUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")) {
+                            errorStateTriggered = true
+                        }
+
                         _uiState.value = AccountSettingUiState.Loading
                     }
                 }
