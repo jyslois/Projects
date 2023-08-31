@@ -24,15 +24,32 @@ class FindPasswordViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<FindPasswordUiState>(FindPasswordUiState.Loading)
     val uiState: StateFlow<FindPasswordUiState> = _uiState.asStateFlow()
 
+    // 테스트용
+    var successStateTriggered = false
+    var errorStateTriggered = false
 
     // (서버) 임시 비밀번호로 비밀번호 변경하기
     suspend fun sendEmailButtonClicked(email: String, randomPassword: String) {
 
         changeToTemporaryPasswordUseCase(email, randomPassword).collect {
             when {
-                it.isSuccess -> _uiState.value = FindPasswordUiState.Success(it.getOrNull())
+                it.isSuccess -> {
+                    _uiState.value = FindPasswordUiState.Success(it.getOrNull())
 
-                it.isFailure -> _uiState.value = FindPasswordUiState.Error(it.exceptionOrNull()?.message ?: "임시 비밀번호 발송에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                    // 테스트용
+                    if (_uiState.value == FindPasswordUiState.Success(it.getOrNull())) {
+                        successStateTriggered = true
+                    }
+                }
+
+                it.isFailure -> {
+                    _uiState.value = FindPasswordUiState.Error(it.exceptionOrNull()?.message ?: "임시 비밀번호 발송에 실패했습니다.")
+
+                    // 테스트용
+                    if (_uiState.value == FindPasswordUiState.Error(it.exceptionOrNull()?.message ?: "임시 비밀번호 발송에 실패했습니다.")) {
+                        errorStateTriggered = true
+                    }
+                }
             }
             _uiState.value = FindPasswordUiState.Loading
         }

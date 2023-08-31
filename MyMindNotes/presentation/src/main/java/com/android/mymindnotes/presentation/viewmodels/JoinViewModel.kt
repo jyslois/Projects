@@ -29,15 +29,34 @@ class JoinViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<JoinUiState>(JoinUiState.Loading)
     val uiState: StateFlow<JoinUiState> = _uiState.asStateFlow()
 
+    // 테스트용
+    var emailDuplicateCheckSucceedStateTriggered = false
+    var errorStateTriggered = false
+    var nicknameDuplicateCheckSucceedStateTriggered = false
+    var joinSucceedStateTriggered = false
 
     // 이메일 중복 체크 함수 호출
     suspend fun checkEmailButtonClicked(emailInput: String) {
 
         checkEmailDuplicateUseCase(emailInput).collect {
             when {
-                it.isSuccess -> _uiState.value = JoinUiState.EmailDuplicateCheckSucceed(it.getOrNull())
+                it.isSuccess -> {
+                    _uiState.value = JoinUiState.EmailDuplicateCheckSucceed(it.getOrNull())
 
-                it.isFailure -> _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "이메일 중복 체크에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                    // 테스트용
+                    if (_uiState.value == JoinUiState.EmailDuplicateCheckSucceed(it.getOrNull())) {
+                        emailDuplicateCheckSucceedStateTriggered = true
+                    }
+                }
+
+                it.isFailure -> {
+                    _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "이메일 중복 체크에 실패했습니다.")
+
+                    // 테스트용
+                    if ( _uiState.value == JoinUiState.Error(it.exceptionOrNull()?.message ?: "이메일 중복 체크에 실패했습니다.")) {
+                        errorStateTriggered = true
+                    }
+                }
             }
         }
         _uiState.value = JoinUiState.Loading
@@ -49,9 +68,23 @@ class JoinViewModel @Inject constructor(
         // (서버) 닉네임 중복 체크
         checkNickNameDuplicateUseCase(nickNameInput).collect {
             when {
-                it.isSuccess -> _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed(it.getOrNull())
+                it.isSuccess -> {
+                    _uiState.value = JoinUiState.NicknameDuplicateCheckSucceed(it.getOrNull())
 
-                it.isFailure -> _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")
+                    // 테스트용
+                    if (_uiState.value == JoinUiState.NicknameDuplicateCheckSucceed(it.getOrNull())) {
+                        nicknameDuplicateCheckSucceedStateTriggered = true
+                    }
+                }
+
+                it.isFailure -> {
+                    _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패.")
+
+                    // 테스트용
+                    if (_uiState.value == JoinUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패.")) {
+                        errorStateTriggered = true
+                    }
+                }
             }
         }
         _uiState.value = JoinUiState.Loading
@@ -68,9 +101,23 @@ class JoinViewModel @Inject constructor(
 
         joinUseCase(email, nickname, password, birthyear).collect {
             when {
-                it.isSuccess -> _uiState.value = JoinUiState.JoinSucceed(it.getOrNull())
+                it.isSuccess -> {
+                    _uiState.value = JoinUiState.JoinSucceed(it.getOrNull())
 
-                it.isFailure ->  _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "회원가입에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                    // 테스트용
+                    if (_uiState.value == JoinUiState.JoinSucceed(it.getOrNull())) {
+                        joinSucceedStateTriggered = true
+                    }
+                }
+
+                it.isFailure ->  {
+                    _uiState.value = JoinUiState.Error(it.exceptionOrNull()?.message ?: "회원가입에 실패했습니다.")
+
+                    // 테스트용
+                    if (_uiState.value == JoinUiState.Error(it.exceptionOrNull()?.message ?: "회원가입에 실패했습니다.")) {
+                        errorStateTriggered = true
+                    }
+                }
             }
         }
         _uiState.value = JoinUiState.Loading

@@ -27,6 +27,7 @@ class DiaryResultViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<DiaryResultUiState>(DiaryResultUiState.Loading)
     val uiState: StateFlow<DiaryResultUiState> = _uiState.asStateFlow()
 
+    var errorStateTriggered = false // 테스트용
 
     // 다이어리 리스트 불러오기
     suspend fun getDiaryList() {
@@ -38,7 +39,12 @@ class DiaryResultViewModel @Inject constructor(
                 }
 
                 it.isFailure -> {
-                    _uiState.value = DiaryResultUiState.Error(it.exceptionOrNull()?.message ?: "일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+                    _uiState.value = DiaryResultUiState.Error("일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+
+                    // 테스트
+                    if (_uiState.value == DiaryResultUiState.Error("일기를 불러오는 데 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")) {
+                        errorStateTriggered = true
+                    }
 
                     _uiState.value = DiaryResultUiState.Loading
                 }
@@ -55,7 +61,12 @@ class DiaryResultViewModel @Inject constructor(
                 it.isSuccess -> _uiState.value = DiaryResultUiState.Finish
 
                 it.isFailure -> {
-                    _uiState.value = DiaryResultUiState.Error(it.exceptionOrNull()?.message ?: "일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+                    _uiState.value = DiaryResultUiState.Error("일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+
+                    // 테스트
+                    if (_uiState.value == DiaryResultUiState.Error("일기 삭제에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")) {
+                        errorStateTriggered = true
+                    }
 
                     _uiState.value = DiaryResultUiState.Loading
                 }

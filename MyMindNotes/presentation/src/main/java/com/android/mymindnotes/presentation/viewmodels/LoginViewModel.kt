@@ -39,6 +39,8 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Loading)
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
+    // 테스트용
+    var errorStateTriggered = false
 
     // 로그인
     suspend fun loginButtonClicked(email: String, password: String, isAutoLoginChecked: Boolean, isAutoSaveChecked: Boolean) {
@@ -48,7 +50,13 @@ class LoginViewModel @Inject constructor(
                 it.isSuccess ->  _uiState.value = LoginUiState.LoginSucceed(it.getOrNull())
 
                 it.isFailure -> {
-                    _uiState.value = LoginUiState.Error(it.exceptionOrNull()?.message ?: "로그인에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                    _uiState.value = LoginUiState.Error(it.exceptionOrNull()?.message ?: "로그인에 실패했습니다.")
+
+                    // 테스트용
+                    if (_uiState.value == LoginUiState.Error(it.exceptionOrNull()?.message ?: "로그인에 실패했습니다.")) {
+                        errorStateTriggered = true
+                    }
+
                     _uiState.value = LoginUiState.Loading
                 }
             }
