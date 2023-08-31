@@ -27,15 +27,33 @@ class ChangeNickNameViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ChangeNickNameUiState>(ChangeNickNameUiState.Loading)
     val uiState: StateFlow<ChangeNickNameUiState> = _uiState.asStateFlow()
 
+    // 테스트용
+    var nickNameDuplicateCheckedStateTriggered = false
+    var nickNameChangedStateTriggered = false
+    var errorStateTriggered = false
 
     // (서버) 닉네임 중복 체크
     suspend fun checkNickNameButtonClicked(nickName: String) {
 
         checkNickNameDuplicateUseCase(nickName).collect {
             when {
-                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked(it.getOrNull())
+                it.isSuccess -> {
+                    _uiState.value = ChangeNickNameUiState.NickNameDuplicateChecked(it.getOrNull())
 
-                it.isFailure -> _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패. 인터넷 연결을 확인해 주세요.")
+                    // 테스트용
+                    if (_uiState.value == ChangeNickNameUiState.NickNameDuplicateChecked(it.getOrNull())) {
+                            nickNameDuplicateCheckedStateTriggered = true
+                    }
+                }
+
+                it.isFailure -> {
+                    _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패.")
+
+                    // 테스트용
+                    if (_uiState.value == ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 중복 체크 실패.")) {
+                        errorStateTriggered = true
+                    }
+                }
             }
         }
         _uiState.value = ChangeNickNameUiState.Loading
@@ -46,9 +64,24 @@ class ChangeNickNameViewModel @Inject constructor(
 
         changeNickNameUseCase(nickName).collect {
             when {
-                it.isSuccess -> _uiState.value = ChangeNickNameUiState.NickNameChanged(it.getOrNull())
+                it.isSuccess -> {
+                    _uiState.value = ChangeNickNameUiState.NickNameChanged(it.getOrNull())
 
-                it.isFailure -> _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 변경 실패. 인터넷 연결을 확인해 주세요.")
+                    // 테스트용
+                    if (_uiState.value == ChangeNickNameUiState.NickNameChanged(it.getOrNull())) {
+                        nickNameChangedStateTriggered = true
+                    }
+
+                }
+
+                it.isFailure -> {
+                    _uiState.value = ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 변경 실패.")
+
+                    // 테스트용
+                    if (_uiState.value == ChangeNickNameUiState.Error(it.exceptionOrNull()?.message ?: "닉네임 변경 실패.")) {
+                        errorStateTriggered = true
+                    }
+                }
             }
         }
         _uiState.value = ChangeNickNameUiState.Loading

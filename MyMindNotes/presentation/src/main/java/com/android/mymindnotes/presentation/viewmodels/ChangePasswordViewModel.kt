@@ -23,6 +23,7 @@ class ChangePasswordViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ChangePasswordUiState>(ChangePasswordUiState.Loading)
     val uiState: StateFlow<ChangePasswordUiState> = _uiState.asStateFlow()
 
+    var errorStateTriggered = false // 테스트용
 
     // (서버) 비밀번호 변경
     suspend fun changePasswordButtonClicked(password: String, originalPassword: String) {
@@ -32,7 +33,12 @@ class ChangePasswordViewModel @Inject constructor(
                 it.isSuccess -> _uiState.value = ChangePasswordUiState.Success(it.getOrNull())
 
                 it.isFailure -> {
-                    _uiState.value = ChangePasswordUiState.Error(it.exceptionOrNull()?.message ?: "비밀번호 변경 실패. 인터넷 연결을 확인해 주세요.")
+                    _uiState.value = ChangePasswordUiState.Error(it.exceptionOrNull()?.message ?: "비밀번호 변경 실패.")
+
+                    // 테스트용
+                    if (_uiState.value == ChangePasswordUiState.Error(it.exceptionOrNull()?.message ?: "비밀번호 변경 실패.")) {
+                        errorStateTriggered = true
+                    }
 
                     _uiState.value = ChangePasswordUiState.Loading
                 }

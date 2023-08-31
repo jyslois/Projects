@@ -23,6 +23,7 @@ class DiaryResultEditViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<DiaryResultEditUiState>(DiaryResultEditUiState.Loading)
     val uiState: StateFlow<DiaryResultEditUiState> = _uiState.asStateFlow()
 
+    var errorStateTriggered = false // 테스트용
 
     // (네트워크) 일기 수정
     suspend fun updateDiaryButtonClicked(
@@ -47,7 +48,12 @@ class DiaryResultEditViewModel @Inject constructor(
                 it.isSuccess -> _uiState.value = DiaryResultEditUiState.Success(it.getOrNull())
 
                 it.isFailure -> {
-                    _uiState.value = DiaryResultEditUiState.Error(it.exceptionOrNull()?.message ?: "일기 수정 실패. 인터넷 연결을 확인해 주세요.")
+                    _uiState.value = DiaryResultEditUiState.Error(it.exceptionOrNull()?.message ?: "일기 수정 실패.")
+
+                    // 테스트용
+                    if (_uiState.value == DiaryResultEditUiState.Error(it.exceptionOrNull()?.message ?: "일기 수정 실패.")) {
+                        errorStateTriggered = true
+                    }
 
                     _uiState.value = DiaryResultEditUiState.Loading
                 }

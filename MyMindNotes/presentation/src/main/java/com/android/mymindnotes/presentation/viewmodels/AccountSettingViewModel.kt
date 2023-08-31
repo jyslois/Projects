@@ -84,6 +84,7 @@ class AccountSettingViewModel @Inject constructor(
                             "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요."
                         )
 
+                        // 테스트용
                         if (_uiState.value == AccountSettingUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")) {
                             errorStateTriggered = true
                         }
