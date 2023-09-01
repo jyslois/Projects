@@ -35,10 +35,10 @@ class JoinViewModelTest {
     }
 
     // Test Data
-    val email = "seolois@hotmail.com"
-    val nickname = "로이스"
-    val password = "test1234"
-    val birthyear = 1991
+    private val email = "seolois@hotmail.com"
+    private val nickname = "로이스"
+    private val password = "test1234"
+    private val birthyear = 1991
 
     @Test
     fun checkEmailButtonClicked_ReturnsSuccessfulResponse_UiStateChangedToEmailDuplicateCheckSucceedAndThenToLoading() = runTest {

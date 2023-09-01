@@ -34,9 +34,9 @@ class AccountSettingViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     // 테스트 데이터
-    val nickname = "로이스"
-    val email = "seolois@hotmail.com"
-    val birthyear = 1991
+    private val nickname = "로이스"
+    private val email = "seolois@hotmail.com"
+    private val birthyear = 1991
 
     @Before
     fun setUp() {
@@ -53,7 +53,7 @@ class AccountSettingViewModelTest {
     @Test
     fun logoutButtonClicked_UiStateUpdatedToLogout() = runTest {
         // Given
-        coEvery { mockSaveAutoLoginStateUseCase(false) } just Runs
+        coEvery { mockSaveAutoLoginStateUseCase(any()) } just Runs
 
         // When
         accountSettingViewModel.logoutButtonClicked()

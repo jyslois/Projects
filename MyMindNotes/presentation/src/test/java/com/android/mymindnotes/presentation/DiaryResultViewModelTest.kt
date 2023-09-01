@@ -25,8 +25,8 @@ class DiaryResultViewModelTest {
     private val mockGetDiaryListUseCase = mockk<GetDiaryListUseCase>()
 
     // Test data
-    val diaryNumber = 1
-    val sampleDiaryList = arrayListOf(
+    private val diaryNumber = 1
+    private val sampleDiaryList = arrayListOf(
         Diary(
             date = "2023-08-31",
             day = "목요일",

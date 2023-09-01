@@ -51,10 +51,10 @@ class LoginViewModelTest {
     }
 
     // Test data
-    val email = "seolois@hotmail.com"
-    val password = "Test1234"
-    val isAutoLoginChecked = true
-    val isAutoSaveChecked = true
+    private val email = "seolois@hotmail.com"
+    private val password = "Test1234"
+    private val isAutoLoginChecked = true
+    private val isAutoSaveChecked = true
 
     @Test
     fun loginButtonClicked_ReturnsSuccessfulResponse_UiStateUpdatedToLoginSucceed() = runTest {
@@ -90,7 +90,7 @@ class LoginViewModelTest {
     @Test
     fun autoSaveBoxClicked_InvokesChangeAutoSaveBoxStateUseCase() = runTest {
         // Given
-        coEvery { mockChangeAutoSaveBoxStateUseCase(isAutoSaveChecked, isAutoLoginChecked, email, password) } just Runs
+        coEvery { mockChangeAutoSaveBoxStateUseCase(any(), any(), any(), any()) } just Runs
 
         // When
         loginViewModel.autoSaveBoxClicked(isAutoSaveChecked, isAutoLoginChecked, email, password)

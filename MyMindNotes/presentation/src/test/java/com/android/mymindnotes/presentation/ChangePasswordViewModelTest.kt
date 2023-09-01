@@ -31,8 +31,8 @@ class ChangePasswordViewModelTest {
     }
 
     // Test data
-    val password = "newpassword111"
-    val originalPassword = "test111"
+    private val password = "newpassword111"
+    private val originalPassword = "test111"
 
     @Test
     fun changePasswordButtonClicked_ReturnsSuceesfulResult_UiStateChangedToSuccess() = runTest {

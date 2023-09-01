@@ -31,8 +31,8 @@ class FindPasswordViewModelTest {
     }
 
     // Test Data
-    val email = "seolois@hotmail.com"
-    val randomPassword = "ABC1234"
+    private val email = "seolois@hotmail.com"
+    private val randomPassword = "ABC1234"
 
     @Test
     fun sendEmailButtonClicked_ReturnsSuccessfulResponse_UiStateChangedToSuccessAndThenToLoading() = runTest {

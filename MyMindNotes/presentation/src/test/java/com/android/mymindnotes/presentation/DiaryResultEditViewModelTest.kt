@@ -21,12 +21,12 @@ class DiaryResultEditViewModelTest {
     private val mockUpdateDiaryUseCase = mockk<UpdateDiaryUseCase>()
 
     // Test data
-    val diaryNumber = 1
-    val situation = "테스트 상황"
-    val thought = "테스트 생각"
-    val emotion = "기쁨"
-    val emotionDescription = "테스트 감정 묘사"
-    val reflection = "테스트 회고"
+    private val diaryNumber = 1
+    private val situation = "테스트 상황"
+    private val thought = "테스트 생각"
+    private val emotion = "기쁨"
+    private val emotionDescription = "테스트 감정 묘사"
+    private val reflection = "테스트 회고"
 
     @Before
     fun setUp() {

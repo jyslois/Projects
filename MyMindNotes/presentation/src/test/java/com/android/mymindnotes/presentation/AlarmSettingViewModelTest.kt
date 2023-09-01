@@ -32,11 +32,11 @@ class AlarmSettingViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     // Test data
-    val time = "오후 10:09"
-    val hourOfDay = 22
-    val hour = 10
-    val minute = 9
-    val min = Integer.parseInt("09")
+    private val time = "오후 10:09"
+    private val hourOfDay = 22
+    private val hour = 10
+    private val minute = 9
+    private val min = Integer.parseInt("09")
 
     @Before
     fun setUp() {
@@ -95,7 +95,7 @@ class AlarmSettingViewModelTest {
     @Test
     fun alarmDialogueSet_UiStateChangedToAlarmSwitchedOnWithTime() = runTest {
         // Given
-        coEvery { mockSetAlarmDialogueUseCase(time, hourOfDay, min, minute) } just Runs
+        coEvery { mockSetAlarmDialogueUseCase(any(), any(), any(), any()) } just Runs
 
         // When
         alarmSettingViewModel.alarmDialogueSet(time, hourOfDay, min, minute)
