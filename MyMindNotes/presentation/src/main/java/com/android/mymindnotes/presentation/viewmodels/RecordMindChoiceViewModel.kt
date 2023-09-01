@@ -25,6 +25,8 @@ class RecordMindChoiceViewModel @Inject constructor (
     private val _uiState = MutableStateFlow<RecordMindChoiceUiState>(RecordMindChoiceUiState.Loading)
     val uiState: StateFlow<RecordMindChoiceUiState> = _uiState.asStateFlow()
 
+    var errorStateTriggered = false // 테스트용
+
     fun getNickNameFromUserInfo() {
         viewModelScope.launch {
 
@@ -34,6 +36,12 @@ class RecordMindChoiceViewModel @Inject constructor (
 
                     it.isFailure -> {
                         _uiState.value = RecordMindChoiceUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+
+                        // 테스트용
+                        if (_uiState.value == RecordMindChoiceUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")) {
+                            errorStateTriggered = true
+                        }
+
                         _uiState.value = RecordMindChoiceUiState.Loading
                     }
                 }

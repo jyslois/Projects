@@ -31,6 +31,7 @@ class TodayDiaryReflectionViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<TodayDiaryReflectionUiState>(TodayDiaryReflectionUiState.Loading)
     val uiState: StateFlow<TodayDiaryReflectionUiState> = _uiState.asStateFlow()
 
+    var errorStateUpdated = false // 테스트용
 
     suspend fun previousButtonClickedOrBackPressed(reflection: String) {
         saveTodayDiaryReflectionUseCase(reflection)
@@ -46,7 +47,13 @@ class TodayDiaryReflectionViewModel @Inject constructor(
                 it.isSuccess ->  _uiState.value = TodayDiaryReflectionUiState.DiarySaved
 
                 it.isFailure -> {
-                    _uiState.value = TodayDiaryReflectionUiState.Error(it.exceptionOrNull()?.message ?: "일기 저장에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+                    _uiState.value = TodayDiaryReflectionUiState.Error(it.exceptionOrNull()?.message ?: "일기 저장에 실패했습니다.")
+
+                    // 테스트용
+                    if (_uiState.value == TodayDiaryReflectionUiState.Error(it.exceptionOrNull()?.message ?: "일기 저장에 실패했습니다.")) {
+                        errorStateUpdated = true
+                    }
+
                     _uiState.value = TodayDiaryReflectionUiState.Loading
                 }
             }
@@ -55,7 +62,6 @@ class TodayDiaryReflectionViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-
             getTodayDiaryReflectionUseCase().collect {
                 _uiState.value = TodayDiaryReflectionUiState.Success(it)
             }

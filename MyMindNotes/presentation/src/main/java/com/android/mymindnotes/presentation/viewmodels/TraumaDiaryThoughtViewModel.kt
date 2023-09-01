@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TraumaDiaryThoughtViewModel @Inject constructor(
-    private val traumaDiaryThoughtUseCase: SaveTraumaDiaryThoughtUseCase,
+    private val saveTraumaDiaryThoughtUseCase: SaveTraumaDiaryThoughtUseCase,
     private val getTraumaDiaryThoughtUseCase: GetTraumaDiaryThoughtUseCase
 ): ViewModel() {
 
@@ -28,7 +28,7 @@ class TraumaDiaryThoughtViewModel @Inject constructor(
 
     // Save Method
     suspend fun previousOrNextButtonClickedOrBackPressed(thought: String) {
-        traumaDiaryThoughtUseCase(thought)
+        saveTraumaDiaryThoughtUseCase(thought)
         _uiState.emit(TraumaDiaryThoughtUiState.Success(thought))
     }
 

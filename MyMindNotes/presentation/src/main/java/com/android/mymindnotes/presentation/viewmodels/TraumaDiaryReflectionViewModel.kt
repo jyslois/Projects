@@ -31,6 +31,8 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<TraumaDiaryReflectionUiState>(TraumaDiaryReflectionUiState.Loading)
     val uiState: StateFlow<TraumaDiaryReflectionUiState> = _uiState.asStateFlow()
 
+    var errorStateUpdated = false // 테스트용
+
     suspend fun previousButtonClickedOrBackPressed(reflection: String) {
         saveTraumaDiaryReflectionUseCase(reflection)
         _uiState.value = TraumaDiaryReflectionUiState.Success(reflection)
@@ -44,7 +46,13 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
                 it.isSuccess -> _uiState.value = TraumaDiaryReflectionUiState.DiarySaved
 
                 it.isFailure -> {
-                    _uiState.value = TraumaDiaryReflectionUiState.Error(it.exceptionOrNull()?.message ?: "일기 저장에 실패했습니다. 인터넷 연결 확인 후 다시 시도해 주세요.")
+                    _uiState.value = TraumaDiaryReflectionUiState.Error(it.exceptionOrNull()?.message ?: "일기 저장에 실패했습니다.")
+
+                    // 테스트용
+                    if (_uiState.value == TraumaDiaryReflectionUiState.Error(it.exceptionOrNull()?.message ?: "일기 저장에 실패했습니다.")) {
+                        errorStateUpdated = true
+                    }
+
                     _uiState.value = TraumaDiaryReflectionUiState.Loading
                 }
             }
@@ -54,7 +62,6 @@ class TraumaDiaryReflectionViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-
             getTraumaDiaryReflectionUseCase().collect {
                 _uiState.value = TraumaDiaryReflectionUiState.Success(it)
             }

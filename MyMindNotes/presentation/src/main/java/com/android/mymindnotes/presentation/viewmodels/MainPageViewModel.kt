@@ -31,6 +31,10 @@ class MainPageViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<MainPageUiState>(MainPageUiState.Loading)
     val uiState: StateFlow<MainPageUiState> = _uiState.asStateFlow()
 
+    // 테스트용
+    var errorStateTriggered = false
+    var firstTimeStateTriggered = false
+
     suspend fun getNickNameFromUserInfo() {
 
         getUserInfoUseCase().collect {
@@ -38,7 +42,13 @@ class MainPageViewModel @Inject constructor(
                 it.isSuccess -> _uiState.value = MainPageUiState.Success(it.getOrThrow().nickname)
 
                 it.isFailure -> {
-                    _uiState.value = MainPageUiState.Error(it.exceptionOrNull()?.message ?: "서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+                    _uiState.value = MainPageUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")
+
+                    // 테스트용
+                    if (_uiState.value == MainPageUiState.Error("서버와의 통신에 실패했습니다. 인터넷 연결을 확인해 주세요.")) {
+                        errorStateTriggered = true
+                    }
+
                     _uiState.value = MainPageUiState.Loading
                 }
             }
@@ -53,6 +63,11 @@ class MainPageViewModel @Inject constructor(
             if (getFirstTimeStateUseCase().first()) {
                 _uiState.value = MainPageUiState.FirstTime
                 saveFirstTimeStateUseCase(false)
+
+                // 테스트용
+                if (_uiState.value == MainPageUiState.FirstTime) {
+                    firstTimeStateTriggered = true
+                }
             }
 
             getNickNameFromUserInfo()
