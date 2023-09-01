@@ -7,10 +7,6 @@ import javax.inject.Inject
 class GetAutoSaveStateUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun getAutoSave(): Flow<Boolean> {
-//        return repository.getAutoSaveCheck()
-//    }
-
     suspend operator fun invoke(): Flow<Boolean> {
         return repository.getAutoSaveCheck()
     }

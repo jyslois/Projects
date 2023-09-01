@@ -7,10 +7,6 @@ import javax.inject.Inject
 class GetPasswordUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun getPassword(): Flow<String?> {
-//        return repository.getPassword()
-//    }
-
     suspend operator fun invoke(): Flow<String?> {
         return repository.getPassword()
     }

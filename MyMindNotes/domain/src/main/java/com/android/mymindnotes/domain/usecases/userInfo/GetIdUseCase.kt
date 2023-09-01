@@ -7,10 +7,6 @@ import javax.inject.Inject
 class GetIdUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun getId(): Flow<String?> {
-//        return repository.getId()
-//    }
-
     suspend operator fun invoke(): Flow<String?> {
         return repository.getId()
     }

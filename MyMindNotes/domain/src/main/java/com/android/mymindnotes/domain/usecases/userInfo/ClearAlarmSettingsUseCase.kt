@@ -6,12 +6,7 @@ import javax.inject.Inject
 class ClearAlarmSettingsUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun clearAlarmRelatedKeys() {
-//        repository.clearAlarmRelatedKeys()
-//    }
-
     suspend operator fun invoke() {
         repository.clearAlarmRelatedKeys()
     }
-
 }
