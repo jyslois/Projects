@@ -6,11 +6,8 @@ import javax.inject.Inject
 class SavePasswordUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun savePassword(password: String?) {
-//        repository.savePassword(password)
-//    }
-
     suspend operator fun invoke(password: String?) {
         repository.savePassword(password)
     }
+
 }

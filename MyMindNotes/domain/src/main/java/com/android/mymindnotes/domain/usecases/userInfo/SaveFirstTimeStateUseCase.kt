@@ -6,10 +6,6 @@ import javax.inject.Inject
 class SaveFirstTimeStateUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun saveFirstTime(state: Boolean) {
-//        repository.saveFirstTime(state)
-//    }
-
     suspend operator fun invoke(state: Boolean) {
         repository.saveFirstTime(state)
     }
