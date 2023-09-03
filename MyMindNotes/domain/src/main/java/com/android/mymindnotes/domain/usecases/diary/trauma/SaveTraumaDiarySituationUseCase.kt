@@ -6,10 +6,6 @@ import javax.inject.Inject
 class SaveTraumaDiarySituationUseCase @Inject constructor(
     private val repository: TraumaDiaryRepository
 ) {
-//    suspend fun saveSituation(situation: String) {
-//        repository.saveSituation(situation)
-//    }
-
     suspend operator fun invoke(situation: String) {
         repository.saveSituation(situation)
     }

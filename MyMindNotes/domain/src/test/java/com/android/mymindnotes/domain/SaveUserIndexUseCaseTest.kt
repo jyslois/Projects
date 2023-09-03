@@ -20,7 +20,7 @@ class SaveUserIndexUseCaseTest {
     private val mockMemberRepository = mockk<MemberRepository>()
 
     // 테스트 데이터
-    val userIndex = 1
+    private val userIndex = 1
 
     @Before
     fun setUp() {
@@ -33,12 +33,12 @@ class SaveUserIndexUseCaseTest {
     }
 
     @Test
-    fun invoke_ReturnsSuccessfulResponse() = runTest {
+    fun invoke_callingSaveUserIndex() = runTest {
         // Given
         coEvery { mockMemberRepository.saveUserIndex(any()) } just Runs
 
         // When
-        saveUserIndexUseCase(userIndex)
+        saveUserIndexUseCase(index = userIndex)
 
         // Then
         coVerify { mockMemberRepository.saveUserIndex(userIndex) }
