@@ -41,6 +41,7 @@ class AlarmSettingViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetAlarmStateUseCase() } returns flowOf(false)
         alarmSettingViewModel = AlarmSettingViewModel(mockChangeAlarmSwitchUseCase, mockSetAlarmDialogueUseCase, mockGetAlarmStateUseCase)
     }
 
