@@ -44,6 +44,7 @@ project.afterEvaluate {
                 '**/*Directions.*',
                 '**/*Binding.*',
                 // 제외 목록
+                'com/android/mymindnotes/presentation/ui/**',
                 'com/android/mymindnotes/hilt/**',
                 'com/android/mymindnotes/core/**',
                 'com/android/mymindnotes/data/repositoryImpls/**',

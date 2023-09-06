@@ -41,6 +41,7 @@ class AccountSettingViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetUserInfoUseCase() } returns flowOf()
         accountSettingViewModel = AccountSettingViewModel(mockGetUserInfoUseCase, mockDeleteUserUseCase, mockSaveAutoLoginStateUseCase)
     }
 
