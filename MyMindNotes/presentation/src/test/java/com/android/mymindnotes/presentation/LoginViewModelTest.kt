@@ -41,6 +41,10 @@ class LoginViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetAutoSaveStateUseCase() } returns flowOf()
+        coEvery { mockGetAutoLoginStateUseCase() } returns flowOf()
+        coEvery { mockGetIdUseCase() } returns flowOf()
+        coEvery { mockGetPasswordUseCase() } returns flowOf()
         loginViewModel = LoginViewModel(mockLoginUseCase, mockGetIdUseCase, mockGetPasswordUseCase, mockGetAutoLoginStateUseCase, mockGetAutoSaveStateUseCase, mockChangeAutoSaveBoxStateUseCase)
     }
 

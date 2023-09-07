@@ -37,6 +37,7 @@ class MainPageViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetFirstTimeStateUseCase() } returns flowOf(false)
         mainPageViewModel = MainPageViewModel(mockGetUserInfoUseCase, mockGetFirstTimeStateUseCase, mockSaveFirstTimeStateUseCase)
     }
 
