@@ -34,6 +34,8 @@ class TraumaDiaryEmotionViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetTraumaDiaryEmotionUseCase() } returns flowOf()
+        coEvery { mockGetTraumaDiaryEmotionTextUseCase() } returns flowOf()
         traumaDiaryEmotionViewModel = TraumaDiaryEmotionViewModel(
             mockSaveTraumaDiaryEmotionUseCase,
             mockGetTraumaDiaryEmotionUseCase,
