@@ -35,6 +35,7 @@ class TodayDiaryReflectionViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetTodayDiaryReflectionUseCase() } returns flowOf()
         todayDiaryReflectionViewModel = TodayDiaryReflectionViewModel(mockSaveTodayDiaryUseCase, mockSaveTodayDiaryReflectionUseCase, mockGetTodayDiaryReflectionUseCase)
     }
 

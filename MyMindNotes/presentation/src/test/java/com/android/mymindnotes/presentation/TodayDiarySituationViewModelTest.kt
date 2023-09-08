@@ -32,6 +32,7 @@ class TodayDiarySituationViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetTodayDiarySituationUseCase() } returns flowOf()
         todayDiarySituationViewModel = TodayDiarySituationViewModel(mockSaveTodayDiarySituationUseCase, mockGetTodayDiarySituationUseCase)
     }
 
