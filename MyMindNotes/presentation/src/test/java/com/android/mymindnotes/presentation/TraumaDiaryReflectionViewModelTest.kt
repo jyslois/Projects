@@ -36,6 +36,7 @@ class TraumaDiaryReflectionViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { mockGetTraumaDiaryReflectionUseCase() } returns flowOf()
         traumaDiaryReflectionViewModel = TraumaDiaryReflectionViewModel(mockSaveTraumaDiaryUseCase, mockSaveTraumaDiaryReflectionUseCase, mockGetTraumaDiaryReflectionUseCase)
     }
 
