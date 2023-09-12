@@ -33,9 +33,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
+    # working-directory를 본래의 디렉토리 구조에 맞게 수정
     - name: Build and run tests
       run: ./gradlew clean assembleDebug test
-      working-directory: ./MyMindNotes/app
+      working-directory: ./MyMindNotes
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
