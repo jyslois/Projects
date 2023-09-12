@@ -35,7 +35,7 @@ jobs:
 
     - name: Build and run tests
       run: ./gradlew clean assembleDebug test
-      working-directory: ./MyMindNotes
+      working-directory: ./MyMindNotes/app
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
