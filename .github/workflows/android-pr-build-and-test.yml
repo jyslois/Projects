@@ -1,3 +1,5 @@
+# PR이 열릴 때마다 자동으로 유닛 테스트가 실행되고, 그 결과가 업로드 된다. 
+
 name: PR Unit Test
 
 on:
@@ -10,14 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 워크플로우가 실행되는 가상 머신에 GitHub 저장소의 코드를 다운로드한다. 이 작업은 GitHub Actions 가상 머신이 실제로 작업을 수행하기 위해 코드에 액세스할 수 있도록 하기 위한 필수적인 단계이다.
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # Java 언어로 작성된 프로젝트를 빌드하거나 테스트하기 위해서는 JDK가 필요하다.
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'adopt'  # 배포판을 adopt로 설정
+        distribution: 'adopt'  # AdoptOpenJDK 배포판을 선택
 
     # 종속성을 캐시하여 빌드 시간을 줄인다.
     - name: Cache Gradle dependencies 
@@ -34,10 +38,10 @@ jobs:
     - name: Give execute permission for gradlew
       run: chmod +x ./MyMindNotes/gradlew
 
-    # working-directory를 본래의 디렉토리 구조에 맞게 수정
+    # 빌드 & 단위 테스트 실행
     - name: Build and run unit tests
       run: ./gradlew clean testDebugUnitTest
-      working-directory: ./MyMindNotes
+      working-directory: ./MyMindNotes # working-directory를 본래의 디렉토리 구조에 맞게 수정
 
     # 세 개의 모듈에서 생성된 테스트 결과를 all_test_results 디렉토리에 복사한다
     - name: Copy all test results to one directory
@@ -53,4 +57,3 @@ jobs:
       with:
         name: all-test-results
         path: all_test_results/
-
