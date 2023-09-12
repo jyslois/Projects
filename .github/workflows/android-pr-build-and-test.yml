@@ -39,10 +39,3 @@ jobs:
         name: test-results
         path: app/build/reports/tests
 
-    - name: Set PR status
-      if: always()
-      uses: softprops/action-gh-release@v1
-      with:
-        files: app/build/reports/tests/**/index.html
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
