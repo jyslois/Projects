@@ -33,6 +33,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
+    #  gradlew 파일에 실행 권한이 부여
+    - name: Give execute permission for gradlew
+      run: chmod +x ./MyMindNotes/gradlew
+
     # working-directory를 본래의 디렉토리 구조에 맞게 수정
     - name: Build and run tests
       run: ./gradlew clean assembleDebug test
