@@ -38,7 +38,7 @@ class SaveTraumaDiaryTypeUseCaseTest {
         coEvery { mockTraumaDiaryRepository.saveType(any()) } just Runs
 
         // When
-        saveTraumaDiaryTypeUseCase.invoke(type = testType)
+        saveTraumaDiaryTypeUseCase(type = testType)
 
         // Then
         coVerify { mockTraumaDiaryRepository.saveType(testType) }
