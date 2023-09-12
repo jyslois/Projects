@@ -1,4 +1,4 @@
-name: Android PR Test
+name: PR Unit Test
 
 on:
   pull_request:
@@ -13,17 +13,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # 디렉토리 구조를 출력하는 단계를 추가
-    - name: List directories
-      run: ls -al
-
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: '17'
         distribution: 'adopt'  # 배포판을 adopt로 설정
 
-    - name: Cache Gradle dependencies
+    # 종속성을 캐시하여 빌드 시간을 줄인다.
+    - name: Cache Gradle dependencies 
       uses: actions/cache@v2
       with:
         path: |
@@ -33,18 +30,27 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
-    #  gradlew 파일에 실행 권한이 부여
+    #  gradlew 파일에 실행 권한 부여
     - name: Give execute permission for gradlew
       run: chmod +x ./MyMindNotes/gradlew
 
     # working-directory를 본래의 디렉토리 구조에 맞게 수정
-    - name: Build and run tests
-      run: ./gradlew clean assembleDebug test
+    - name: Build and run unit tests
+      run: ./gradlew clean testDebugUnitTest
       working-directory: ./MyMindNotes
 
-    - name: Upload test results
+    # 세 개의 모듈에서 생성된 테스트 결과를 all_test_results 디렉토리에 복사한다
+    - name: Copy all test results to one directory
+      run: |
+       mkdir -p all_test_results
+       cp -r MyMindNotes/presentation/build/test-results/testDebugUnitTest all_test_results/presentation/
+       cp -r MyMindNotes/domain/build/test-results/testDebugUnitTest all_test_results/domain/
+       cp -r MyMindNotes/data/build/test-results/testDebugUnitTest all_test_results/data/
+
+    # all_test_results 디렉토리에 있는 모든 테스트 결과를 업로드한다
+    - name: Upload all test results
       uses: actions/upload-artifact@v2
       with:
-        name: test-results
-        path: MyMindNotes/app/build/reports/tests
+        name: all-test-results
+        path: all_test_results/
 
