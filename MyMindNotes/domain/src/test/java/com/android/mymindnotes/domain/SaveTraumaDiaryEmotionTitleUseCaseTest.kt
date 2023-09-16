@@ -20,7 +20,7 @@ class SaveTraumaDiaryEmotionTitleUseCaseTest {
     private val mockTraumaDiaryRepository = mockk<TraumaDiaryRepository>()
 
     // 테스트 데이터
-    private val testEmotionTitle = "기쁨"
+    private val testEmotionTitle = "슬픔"
 
     @Before
     fun setUp() {
@@ -38,7 +38,7 @@ class SaveTraumaDiaryEmotionTitleUseCaseTest {
         coEvery { mockTraumaDiaryRepository.saveEmotion(any()) } just Runs
 
         // When
-        saveTraumaDiaryEmotionTitleUseCase.invoke(emotion = testEmotionTitle)
+        saveTraumaDiaryEmotionTitleUseCase(emotion = testEmotionTitle)
 
         // Then
         coVerify { mockTraumaDiaryRepository.saveEmotion(testEmotionTitle) }
