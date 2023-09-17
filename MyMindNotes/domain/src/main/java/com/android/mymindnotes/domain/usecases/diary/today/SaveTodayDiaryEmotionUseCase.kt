@@ -8,7 +8,6 @@ class SaveTodayDiaryEmotionUseCase @Inject constructor(
     private val saveTodayDiaryEmotionTextUseCase: SaveTodayDiaryEmotionTextUseCase
 
 ) {
-
     suspend operator fun invoke(emotion: String, emotionColor: Int, emotionText: String?) {
         saveTodayDiaryEmotionTitleUseCase(emotion)
         saveTodayDiaryEmotionColorUseCase(emotionColor)

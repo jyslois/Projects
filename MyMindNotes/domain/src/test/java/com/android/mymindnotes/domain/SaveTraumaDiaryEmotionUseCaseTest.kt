@@ -24,7 +24,7 @@ class SaveTraumaDiaryEmotionUseCaseTest {
     private val mockSaveTraumaDiaryEmotionTextUseCase = mockk<SaveTraumaDiaryEmotionTextUseCase>()
 
     // 테스트 데이터
-    private val testEmotion = "기쁨"
+    private val testEmotion = "슬픔"
     private val testEmotionColor = 0xFFFFFF
     private val testEmotionText = "테스트 감정 텍스트"
 
@@ -54,7 +54,7 @@ class SaveTraumaDiaryEmotionUseCaseTest {
         coEvery { mockSaveTraumaDiaryEmotionTextUseCase(any()) } just Runs
 
         // When
-        saveTraumaDiaryEmotionUseCase.invoke(emotion = testEmotion, emotionColor = testEmotionColor, emotionText = testEmotionText)
+        saveTraumaDiaryEmotionUseCase(emotion = testEmotion, emotionColor = testEmotionColor, emotionText = testEmotionText)
 
         // Then
         coVerify { mockSaveTraumaDiaryEmotionTitleUseCase(testEmotion) }
