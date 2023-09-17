@@ -38,7 +38,7 @@ class SaveTraumaDiaryRecordDateUseCaseTest {
         coEvery { mockTraumaDiaryRepository.saveDate(any()) } just Runs
 
         // When
-        saveTraumaDiaryRecordDateUseCase.invoke(date = testDate)
+        saveTraumaDiaryRecordDateUseCase(date = testDate)
 
         // Then
         coVerify { mockTraumaDiaryRepository.saveDate(testDate) }
