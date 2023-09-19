@@ -38,7 +38,7 @@ class SaveTraumaDiaryEmotionColorUseCaseTest {
         coEvery { mockTraumaDiaryRepository.saveEmotionColor(any()) } just Runs
 
         // When
-        saveTraumaDiaryEmotionColorUseCase.invoke(color = testColor)
+        saveTraumaDiaryEmotionColorUseCase(color = testColor)
 
         // Then
         coVerify { mockTraumaDiaryRepository.saveEmotionColor(testColor) }
