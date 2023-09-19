@@ -38,7 +38,7 @@ class SaveTraumaDiaryEmotionTextUseCaseTest {
         coEvery { mockTraumaDiaryRepository.saveEmotionText(any()) } just Runs
 
         // When
-        saveTraumaDiaryEmotionTextUseCase.invoke(emotionText = testEmotionText)
+        saveTraumaDiaryEmotionTextUseCase(emotionText = testEmotionText)
 
         // Then
         coVerify { mockTraumaDiaryRepository.saveEmotionText(testEmotionText) }
