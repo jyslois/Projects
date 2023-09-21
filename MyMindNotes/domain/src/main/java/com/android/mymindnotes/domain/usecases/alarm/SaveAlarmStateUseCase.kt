@@ -6,7 +6,5 @@ import javax.inject.Inject
 class SaveAlarmStateUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun saveAlarmState(state: Boolean) = repository.saveAlarmState(state)
-
     suspend operator fun invoke(state:Boolean) = repository.saveAlarmState(state)
 }

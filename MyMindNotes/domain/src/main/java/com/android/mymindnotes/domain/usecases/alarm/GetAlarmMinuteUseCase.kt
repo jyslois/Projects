@@ -7,10 +7,6 @@ import javax.inject.Inject
 class GetAlarmMinuteUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-
-//    // 분 불러오기
-//    suspend fun getMinute(): Flow<Int> = repository.getMinute()
-
     suspend operator fun invoke(): Flow<Int> = repository.getMinute()
 
 }

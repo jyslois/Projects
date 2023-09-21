@@ -7,11 +7,6 @@ import javax.inject.Inject
 class SetAlarmUseCase @Inject constructor(
     private val alarmManagerHelper: AlarmManagerHelperInterface
 ) {
-
-//    fun setAlarm(calendar: Calendar) {
-//        alarmManagerHelper.setAlarm(calendar)
-//    }
-
     operator fun invoke(calendar: Calendar) {
         alarmManagerHelper.setAlarm(calendar)
     }

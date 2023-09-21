@@ -6,9 +6,5 @@ import javax.inject.Inject
 class SaveAlarmMinuteUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-
-    // 분 저장하기
-//    suspend fun saveMinute(minute: Int) = repository.saveMinute(minute)
-
     suspend operator fun invoke(minute: Int) = repository.saveMinute(minute)
 }

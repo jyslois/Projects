@@ -7,8 +7,5 @@ import javax.inject.Inject
 class GetRebootAlarmTimeUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-
-//    suspend fun getRebootTime(): Flow<Long> = repository.getRebootTime()
-
     suspend operator fun invoke(): Flow<Long> = repository.getRebootTime()
 }

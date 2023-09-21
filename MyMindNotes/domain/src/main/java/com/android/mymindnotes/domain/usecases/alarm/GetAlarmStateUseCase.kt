@@ -7,7 +7,5 @@ import javax.inject.Inject
 class GetAlarmStateUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-//    suspend fun getAlarmState(): Flow<Boolean> = repository.getAlarmState()
-
     suspend operator fun invoke(): Flow<Boolean> = repository.getAlarmState()
 }

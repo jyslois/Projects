@@ -6,9 +6,6 @@ import javax.inject.Inject
 class SaveRebootAlarmTimeUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
-
-//    suspend fun saveRebootTime(time: Long) = repository.saveRebootTime(time)
-
     suspend operator fun invoke(time: Long) = repository.saveRebootTime(time)
 
 }
