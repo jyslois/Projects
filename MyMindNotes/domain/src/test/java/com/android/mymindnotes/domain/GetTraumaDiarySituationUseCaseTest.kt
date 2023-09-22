@@ -9,8 +9,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
-import kotlin.test.AfterTest
+import org.junit.After
+import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -22,12 +22,12 @@ class GetTraumaDiarySituationUseCaseTest {
     // 테스트 데이터
     private val testSituation = "테스트 상황"
 
-    @BeforeTest
+    @Before
     fun setUp() {
         getTraumaDiarySituationUseCase = GetTraumaDiarySituationUseCase(mockTraumaDiaryRepository)
     }
 
-    @AfterTest
+    @After
     fun tearDown() {
         clearMocks(mockTraumaDiaryRepository)
     }
