@@ -1,4 +1,5 @@
 package com.android.mymindnotes.domain
+
 import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRepository
 import com.android.mymindnotes.domain.usecases.diary.trauma.GetTraumaDiaryReflectionUseCase
 import io.mockk.coEvery
@@ -8,8 +9,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
-import kotlin.test.AfterTest
+import org.junit.After
+import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -21,12 +22,12 @@ class GetTraumaDiaryReflectionUseCaseTest {
     // 테스트 데이터
     private val testReflection = "테스트 회고"
 
-    @BeforeTest
+    @Before
     fun setUp() {
         getTraumaDiaryReflectionUseCase = GetTraumaDiaryReflectionUseCase(mockTraumaDiaryRepository)
     }
 
-    @AfterTest
+    @After
     fun tearDown() {
         clearMocks(mockTraumaDiaryRepository)
     }

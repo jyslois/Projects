@@ -7,7 +7,6 @@ import javax.inject.Inject
 class GetTodayDiaryReflectionUseCase @Inject constructor(
     private val repository: TodayDiaryRepository
 ) {
-
     suspend operator fun invoke(): Flow<String?> {
         return repository.getReflection()
     }
