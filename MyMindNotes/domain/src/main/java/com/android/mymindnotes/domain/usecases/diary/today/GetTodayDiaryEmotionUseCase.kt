@@ -7,11 +7,6 @@ import javax.inject.Inject
 class GetTodayDiaryEmotionUseCase @Inject constructor(
     private val repository: TodayDiaryRepository
 ) {
-
-//    suspend fun getEmotion(): Flow<String?> {
-//        return repository.getEmotion()
-//    }
-
     suspend operator fun invoke(): Flow<String?> = repository.getEmotion()
 
 }
