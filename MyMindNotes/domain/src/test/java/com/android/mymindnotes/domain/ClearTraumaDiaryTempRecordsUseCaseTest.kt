@@ -1,4 +1,5 @@
 package com.android.mymindnotes.domain
+
 import com.android.mymindnotes.data.repositoryInterfaces.TraumaDiaryRepository
 import com.android.mymindnotes.domain.usecases.diary.trauma.ClearTraumaDiaryTempRecordsUseCase
 import io.mockk.coEvery
@@ -9,8 +10,8 @@ import io.mockk.mockk
 import io.mockk.Runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
-import kotlin.test.AfterTest
+import org.junit.After
+import org.junit.Before
 import kotlin.test.Test
 
 @ExperimentalCoroutinesApi
@@ -18,12 +19,12 @@ class ClearTraumaDiaryTempRecordsUseCaseTest {
     private lateinit var clearTraumaDiaryTempRecordsUseCase: ClearTraumaDiaryTempRecordsUseCase
     private val mockTraumaDiaryRepository = mockk<TraumaDiaryRepository>()
 
-    @BeforeTest
+    @Before
     fun setUp() {
         clearTraumaDiaryTempRecordsUseCase = ClearTraumaDiaryTempRecordsUseCase(mockTraumaDiaryRepository)
     }
 
-    @AfterTest
+    @After
     fun tearDown() {
         clearMocks(mockTraumaDiaryRepository)
     }
