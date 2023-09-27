@@ -19,7 +19,7 @@ class GetFirstTimeStateUseCaseTest {
     private lateinit var getFirstTimeStateUseCase: GetFirstTimeStateUseCase
     private val mockMemberRepository = mockk<MemberRepository>()
 
-    // 테스트 데이터
+    // Test data
     private val testFirstTimeState = true
 
     @Before
@@ -33,7 +33,7 @@ class GetFirstTimeStateUseCaseTest {
     }
 
     @Test
-    fun invoke_callingGetFirstTime() = runTest {
+    fun invoke_retrievingFirstTimeState() = runTest {
         // Given
         coEvery { mockMemberRepository.getFirstTime() } returns flowOf(testFirstTimeState)
 
@@ -46,4 +46,5 @@ class GetFirstTimeStateUseCaseTest {
         }
         coVerify { mockMemberRepository.getFirstTime() }
     }
+
 }
