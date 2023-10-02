@@ -7,4 +7,5 @@ class SaveAlarmMinuteUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
     suspend operator fun invoke(minute: Int) = repository.saveMinute(minute)
+
 }
