@@ -51,4 +51,5 @@ class ChangeAlarmSwitchUseCase @Inject constructor(
         data class AlarmTime(val time: String, val hour: Int, val minute: Int) : SuccessResult()
         object AlarmSwitchedOff : SuccessResult()
     }
+
 }
