@@ -7,6 +7,7 @@ import javax.inject.Inject
 class GetAlarmHourUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
+
     suspend operator fun invoke(): Flow<Int> = repository.getHour()
 
 }
