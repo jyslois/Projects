@@ -8,4 +8,5 @@ class GetAlarmStateUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
     suspend operator fun invoke(): Flow<Boolean> = repository.getAlarmState()
+
 }
