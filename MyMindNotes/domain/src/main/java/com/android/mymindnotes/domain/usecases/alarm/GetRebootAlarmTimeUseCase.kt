@@ -8,4 +8,5 @@ class GetRebootAlarmTimeUseCase @Inject constructor(
     private val repository: MemberRepository
 ) {
     suspend operator fun invoke(): Flow<Long> = repository.getRebootTime()
+
 }
