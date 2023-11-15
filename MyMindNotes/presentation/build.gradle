@@ -102,20 +102,9 @@ dependencies {
     // MockK
     testImplementation "io.mockk:mockk:${mockkVersion}"
 
-    // Robolectric
-    testImplementation "org.robolectric:robolectric:${robolectricVersion}"
-
     // Test annotations and assertions
     testImplementation "org.jetbrains.kotlin:kotlin-test:${kotlinTestVersion}"
 
     // Coroutine Test
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutinesTestVersion}"
-
-    // Espresso
-    androidTestImplementation "androidx.test.espresso:espresso-core:${espressoCoreVersion}"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:${espressoCoreVersion}"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:${espressoCoreVersion}"
-    androidTestImplementation "androidx.test.espresso:espresso-accessibility:${espressoCoreVersion}"
-    androidTestImplementation "androidx.test.espresso:espresso-web:${espressoCoreVersion}"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:${espressoCoreVersion}"
 }
