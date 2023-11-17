@@ -1,6 +1,7 @@
 # 나의 마음 일지
 
 일기 유형 선택부터 감정 설명서, 개인화된 알람 및 감정별 정렬까지, 다양한 기능을 통해 사용자의 심리 치유를 돕는 인지행동치료 기반의 일기 애플리케이션.
+
 🔗 https://play.google.com/store/apps/details?id=com.jys.mymindnotes
 
 # 앱 설계 및 구조
